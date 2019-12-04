@@ -37,6 +37,7 @@ set autoread
 set hidden
 
 set completeopt=menu,menuone,noinsert
+set macligatures " ligature support in macvim
 set guifont=FiraCode-Retina:h14
 set noswapfile
 set nobackup
