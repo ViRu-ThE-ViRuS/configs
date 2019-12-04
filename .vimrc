@@ -68,6 +68,7 @@ set laststatus=2
 set showmode
 set showcmd
 
+set termguicolors " true colors
 set t_Co=256
 set background=dark
 
