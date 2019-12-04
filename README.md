@@ -22,3 +22,6 @@ It is installed by default on modern versions of *MacOS*
 
 This configuration file is `.zshrc`
 
+### MISC
+- I use Fira Code font (Fira Code, Retina, 14pts)
+
