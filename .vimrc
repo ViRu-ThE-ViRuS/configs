@@ -31,6 +31,7 @@ set ruler
 set cursorline
 set encoding=utf-8
 set history=100
+set visualbell
 set gcr=a:blinkon0
 set autoread
 set hidden
