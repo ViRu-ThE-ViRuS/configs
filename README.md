@@ -4,6 +4,10 @@
 Here are the configurations I use for my dev setups.
 The Installation instructions are for *MacOS* as of yet.
 
+#### iTerm2
+- I use iTerm2 as Terminal.app on MacOS doesn't support truecoloring as of yet
+- The profile configuration is `Virus.json`
+
 #### NeoVim
 I use NeoVim, because, well... I use a Mac
 - `$ brew install neovim`
@@ -24,4 +28,3 @@ This configuration file is `.zshrc`
 
 ### MISC
 - I use Fira Code font (Fira Code, Retina, 14pts)
-- I use iTerm2 as Terminal.app on MacOS doesn't support truecoloring as of yet
