@@ -45,7 +45,7 @@ set visualbell
 set gcr=a:blinkon0
 set termguicolors
 set background=dark
-colorscheme OceanicNext
+colorscheme gruvbox 
 
 set completeopt=menu,menuone,noinsert
 set guifont=FiraCode-Retina:h14
@@ -86,6 +86,7 @@ map <C-j> :TagbarToggle<CR>
 " ctrlp
 let g:ctrlp_map='<C-p>'
 let g:ctrlp_working_path_mode='ra'
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|venv'
 
 " syntastic
 let g:python_highlight_all=1
