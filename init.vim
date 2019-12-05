@@ -134,6 +134,12 @@ map <C-w><C-l> :lclose<CR>
 "          + r : rename
 "          + k : show documentation
 
+" <leader> : gitgutter
+"          + hs : stage hunk
+"          + hu : unstage hunk
+" ]c : next hunk
+" [c : previous hunk
+
 " C-b : tmux super
 "     + d : detach session
 "     + % : split vertically
