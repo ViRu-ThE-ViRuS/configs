@@ -24,4 +24,4 @@ This configuration file is `.zshrc`
 
 ### MISC
 - I use Fira Code font (Fira Code, Retina, 14pts)
-
+- I use iTerm2 as Terminal.app on MacOS doesn't support truecoloring as of yet
