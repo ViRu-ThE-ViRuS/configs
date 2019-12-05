@@ -4,11 +4,11 @@
 Here are the configurations I use for my dev setups.
 The Installation instructions are for *MacOS* as of yet.
 
-#### Vim
-I use MacVim, because, well... I use a Mac
-- `$ brew install macvim`
+#### NeoVim
+I use NeoVim, because, well... I use a Mac
+- `$ brew install neovim`
 
-The configuration file is `.vimrc`
+The configuration file is `init.vim` located in `~/.config/nvim/`
 
 #### tmux
 I use Tmux for window management
