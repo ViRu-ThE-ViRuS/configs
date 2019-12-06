@@ -28,3 +28,6 @@ This configuration file is `.zshrc`
 
 ### MISC
 - I use Fira Code font (Fira Code, Retina, 14pts)
+- A deprecated vim configuration is present... reference NeoVim configuration
+    for updates
+    - vim configuration file is `.vimrc`
