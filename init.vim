@@ -45,7 +45,7 @@ set visualbell
 set gcr=a:blinkon0
 set termguicolors
 set background=dark
-colorscheme gruvbox 
+colorscheme pencil
 
 set completeopt=menu,menuone,noinsert
 set guifont=FiraCode-Retina:h14
@@ -77,7 +77,7 @@ autocmd VimEnter * if argc()==0 && !exists('s:std_in') | NERDTree | endif
 map <C-n> :NERDTreeToggle<CR>
 
 " airline
-let g:airline_theme='solarized'
+let g:airline_theme='luna'
 let g:airline_solarized_bg='dark'
 
 " tagbar
