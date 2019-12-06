@@ -11,7 +11,6 @@ Plug 'airblade/vim-gitgutter'
 Plug 'majutsushi/tagbar'
 Plug 'ctrlpvim/ctrlp.vim'
 
-Plug 'altercation/vim-colors-solarized'
 Plug 'flazz/vim-colorschemes'
 
 Plug 'vim-syntastic/syntastic'
@@ -78,7 +77,7 @@ map <C-n> :NERDTreeToggle<CR>
 
 " airline
 let g:airline_theme='luna'
-let g:airline_solarized_bg='dark'
+" let g:airline_solarized_bg='dark'
 
 " tagbar
 map <C-j> :TagbarToggle<CR>
