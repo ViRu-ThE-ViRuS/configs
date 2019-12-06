@@ -12,6 +12,7 @@ Plug 'majutsushi/tagbar'
 Plug 'ctrlpvim/ctrlp.vim'
 
 Plug 'flazz/vim-colorschemes'
+Plug 'sheerun/vim-polyglot'
 
 Plug 'vim-syntastic/syntastic'
 Plug 'jiangmiao/auto-pairs'
@@ -34,7 +35,7 @@ set mouse=incr
 set encoding=utf-8
 set history=100
 set autoread
-set hidden
+" set hidden
 
 set noswapfile
 set nobackup
@@ -70,17 +71,28 @@ set laststatus=2
 set showmode
 set showcmd
 
+" trim trailing whitespaces
+function! <SID>StripTrailingWhitespaces()
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    call cursor(l, c)
+endfun
+autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
+
 " nerdtree
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc()==0 && !exists('s:std_in') | NERDTree | endif
-map <C-n> :NERDTreeToggle<CR>
+nmap <C-n> :NERDTreeToggle<CR>
 
 " airline
 let g:airline_theme='luna'
-" let g:airline_solarized_bg='dark'
+let g:airline_solarized_bg='dark'
+let g:airline#extensions#tabline#enabled=1
+let g:airline#extensions#tabline#fnamemode=':t'
 
 " tagbar
-map <C-j> :TagbarToggle<CR>
+nmap <C-j> :TagbarToggle<CR>
 
 " ctrlp
 let g:ctrlp_map='<C-p>'
@@ -104,7 +116,7 @@ let g:syntastic_check_on_wq = 0
 " autopairs
 let g:AutoPairs={'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`', '<':'>', '<<':''}
 
-" neoformat 
+" neoformat
 autocmd FileType python noremap <buffer> <C-f> :Neoformat<CR>
 
 " deoplete
@@ -118,29 +130,39 @@ let g:echodoc#type = 'floating'
 let g:jedi#completions_enabled = 0
 
 " custom
-map <C-w><C-l> :lclose<CR>
+nmap <C-w><C-l> :lclose<CR> :pclose<CR>
+nmap <leader>t :tabnext<CR>
 
-" C-v : ctrlp open in vsplit
-" C-h : ctrlp open in hsplit
+
+
 " C-o : return to prev buffer
-" C-w + z : close scratch buffer
-" C-w + C-l : lclose
+" C-w + C-l : lclose pclose
+" <leader>t : next tab
 
-" <leader> : jedi
-"          + d : goto definition
-"          + g : goto assignment
-"          + n : show usages
-"          + r : rename
-"          + k : show documentation
+": ctrlp
+"       C-v : open in vsplit
+"       C-x : open in hsplit
+"       C-t : open in tab
+"       C-y : create file
 
-" <leader> : gitgutter
-"          + hs : stage hunk
-"          + hu : unstage hunk
+" : jedi
+" <leader>
+"         + d : goto definition
+"         + g : goto assignment
+"         + n : show usages
+"         + r : rename
+"         + k : show documentation
+
+" : gitgutter
 " ]c : next hunk
 " [c : previous hunk
+" <leader>
+"         + hs : stage hunk
+"         + hu : unstage hunk
 
-" C-b : tmux super
-"     + d : detach session
-"     + % : split vertically
-"     + " : split horizontally
+" : tmux
+" C-b
+"    + d : detach session
+"    + % : split vertically
+"    + " : split horizontally
 

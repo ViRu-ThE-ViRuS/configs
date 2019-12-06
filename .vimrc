@@ -122,15 +122,6 @@ map <C-f> :Autoformat<CR>
 " custom
 map <C-w><C-l> :lclose<CR>
 
-" C-v : open file in vertical split using ctrlp
-" C-h : open file in horizontal split using ctlrp
-" C-w + arrow : navigate between splits in normal mode
-" C-o : return to previous buffer
-" C-w + z : close scratch buffer
-" C-w + C-l : lclose : close syntastic error list
-
-" C-b : tmux super
-"     + d : detach session
-"     + % : split vertically
-"     + " : split horizontally
+" this is deprecated
+" use init.vim (NeoVim Config) for reference
 
