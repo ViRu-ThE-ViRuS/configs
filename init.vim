@@ -149,12 +149,12 @@ let g:echodoc#enable_at_startup=1
 let g:echodoc#type = 'floating'
 
 " go
+let g:deoplete#sources#go#gocode_binary=$GOBIN.'/gocode'
 let g:deoplete#sources#go#source_importer=1
 let g:deoplete#sources#go#pointer=1
 
 let g:go_fmt_command='goimports'
 let g:go_addtags_transform='snakecase'
-let g:go_highlight_sameids=1
 let g:go_list_type='quickfix'
 
 autocmd FileType go nmap <leader>d :GoDef<CR>
