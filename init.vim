@@ -37,7 +37,7 @@ set number
 set ruler
 set cursorline
 set matchpairs+=<:>
-set mouse=incr
+set mouse=a
 
 set encoding=utf-8
 set history=100
@@ -168,6 +168,7 @@ let g:go_list_type='quickfix'
 
 autocmd FileType go nmap <leader>d :GoDef<CR>
 autocmd FileType go nmap <leader>n :GoRef<CR>
+autocmd FileType go nmap <leader>k :GoDoc<CR>
 
 " jedi
 let g:jedi#completions_enabled = 0
@@ -189,6 +190,7 @@ nmap <leader>q :bd<CR>
 " <leader> (go) (guru)
 "         + d : goto definition
 "         + n : show usages
+"         + k : show documentation
 " <leader> (python) (jedi)
 "         + d : goto definition
 "         + n : show usages
