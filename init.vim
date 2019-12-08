@@ -1,4 +1,3 @@
-syntax enable
 filetype plugin indent on
 
 set rtp+=~/.config/nvim
@@ -30,6 +29,9 @@ Plug 'sheerun/vim-polyglot'
 
 call plug#end()
 
+syntax enable
+syntax on
+
 set modelines=0
 set number
 set ruler
@@ -50,9 +52,9 @@ set visualbell
 set gcr=a:blinkon0
 set termguicolors
 set background=dark
-colorscheme pencil
+colorscheme gruvbox
 
-set completeopt=menu,menuone,noinsert,noselect
+set completeopt=menu,menuone,noinsert
 set guifont=FiraCode-Retina:h14
 
 set wrap
@@ -123,8 +125,15 @@ let g:python_highlight_all=1
 let g:syntastic_python_python_exec='python3'
 let g:syntastic_python_checkers=['flake8']
 
-let g:go_highlight_all=1
 let g:syntastic_go_checkers=['gofmt']
+let g:go_highlight_extra_types=1
+let g:go_highlight_fields=1
+let g:go_highlight_functions=1
+let g:go_highlight_function_calls=1
+let g:go_highlight_methods=1
+let g:go_highlight_operators=1
+let g:go_highlight_structs=1
+let g:go_highlight_types=1
 
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -163,11 +172,14 @@ autocmd FileType go nmap <leader>n :GoRef<CR>
 " jedi
 let g:jedi#completions_enabled = 0
 
+" polyglot
+let g:polyglot_disable=['go']
+
 " custom
 nmap <C-w><C-l> :lclose<CR> :pclose<CR> :ccl<CR>
 nmap <leader>t :bn<CR>
 nmap <leader>y :bN<CR>
-nmap <leader>d :bd<CR>
+nmap <leader>q :bd<CR>
 
 
 " : ctrlp
