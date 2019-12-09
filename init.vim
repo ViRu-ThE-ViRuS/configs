@@ -52,7 +52,7 @@ set visualbell
 set gcr=a:blinkon0
 set termguicolors
 set background=dark
-colorscheme gruvbox
+colorscheme zenburn
 
 set completeopt=menu,menuone,noinsert
 set guifont=FiraCode-Retina:h14
@@ -119,6 +119,7 @@ let g:ctrlp_show_hidden=1
 
 " fugitive
 set statusline+=%{FugitiveStatusline()}
+set diffopt+=vertical
 
 " syntastic
 let g:python_highlight_all=1

@@ -1,6 +1,8 @@
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 export PS1="%10F\$[->]%f "
 
+export EDITOR="nvim"
+
 export GOROOT=/usr/local/go
 export GOPATH=~/.dev/go
 export GOBIN=$GOPATH/bin
