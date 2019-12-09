@@ -102,7 +102,7 @@ let g:NERDTreeIgnore = [
 \]
 
 " airline
-let g:airline_theme='luna'
+let g:airline_theme='zenburn' " luna
 let g:airline_solarized_bg='dark'
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#fnamemode=':t'
@@ -149,6 +149,7 @@ let g:syntastic_check_on_wq = 0
 let g:AutoPairs={'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`', '<':'>', '<<':''}
 
 " neoformat
+autocmd FileType go let $PATH=$PATH.":".$GOBIN
 autocmd FileType python,go noremap <buffer> <C-f> :Neoformat<CR>
 
 " deoplete
