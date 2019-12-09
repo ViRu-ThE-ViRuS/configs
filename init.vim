@@ -4,18 +4,24 @@ set rtp+=~/.config/nvim
 call plug#begin('~/.config/nvim/plugged')
 
 Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
 Plug 'majutsushi/tagbar'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-fugitive'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'tpope/vim-eunuch'
+Plug 'junegunn/goyo.vim'
 
 Plug 'flazz/vim-colorschemes'
 
+Plug 'scrooloose/nerdcommenter'
 Plug 'vim-syntastic/syntastic'
 Plug 'jiangmiao/auto-pairs'
 Plug 'sbdchd/neoformat'
+
 Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
 Plug 'Shougo/echodoc.vim'
 
@@ -52,7 +58,7 @@ set visualbell
 set gcr=a:blinkon0
 set termguicolors
 set background=dark
-colorscheme zenburn
+colorscheme gruvbox
 
 set completeopt=menu,menuone,noinsert
 set guifont=FiraCode-Retina:h14
@@ -90,7 +96,7 @@ autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 " nerdtree
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc()==0 && !exists('s:std_in') | NERDTree | endif
-nmap <C-n> :NERDTreeToggle<CR>
+nmap <C-h> :NERDTreeToggle<CR>
 
 let g:NERDTreeIgnore = [
     \ '\~$',
@@ -102,7 +108,7 @@ let g:NERDTreeIgnore = [
 \]
 
 " airline
-let g:airline_theme='zenburn' " luna
+let g:airline_theme='deus' " luna
 let g:airline_solarized_bg='dark'
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#fnamemode=':t'
@@ -116,6 +122,9 @@ let g:ctrlp_map='<C-p>'
 let g:ctrlp_working_path_mode='ra'
 let g:ctrlp_custom_ignore='node_modules\|DS_Store\|git\|venv'
 let g:ctrlp_show_hidden=1
+
+" goyo
+let g:goyo_height="100%"
 
 " fugitive
 set statusline+=%{FugitiveStatusline()}
@@ -185,9 +194,6 @@ nmap <leader>y :bN<CR>
 nmap <leader>q :bd<CR>
 
 
-" : ctrlp
-"       C-y : create file
-
 " : deoplete
 " <leader> (go) (guru)
 "         + d : goto definition
@@ -206,3 +212,15 @@ nmap <leader>q :bd<CR>
 "         + hs : stage hunk
 "         + hu : unstage hunk
 
+" : nerd commenter
+" <leader>
+"         + cc : comment
+"         + cu : uncomment
+
+" : multiple cursors
+" <C-n> : cursor select next
+" <C-x> : cursor skip next
+" <C-p> : cursor previous
+
+" : goyo
+" :Goyo : toggle goyo mode
