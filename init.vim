@@ -18,7 +18,7 @@ Plug 'junegunn/goyo.vim'
 Plug 'flazz/vim-colorschemes'
 
 Plug 'scrooloose/nerdcommenter'
-Plug 'vim-syntastic/syntastic'
+Plug 'vim-syntastic/syntastic', {'for': 'python, go'}
 Plug 'jiangmiao/auto-pairs'
 Plug 'sbdchd/neoformat'
 
