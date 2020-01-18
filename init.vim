@@ -18,7 +18,7 @@ Plug 'junegunn/goyo.vim'
 Plug 'flazz/vim-colorschemes'
 
 Plug 'scrooloose/nerdcommenter'
-Plug 'vim-syntastic/syntastic', {'for': 'python, go'}
+Plug 'vim-syntastic/syntastic', {'for': ['python', 'go']}
 Plug 'jiangmiao/auto-pairs'
 Plug 'sbdchd/neoformat'
 
@@ -58,7 +58,7 @@ set visualbell
 set gcr=a:blinkon0
 set termguicolors
 set background=dark
-colorscheme material-theme
+colorscheme badwolf
 
 set completeopt=menu,menuone,noinsert
 set guifont=FiraCode-Retina:h14
@@ -108,7 +108,7 @@ let g:NERDTreeIgnore = [
 \]
 
 " airline
-let g:airline_theme='hybrid' " luna
+let g:airline_theme='deus' " deus hybrid luna
 let g:airline_solarized_bg='dark'
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#fnamemode=':t'
