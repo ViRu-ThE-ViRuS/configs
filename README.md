@@ -18,13 +18,14 @@ The configuration file is `init.vim` located in `~/.config/nvim/`
 I use Tmux for window management
 - `$ brew install tmux`
 
-The configuration file is `.tmux.conf`
+The configuration file is `.tmux.conf` located in `~/.config/tmux/`
 
 #### zsh
 I use zsh as my bash prompt...
 It is installed by default on modern versions of *MacOS*
 
-This configuration file is `.zshrc`
+The configuration file is `.zshrc` located in `~/.config/zsh/`
+The `.zshenv` file is located in `~/`
 
 ### MISC
 - I use Fira Code font (Fira Code, Retina, 14pts)
