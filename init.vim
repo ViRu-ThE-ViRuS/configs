@@ -16,6 +16,7 @@ Plug 'tpope/vim-eunuch'
 Plug 'junegunn/goyo.vim'
 
 Plug 'flazz/vim-colorschemes'
+Plug 'relastle/bluewery.vim'
 
 Plug 'scrooloose/nerdcommenter'
 Plug 'vim-syntastic/syntastic', {'for': ['python', 'go']}
@@ -58,10 +59,11 @@ set visualbell
 set gcr=a:blinkon0
 set termguicolors
 set background=dark
-colorscheme badwolf
+colorscheme bluewery " anderson gotham
 
 set completeopt=menu,menuone,noinsert
 set guifont=FiraCode-Retina:h14
+set guicursor+=i:ver100-iCursor
 
 set wrap
 set textwidth=79
@@ -81,7 +83,7 @@ set ignorecase
 set nohlsearch
 
 set laststatus=2
-set showmode
+set noshowmode
 set showcmd
 
 " trim trailing whitespaces
@@ -108,7 +110,7 @@ let g:NERDTreeIgnore = [
 \]
 
 " airline
-let g:airline_theme='deus' " deus hybrid luna
+let g:airline_theme='bluewery' " deus hybrid luna base16_embers
 let g:airline_solarized_bg='dark'
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#fnamemode=':t'
