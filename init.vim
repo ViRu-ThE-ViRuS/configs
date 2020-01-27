@@ -27,7 +27,7 @@ Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
 Plug 'Shougo/echodoc.vim'
 
 Plug 'deoplete-plugins/deoplete-go', {'for': 'go', 'do': 'make'}
-Plug 'fatih/vim-go', {'for': 'go', 'do': ':GoUpdateBinaries'}
+Plug 'fatih/vim-go', {'for': 'go'}
 
 Plug 'deoplete-plugins/deoplete-jedi', {'for': 'python', 'do': ':UpdateRemotePlugins'}
 Plug 'davidhalter/jedi-vim', {'for': 'python'}
@@ -56,7 +56,6 @@ set nobackup
 set nowb
 
 set visualbell
-set gcr=a:blinkon0
 set termguicolors
 set background=dark
 colorscheme bluewery " anderson gotham
@@ -64,6 +63,7 @@ colorscheme bluewery " anderson gotham
 set completeopt=menu,menuone,noinsert
 set guifont=FiraCode-Retina:h14
 set guicursor+=i:ver100-iCursor
+set gcr=a:blinkon0
 
 " set wrap
 set textwidth=79
