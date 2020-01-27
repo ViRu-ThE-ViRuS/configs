@@ -66,6 +66,7 @@ set guicursor+=i:ver100-iCursor
 set gcr=a:blinkon0
 
 " set wrap
+set nowrap
 set textwidth=79
 set colorcolumn=+1
 set formatoptions=tcqrn1
