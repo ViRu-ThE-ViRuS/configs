@@ -65,7 +65,7 @@ set completeopt=menu,menuone,noinsert
 set guifont=FiraCode-Retina:h14
 set guicursor+=i:ver100-iCursor
 
-set wrap
+" set wrap
 set textwidth=79
 set colorcolumn=+1
 set formatoptions=tcqrn1
