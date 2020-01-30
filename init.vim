@@ -26,11 +26,13 @@ Plug 'sbdchd/neoformat'
 Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
 Plug 'Shougo/echodoc.vim'
 
+Plug 'deoplete-plugins/deoplete-jedi', {'for': 'python', 'do': ':UpdateRemotePlugins'}
+Plug 'davidhalter/jedi-vim', {'for': 'python'}
+
 Plug 'deoplete-plugins/deoplete-go', {'for': 'go', 'do': 'make'}
 Plug 'fatih/vim-go', {'for': 'go'}
 
-Plug 'deoplete-plugins/deoplete-jedi', {'for': 'python', 'do': ':UpdateRemotePlugins'}
-Plug 'davidhalter/jedi-vim', {'for': 'python'}
+Plug 'zchee/deoplete-clang', {'for' : ['c', 'c++']}
 
 Plug 'sheerun/vim-polyglot'
 
@@ -56,6 +58,7 @@ set nobackup
 set nowb
 
 set visualbell
+set gcr=a:blinkon0
 set termguicolors
 set background=dark
 colorscheme bluewery " anderson gotham
@@ -63,7 +66,6 @@ colorscheme bluewery " anderson gotham
 set completeopt=menu,menuone,noinsert
 set guifont=FiraCode-Retina:h14
 set guicursor+=i:ver100-iCursor
-set gcr=a:blinkon0
 
 " set wrap
 set nowrap
@@ -167,6 +169,9 @@ autocmd FileType python,go noremap <buffer> <C-f> :Neoformat<CR>
 " deoplete
 let g:deoplete#enable_at_startup=1
 
+" jedi
+let g:jedi#completions_enabled = 0
+
 " echodoc
 let g:echodoc#enable_at_startup=1
 let g:echodoc#type = 'floating'
@@ -184,8 +189,10 @@ autocmd FileType go nmap <leader>d :GoDef<CR>
 autocmd FileType go nmap <leader>n :GoRef<CR>
 autocmd FileType go nmap <leader>k :GoDoc<CR>
 
-" jedi
-let g:jedi#completions_enabled = 0
+" clang
+let g:deoplete#sources#clang#libclang_path="/Library/Developer/CommandLineTools/usr/lib/libclang.dylib"
+let g:deoplete#sources#clang#clang_header="/Library/Developer/CommandLineTools/usr/lib/clang/11.0.0/include/"
+let g:deoplete#sources#clang#std={'c': 'c98'}
 
 " polyglot
 let g:polyglot_disable=['go']
