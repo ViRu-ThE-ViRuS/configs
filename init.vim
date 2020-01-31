@@ -72,9 +72,9 @@ set nowrap
 set textwidth=79
 set colorcolumn=+1
 set formatoptions=tcqrn1
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
 set expandtab
 set autoindent
 set noshiftround
