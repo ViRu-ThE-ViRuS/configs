@@ -19,7 +19,7 @@ Plug 'flazz/vim-colorschemes'
 Plug 'relastle/bluewery.vim'
 
 Plug 'scrooloose/nerdcommenter'
-Plug 'vim-syntastic/syntastic', {'for': ['python', 'go']}
+Plug 'vim-syntastic/syntastic', {'for': ['python', 'go', 'c', 'cpp']}
 Plug 'jiangmiao/auto-pairs'
 Plug 'sbdchd/neoformat'
 
@@ -32,7 +32,7 @@ Plug 'davidhalter/jedi-vim', {'for': 'python'}
 Plug 'deoplete-plugins/deoplete-go', {'for': 'go', 'do': 'make'}
 Plug 'fatih/vim-go', {'for': 'go'}
 
-Plug 'zchee/deoplete-clang', {'for' : ['c', 'c++']}
+Plug 'zchee/deoplete-clang', {'for' : ['c', 'cpp']}
 
 Plug 'sheerun/vim-polyglot'
 
@@ -164,7 +164,7 @@ let g:AutoPairs={'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`', '<':'>', '<
 
 " neoformat
 autocmd FileType go let $PATH=$PATH.":".$GOBIN
-autocmd FileType python,go noremap <buffer> <C-f> :Neoformat<CR>
+autocmd FileType python,go,c,cpp noremap <buffer> <C-f> :Neoformat<CR>
 
 " deoplete
 let g:deoplete#enable_at_startup=1
