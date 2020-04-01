@@ -61,7 +61,7 @@ set visualbell
 set gcr=a:blinkon0
 set termguicolors
 set background=dark
-colorscheme gotham " bluewery anderson gotham
+colorscheme gruvbox " bluewery anderson gotham gruvbox
 
 set completeopt=menu,menuone,noinsert
 set guifont=FiraCode-Retina:h14
@@ -101,7 +101,7 @@ autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 " nerdtree
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc()==0 && !exists('s:std_in') | NERDTree | endif
-nmap <C-h> :NERDTreeToggle<CR>
+nnoremap <C-h> :NERDTreeToggle<CR>
 
 let g:NERDTreeIgnore = [
     \ '\~$',
@@ -113,14 +113,14 @@ let g:NERDTreeIgnore = [
 \]
 
 " airline
-let g:airline_theme='hybrid' " bluewery deus hybrid luna base16_embers
+let g:airline_theme='base16_embers' " bluewery deus hybrid luna base16_embers
 let g:airline_solarized_bg='dark'
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#fnamemode=':t'
 let g:airline#extensions#tabline#buffer_nr_show = 1
 
 " tagbar
-nmap <C-j> :TagbarToggle<CR>
+nnoremap <C-j> :TagbarToggle<CR>
 
 " ctrlp
 let g:ctrlp_map='<C-p>'
@@ -185,9 +185,9 @@ let g:go_fmt_command='goimports'
 let g:go_addtags_transform='snakecase'
 let g:go_list_type='quickfix'
 
-autocmd FileType go nmap <leader>d :GoDef<CR>
-autocmd FileType go nmap <leader>n :GoRef<CR>
-autocmd FileType go nmap <leader>k :GoDoc<CR>
+autocmd FileType go noremap <leader>d :GoDef<CR>
+autocmd FileType go noremap <leader>n :GoRef<CR>
+autocmd FileType go noremap <leader>k :GoDoc<CR>
 
 " clang
 let g:deoplete#sources#clang#libclang_path="/Library/Developer/CommandLineTools/usr/lib/libclang.dylib"
@@ -198,11 +198,13 @@ let g:deoplete#sources#clang#std={'c': 'c98'}
 let g:polyglot_disable=['go']
 
 " custom
-nmap <C-w><C-l> :lclose<CR> :pclose<CR> :ccl<CR>
-nmap <leader>t :bn<CR>
-nmap <leader>y :bN<CR>
-nmap <leader>q :bd<CR>
+nnoremap <C-w><C-l> :lclose<CR> :pclose<CR> :ccl<CR>
+nnoremap <leader>t :bn<CR>
+nnoremap <leader>y :bN<CR>
+nnoremap <leader>q :bd<CR>
 
+nnoremap ; :
+nnoremap : ;
 
 " : deoplete
 " <leader> (go) (guru)
