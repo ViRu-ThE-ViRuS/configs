@@ -9,23 +9,29 @@ The Installation instructions are for *MacOS* as of yet.
 - The profile configuration is `Virus.json`
 
 #### NeoVim
-I use NeoVim, because, well... I use a Mac
+- I use NeoVim, because, well... I use a Mac
 - `$ brew install neovim`
 
 The configuration file is `init.vim` located in `~/.config/nvim/`
 
 #### tmux
-I use Tmux for window management
+- I use Tmux for window management
 - `$ brew install tmux`
 
 The configuration file is `.tmux.conf` located in `~/.config/tmux/`
 
 #### zsh
-I use zsh as my bash prompt...
-It is installed by default on modern versions of *MacOS*
+- I use zsh as my secondary bash prompt...
+- It is installed by default on modern versions of *MacOS*
 
 The configuration file is `.zshrc` located in `~/.config/zsh/`
 The `.zshenv` file is located in `~/`
+
+#### fish
+- I use fish as my primary bash prompt...
+- `$ brew install fish`
+
+The configuration files are in `fish` located in `~/.config/fish/`
 
 ### MISC
 - I use Fira Code font (Fira Code, Retina, 14pts)
