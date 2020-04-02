@@ -88,6 +88,7 @@ set nohlsearch
 set laststatus=2
 set noshowmode
 set showcmd
+set omnifunc=syntaxcomplete#Complete
 
 " trim trailing whitespaces
 function! <SID>StripTrailingWhitespaces()
@@ -170,11 +171,12 @@ autocmd FileType python,go,c,cpp noremap <buffer> <C-f> :Neoformat<CR>
 let g:deoplete#enable_at_startup=1
 
 " jedi
-let g:jedi#completions_enabled = 0
+let g:jedi#completions_enabled=0
+let g:jedi#show_call_signatures=0
 
 " echodoc
 let g:echodoc#enable_at_startup=1
-let g:echodoc#type = 'floating'
+let g:echodoc#type='floating'
 
 " go
 let g:deoplete#sources#go#gocode_binary=$GOBIN.'/gocode'
