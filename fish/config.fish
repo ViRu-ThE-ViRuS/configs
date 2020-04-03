@@ -1,6 +1,8 @@
 set -Ux LSCOLORS xxfxcxdxbxegedabagacad
 set -Ux EDITOR nvim
 
+set fish_greeting Stars\x20\x3a\x29
+
 function fish_prompt --description 'Fish prompt'
     set_color green
     echo -n '$[->] '
