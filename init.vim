@@ -19,20 +19,17 @@ Plug 'flazz/vim-colorschemes'
 Plug 'relastle/bluewery.vim'
 
 Plug 'scrooloose/nerdcommenter'
-Plug 'vim-syntastic/syntastic', {'for': ['python', 'go', 'c', 'cpp']}
+Plug 'vim-syntastic/syntastic', {'for': ['python', 'c', 'cpp', 'java']}
 Plug 'jiangmiao/auto-pairs'
 Plug 'sbdchd/neoformat'
 
 Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
 Plug 'Shougo/echodoc.vim'
 
-Plug 'deoplete-plugins/deoplete-jedi', {'for': 'python', 'do': ':UpdateRemotePlugins'}
-Plug 'davidhalter/jedi-vim', {'for': 'python'}
-
-Plug 'deoplete-plugins/deoplete-go', {'for': 'go', 'do': 'make'}
-Plug 'fatih/vim-go', {'for': 'go'}
-
-Plug 'zchee/deoplete-clang', {'for': ['c', 'cpp']}
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+Plug 'lighttiger2505/deoplete-vim-lsp'
 
 Plug 'sheerun/vim-polyglot'
 
@@ -90,6 +87,8 @@ set noshowmode
 set showcmd
 set omnifunc=syntaxcomplete#Complete
 
+let g:python3_host_prog='/usr/bin/python3'
+
 " trim trailing whitespaces
 function! <SID>StripTrailingWhitespaces()
     let l = line(".")
@@ -141,16 +140,6 @@ let g:python_highlight_all=1
 let g:syntastic_python_python_exec='python3'
 let g:syntastic_python_checkers=['flake8']
 
-let g:syntastic_go_checkers=['gofmt']
-let g:go_highlight_extra_types=1
-let g:go_highlight_fields=1
-let g:go_highlight_functions=1
-let g:go_highlight_function_calls=1
-let g:go_highlight_methods=1
-let g:go_highlight_operators=1
-let g:go_highlight_structs=1
-let g:go_highlight_types=1
-
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -164,40 +153,71 @@ let g:syntastic_check_on_wq = 0
 let g:AutoPairs={'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`', '<':'>', '<<':''}
 
 " neoformat
-autocmd FileType go let $PATH=$PATH.":".$GOBIN
-autocmd FileType python,go,c,cpp noremap <buffer> <C-f> :Neoformat<CR>
+autocmd FileType python,c,cpp,java noremap <buffer> <C-f> :Neoformat<CR>
 
 " deoplete
 let g:deoplete#enable_at_startup=1
-
-" jedi
-let g:jedi#completions_enabled=0
-let g:jedi#show_call_signatures=0
 
 " echodoc
 let g:echodoc#enable_at_startup=1
 let g:echodoc#type='floating'
 
-" go
-let g:deoplete#sources#go#gocode_binary=$GOBIN.'/gocode'
-let g:deoplete#sources#go#source_importer=1
-let g:deoplete#sources#go#pointer=1
+" lsp and autocomplete
+if executable('pyls')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'pyls',
+        \ 'cmd': {server_info->['pyls']},
+        \ 'whitelist': ['python'],
+        \ })
+endif
 
-let g:go_fmt_command='goimports'
-let g:go_addtags_transform='snakecase'
-let g:go_list_type='quickfix'
+if executable('clangd')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'clangd',
+        \ 'cmd': {server_info->['clangd', '-background-index']},
+        \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
+        \ })
+endif
 
-autocmd FileType go noremap <leader>d :GoDef<CR>
-autocmd FileType go noremap <leader>n :GoRef<CR>
-autocmd FileType go noremap <leader>k :GoDoc<CR>
+" do manual install, works when project directory is formed
+if executable('java') && filereadable(expand('~/.local/share/vim-lsp-settings/servers/eclipse.jdt.ls/plugins/org.eclipse.equinox.launcher_1.5.600.v20191014-2022.jar'))
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'eclipse.jdt.ls',
+        \ 'cmd': {server_info->[
+        \     'java',
+        \     '-Declipse.application=org.eclipse.jdt.ls.core.id1',
+        \     '-Dosgi.bundles.defaultStartLevel=4',
+        \     '-Declipse.product=org.eclipse.jdt.ls.core.product',
+        \     '-Dlog.level=ALL',
+        \     '-noverify',
+        \     '-Dfile.encoding=UTF-8',
+        \     '-Xmx1G',
+        \     '-jar',
+        \     expand('~/.local/share/vim-lsp-settings/servers/eclipse.jdt.ls/plugins/org.eclipse.equinox.launcher_1.5.600.v20191014-2022.jar'),
+        \     '-configuration',
+        \     expand('~/.local/share/vim-lsp-settings/servers/eclipse.jdt.ls/config_linux'),
+        \     '-data',
+        \     getcwd()
+        \ ]},
+        \ 'whitelist': ['java'],
+        \ })
+endif
 
-" clang
-let g:deoplete#sources#clang#libclang_path="/Library/Developer/CommandLineTools/usr/lib/libclang.dylib"
-let g:deoplete#sources#clang#clang_header="/Library/Developer/CommandLineTools/usr/lib/clang/11.0.0/include/"
-let g:deoplete#sources#clang#std={'c': 'c98'}
+function! s:on_lsp_buffer_enabled() abort
+    setlocal omnifunc=lsp#complete
 
-" polyglot
-let g:polyglot_disable=['go']
+    nmap <buffer> <leader>d <plug>(lsp-definition)
+    nmap <buffer> <leader>u <plug>(lsp-references)
+    nmap <buffer> <leader>r <plug>(lsp-rename)
+endfunction
+
+augroup lsp_install
+    au!
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup endif
+
+let g:lsp_diagnostics_enabled=0
+let g:lsp_signs_enabled=0
 
 " custom
 nnoremap <C-w><C-l> :lclose<CR> :pclose<CR> :ccl<CR>
@@ -208,16 +228,11 @@ nnoremap <leader>q :bd<CR>
 nnoremap ; :
 nnoremap : ;
 
-" : deoplete
-" <leader> (go) (guru)
+" vim-lsp
+" <leader> (python)
 "         + d : goto definition
-"         + n : show usages
-"         + k : show documentation
-" <leader> (python) (jedi)
-"         + d : goto definition
-"         + n : show usages
+"         + u : show usages
 "         + r : rename
-"         + k : show documentation
 
 " : gitgutter
 " ]c : next hunk
