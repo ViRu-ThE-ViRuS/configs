@@ -60,7 +60,7 @@ set termguicolors
 set background=dark
 colorscheme gruvbox " bluewery anderson gotham gruvbox
 
-set completeopt=menu,menuone,noinsert
+set completeopt=menu,menuone,noinsert,noselect
 set guifont=FiraCode-Retina:h14
 set guicursor+=i:ver100-iCursor
 
@@ -68,7 +68,7 @@ set guicursor+=i:ver100-iCursor
 set nowrap
 set textwidth=79
 set colorcolumn=+1
-set formatoptions=tcqrn1
+set formatoptions=qrnj1
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
@@ -81,11 +81,14 @@ set backspace=indent,eol,start
 set incsearch
 set ignorecase
 set nohlsearch
+set smartcase
 
 set laststatus=2
 set noshowmode
 set showcmd
 set omnifunc=syntaxcomplete#Complete
+set clipboard^=unnamed,unnamedplus
+set shortmess+=c
 
 let g:python3_host_prog='/usr/bin/python3'
 
@@ -151,6 +154,7 @@ let g:syntastic_check_on_wq = 0
 
 " autopairs
 let g:AutoPairs={'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`', '<':'>', '<<':''}
+let g:AutoPairsMapSpace=0
 
 " neoformat
 autocmd FileType python,c,cpp,java noremap <buffer> <C-f> :Neoformat<CR>
@@ -228,7 +232,10 @@ nnoremap <leader>q :bd<CR>
 nnoremap ; :
 nnoremap : ;
 
-" vim-lsp
+cmap Wq wq
+cmap Q q
+
+" : vim-lsp deoplete
 " <leader> (python)
 "         + d : goto definition
 "         + u : show usages
