@@ -1,7 +1,11 @@
-set -Ux LSCOLORS xxfxcxdxbxegedabagacad
-set -Ux EDITOR nvim
+set fish_greeting   Stars\x20\x3a\x29
 
-set fish_greeting Stars\x20\x3a\x29
+set -Ux LSCOLORS    xxfxcxdxbxegedabagacad
+set -Ux EDITOR      nvim
+
+set -Ux ZDOTDIR     ~/.config/zsh
+set -Ux GOPATH      ~/.dev/go
+set -Ux GOBIN       $GOPATH/bin
 
 function fish_prompt --description 'Fish prompt'
     set_color green
