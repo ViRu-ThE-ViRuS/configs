@@ -19,7 +19,7 @@ Plug 'flazz/vim-colorschemes'
 Plug 'relastle/bluewery.vim'
 
 Plug 'scrooloose/nerdcommenter'
-Plug 'vim-syntastic/syntastic', {'for': ['python', 'go', 'c', 'cpp']}
+Plug 'vim-syntastic/syntastic', {'for': ['python', 'go', 'c', 'cpp', 'java']}
 Plug 'jiangmiao/auto-pairs'
 Plug 'sbdchd/neoformat'
 
@@ -28,11 +28,10 @@ Plug 'Shougo/echodoc.vim'
 
 Plug 'deoplete-plugins/deoplete-jedi', {'for': 'python', 'do': ':UpdateRemotePlugins'}
 Plug 'davidhalter/jedi-vim', {'for': 'python'}
-
 Plug 'deoplete-plugins/deoplete-go', {'for': 'go', 'do': 'make'}
 Plug 'fatih/vim-go', {'for': 'go'}
-
 Plug 'zchee/deoplete-clang', {'for': ['c', 'cpp']}
+Plug 'artur-shaik/vim-javacomplete2', {'for': 'java'}
 
 Plug 'sheerun/vim-polyglot'
 
@@ -63,7 +62,7 @@ set termguicolors
 set background=dark
 colorscheme gruvbox " bluewery anderson gotham gruvbox
 
-set completeopt=menu,menuone,noinsert
+set completeopt=menu,menuone,noinsert,noselect
 set guifont=FiraCode-Retina:h14
 set guicursor+=i:ver100-iCursor
 
@@ -71,7 +70,7 @@ set guicursor+=i:ver100-iCursor
 set nowrap
 set textwidth=79
 set colorcolumn=+1
-set formatoptions=tcqrn1
+set formatoptions=qrnj1
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
@@ -84,11 +83,14 @@ set backspace=indent,eol,start
 set incsearch
 set ignorecase
 set nohlsearch
+set smartcase
 
 set laststatus=2
 set noshowmode
 set showcmd
 set omnifunc=syntaxcomplete#Complete
+set clipboard^=unnamed,unnamedplus
+set shortmess+=c
 
 " trim trailing whitespaces
 function! <SID>StripTrailingWhitespaces()
@@ -162,10 +164,11 @@ let g:syntastic_check_on_wq = 0
 
 " autopairs
 let g:AutoPairs={'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`', '<':'>', '<<':''}
+let g:AutoPairsMapSpace=0
 
 " neoformat
 autocmd FileType go let $PATH=$PATH.":".$GOBIN
-autocmd FileType python,go,c,cpp noremap <buffer> <C-f> :Neoformat<CR>
+autocmd FileType python,go,c,cpp,java noremap <buffer> <C-f> :Neoformat<CR>
 
 " deoplete
 let g:deoplete#enable_at_startup=1
@@ -196,6 +199,11 @@ let g:deoplete#sources#clang#libclang_path="/Library/Developer/CommandLineTools/
 let g:deoplete#sources#clang#clang_header="/Library/Developer/CommandLineTools/usr/lib/clang/11.0.0/include/"
 let g:deoplete#sources#clang#std={'c': 'c98'}
 
+" javacomplete2
+autocmd FileType java setlocal omnifunc=javacomplete#Complete
+let g:deoplete#omni_patterns={}
+let g:deoplete#omni_patterns.java='[^. *\t]\.\w*'
+
 " polyglot
 let g:polyglot_disable=['go']
 
@@ -207,6 +215,9 @@ nnoremap <leader>q :bd<CR>
 
 nnoremap ; :
 nnoremap : ;
+
+cmap Wq wq
+cmap Q q
 
 " : deoplete
 " <leader> (go) (guru)
