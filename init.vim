@@ -207,6 +207,8 @@ let g:deoplete#omni_patterns.java='[^. *\t]\.\w*'
 " polyglot
 let g:polyglot_disable=['go']
 
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+
 " custom
 nnoremap <C-w><C-l> :lclose<CR> :pclose<CR> :ccl<CR>
 nnoremap <leader>t :bn<CR>
