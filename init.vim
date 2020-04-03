@@ -49,6 +49,8 @@ set encoding=utf-8
 set history=100
 set autoread
 set hidden
+set splitright
+set splitbelow
 
 set noswapfile
 set nobackup
@@ -226,6 +228,14 @@ let g:lsp_signs_enabled=0
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
 " custom
+if executable('fish')
+    " set shell=/usr/local/bin/fish
+    set shell=fish
+    nnoremap <leader>s :vsp term://fish<CR>
+elseif
+    nnoremap <leader>s :vsp term://bash<CR>
+endif
+
 nnoremap <C-w><C-l> :lclose<CR> :pclose<CR> :ccl<CR>
 nnoremap <leader>t :bn<CR>
 nnoremap <leader>y :bN<CR>
@@ -263,4 +273,5 @@ cmap Q q
 " : goyo
 " :Goyo : toggle goyo mode
 
-" <C-v> : visual block mode
+" <C-v>     : visual block mode
+" <leader>s :vsp term://shell : split terminal
