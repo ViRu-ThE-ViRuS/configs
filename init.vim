@@ -51,6 +51,8 @@ set encoding=utf-8
 set history=100
 set autoread
 set hidden
+set splitright
+set splitbelow
 
 set noswapfile
 set nobackup
@@ -210,6 +212,18 @@ let g:polyglot_disable=['go']
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
 " custom
+if executable('fish')
+    " set shell=/usr/local/bin/fish
+    set shell=fish
+    nnoremap <leader>s :vsp term://fish<CR>
+elseif executable('zsh')
+    set shell=zsh
+    nnoremap <leader>s :vsp term://zsh<CR>
+else
+    set shell=sh
+    nnoremap <leader>s :vsp term://sh<CR>
+endif
+
 nnoremap <C-w><C-l> :lclose<CR> :pclose<CR> :ccl<CR>
 nnoremap <leader>t :bn<CR>
 nnoremap <leader>y :bN<CR>
@@ -252,4 +266,5 @@ cmap Q q
 " : goyo
 " :Goyo : toggle goyo mode
 
-" <C-v> : visual block mode
+" <C-v>     : visual block mode
+" <leader>s :vsp term://shell : split terminal
