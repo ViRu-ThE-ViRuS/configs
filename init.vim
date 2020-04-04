@@ -84,7 +84,6 @@ set noshiftround
 set scrolloff=3
 set backspace=2
 
-
 set incsearch
 set ignorecase
 set nohlsearch
@@ -107,6 +106,12 @@ function! PlugLoaded(name)
         \ stridx(&rtp, g:plugs[a:name].dir) >= 0)
 endfunction
 
+function! RandomLook()
+    colorscheme random
+    " AirlineTheme random
+endfunction
+nnoremap <leader>e :call RandomLook()<CR>
+
 " trim trailing whitespaces
 function! <SID>StripTrailingWhitespaces()
     let l = line(".")
@@ -119,7 +124,7 @@ autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 " nerdtree
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc()==0 && !exists('s:std_in') | NERDTree | endif
-nnoremap <leader>h :NERDTreeToggle<CR>
+nnoremap <leader>j :NERDTreeToggle<CR>
 
 let g:NERDTreeIgnore = [
     \ '\~$',
@@ -146,7 +151,7 @@ let g:airline#extensions#tabline#fnamemode=':t'
 let g:airline#extensions#tabline#buffer_nr_show = 1
 
 " tagbar
-nnoremap <leader>j :TagbarToggle<CR>
+nnoremap <leader>k :TagbarToggle<CR>
 
 " ctrlp
 let g:ctrlp_map='<C-p>'
