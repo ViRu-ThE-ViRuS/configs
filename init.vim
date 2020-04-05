@@ -126,6 +126,8 @@ endfun
 autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 
 " nerdtree
+let g:NERDTreeChDirMode=2
+
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc()==0 && !exists('s:std_in') | NERDTree | endif
 nnoremap <leader>j :NERDTreeToggle<CR>
