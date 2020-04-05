@@ -5,18 +5,20 @@ call plug#begin('~/.config/nvim/plugged')
 
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'airblade/vim-gitgutter'
 Plug 'majutsushi/tagbar'
-Plug 'ctrlpvim/ctrlp.vim'
+Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
+
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-eunuch'
 Plug 'junegunn/goyo.vim'
-
 Plug 'christoomey/vim-tmux-navigator'
 
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
+
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'flazz/vim-colorschemes'
 Plug 'relastle/bluewery.vim'
 
@@ -53,6 +55,8 @@ set autoread
 set hidden
 set splitright
 set splitbelow
+
+set wildmenu
 
 set noswapfile
 set nobackup
@@ -153,11 +157,11 @@ let g:airline#extensions#tabline#buffer_nr_show = 1
 " tagbar
 nnoremap <leader>k :TagbarToggle<CR>
 
-" ctrlp
-let g:ctrlp_map='<C-p>'
-let g:ctrlp_working_path_mode='ra'
-let g:ctrlp_custom_ignore='node_modules\|DS_Store\|git\|venv'
-let g:ctrlp_show_hidden=1
+" fzf
+let g:fzf_preview_window='right:60%'
+let g:fzf_buffers_jump=1
+
+nnoremap <C-p> :Files<CR>
 
 " goyo
 let g:goyo_height="100%"
@@ -279,6 +283,7 @@ nnoremap <leader>q :bd<CR>
 nnoremap ; :
 nnoremap : ;
 
+cmap W w
 cmap Wq wq
 cmap Q q
 
