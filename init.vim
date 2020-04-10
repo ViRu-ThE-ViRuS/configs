@@ -70,7 +70,7 @@ set termguicolors
 set background=dark
 colorscheme Atelier_SavannaLight " bluewery anderson gotham gruvbox CandyPaper
 
-set completeopt=menu,menuone,noinsert
+set completeopt=menu,menuone,noinsert,noselect
 set guifont=FiraCode-Retina:h14
 set guicursor+=i:ver100-iCursor
 
@@ -273,6 +273,8 @@ else
     set shell=sh
     nnoremap <leader>s :vsp term://sh<CR>
 endif
+
+tnoremap <ESC> <C-\><C-n>
 
 map <ScrollWheelUp> <C-Y>
 map <ScrollWheelDown> <C-E>
