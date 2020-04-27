@@ -35,7 +35,7 @@ Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 Plug 'lighttiger2505/deoplete-vim-lsp'
 
-Plug 'sheerun/vim-polyglot'
+" Plug 'sheerun/vim-polyglot'
 
 call plug#end()
 
@@ -68,7 +68,8 @@ set visualbell
 set gcr=a:blinkon0
 set termguicolors
 set background=dark
-colorscheme Atelier_SavannaLight " bluewery anderson gotham gruvbox CandyPaper
+colorscheme SerialExperimentsLain " bluewery anderson gotham gruvbox CandyPaper
+                                  " Atelier_SavannaLight
 
 set completeopt=menu,menuone,noinsert,noselect
 set guifont=FiraCode-Retina:h14
@@ -151,6 +152,7 @@ let g:NERDTreeIndicatorMapCustom = {
 
 " airline
 let g:airline_theme='base16_embers' " bluewery deus hybrid luna base16_embers
+                                    " base16_3024
 let g:airline_solarized_bg='dark'
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#fnamemode=':t'
@@ -263,7 +265,6 @@ inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
 " custom
 if executable('fish')
-    " set shell=/usr/local/bin/fish
     set shell=fish
     nnoremap <leader>s :vsp term://fish<CR>
 elseif executable('zsh')
@@ -282,7 +283,7 @@ map <ScrollWheelDown> <C-E>
 nnoremap <C-w><C-l> :lclose<CR> :pclose<CR> :ccl<CR>
 nnoremap <leader>t :bn<CR>
 nnoremap <leader>y :bN<CR>
-nnoremap <leader>q :bd<CR>
+nnoremap <leader>q :bd!<CR>
 
 nnoremap ; :
 nnoremap : ;
