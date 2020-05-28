@@ -1,0 +1,115 @@
+window:
+    dimensions:
+        columns: 85
+        lines: 40
+
+scrolling:
+    history: 10000
+    multiplier: 3
+
+background_opacity: 1
+dynamic_title: true
+
+font:
+    normal:
+        family: Fira Code
+        style: Medium
+
+    bold:
+        family: Fira Code
+        style: Bold
+
+    italic:
+        family: Fira Code
+        style: Italic
+
+    offset:
+        x: 0
+        y: 2
+
+    size: 14
+    use_thin_strokes: false
+
+draw_bold_text_with_bright_colors: true
+
+colors:
+  bright:
+    black: '#666666'
+    blue: '#2472c8'
+    cyan: '#0fa8cd'
+    green: '#05bc79'
+    magenta: '#bc3fbc'
+    red: '#cd3131'
+    white: '#e5e5e5'
+    yellow: '#e5e512'
+  cursor:
+    cursor: '#f8f8f0'
+    text: '#cfcfc2'
+  normal:
+    black: '#000000'
+    blue: '#2472c8'
+    cyan: '#0fa8cd'
+    green: '#05bc79'
+    magenta: '#bc3fbc'
+    red: '#cd3131'
+    white: '#e5e5e5'
+    yellow: '#e5e512'
+  primary:
+    background: '#262a33'
+    foreground: '#e5e5e5'
+  selection:
+    background: '#5a5c62'
+    text: '#ece7e7'
+
+cursor:
+  style: Block
+  unfocused_hollow: true
+
+key_bindings:
+  - { key: N,        mods: Command, action: SpawnNewInstance }
+  - { key: Q,        mods: Command, action: Quit }
+  - { key: W,        mods: Command, action: Quit }
+  - { key: V,        mods: Command, action: Paste                        }
+  - { key: C,        mods: Command, action: Copy                         }
+  - { key: Home,                    chars: "\x1b[H",   mode: ~AppCursor  }
+  - { key: Home,                    chars: "\x1b[1~",  mode: AppCursor   }
+  - { key: End,                     chars: "\x1b[F",   mode: ~AppCursor  }
+  - { key: End,                     chars: "\x1b[4~",  mode: AppCursor   }
+  - { key: PageUp,                  chars: "\x1b[5~"                     }
+  - { key: PageDown,                chars: "\x1b[6~"                     }
+  - { key: Left,     mods: Shift,   chars: "\x1b[1;2D"                   }
+  - { key: Left,     mods: Control, chars: "\x1b[1;5D"                   }
+  - { key: Left,     mods: Alt,     chars: "\x1b[1;3D"                   }
+  - { key: Left,                    chars: "\x1b[D",   mode: ~AppCursor  }
+  - { key: Left,                    chars: "\x1bOD",   mode: AppCursor   }
+  - { key: Right,    mods: Shift,   chars: "\x1b[1;2C"                   }
+  - { key: Right,    mods: Control, chars: "\x1b[1;5C"                   }
+  - { key: Right,    mods: Alt,     chars: "\x1b[1;3C"                   }
+  - { key: Right,                   chars: "\x1b[C",   mode: ~AppCursor  }
+  - { key: Right,                   chars: "\x1bOC",   mode: AppCursor   }
+  - { key: Up,       mods: Shift,   chars: "\x1b[1;2A"                   }
+  - { key: Up,       mods: Control, chars: "\x1b[1;5A"                   }
+  - { key: Up,       mods: Alt,     chars: "\x1b[1;3A"                   }
+  - { key: Up,                      chars: "\x1b[A",   mode: ~AppCursor  }
+  - { key: Up,                      chars: "\x1bOA",   mode: AppCursor   }
+  - { key: Down,     mods: Shift,   chars: "\x1b[1;2B"                   }
+  - { key: Down,     mods: Control, chars: "\x1b[1;5B"                   }
+  - { key: Down,     mods: Alt,     chars: "\x1b[1;3B"                   }
+  - { key: Down,                    chars: "\x1b[B",   mode: ~AppCursor  }
+  - { key: Down,                    chars: "\x1bOB",   mode: AppCursor   }
+  - { key: Tab,      mods: Shift,   chars: "\x1b[Z"                      }
+  - { key: F1,                      chars: "\x1bOP"                      }
+  - { key: F2,                      chars: "\x1bOQ"                      }
+  - { key: F3,                      chars: "\x1bOR"                      }
+  - { key: F4,                      chars: "\x1bOS"                      }
+  - { key: F5,                      chars: "\x1b[15~"                    }
+  - { key: F6,                      chars: "\x1b[17~"                    }
+  - { key: F7,                      chars: "\x1b[18~"                    }
+  - { key: F8,                      chars: "\x1b[19~"                    }
+  - { key: F9,                      chars: "\x1b[20~"                    }
+  - { key: F10,                     chars: "\x1b[21~"                    }
+  - { key: F11,                     chars: "\x1b[23~"                    }
+  - { key: F12,                     chars: "\x1b[24~"                    }
+  - { key: Back,                    chars: "\x7f"                        }
+  - { key: Delete,                  chars: "\x1b[3~",  mode: AppKeypad   }
+  - { key: Delete,                  chars: "\x1b[3~",  mode: ~AppKeypad  }
