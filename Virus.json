@@ -1,5 +1,9 @@
 {
-  "ASCII Ligatures" : true,
+  "Ansi 5 Color" : {
+    "Green Component" : 0,
+    "Blue Component" : 0.73333334922790527,
+    "Red Component" : 0.73333334922790527
+  },
   "Working Directory" : "\/Users\/viraat-chandra",
   "Prompt Before Closing 2" : 2,
   "Selected Text Color" : {
@@ -47,7 +51,7 @@
     "telnet"
   ],
   "Scrollback Lines" : 1000,
-  "Draw Powerline Glyphs" : false,
+  "Draw Powerline Glyphs" : true,
   "Status Bar Layout" : {
     "components" : [
       {
@@ -111,6 +115,7 @@
     "Blue Component" : 0,
     "Red Component" : 0.73333334922790527
   },
+  "Icon" : 0,
   "Use Non-ASCII Font" : false,
   "Link Color" : {
     "Red Component" : 0,
@@ -392,13 +397,14 @@
     "Red Component" : 1
   },
   "Use Bold Font" : true,
-  "Silence Bell" : false,
+  "Silence Bell" : true,
   "Ansi 12 Color" : {
     "Green Component" : 0.3333333432674408,
     "Blue Component" : 1,
     "Red Component" : 0.3333333432674408
   },
   "Window Type" : 0,
+  "Allow Title Reporting" : false,
   "Use Bright Bold" : true,
   "Cursor Text Color" : {
     "Green Component" : 1,
@@ -438,14 +444,15 @@
     "Green Component" : 0.1491314172744751
   },
   "Ambiguous Double Width" : false,
+  "Cursor Type" : 2,
   "Ansi 0 Color" : {
     "Green Component" : 0,
     "Blue Component" : 0,
     "Red Component" : 0
   },
   "Blur" : false,
+  "Normal Font" : "FiraCode-Medium 14",
   "Vertical Spacing" : 1.1100000000000001,
-  "Normal Font" : "FiraCode-Retina 14",
   "Ansi 7 Color" : {
     "Green Component" : 0.73333334922790527,
     "Blue Component" : 0.73333334922790527,
@@ -488,11 +495,7 @@
   },
   "Columns" : 80,
   "Visual Bell" : true,
+  "ASCII Ligatures" : true,
   "Custom Directory" : "No",
-  "Ansi 5 Color" : {
-    "Green Component" : 0,
-    "Blue Component" : 0.73333334922790527,
-    "Red Component" : 0.73333334922790527
-  },
   "Thin Strokes" : 0
 }
