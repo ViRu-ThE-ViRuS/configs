@@ -8,6 +8,7 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'majutsushi/tagbar'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
+Plug 'junegunn/gv.vim'
 
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-eunuch'
@@ -69,7 +70,7 @@ set gcr=a:blinkon0
 set termguicolors
 set background=dark
 colorscheme SerialExperimentsLain " bluewery anderson gotham gruvbox CandyPaper
-                                  " Atelier_SavannaLight
+                                  " Atelier_SavannaLight Atelier_EstuaryDark
 
 set completeopt=menu,menuone,noinsert,noselect
 set guifont=FiraCode-Retina:h14
@@ -276,6 +277,9 @@ else
 endif
 
 tnoremap <ESC> <C-\><C-n>
+
+hi! Normal ctermbg=NONE guibg=NONE
+hi! NonText ctermbg=NONE guibg=NONE guifg=NONE ctermfg=NONE
 
 map <ScrollWheelUp> <C-Y>
 map <ScrollWheelDown> <C-E>
