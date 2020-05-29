@@ -8,6 +8,13 @@ The Installation instructions are for *MacOS* as of yet.
 - I use iTerm2 as Terminal.app on MacOS doesn't support truecoloring as of yet
 - The profile configuration is `Virus.json`
 
+#### Alacritty
+- I am experimenting with Alacritty as my primary terminal, because it is
+  significantly faster in my uses and doesn't have major sideeffects other than
+  the lack of tabs in it and font ligatures
+- `$ brew cask install alacritty`
+The configuration file is `alacritty.yml` located in `~/.config/alacritty/`
+
 #### NeoVim
 - I use NeoVim, because, well... I use a Mac
 - `$ brew install neovim`

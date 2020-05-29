@@ -69,8 +69,8 @@ set visualbell
 set gcr=a:blinkon0
 set termguicolors
 set background=dark
-colorscheme SerialExperimentsLain " bluewery anderson gotham gruvbox CandyPaper
-                                  " Atelier_SavannaLight Atelier_EstuaryDark
+colorscheme gruvbox  " bluewery anderson gotham gruvbox CandyPaper
+                     " Atelier_SavannaLight Atelier_EstuaryDark
 
 set completeopt=menu,menuone,noinsert,noselect
 set guifont=FiraCode-Retina:h14
@@ -78,6 +78,7 @@ set guicursor+=i:ver100-iCursor
 
 " set wrap
 set nowrap
+set linebreak
 set textwidth=79
 set colorcolumn=+1
 set formatoptions=tcjrnq1
@@ -115,6 +116,7 @@ endfunction
 function! RandomLook()
     colorscheme random
     " AirlineTheme random
+    colorscheme
 endfunction
 nnoremap <leader>e :call RandomLook()<CR>
 
@@ -152,12 +154,13 @@ let g:NERDTreeIndicatorMapCustom = {
     \ }
 
 " airline
-let g:airline_theme='base16_embers' " bluewery deus hybrid luna base16_embers
-                                    " base16_3024
+let g:airline_theme='base16_gruvbox_dark_hard' " bluewery deus hybrid luna base16_embers
+                                               " base16_3024 base16_gruvbox_dark_hard
 let g:airline_solarized_bg='dark'
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#fnamemode=':t'
 let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#tabline#formatter='unique_tail_improved'
 
 " tagbar
 nnoremap <leader>k :TagbarToggle<CR>
@@ -187,9 +190,10 @@ if PlugLoaded('vim-syntastic/syntastic')
 endif
 
 let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
+let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+let g:syntastic_auto_jump = 0
 
 " autopairs
 let g:AutoPairs={'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`', '<':'>', '<<':''}
@@ -278,6 +282,16 @@ endif
 
 tnoremap <ESC> <C-\><C-n>
 
+if exists("tmux")
+    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+    let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
+    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+else
+    let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+    let &t_SR = "\<Esc>]50;CursorShape=2\x7"
+    let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+endif
+
 hi! Normal ctermbg=NONE guibg=NONE
 hi! NonText ctermbg=NONE guibg=NONE guifg=NONE ctermfg=NONE
 
@@ -310,9 +324,7 @@ cmap Q q
 "         + hu : unstage hunk
 
 " : nerd commenter
-" <leader>
-"         + cc : comment
-"         + cu : uncomment
+" <leader>c<space> : toggle comment
 
 " : multiple cursors
 " <C-n> : cursor select next
@@ -322,8 +334,11 @@ cmap Q q
 " : goyo
 " :Goyo : toggle goyo mode
 
+" : nerd tree
+"   m   : options
+
+" :GV       : Fugitive commit graph
 " <C-v>     : visual block mode
 " <leader>s : vsp term://shell : split terminal
-" m         : nerdtree : show file system options
 " <leader>h : nerdtree
 " <leader>j : tagbar
