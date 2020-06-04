@@ -69,8 +69,8 @@ set visualbell
 set guicursor=a:blinkon0
 set termguicolors
 set background=dark
-colorscheme gruvbox  " bluewery anderson gotham gruvbox CandyPaper
-                     " Atelier_SavannaLight Atelier_EstuaryDark
+colorscheme CandyPaper " bluewery anderson gotham gruvbox CandyPaper
+                       " Atelier_SavannaLight Atelier_EstuaryDark
 
 set completeopt=menu,noinsert,noselect
 set guifont=FiraCode-Retina:h14
@@ -154,13 +154,14 @@ let g:NERDTreeIndicatorMapCustom = {
     \ }
 
 " airline
-let g:airline_theme='base16_gruvbox_dark_hard' " bluewery deus hybrid luna base16_embers
-                                               " base16_3024 base16_gruvbox_dark_hard
+let g:airline_theme='hybrid' " bluewery deus hybrid luna base16_embers
+                             " base16_3024 base16_gruvbox_dark_hard
+
 let g:airline_solarized_bg='dark'
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#fnamemode=':t'
 let g:airline#extensions#tabline#buffer_nr_show = 1
-let g:airline#extensions#tabline#formatter='unique_tail_improved'
+let g:airline#extensions#tabline#formatter='unique_tail'
 
 " tagbar
 nnoremap <leader>k :TagbarToggle<CR>
@@ -194,6 +195,11 @@ let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_auto_jump = 0
+
+let g:syntastic_error_symbol = 'x'
+let g:syntastic_style_error_symbol = 'x'
+let g:syntastic_warning_symbol = '?'
+let g:syntastic_style_warning_symbol = '?'
 
 " autopairs
 let g:AutoPairs={'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`', '<':'>', '<<':''}

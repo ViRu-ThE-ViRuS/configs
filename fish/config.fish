@@ -14,9 +14,12 @@ function fish_prompt
     echo -sn (set_color -o $status_color) '$ '
     set_color normal
 
-    echo -sn (set_color normal) (prompt_pwd)
+    set -l CWD (basename $PWD)
+    if [ $CWD != 'viraat-chandra' ]
+        echo -sn (set_color normal) (basename $PWD) ' '
+    end
 
-    echo -ns (set_color $fish_color_operator) ' -> '
+    echo -ns (set_color $fish_color_operator) '-> '
     set_color normal
 end
 
