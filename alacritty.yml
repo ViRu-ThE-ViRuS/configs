@@ -1,26 +1,26 @@
 window:
     dimensions:
         columns: 84
-        lines: 40
+        lines: 50
 
     padding:
         x: 2
         y: 2
 
-    dynamic_padding: true
-    decorations: buttonless
+    dynamic_padding: false
+    decorations: full
 
 scrolling:
     history: 10000
     multiplier: 3
 
-background_opacity: 1
+background_opacity: 0.99
 dynamic_title: true
 
 font:
     normal:
         family: Fira Code
-        style: Medium
+        style: Retina
 
     bold:
         family: Fira Code
@@ -43,39 +43,144 @@ font:
 
 draw_bold_text_with_bright_colors: true
 
-shell:
-    program: /usr/local/bin/fish
-    args:
-        - -liC tmux
+# pencil dark
+schemes:
+    pencil_dark: &pencil_dark
+        # Default Colors
+        primary:
+          background: '#212121'
+          foreground: '#f1f1f1'
+        # Normal colors
+        normal:
+          black:   '#212121'
+          red:     '#c30771'
+          green:   '#10a778'
+          yellow:  '#a89c14'
+          blue:    '#008ec4'
+          magenta: '#523c79'
+          cyan:    '#20a5ba'
+          white:   '#e0e0e0'
+        # Bright colors
+        bright:
+          black:   '#212121'
+          red:     '#fb007a'
+          green:   '#5fd7af'
+          yellow:  '#f3e430'
+          blue:    '#20bbfc'
+          magenta: '#6855de'
+          cyan:    '#4fb8cc'
+          white:   '#f1f1f1'
 
-colors:
-  bright:
-    black: '#666666'
-    blue: '#2472c8'
-    cyan: '#0fa8cd'
-    green: '#05bc79'
-    magenta: '#bc3fbc'
-    red: '#cd3131'
-    white: '#e5e5e5'
-    yellow: '#e5e512'
-  cursor:
-    cursor: '#f8f8f0'
-    text: '#cfcfc2'
-  normal:
-    black: '#000000'
-    blue: '#2472c8'
-    cyan: '#0fa8cd'
-    green: '#05bc79'
-    magenta: '#bc3fbc'
-    red: '#cd3131'
-    white: '#e5e5e5'
-    yellow: '#e5e512'
-  primary:
-    background: '#262a33'
-    foreground: '#e5e5e5'
-  selection:
-    background: '#5a5c62'
-    text: '#ece7e7'
+    breeze: &breeze
+        # Default colors
+        primary:
+          background: '#232627'
+          foreground: '#fcfcfc'
+
+          dim_foreground: '#eff0f1'
+          bright_foreground: '#ffffff'
+          dim_background: '#31363b'
+          bright_background: '#000000'
+
+        # Normal colors
+        normal:
+          black: '#232627'
+          red: '#ed1515'
+          green: '#11d116'
+          yellow: '#f67400'
+          blue: '#1d99f3'
+          magenta: '#9b59b6'
+          cyan: '#1abc9c'
+          white: '#fcfcfc'
+
+        # Bright colors
+        bright:
+          black: '#7f8c8d'
+          red: '#c0392b'
+          green: '#1cdc9a'
+          yellow: '#fdbc4b'
+          blue: '#3daee9'
+          magenta: '#8e44ad'
+          cyan: '#16a085'
+          white: '#ffffff'
+
+        # Dim colors
+        dim:
+          black: '#31363b'
+          red: '#783228'
+          green: '#17a262'
+          yellow: '#b65619'
+          blue: '#1b668f'
+          magenta: '#614a73'
+          cyan: '#186c60'
+          white: '#63686d'
+
+    blood_moon: &blood_moon
+        # Default colors
+        primary:
+          background: '#10100E'
+          foreground: '#C6C6C4'
+
+        # Normal colors
+        normal:
+          black:   '#10100E'
+          red:     '#C40233'
+          green:   '#009F6B'
+          yellow:  '#FFD700'
+          blue:    '#0087BD'
+          magenta: '#9A4EAE'
+          cyan:    '#20B2AA'
+          white:   '#C6C6C4'
+
+        # Bright colors
+        bright:
+          black:   '#696969'
+          red:     '#FF2400'
+          green:   '#03C03C'
+          yellow:  '#FDFF00'
+          blue:    '#007FFF'
+          magenta: '#FF1493'
+          cyan:    '#00CCCC'
+          white:   '#FFFAFA'
+
+    snazzy: &snazzy
+        primary:
+          background: '#282a36'
+          foreground: '#eff0eb'
+
+        cursor:
+          cursor: '#97979b'
+
+        selection:
+          text:       '#282a36'
+          background: '#feffff'
+
+        normal:
+          black:   '#282a36'
+          red:     '#ff5c57'
+          green:   '#5af78e'
+          yellow:  '#f3f99d'
+          blue:    '#57c7ff'
+          magenta: '#ff6ac1'
+          cyan:    '#9aedfe'
+          white:   '#f1f1f0'
+
+        bright:
+          black:   '#686868'
+          red:     '#ff5c57'
+          green:   '#5af78e'
+          yellow:  '#f3f99d'
+          blue:    '#57c7ff'
+          magenta: '#ff6ac1'
+          cyan:    '#9aedfe'
+          white:   '#eff0eb'
+
+colors: *breeze
+
+#shell:
+    #program: /usr/local/bin/fish
+    #args:
+        #- -liC tmux
 
 cursor:
   style: Block
