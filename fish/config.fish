@@ -20,6 +20,10 @@ function tmux --description 'Tmux multiplexer'
     command tmux -f ~/.config/tmux/.tmux.conf $argv
 end
 
+function tree --description 'Tree'
+    command tree -C $argv
+end
+
 function vm_ubuntu_start --description 'Start Ubuntu VM (VMWare)'
     command vmrun -T fusion start "Virtual Machines.localized/Ubuntu 64-bit.vmwarevm/Ubuntu 64-bit.vmx" nogui $argv
 end

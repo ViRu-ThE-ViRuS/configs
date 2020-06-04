@@ -72,7 +72,7 @@ set background=dark
 colorscheme gruvbox  " bluewery anderson gotham gruvbox CandyPaper
                      " Atelier_SavannaLight Atelier_EstuaryDark
 
-set completeopt=menu,menuone,noinsert,noselect
+set completeopt=menu,noinsert,noselect
 set guifont=FiraCode-Retina:h14
 set guicursor+=i:ver100-iCursor
 
