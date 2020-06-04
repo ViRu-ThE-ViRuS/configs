@@ -20,6 +20,7 @@ Plug 'junegunn/fzf.vim'
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+
 Plug 'flazz/vim-colorschemes'
 Plug 'relastle/bluewery.vim'
 
@@ -29,7 +30,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'sbdchd/neoformat'
 
 Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
-Plug 'Shougo/echodoc.vim'
+" Plug 'Shougo/echodoc.vim'
 
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
@@ -62,11 +63,10 @@ set wildmenu
 set noswapfile
 set nobackup
 set nowb
-set ttyfast
 set lazyredraw
 
 set visualbell
-set gcr=a:blinkon0
+set guicursor=a:blinkon0
 set termguicolors
 set background=dark
 colorscheme gruvbox  " bluewery anderson gotham gruvbox CandyPaper
@@ -206,8 +206,12 @@ autocmd FileType python,c,cpp,java noremap <buffer> <C-f> :Neoformat<CR>
 let g:deoplete#enable_at_startup=1
 
 " echodoc
-let g:echodoc#enable_at_startup=1
-let g:echodoc#type='floating'
+" let g:echodoc#enable_at_startup=0
+" let g:echodoc#type='floating'
+
+" gitgutter
+let g:gitgutter_sign_added='|'
+let g:gitgutter_sign_modified='~'
 
 " lsp and autocomplete
 if executable('pyls')
@@ -334,11 +338,5 @@ cmap Q q
 " : goyo
 " :Goyo : toggle goyo mode
 
-" : nerd tree
-"   m   : options
-
 " :GV       : Fugitive commit graph
-" <C-v>     : visual block mode
 " <leader>s : vsp term://shell : split terminal
-" <leader>h : nerdtree
-" <leader>j : tagbar

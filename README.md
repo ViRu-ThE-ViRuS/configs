@@ -8,17 +8,19 @@ The Installation instructions are for *MacOS* as of yet.
 - I use iTerm2 as Terminal.app on MacOS doesn't support truecoloring as of yet
 - The profile configuration is `Virus.json`
 
+#### Kitty
+- I am also experimenting with Kitty as my primary terminal, its fast, hash
+  everything i was missing in alacritty, so its my primary candidate for
+  replacing iTerm2.
+- `$ brew cask install kitty`
+The configuration folder is `kitty/`, to be placed in `~/.config/`
+
 #### Alacritty
 - I am experimenting with Alacritty as my primary terminal, because it is
   significantly faster in my uses and doesn't have major sideeffects other than
   the lack of tabs in it and font ligatures
 - `$ brew cask install alacritty`
 The configuration file is `alacritty.yml` located in `~/.config/alacritty/`
-
-#### Kitty
-- I am also experimenting with Kitty as my primary terminal
-- `$ brew cask install kitty`
-The configuration folder is `kitty/`, to be placed in `~/.config/`
 
 #### NeoVim
 - I use NeoVim, because, well... I use a Mac

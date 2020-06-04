@@ -7,9 +7,17 @@ set -Ux ZDOTDIR     ~/.config/zsh
 set -Ux GOPATH      ~/.dev/go
 set -Ux GOBIN       $GOPATH/bin
 
-function fish_prompt --description 'Fish prompt'
-    set_color green
-    echo -n '$[->] '
+function fish_prompt
+    set -l status_copy $status
+    set -l status_color 0fc
+
+    echo -sn (set_color -o $status_color) '$ '
+    set_color normal
+
+    echo -sn (set_color normal) (prompt_pwd)
+
+    echo -ns (set_color $fish_color_operator) ' -> '
+    set_color normal
 end
 
 function vim --description 'Editor of choice'
