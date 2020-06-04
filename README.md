@@ -15,6 +15,11 @@ The Installation instructions are for *MacOS* as of yet.
 - `$ brew cask install alacritty`
 The configuration file is `alacritty.yml` located in `~/.config/alacritty/`
 
+#### Kitty
+- I am also experimenting with Kitty as my primary terminal
+- `$ brew cask install kitty`
+The configuration folder is `kitty/`, to be placed in `~/.config/`
+
 #### NeoVim
 - I use NeoVim, because, well... I use a Mac
 - `$ brew install neovim`
