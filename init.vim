@@ -1,5 +1,8 @@
 filetype plugin indent on
 
+" nnoremap <space> <Nop>
+" let mapleader=" "
+
 set rtp+=~/.config/nvim
 call plug#begin('~/.config/nvim/plugged')
 
@@ -135,6 +138,7 @@ let g:NERDTreeChDirMode=2
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc()==0 && !exists('s:std_in') | NERDTree | endif
 nnoremap <leader>j :NERDTreeToggle<CR>
+nnoremap <leader>1 :NERDTreeFind<CR>
 
 let g:NERDTreeIgnore = [
     \ '\~$',
@@ -167,10 +171,11 @@ let g:airline#extensions#tabline#formatter='unique_tail'
 nnoremap <leader>k :TagbarToggle<CR>
 
 " fzf
+let $FZF_DEFAULT_COMMAND='rg --files'
 let g:fzf_preview_window='right:60%'
 let g:fzf_buffers_jump=1
-
 nnoremap <C-p> :Files<CR>
+nnoremap <leader>f :Rg<space>
 
 " goyo
 let g:goyo_height="100%"
@@ -204,6 +209,7 @@ let g:syntastic_style_warning_symbol = '?'
 " autopairs
 let g:AutoPairs={'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`', '<':'>', '<<':''}
 let g:AutoPairsMapSpace=0
+let g:AutoPairsShortcutToggle=''
 
 " neoformat
 autocmd FileType python,c,cpp,java noremap <buffer> <C-f> :Neoformat<CR>
@@ -346,3 +352,4 @@ cmap Q q
 
 " :GV       : Fugitive commit graph
 " <leader>s : vsp term://shell : split terminal
+" <leader>1 : NERDTreeFind
