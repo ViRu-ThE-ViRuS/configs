@@ -15,7 +15,6 @@ Plug 'junegunn/gv.vim'
 
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-eunuch'
-Plug 'junegunn/goyo.vim'
 Plug 'christoomey/vim-tmux-navigator'
 
 Plug 'junegunn/fzf'
@@ -328,28 +327,16 @@ cmap Wq wq
 cmap Q q
 
 " : vim-lsp deoplete
-" <leader> (python)
+" <leader>
 "         + d : goto definition
 "         + u : show usages
 "         + r : rename
-
-" : gitgutter
-" ]c : next hunk
-" [c : previous hunk
-" <leader>
-"         + hs : stage hunk
-"         + hu : unstage hunk
-
-" : nerd commenter
-" <leader>c<space> : toggle comment
+"         + ' : show signature
 
 " : multiple cursors
 " <C-n> : cursor select next
 " <C-x> : cursor skip next
 " <C-p> : cursor previous
-
-" : goyo
-" :Goyo : toggle goyo mode
 
 " :GV       : Fugitive commit graph
 " <leader>s : vsp term://shell : split terminal
@@ -357,3 +344,4 @@ cmap Q q
 "
 " <c-k> <c-w>H : horizontal to vertical split
 " <c-h> <c-w>K : vertical to horizontal split
+

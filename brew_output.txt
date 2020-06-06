@@ -3,6 +3,7 @@ cmake
 cscope
 ctags
 fish
+fzf
 gcc
 gdbm
 gettext
