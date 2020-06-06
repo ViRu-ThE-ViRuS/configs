@@ -73,7 +73,7 @@ set guicursor=a:blinkon0
 set termguicolors
 set background=dark
 colorscheme CandyPaper " bluewery anderson gotham gruvbox CandyPaper
-                       " Atelier_SavannaLight Atelier_EstuaryDark
+                       " Atelier_SavannaLight Atelier_EstuaryDark alduin
 
 set completeopt=menu,noinsert,noselect
 set guifont=FiraCode-Retina:h14
@@ -272,6 +272,7 @@ function! s:on_lsp_buffer_enabled() abort
     nmap <buffer> <leader>d <plug>(lsp-definition)
     nmap <buffer> <leader>u <plug>(lsp-references)
     nmap <buffer> <leader>r <plug>(lsp-rename)
+    nmap <buffer> <leader>' <plug>(lsp-signature-help)
 endfunction
 
 augroup lsp_install
@@ -353,3 +354,6 @@ cmap Q q
 " :GV       : Fugitive commit graph
 " <leader>s : vsp term://shell : split terminal
 " <leader>1 : NERDTreeFind
+"
+" <c-k> <c-w>H : horizontal to vertical split
+" <c-h> <c-w>K : vertical to horizontal split
