@@ -28,12 +28,11 @@ Plug 'vim-syntastic/syntastic', {'for': ['python', 'c', 'cpp', 'java']}
 Plug 'jiangmiao/auto-pairs'
 Plug 'sbdchd/neoformat'
 
-Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
-
+Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'mattn/vim-lsp-settings'
-Plug 'lighttiger2505/deoplete-vim-lsp'
 
 call plug#end()
 
@@ -73,6 +72,7 @@ colorscheme CandyPaper " bluewery anderson gotham gruvbox CandyPaper
                        " Atelier_SavannaLight Atelier_EstuaryDark alduin
 
 set completeopt=menu,noinsert,noselect
+set completeopt-=menuone
 set guifont=FiraCode-Retina:h14
 set guicursor+=i:ver100-iCursor
 
@@ -130,9 +130,11 @@ autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 
 " nerdtree
 let g:NERDTreeChDirMode=2
-
+let g:NERDTreeDirArrowExpandable = '~'
+let g:NERDTreeDirArrowCollapsible = '-'
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc()==0 && !exists('s:std_in') | NERDTree | endif
+
 nnoremap <leader>j :NERDTreeToggle<CR>
 nnoremap <leader>1 :NERDTreeFind<CR>
 
@@ -154,6 +156,11 @@ let g:NERDTreeIndicatorMapCustom = {
     \ "Deleted"   : "x",
     \ }
 
+" tagbar
+let g:tagbar_autofocus=1
+let g:tagbar_iconchars=['~', '-']
+nnoremap <leader>k :TagbarToggle<CR>
+
 " airline
 let g:airline_theme='hybrid' " bluewery deus hybrid luna base16_embers
                              " base16_3024 base16_gruvbox_dark_hard
@@ -164,9 +171,6 @@ let g:airline#extensions#tabline#fnamemode=':t'
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#formatter='unique_tail'
 
-" tagbar
-nnoremap <leader>k :TagbarToggle<CR>
-
 " fzf
 let $FZF_DEFAULT_COMMAND='rg --files --hidden --follow'
 let g:fzf_preview_window='right:60%'
@@ -176,7 +180,9 @@ nnoremap <C-p> :Files<CR>
 nnoremap <leader>f :Rg<space>
 
 " fugitive
-set statusline+=%{FugitiveStatusline()}
+if PlugLoaded('tpope/vim-fugitive')
+    set statusline+=%{FugitiveStatusline()}
+endif
 set diffopt+=vertical
 
 " syntastic
@@ -209,14 +215,16 @@ let g:AutoPairsShortcutToggle=''
 " neoformat
 autocmd FileType python,c,cpp,java noremap <buffer> <C-f> :Neoformat<CR>
 
-" deoplete
-let g:deoplete#enable_at_startup=1
-
 " gitgutter
 let g:gitgutter_sign_added='|'
 let g:gitgutter_sign_modified='~'
 
-" lsp and autocomplete
+" asyncomplete
+imap <c-space> <Plug>(asyncomplete_force_refresh)
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" vim-lsp
 function! s:on_lsp_buffer_enabled() abort
     setlocal omnifunc=lsp#complete
 
@@ -233,8 +241,7 @@ augroup endif
 
 let g:lsp_diagnostics_enabled=0
 let g:lsp_signs_enabled=0
-
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+let g:lsp_highlight_references_enabled=1
 
 " custom
 if executable('fish')
@@ -247,7 +254,6 @@ else
     set shell=sh
     nnoremap <leader>s :vsp term://sh<CR>
 endif
-
 tnoremap <ESC> <C-\><C-n>
 
 if exists("tmux")
@@ -279,7 +285,7 @@ cmap W w
 cmap Wq wq
 cmap Q q
 
-" : vim-lsp deoplete
+" : vim-lsp asyncomplete
 " <leader>
 "         + d : goto definition
 "         + u : show usages
@@ -294,7 +300,6 @@ cmap Q q
 " :GV       : Fugitive commit graph
 " <leader>s : vsp term://shell : split terminal
 " <leader>1 : NERDTreeFind
-"
+
 " <c-k> <c-w>H : horizontal to vertical split
 " <c-h> <c-w>K : vertical to horizontal split
-

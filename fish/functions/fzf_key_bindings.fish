@@ -106,9 +106,9 @@ function fzf_key_bindings
     end
   end
 
-  bind \ct fzf-file-widget
-  bind \cr fzf-history-widget
-  bind \cy fzf-cd-widget
+  bind \et fzf-file-widget
+  bind \er fzf-history-widget
+  bind \ey fzf-cd-widget
 
   if bind -M insert > /dev/null 2>&1
     bind -M insert \ct fzf-file-widget
