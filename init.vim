@@ -35,6 +35,9 @@ Plug 'prabirshrestha/vim-lsp'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'mattn/vim-lsp-settings'
 
+Plug 'prabirshrestha/asyncomplete-file.vim'
+Plug 'prabirshrestha/asyncomplete-buffer.vim'
+
 call plug#end()
 
 syntax enable
@@ -69,12 +72,11 @@ set visualbell
 set guicursor=a:blinkon0
 set termguicolors
 set background=dark
-colorscheme dracula " bluewery anderson gruvbox CandyPaper
-                    " Atelier_SavannaLight Atelier_EstuaryDark alduin
-                    " dracula tender deus zenburn jelleybeans nord
+colorscheme CandyPaper " bluewery anderson gruvbox CandyPaper
+                       " Atelier_SavannaLight Atelier_EstuaryDark alduin
+                       " dracula tender deus zenburn jelleybeans nord
 
 set completeopt=menu,noinsert,noselect
-set completeopt-=menuone
 set guifont=FiraCode-Retina:h14
 set guicursor+=i:ver100-iCursor
 
@@ -241,6 +243,25 @@ augroup lsp_install
     au!
     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup endif
+
+" register file completions
+call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
+    \ 'name': 'file',
+    \ 'whitelist': ['*'],
+    \ 'priority': 10,
+    \ 'completor': function('asyncomplete#sources#file#completor')
+    \ }))
+
+" register buffer completions
+call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
+    \ 'name': 'buffer',
+    \ 'whitelist': ['*'],
+    \ 'blacklist': ['go'],
+    \ 'completor': function('asyncomplete#sources#buffer#completor'),
+    \ 'config': {
+    \    'max_buffer_size': 5000000,
+    \  },
+    \ }))
 
 let g:lsp_diagnostics_enabled=0
 let g:lsp_signs_enabled=0

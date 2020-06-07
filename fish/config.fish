@@ -3,6 +3,9 @@ set fish_greeting   Stars\x20\x3a\x29
 set -Ux LSCOLORS    xxfxcxdxbxegedabagacad
 set -Ux EDITOR      nvim
 
+set -Ux FZF_DEFAULT_COMMAND 'rg --files --hidden 2> /dev/null'
+set -Ux FZF_CTRL_T_COMMAND 'rg --files --hidden 2> /dev/null'
+
 set -Ux ZDOTDIR     ~/.config/zsh
 set -Ux GOPATH      ~/.dev/go
 set -Ux GOBIN       $GOPATH/bin
