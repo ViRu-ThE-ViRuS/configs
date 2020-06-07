@@ -9,9 +9,9 @@ set -Ux GOBIN       $GOPATH/bin
 
 function fish_prompt
     set -l status_copy $status
-    set -l status_color 0fc
+    set -l target_color 10c891
 
-    echo -sn (set_color -o $status_color) '$ '
+    echo -sn (set_color -o $target_color) '$ '
     set_color normal
 
     set -l CWD (basename $PWD)
@@ -19,7 +19,7 @@ function fish_prompt
         echo -sn (set_color normal) (basename $PWD) ' '
     end
 
-    echo -ns (set_color $fish_color_operator) '-> '
+    echo -sn (set_color -o $target_color) '-> '
     set_color normal
 end
 

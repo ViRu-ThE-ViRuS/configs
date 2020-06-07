@@ -22,6 +22,7 @@ Plug 'vim-airline/vim-airline-themes'
 
 Plug 'flazz/vim-colorschemes'
 Plug 'relastle/bluewery.vim'
+Plug 'dracula/vim'
 
 Plug 'scrooloose/nerdcommenter'
 Plug 'vim-syntastic/syntastic', {'for': ['python', 'c', 'cpp', 'java']}
@@ -68,8 +69,9 @@ set visualbell
 set guicursor=a:blinkon0
 set termguicolors
 set background=dark
-colorscheme CandyPaper " bluewery anderson gotham gruvbox CandyPaper
-                       " Atelier_SavannaLight Atelier_EstuaryDark alduin
+colorscheme dracula " bluewery anderson gruvbox CandyPaper
+                    " Atelier_SavannaLight Atelier_EstuaryDark alduin
+                    " dracula tender deus zenburn
 
 set completeopt=menu,noinsert,noselect
 set completeopt-=menuone
