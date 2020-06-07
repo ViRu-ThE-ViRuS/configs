@@ -19,7 +19,7 @@ function fish_prompt
         echo -sn (set_color normal) (basename $PWD) ' '
     end
 
-    echo -sn (set_color -o $target_color) '-> '
+    echo -ns (set_color -o $target_color) '-> '
     set_color normal
 end
 

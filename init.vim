@@ -71,7 +71,7 @@ set termguicolors
 set background=dark
 colorscheme dracula " bluewery anderson gruvbox CandyPaper
                     " Atelier_SavannaLight Atelier_EstuaryDark alduin
-                    " dracula tender deus zenburn
+                    " dracula tender deus zenburn jelleybeans nord
 
 set completeopt=menu,noinsert,noselect
 set completeopt-=menuone
@@ -166,6 +166,7 @@ nnoremap <leader>k :TagbarToggle<CR>
 " airline
 let g:airline_theme='hybrid' " bluewery deus hybrid luna base16_embers
                              " base16_3024 base16_gruvbox_dark_hard
+                             " jelleybeans 0x7A69_dark
 
 let g:airline_solarized_bg='dark'
 let g:airline#extensions#tabline#enabled=1
@@ -271,6 +272,8 @@ endif
 " help with transparent backgrounds
 "hi! Normal ctermbg=NONE guibg=NONE
 "hi! NonText ctermbg=NONE guibg=NONE guifg=NONE ctermfg=NONE
+
+au! BufWritePost $MYVIMRC source %
 
 map <ScrollWheelUp> <C-Y>
 map <ScrollWheelDown> <C-E>
