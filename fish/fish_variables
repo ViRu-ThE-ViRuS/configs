@@ -2,9 +2,8 @@
 # VERSION: 3.0
 SETUVAR --path CLASSPATH:/Users/viraat\x2dchandra/Workspace/class/cs61b\x2dsoftware/lib/emacs\x1e/Users/viraat\x2dchandra/Workspace/class/cs61b\x2dsoftware/lib/gjdb\x2ejar\x1e/Users/viraat\x2dchandra/Workspace/class/cs61b\x2dsoftware/lib/graph\x2dinputs\x1e/Users/viraat\x2dchandra/Workspace/class/cs61b\x2dsoftware/lib/hamcrest\x2dcore\x2d1\x2e3\x2ejar\x1e/Users/viraat\x2dchandra/Workspace/class/cs61b\x2dsoftware/lib/jpt\x2ejar\x1e/Users/viraat\x2dchandra/Workspace/class/cs61b\x2dsoftware/lib/junit\x2d4\x2e12\x2ejar\x1e/Users/viraat\x2dchandra/Workspace/class/cs61b\x2dsoftware/lib/tools\x2ejar\x1e/Users/viraat\x2dchandra/Workspace/class/cs61b\x2dsoftware/lib/ucb\x2ejar\x1e/Users/viraat\x2dchandra/Workspace/class/cs61b\x2dsoftware/lib/ucb\x2dcheckstyle\x2ejar\x1e/Users/viraat\x2dchandra/Workspace/class/cs61b\x2dsoftware/lib/ucb\x2df2007\x2ejar
 SETUVAR --export EDITOR:nvim
-SETUVAR --export FZF_ALT_C_COMMAND:
-SETUVAR --export FZF_CTRL_T_COMMAND:rg\x20\x2d\x2dfiles\x20\x2d\x2dhidden\x202\x3e\x20/dev/null
-SETUVAR --export FZF_DEFAULT_COMMAND:rg\x20\x2d\x2dfiles\x20\x2d\x2dhidden\x202\x3e\x20/dev/null
+SETUVAR --export FZF_CTRL_T_COMMAND:rg\x20\x2d\x2dfiles\x20\x2d\x2dfollow\x20\x2d\x2dhidden\x202\x3e\x20/dev/null
+SETUVAR --export FZF_DEFAULT_COMMAND:rg\x20\x2d\x2dfiles\x20\x2d\x2dfollow\x20\x2d\x2dhidden\x202\x3e\x20/dev/null
 SETUVAR FZF_DEFAULT_OPTS:\x2d\x2dheight\x2040\x25
 SETUVAR FZF_DISABLE_KEYBINDINGS:0
 SETUVAR FZF_LEGACY_KEYBINDINGS:1

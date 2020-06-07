@@ -72,9 +72,9 @@ set visualbell
 set guicursor=a:blinkon0
 set termguicolors
 set background=dark
-colorscheme CandyPaper " bluewery anderson gruvbox CandyPaper
-                       " Atelier_SavannaLight Atelier_EstuaryDark alduin
-                       " dracula tender deus zenburn jelleybeans nord
+colorscheme dracula " bluewery anderson gruvbox CandyPaper
+                    " Atelier_SavannaLight Atelier_EstuaryDark alduin
+                    " dracula tender deus zenburn jelleybeans nord
 
 set completeopt=menu,noinsert,noselect
 set guifont=FiraCode-Retina:h14
@@ -298,6 +298,24 @@ au! BufWritePost $MYVIMRC source %
 
 map <ScrollWheelUp> <C-Y>
 map <ScrollWheelDown> <C-E>
+
+vnoremap < <gv
+vnoremap > >gv
+
+map H ^
+map L $
+
+nnoremap <up> <nop>
+nnoremap <down> <nop>
+inoremap <up> <nop>
+inoremap <down> <nop>
+inoremap <left> <nop>
+inoremap <right> <nop>
+
+nnoremap <m-j> :resize -2<CR>
+nnoremap <m-k> :resize +2<CR>
+nnoremap <m-h> :vertical resize -2<CR>
+nnoremap <m-l> :vertical resize +2<CR>
 
 nnoremap <C-w><C-l> :lclose<CR> :pclose<CR> :ccl<CR>
 nnoremap <leader>t :bn<CR>
