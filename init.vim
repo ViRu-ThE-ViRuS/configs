@@ -1,8 +1,5 @@
 filetype plugin indent on
 
-" nnoremap <space> <Nop>
-" let mapleader=" "
-
 set rtp+=~/.config/nvim
 call plug#begin('~/.config/nvim/plugged')
 
@@ -32,14 +29,11 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'sbdchd/neoformat'
 
 Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
-" Plug 'Shougo/echodoc.vim'
 
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
 Plug 'lighttiger2505/deoplete-vim-lsp'
-
-" Plug 'sheerun/vim-polyglot'
 
 call plug#end()
 
@@ -61,10 +55,14 @@ set splitright
 set splitbelow
 
 set wildmenu
+set exrc
+set secure
 
 set noswapfile
 set nobackup
 set nowb
+set undofile
+set undodir=~/.config/undodir
 set lazyredraw
 
 set visualbell
@@ -78,7 +76,6 @@ set completeopt=menu,noinsert,noselect
 set guifont=FiraCode-Retina:h14
 set guicursor+=i:ver100-iCursor
 
-" set wrap
 set nowrap
 set linebreak
 set textwidth=79
@@ -93,9 +90,9 @@ set noshiftround
 set scrolloff=3
 set backspace=2
 
+set nohlsearch
 set incsearch
 set ignorecase
-set nohlsearch
 set smartcase
 
 set laststatus=2
@@ -145,7 +142,8 @@ let g:NERDTreeIgnore = [
     \ '^\.DS_Store$',
     \ '^node_modules$',
     \ '^.ropeproject$',
-    \ '^__pycache__$'
+    \ '^__pycache__$',
+    \ '^venv$'
 \]
 
 let g:NERDTreeIndicatorMapCustom = {
@@ -170,14 +168,12 @@ let g:airline#extensions#tabline#formatter='unique_tail'
 nnoremap <leader>k :TagbarToggle<CR>
 
 " fzf
-let $FZF_DEFAULT_COMMAND='rg --files'
+let $FZF_DEFAULT_COMMAND='rg --files --hidden --follow'
 let g:fzf_preview_window='right:60%'
 let g:fzf_buffers_jump=1
+
 nnoremap <C-p> :Files<CR>
 nnoremap <leader>f :Rg<space>
-
-" goyo
-let g:goyo_height="100%"
 
 " fugitive
 set statusline+=%{FugitiveStatusline()}
@@ -216,62 +212,18 @@ autocmd FileType python,c,cpp,java noremap <buffer> <C-f> :Neoformat<CR>
 " deoplete
 let g:deoplete#enable_at_startup=1
 
-" echodoc
-" let g:echodoc#enable_at_startup=0
-" let g:echodoc#type='floating'
-
 " gitgutter
 let g:gitgutter_sign_added='|'
 let g:gitgutter_sign_modified='~'
 
 " lsp and autocomplete
-if executable('pyls')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'pyls',
-        \ 'cmd': {server_info->['pyls']},
-        \ 'whitelist': ['python'],
-        \ })
-endif
-
-if executable('clangd')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'clangd',
-        \ 'cmd': {server_info->['clangd', '-background-index']},
-        \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
-        \ })
-endif
-
-" do manual install, works when project directory is formed
-if executable('java') && filereadable(expand('~/.local/share/vim-lsp-settings/servers/eclipse.jdt.ls/plugins/org.eclipse.equinox.launcher_1.5.600.v20191014-2022.jar'))
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'eclipse.jdt.ls',
-        \ 'cmd': {server_info->[
-        \     'java',
-        \     '-Declipse.application=org.eclipse.jdt.ls.core.id1',
-        \     '-Dosgi.bundles.defaultStartLevel=4',
-        \     '-Declipse.product=org.eclipse.jdt.ls.core.product',
-        \     '-Dlog.level=ALL',
-        \     '-noverify',
-        \     '-Dfile.encoding=UTF-8',
-        \     '-Xmx1G',
-        \     '-jar',
-        \     expand('~/.local/share/vim-lsp-settings/servers/eclipse.jdt.ls/plugins/org.eclipse.equinox.launcher_1.5.600.v20191014-2022.jar'),
-        \     '-configuration',
-        \     expand('~/.local/share/vim-lsp-settings/servers/eclipse.jdt.ls/config_linux'),
-        \     '-data',
-        \     getcwd()
-        \ ]},
-        \ 'whitelist': ['java'],
-        \ })
-endif
-
 function! s:on_lsp_buffer_enabled() abort
     setlocal omnifunc=lsp#complete
 
-    nmap <buffer> <leader>d <plug>(lsp-definition)
-    nmap <buffer> <leader>u <plug>(lsp-references)
-    nmap <buffer> <leader>r <plug>(lsp-rename)
-    nmap <buffer> <leader>' <plug>(lsp-signature-help)
+    nmap <buffer> <silent> <leader>d <plug>(lsp-definition)
+    nmap <buffer> <silent> <leader>u <plug>(lsp-references)
+    nmap <buffer> <silent> <leader>r <plug>(lsp-rename)
+    nmap <buffer> <silent> <leader>' <plug>(lsp-signature-help)
 endfunction
 
 augroup lsp_install
@@ -308,8 +260,9 @@ else
     let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
 
-hi! Normal ctermbg=NONE guibg=NONE
-hi! NonText ctermbg=NONE guibg=NONE guifg=NONE ctermfg=NONE
+" help with transparent backgrounds
+"hi! Normal ctermbg=NONE guibg=NONE
+"hi! NonText ctermbg=NONE guibg=NONE guifg=NONE ctermfg=NONE
 
 map <ScrollWheelUp> <C-Y>
 map <ScrollWheelDown> <C-E>
