@@ -1,11 +1,10 @@
-cp ~/.config/nvim/init.vim .
-cp ~/.config/tmux/.tmux.conf .
-cp ~/.config/alacritty/alacritty.yml .
-cp -r ~/.config/fish .
-cp -r ~/.config/kitty .
-
-cp ~/.config/zsh/.zshrc .
-cp ~/.zshenv .
+cp ~/.config/nvim/init.vim nvim/
+cp ~/.config/tmux/* tmux/
+cp ~/.config/alacritty/* alacritty/
+cp -r ~/.config/fish/* fish/
+cp -r ~/.config/kitty/* kitty/
+cp ~/.config/zsh/.zshrc zsh/
+cp ~/.zshenv zsh/
 
 switch (uname)
     case Darwin

@@ -34,36 +34,31 @@ Plug 'Shougo/echodoc.vim'
 
 call plug#end()
 
-syntax enable
 syntax on
 
 set modelines=0
 set number
-set ruler
 set cursorline
 set matchpairs+=<:>
 set mouse=a
 
-set encoding=utf-8
 set history=100
-set autoread
 set hidden
 set splitright
 set splitbelow
 
-set wildmenu
 set exrc
 set secure
 
 set noswapfile
 set nobackup
+set autowrite
 set nowb
 set undofile
 set undodir=~/.config/undodir
 set lazyredraw
 
 set visualbell
-set guicursor=a:blinkon0
 set termguicolors
 set background=dark
 colorscheme gruvbox " bluewery anderson gruvbox CandyPaper
@@ -77,12 +72,16 @@ let g:airline_solarized_bg='dark'
 set completeopt=menu,noinsert,noselect
 set guifont=FiraCode-Retina:h14
 set guicursor+=i:ver100-iCursor
+set formatoptions=crlnj " t: textwidth
+                        " c: comments wrap
+                        " r: comment leader
+                        " n: numbered lists
+                        " l: no auto break
+                        " j: remove comment leader when joining lines
 
 set nowrap
-set linebreak
 set textwidth=79
 set colorcolumn=+1
-set formatoptions=tcjrnq1
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
@@ -164,9 +163,10 @@ let g:tagbar_iconchars=['~', '-']
 nnoremap <leader>k :TagbarToggle<CR>
 
 " airline
-let g:airline_theme='gruvbox' " bluewery deus hybrid luna base16_embers
-                              " base16_3024 gruvbox
-                              " jelleybeans 0x7A69_dark solarized
+let g:airline_theme='monochrome' " bluewery deus hybrid luna base16_embers
+                                 " base16_3024 gruvbox
+                                 " jelleybeans 0x7A69_dark solarized
+
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#fnamemode=':t'
 let g:airline#extensions#tabline#buffer_nr_show = 1
@@ -189,7 +189,9 @@ set diffopt+=vertical
 " autopairs
 let g:AutoPairs={'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`', '<':'>', '<<':''}
 let g:AutoPairsMapSpace=0
+let g:AutoPairsMultilineClose=0
 let g:AutoPairsShortcutToggle=''
+let g:AutoPairsShortcutFastWrap='<c-w>'
 
 " neoformat
 autocmd FileType python,c,cpp noremap <buffer> <C-f> :Neoformat<CR>
@@ -200,11 +202,12 @@ let g:gitgutter_sign_modified='~'
 
 " deoplete
 let g:deoplete#enable_at_startup=1
-call deoplete#custom#source('_', 'matchers', ['matcher_full_fuzzy'])
+call deoplete#custom#source('_', 'matchers', ['matcher_fuzzy', 'matcher_length'])
 call deoplete#custom#option({'ignore_case': v:true})
 
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+autocmd InsertLeave,CompleteDone * silent! pclose!
 
 " echodoc
 let g:echodoc#enable_at_startup = 1
@@ -215,7 +218,7 @@ highlight link EchoDocFloat Pmenu
 set completefunc=LanguageClient#complete
 command! Errors execute "lopen"
 
-let g:LanguageClient_changeThrottle=2
+let g:LanguageClient_changeThrottle=0.5
 let g:LanguageClient_settingsPath='.lsconf.json'
 let g:LanguageClient_diagnosticsList='Location'
 let g:LanguageClient_diagnosticsDisplay={
@@ -267,6 +270,7 @@ augroup LSP
     autocmd!
     autocmd FileType python,cpp,c call LSPKeyBinds()
 augroup END
+
 
 " custom
 if executable('fish')
@@ -326,25 +330,20 @@ nnoremap <leader>q :bd!<CR>
 nnoremap ; :
 nnoremap : ;
 
-cmap W w
 cmap Wq wq
 cmap Q q
 
-" deoplete languageclient neovim
+" : deoplete languageclient neovim
 " <leader>
 "         + d : goto definition
 "         + u : show usages
 "         + r : rename
 " <alt-enter> : context menu
 
-" multiple cursors
+" : multiple cursors
 " <C-n> : cursor select next
 " <C-x> : cursor skip next
 " <C-p> : cursor previous
-
-" :GV       : Fugitive commit graph
-" <leader>s : vsp term://shell : split terminal
-" <leader>1 : NERDTreeFind
 
 " <c-k> <c-w>H : horizontal to vertical split
 " <c-h> <c-w>K : vertical to horizontal split

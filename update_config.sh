@@ -1,7 +1,7 @@
-sudo cp init.vim ~/.config/nvim/init.vim
-cp .tmux.conf ~/.config/tmux/.tmux.conf
-cp alacritty.yml ~/.config/alacritty/alacritty.yml
-sudo cp -r fish ~/.config/
-cp -r kitty ~/.config/
-cp .zshrc ~/.config/zsh/.zshrc
-cp .zshenv ~/.zshenv
+sudo cp  nvim/init.vim ~/.config/nvim/
+sudo cp -r fish/* ~/.config/fish/
+cp tmux/* ~/.config/tmux/
+cp alacritty/* ~/.config/alacritty/
+cp -r kitty/* ~/.config/kitty/
+cp zsh/.zshrc ~/.config/zsh/
+cp zsh/.zshenv ~/.zshenv
