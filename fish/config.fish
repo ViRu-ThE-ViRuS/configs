@@ -10,6 +10,9 @@ set -Ux ZDOTDIR     ~/.config/zsh
 set -Ux GOPATH      ~/.dev/go
 set -Ux GOBIN       $GOPATH/bin
 
+set PATH            $PATH /Users/viraat-chandra/Library/Python/3.7/bin/
+set PATH            $PATH /usr/local/Cellar/llvm/10.0.0_3/bin/
+
 function fish_prompt
     set -l status_copy $status
     set -l target_color 10c891

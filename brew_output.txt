@@ -11,6 +11,7 @@ gmp
 htop
 isl
 libevent
+libffi
 libidn2
 libmpc
 libtermkey
@@ -18,6 +19,7 @@ libunistring
 libuv
 libvterm
 libyaml
+llvm
 lua
 luajit
 mono

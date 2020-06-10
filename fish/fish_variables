@@ -2,6 +2,7 @@
 # VERSION: 3.0
 SETUVAR --path CLASSPATH:/Users/viraat\x2dchandra/Workspace/class/cs61b\x2dsoftware/lib/emacs\x1e/Users/viraat\x2dchandra/Workspace/class/cs61b\x2dsoftware/lib/gjdb\x2ejar\x1e/Users/viraat\x2dchandra/Workspace/class/cs61b\x2dsoftware/lib/graph\x2dinputs\x1e/Users/viraat\x2dchandra/Workspace/class/cs61b\x2dsoftware/lib/hamcrest\x2dcore\x2d1\x2e3\x2ejar\x1e/Users/viraat\x2dchandra/Workspace/class/cs61b\x2dsoftware/lib/jpt\x2ejar\x1e/Users/viraat\x2dchandra/Workspace/class/cs61b\x2dsoftware/lib/junit\x2d4\x2e12\x2ejar\x1e/Users/viraat\x2dchandra/Workspace/class/cs61b\x2dsoftware/lib/tools\x2ejar\x1e/Users/viraat\x2dchandra/Workspace/class/cs61b\x2dsoftware/lib/ucb\x2ejar\x1e/Users/viraat\x2dchandra/Workspace/class/cs61b\x2dsoftware/lib/ucb\x2dcheckstyle\x2ejar\x1e/Users/viraat\x2dchandra/Workspace/class/cs61b\x2dsoftware/lib/ucb\x2df2007\x2ejar
 SETUVAR --export EDITOR:nvim
+SETUVAR --export FZF_ALT_C_COMMAND:
 SETUVAR --export FZF_CTRL_T_COMMAND:rg\x20\x2d\x2dfiles\x20\x2d\x2dfollow\x20\x2d\x2dhidden\x202\x3e\x20/dev/null
 SETUVAR --export FZF_DEFAULT_COMMAND:rg\x20\x2d\x2dfiles\x20\x2d\x2dfollow\x20\x2d\x2dhidden\x202\x3e\x20/dev/null
 SETUVAR FZF_DEFAULT_OPTS:\x2d\x2dheight\x2040\x25
@@ -13,6 +14,7 @@ SETUVAR FZF_TMUX_HEIGHT:40\x25
 SETUVAR --export GOBIN:/Users/viraat\x2dchandra/\x2edev/go/bin
 SETUVAR --export --path GOPATH:/Users/viraat\x2dchandra/\x2edev/go
 SETUVAR --export LSCOLORS:xxfxcxdxbxegedabagacad
+SETUVAR --export --path PATH:/usr/local/opt/fzf/bin\x1e/usr/local/bin\x1e/usr/bin\x1e/bin\x1e/usr/sbin\x1e/sbin\x1e/opt/X11/bin\x1e/Library/Apple/usr/bin\x1e/Applications/VMware\x20Fusion\x2eapp/Contents/Public\x1e/usr/local/go/bin\x1e/Applications/kitty\x2eapp/Contents/MacOS\x1e/Users/viraat\x2dchandra/Library/Python/3\x2e7/bin/
 SETUVAR --export ZDOTDIR:/Users/viraat\x2dchandra/\x2econfig/zsh
 SETUVAR __fish_initialized:3100
 SETUVAR --export fd:\x2d\x2dtype\x1ef\x1e\x2d\x2dhidden\x1e\x2d\x2dexclude\x1e\x2egit\x1enode_modules\x1evenv

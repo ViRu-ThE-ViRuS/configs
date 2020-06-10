@@ -22,21 +22,15 @@ Plug 'vim-airline/vim-airline-themes'
 
 Plug 'flazz/vim-colorschemes'
 Plug 'relastle/bluewery.vim'
-Plug 'dracula/vim'
+Plug 'morhetz/gruvbox'
 
 Plug 'scrooloose/nerdcommenter'
-Plug 'vim-syntastic/syntastic', {'for': ['python', 'c', 'cpp', 'java']}
 Plug 'jiangmiao/auto-pairs'
 Plug 'sbdchd/neoformat'
 
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'mattn/vim-lsp-settings'
-
-Plug 'prabirshrestha/asyncomplete-file.vim'
-Plug 'prabirshrestha/asyncomplete-buffer.vim'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'autozimu/LanguageClient-neovim', {'branch': 'next','do': 'bash install.sh'}
+Plug 'Shougo/echodoc.vim'
 
 call plug#end()
 
@@ -72,9 +66,13 @@ set visualbell
 set guicursor=a:blinkon0
 set termguicolors
 set background=dark
-colorscheme dracula " bluewery anderson gruvbox CandyPaper
+colorscheme gruvbox " bluewery anderson gruvbox CandyPaper
                     " Atelier_SavannaLight Atelier_EstuaryDark alduin
                     " dracula tender deus zenburn jelleybeans nord
+                    " solarized8_dark_high
+
+let g:gruvbox_contrast_dark='medium'
+let g:airline_solarized_bg='dark'
 
 set completeopt=menu,noinsert,noselect
 set guifont=FiraCode-Retina:h14
@@ -166,11 +164,9 @@ let g:tagbar_iconchars=['~', '-']
 nnoremap <leader>k :TagbarToggle<CR>
 
 " airline
-let g:airline_theme='hybrid' " bluewery deus hybrid luna base16_embers
-                             " base16_3024 base16_gruvbox_dark_hard
-                             " jelleybeans 0x7A69_dark
-
-let g:airline_solarized_bg='dark'
+let g:airline_theme='gruvbox' " bluewery deus hybrid luna base16_embers
+                              " base16_3024 gruvbox
+                              " jelleybeans 0x7A69_dark solarized
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#fnamemode=':t'
 let g:airline#extensions#tabline#buffer_nr_show = 1
@@ -190,82 +186,87 @@ if PlugLoaded('tpope/vim-fugitive')
 endif
 set diffopt+=vertical
 
-" syntastic
-let g:python_highlight_all=1
-let g:syntastic_python_python_exec='python3'
-let g:syntastic_python_checkers=['flake8']
-
-if PlugLoaded('vim-syntastic/syntastic')
-    set statusline+=%#warningmsg#
-    set statusline+=%{SyntasticStatuslineFlag()}
-    set statusline+=%*
-endif
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_auto_jump = 0
-
-let g:syntastic_error_symbol = 'x'
-let g:syntastic_style_error_symbol = 'x'
-let g:syntastic_warning_symbol = '?'
-let g:syntastic_style_warning_symbol = '?'
-
 " autopairs
 let g:AutoPairs={'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`', '<':'>', '<<':''}
 let g:AutoPairsMapSpace=0
 let g:AutoPairsShortcutToggle=''
 
 " neoformat
-autocmd FileType python,c,cpp,java noremap <buffer> <C-f> :Neoformat<CR>
+autocmd FileType python,c,cpp noremap <buffer> <C-f> :Neoformat<CR>
 
 " gitgutter
 let g:gitgutter_sign_added='|'
 let g:gitgutter_sign_modified='~'
 
-" asyncomplete
-imap <c-space> <Plug>(asyncomplete_force_refresh)
+" deoplete
+let g:deoplete#enable_at_startup=1
+call deoplete#custom#source('_', 'matchers', ['matcher_full_fuzzy'])
+call deoplete#custom#option({'ignore_case': v:true})
+
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-" vim-lsp
-function! s:on_lsp_buffer_enabled() abort
-    setlocal omnifunc=lsp#complete
+" echodoc
+let g:echodoc#enable_at_startup = 1
+let g:echodoc#type = 'floating'
+highlight link EchoDocFloat Pmenu
 
-    nmap <buffer> <silent> <leader>d <plug>(lsp-definition)
-    nmap <buffer> <silent> <leader>u <plug>(lsp-references)
-    nmap <buffer> <silent> <leader>r <plug>(lsp-rename)
-    nmap <buffer> <silent> <leader>' <plug>(lsp-signature-help)
-endfunction
+" languageclient neovim
+set completefunc=LanguageClient#complete
+command! Errors execute "lopen"
 
-augroup lsp_install
-    au!
-    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
-augroup endif
+let g:LanguageClient_changeThrottle=2
+let g:LanguageClient_settingsPath='.lsconf.json'
+let g:LanguageClient_diagnosticsList='Location'
+let g:LanguageClient_diagnosticsDisplay={
+  \       '1': {
+  \           'name': 'Error',
+  \           'texthl': 'Error',
+  \           'signText': 'x',
+  \           'signTexthl': 'LC_ERROR',
+  \           'virtualTexthl': 'LC_ERROR',
+  \       },
+  \       '2': {
+  \           'name': 'Warning',
+  \           'texthl': 'Warning',
+  \           'signText': '!',
+  \           'signTexthl': 'LC_ERROR',
+  \           'virtualTexthl': 'LC_ERROR',
+  \       },
+  \       '3': {
+  \           'name': 'Information',
+  \           'texthl': 'Info',
+  \           'signText': 'i',
+  \           'signTexthl': 'LC_ERROR',
+  \           'virtualTexthl': 'LC_ERROR',
+  \       },
+  \       '4': {
+  \           'name': 'Hint',
+  \           'texthl': 'Info',
+  \           'signText': 'h',
+  \           'signTexthl': 'LC_ERROR',
+  \           'virtualTexthl': 'LC_ERROR',
+  \       },
+  \  }
 
-" register file completions
-call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
-    \ 'name': 'file',
-    \ 'whitelist': ['*'],
-    \ 'priority': 10,
-    \ 'completor': function('asyncomplete#sources#file#completor')
-    \ }))
+let g:LanguageClient_serverCommands = {
+    \ 'python': ['pyls'],
+    \ 'cpp'   : ['clangd'],
+    \ 'c'   : ['clangd']
+    \ }
 
-" register buffer completions
-call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
-    \ 'name': 'buffer',
-    \ 'whitelist': ['*'],
-    \ 'blacklist': ['go'],
-    \ 'completor': function('asyncomplete#sources#buffer#completor'),
-    \ 'config': {
-    \    'max_buffer_size': 5000000,
-    \  },
-    \ }))
+highlight link LC_ERROR Pmenu
+function! LSPKeyBinds()
+    nnoremap <silent> <leader>d :call LanguageClient#textDocument_definition()<CR>
+    nnoremap <silent> <leader>u :call LanguageClient#textDocument_references()<CR>
+    nnoremap <silent> <leader>r :call LanguageClient#textDocument_rename()<CR>
+    nnoremap <silent> <a-cr> :call LanguageClient_contextMenu()<CR>
+endfunction()
 
-let g:lsp_diagnostics_enabled=0
-let g:lsp_signs_enabled=0
-let g:lsp_highlight_references_enabled=1
+augroup LSP
+    autocmd!
+    autocmd FileType python,cpp,c call LSPKeyBinds()
+augroup END
 
 " custom
 if executable('fish')
@@ -329,14 +330,14 @@ cmap W w
 cmap Wq wq
 cmap Q q
 
-" : vim-lsp asyncomplete
+" deoplete languageclient neovim
 " <leader>
 "         + d : goto definition
 "         + u : show usages
 "         + r : rename
-"         + ' : show signature
+" <alt-enter> : context menu
 
-" : multiple cursors
+" multiple cursors
 " <C-n> : cursor select next
 " <C-x> : cursor skip next
 " <C-p> : cursor previous
