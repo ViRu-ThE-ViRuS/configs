@@ -10,6 +10,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 
+Plug 'godlygeek/tabular'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-eunuch'
 Plug 'christoomey/vim-tmux-navigator'
@@ -122,8 +123,8 @@ nnoremap <leader>e :call RandomLook()<CR>
 
 " trim trailing whitespaces
 function! <SID>StripTrailingWhitespaces()
-    let l = line(".")
-    let c = col(".")
+    let l=line(".")
+    let c=col(".")
     %s/\s\+$//e
     call cursor(l, c)
 endfun
@@ -131,15 +132,15 @@ autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 
 " nerdtree
 let g:NERDTreeChDirMode=2
-let g:NERDTreeDirArrowExpandable = '~'
-let g:NERDTreeDirArrowCollapsible = '-'
+let g:NERDTreeDirArrowExpandable='$'
+let g:NERDTreeDirArrowCollapsible='-'
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc()==0 && !exists('s:std_in') | NERDTree | endif
 
 nnoremap <leader>j :NERDTreeToggle<CR>
 nnoremap <leader>1 :NERDTreeFind<CR>
 
-let g:NERDTreeIgnore = [
+let g:NERDTreeIgnore=[
     \ '\~$',
     \ '\.pyc$',
     \ '^\.DS_Store$',
@@ -149,17 +150,19 @@ let g:NERDTreeIgnore = [
     \ '^venv$'
 \]
 
-let g:NERDTreeIndicatorMapCustom = {
+let g:NERDTreeIndicatorMapCustom={
     \ "Modified"  : "~",
+    \ "Dirty"     : "~",
     \ "Staged"    : "+",
     \ "Untracked" : "*",
     \ "Unmerged"  : "=",
     \ "Deleted"   : "x",
+    \ "Clean"     : ""
     \ }
 
 " tagbar
 let g:tagbar_autofocus=1
-let g:tagbar_iconchars=['~', '-']
+let g:tagbar_iconchars=['$', '-']
 nnoremap <leader>k :TagbarToggle<CR>
 
 " airline
@@ -169,8 +172,11 @@ let g:airline_theme='monochrome' " bluewery deus hybrid luna base16_embers
 
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#fnamemode=':t'
-let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#tabline#buffer_nr_show=1
 let g:airline#extensions#tabline#formatter='unique_tail'
+
+" tabular
+vnoremap <leader>= :Tab /
 
 " fzf
 let $FZF_DEFAULT_COMMAND='rg --files --hidden --follow'
@@ -210,8 +216,8 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 autocmd InsertLeave,CompleteDone * silent! pclose!
 
 " echodoc
-let g:echodoc#enable_at_startup = 1
-let g:echodoc#type = 'floating'
+let g:echodoc#enable_at_startup=1
+let g:echodoc#type='floating'
 highlight link EchoDocFloat Pmenu
 
 " languageclient neovim
@@ -219,6 +225,7 @@ set completefunc=LanguageClient#complete
 command! Errors execute "lopen"
 
 let g:LanguageClient_changeThrottle=0.5
+let g:LanguageClient_useVirtualText='No'
 let g:LanguageClient_settingsPath='.lsconf.json'
 let g:LanguageClient_diagnosticsList='Location'
 let g:LanguageClient_diagnosticsDisplay={
@@ -252,10 +259,10 @@ let g:LanguageClient_diagnosticsDisplay={
   \       },
   \  }
 
-let g:LanguageClient_serverCommands = {
-    \ 'python': ['pyls'],
-    \ 'cpp'   : ['clangd'],
-    \ 'c'   : ['clangd']
+let g:LanguageClient_serverCommands={
+    \ 'python' : ['pyls'],
+    \ 'cpp'    : ['clangd'],
+    \ 'c'      : ['clangd']
     \ }
 
 highlight link LC_ERROR Pmenu
@@ -286,13 +293,13 @@ endif
 tnoremap <ESC> <C-\><C-n>
 
 if exists("tmux")
-    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-    let &t_SR = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
-    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+    let &t_SI="\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+    let &t_SR="\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
+    let &t_EI="\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
 else
-    let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-    let &t_SR = "\<Esc>]50;CursorShape=2\x7"
-    let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+    let &t_SI="\<Esc>]50;CursorShape=1\x7"
+    let &t_SR="\<Esc>]50;CursorShape=2\x7"
+    let &t_EI="\<Esc>]50;CursorShape=0\x7"
 endif
 
 " help with transparent backgrounds
@@ -344,6 +351,11 @@ cmap Q q
 " <C-n> : cursor select next
 " <C-x> : cursor skip next
 " <C-p> : cursor previous
+
+" :GV       : Fugitive commit graph
+" <leader>s : vsp term://shell : split terminal
+" <leader>1 : NERDTreeFind
+" <leader>= : tabular menu
 
 " <c-k> <c-w>H : horizontal to vertical split
 " <c-h> <c-w>K : vertical to horizontal split
