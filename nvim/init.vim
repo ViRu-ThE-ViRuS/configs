@@ -31,6 +31,7 @@ Plug 'sbdchd/neoformat'
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'autozimu/LanguageClient-neovim', {'branch': 'next','do': 'bash install.sh'}
+Plug 'Shougo/neoinclude.vim'
 Plug 'Shougo/echodoc.vim'
 
 call plug#end()
@@ -134,8 +135,11 @@ autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 let g:NERDTreeChDirMode=2
 let g:NERDTreeDirArrowExpandable='$'
 let g:NERDTreeDirArrowCollapsible='-'
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc()==0 && !exists('s:std_in') | NERDTree | endif
+
+if PlugLoaded('scrooloose/nerdtree')
+    autocmd StdinReadPre * let s:std_in=1
+    autocmd VimEnter * if argc()==0 && !exists('s:std_in') | NERDTree | endif
+endif
 
 nnoremap <leader>j :NERDTreeToggle<CR>
 nnoremap <leader>1 :NERDTreeFind<CR>
@@ -205,6 +209,7 @@ autocmd FileType python,c,cpp noremap <buffer> <C-f> :Neoformat<CR>
 " gitgutter
 let g:gitgutter_sign_added='|'
 let g:gitgutter_sign_modified='~'
+autocmd BufWritePost * silent! :GitGutter
 
 " deoplete
 let g:deoplete#enable_at_startup=1
@@ -230,32 +235,32 @@ let g:LanguageClient_settingsPath='.lsconf.json'
 let g:LanguageClient_diagnosticsList='Location'
 let g:LanguageClient_diagnosticsDisplay={
   \       '1': {
-  \           'name': 'Error',
-  \           'texthl': 'Error',
-  \           'signText': 'x',
-  \           'signTexthl': 'LC_ERROR',
-  \           'virtualTexthl': 'LC_ERROR',
+  \           'name'          : 'Error',
+  \           'texthl'        : 'Error',
+  \           'signText'      : 'x',
+  \           'signTexthl'    : 'LC_ERROR',
+  \           'virtualTexthl' : 'LC_ERROR',
   \       },
   \       '2': {
-  \           'name': 'Warning',
-  \           'texthl': 'Warning',
-  \           'signText': '!',
-  \           'signTexthl': 'LC_ERROR',
-  \           'virtualTexthl': 'LC_ERROR',
+  \           'name'          : 'Warning',
+  \           'texthl'        : 'Warning',
+  \           'signText'      : '!',
+  \           'signTexthl'    : 'LC_ERROR',
+  \           'virtualTexthl' : 'LC_ERROR',
   \       },
   \       '3': {
-  \           'name': 'Information',
-  \           'texthl': 'Info',
-  \           'signText': 'i',
-  \           'signTexthl': 'LC_ERROR',
-  \           'virtualTexthl': 'LC_ERROR',
+  \           'name'          : 'Information',
+  \           'texthl'        : 'Info',
+  \           'signText'      : 'i',
+  \           'signTexthl'    : 'LC_ERROR',
+  \           'virtualTexthl' : 'LC_ERROR',
   \       },
   \       '4': {
-  \           'name': 'Hint',
-  \           'texthl': 'Info',
-  \           'signText': 'h',
-  \           'signTexthl': 'LC_ERROR',
-  \           'virtualTexthl': 'LC_ERROR',
+  \           'name'          : 'Hint',
+  \           'texthl'        : 'Info',
+  \           'signText'      : 'h',
+  \           'signTexthl'    : 'LC_ERROR',
+  \           'virtualTexthl' : 'LC_ERROR',
   \       },
   \  }
 
@@ -324,8 +329,8 @@ inoremap <down> <nop>
 inoremap <left> <nop>
 inoremap <right> <nop>
 
-nnoremap <m-j> :resize -2<CR>
-nnoremap <m-k> :resize +2<CR>
+nnoremap <m-j> :resize +2<CR>
+nnoremap <m-k> :resize -2<CR>
 nnoremap <m-h> :vertical resize -2<CR>
 nnoremap <m-l> :vertical resize +2<CR>
 
