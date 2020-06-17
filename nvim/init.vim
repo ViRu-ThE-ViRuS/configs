@@ -15,6 +15,7 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-eunuch'
 Plug 'christoomey/vim-tmux-navigator'
 
+Plug 'airblade/vim-rooter'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 
@@ -63,10 +64,11 @@ set lazyredraw
 set visualbell
 set termguicolors
 set background=dark
-colorscheme gruvbox " bluewery anderson gruvbox CandyPaper
-                    " Atelier_SavannaLight Atelier_EstuaryDark alduin
-                    " dracula tender deus zenburn jelleybeans nord
-                    " solarized8_dark_high
+colorscheme CandyPaper " bluewery anderson gruvbox CandyPaper
+                       " Atelier_SavannaLight alduin
+                       " tender deus zenburn jelleybeans nord
+                       " solarized8_dark_high Tomorrow-Night-Blue
+                       " thor
 
 let g:gruvbox_contrast_dark='medium'
 let g:airline_solarized_bg='dark'
@@ -170,9 +172,9 @@ let g:tagbar_iconchars=['$', '-']
 nnoremap <leader>k :TagbarToggle<CR>
 
 " airline
-let g:airline_theme='monochrome' " bluewery deus hybrid luna base16_embers
-                                 " base16_3024 gruvbox
-                                 " jelleybeans 0x7A69_dark solarized
+let g:airline_theme='hybrid' " bluewery deus hybrid luna base16_embers
+                             " base16_3024 gruvbox monochrome
+                             " jelleybeans 0x7A69_dark solarized
 
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#fnamemode=':t'
@@ -184,11 +186,14 @@ vnoremap <leader>= :Tab /
 
 " fzf
 let $FZF_DEFAULT_COMMAND='rg --files --hidden --follow'
-let g:fzf_preview_window='right:60%'
+let g:fzf_preview_window='right:50%'
 let g:fzf_buffers_jump=1
 
 nnoremap <C-p> :Files<CR>
-nnoremap <leader>f :Rg<space>
+nnoremap <leader>f :Rg<CR>
+
+set grepprg=rg\ --no-heading\ --vimgrep
+set grepformat=%f:%l:%c:%m
 
 " fugitive
 if PlugLoaded('tpope/vim-fugitive')
@@ -272,10 +277,10 @@ let g:LanguageClient_serverCommands={
 
 highlight link LC_ERROR Pmenu
 function! LSPKeyBinds()
-    nnoremap <silent> <leader>d :call LanguageClient#textDocument_definition()<CR>
-    nnoremap <silent> <leader>u :call LanguageClient#textDocument_references()<CR>
-    nnoremap <silent> <leader>r :call LanguageClient#textDocument_rename()<CR>
-    nnoremap <silent> <a-cr> :call LanguageClient_contextMenu()<CR>
+    nnoremap <buffer> <silent> <leader>d :call LanguageClient#textDocument_definition()<CR>
+    nnoremap <buffer> <silent> <leader>u :call LanguageClient#textDocument_references()<CR>
+    nnoremap <buffer> <silent> <leader>r :call LanguageClient#textDocument_rename()<CR>
+    nnoremap <buffer> <silent> <a-cr> :call LanguageClient_contextMenu()<CR>
 endfunction()
 
 augroup LSP
@@ -283,6 +288,7 @@ augroup LSP
     autocmd FileType python,cpp,c call LSPKeyBinds()
 augroup END
 
+call deoplete#custom#source('LanguageClient', 'min_pattern_length', 2)
 
 " custom
 if executable('fish')
