@@ -64,11 +64,10 @@ set lazyredraw
 set visualbell
 set termguicolors
 set background=dark
-colorscheme CandyPaper " bluewery anderson gruvbox CandyPaper
-                       " Atelier_SavannaLight alduin
-                       " tender deus zenburn jelleybeans nord
-                       " solarized8_dark_high Tomorrow-Night-Blue
-                       " thor
+colorscheme gruvbox " bluewery anderson gruvbox CandyPaper
+                    " deus zenburn nord neodark northpole nordisk
+                    " solarized8_dark_high Tomorrow-Night-Blue
+                    " thor jelleybeans
 
 let g:gruvbox_contrast_dark='medium'
 let g:airline_solarized_bg='dark'
@@ -106,6 +105,7 @@ set noshowcmd
 set omnifunc=syntaxcomplete#Complete
 set clipboard^=unnamed,unnamedplus
 set shortmess+=c
+set signcolumn=yes
 
 let g:python3_host_prog='/usr/bin/python3'
 
@@ -172,9 +172,9 @@ let g:tagbar_iconchars=['$', '-']
 nnoremap <leader>k :TagbarToggle<CR>
 
 " airline
-let g:airline_theme='hybrid' " bluewery deus hybrid luna base16_embers
-                             " base16_3024 gruvbox monochrome
-                             " jelleybeans 0x7A69_dark solarized
+let g:airline_theme='gruvbox' " bluewery deus hybrid luna base16_ashes
+                              " gruvbox monochrome
+                              " jelleybeans
 
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#fnamemode=':t'

@@ -1,5 +1,5 @@
 # Color key:
-#   #1d1f21 Background
+#   #202020 Background
 #   #282a2e Current Line
 #   #373b41 Selection
 #   #c5c8c6 Foreground
@@ -20,12 +20,12 @@ setw -g window-status-current-style fg="#81a2be"
 
 ## highlight active window
 setw -g window-style 'bg=#282a2e'
-setw -g window-active-style 'bg=#1d1f21'
+setw -g window-active-style 'bg=#202020'
 setw -g pane-active-border-style ''
 
 ## highlight activity in status bar
 setw -g window-status-activity-style fg="#8abeb7"
-setw -g window-status-activity-style bg="#1d1f21"
+setw -g window-status-activity-style bg="#202020"
 
 ## pane border and colors
 set -g pane-active-border-style bg=default
@@ -46,7 +46,7 @@ set -g message-command-style fg="#000000"
 set -g message-style bg="#2d2d2d"
 set -g message-style fg="#cc99cc"
 
-set -g mode-style bg="#1d1f21"
+set -g mode-style bg="#202020"
 set -g mode-style fg="#de935f"
 
 # right side of status bar holds "[host name] (date time)"
