@@ -1,5 +1,5 @@
 cp ~/.config/nvim/init.vim nvim/
-cp ~/.config/tmux/* tmux/
+cp -r ~/.config/tmux/* tmux/
 cp ~/.config/alacritty/* alacritty/
 cp -r ~/.config/fish/* fish/
 cp -r ~/.config/kitty/* kitty/

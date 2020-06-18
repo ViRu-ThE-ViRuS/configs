@@ -29,16 +29,14 @@ function fish_prompt
     set_color normal
 end
 
-function vim --description 'Editor of choice'
-    command nvim $argv
-end
+alias vim='nvim'
 
 function tmux --description 'Tmux multiplexer'
     command tmux -f ~/.config/tmux/.tmux.conf $argv
 end
 
 function tree --description 'Tree'
-    command tree -C -I 'venv|.git|' $argv
+    command tree -C -I 'venv|.git' $argv
 end
 
 function vm_ubuntu_start --description 'Start Ubuntu VM (VMWare)'
