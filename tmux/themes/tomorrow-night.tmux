@@ -19,8 +19,8 @@ setw -g window-status-current-style bg="#282a2e"
 setw -g window-status-current-style fg="#81a2be"
 
 ## highlight active window
-setw -g window-style 'bg=#282a2e'
-setw -g window-active-style 'bg=#202020'
+#setw -g window-style 'bg=#282a2e'
+#setw -g window-active-style 'bg=#202020'
 setw -g pane-active-border-style ''
 
 ## highlight activity in status bar
@@ -49,23 +49,23 @@ set -g message-style fg="#cc99cc"
 set -g mode-style bg="#202020"
 set -g mode-style fg="#de935f"
 
-# right side of status bar holds "[host name] (date time)"
+# status bar right message
 set -g status-right-length 100
 set -g status-right-style fg=black
 set -g status-right-style bold
-set -g status-right '#[fg=#f99157,bg=#2d2d2d] %H:%M |#[fg=#6699cc] %y.%m.%d '
+set -g status-right '#[fg=#999999]{#[fg=#b5bd68]vir#[fg=#999999]::#[fg=#6699cc]brave#[fg=#999999]}'
 
-# make background window look like white tab
+# background window tab
 set-window-option -g window-status-style bg=default
 set-window-option -g window-status-style fg=white
 set-window-option -g window-status-style none
 set-window-option -g window-status-format '#[fg=#6699cc,bg=colour235] #I #[fg=#999999,bg=#2d2d2d] #W #[default]'
 
-# make foreground window look like bold yellow foreground tab
+# foreground window tab
 set-window-option -g window-status-current-style none
-set-window-option -g window-status-current-format '#[fg=#f99157,bg=#2d2d2d] #I #[fg=#cccccc,bg=#393939] #W #[default]'
+set-window-option -g window-status-current-format '#[fg=#b5bd68,bg=#2d2d2d] #I #[fg=#cccccc,bg=#393939] #W #[default]'
 
-# active terminal yellow border, non-active white
+# window borders
 set -g pane-border-style bg=default
 set -g pane-border-style fg="#999999"
-set -g pane-active-border-style fg="#f99157"
+set -g pane-active-border-style fg="#b5bd68" # "#f99157"
