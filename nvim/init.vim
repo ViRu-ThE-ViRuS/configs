@@ -64,10 +64,10 @@ set lazyredraw
 set visualbell
 set termguicolors
 set background=dark
-colorscheme gruvbox " bluewery anderson gruvbox CandyPaper
-                    " deus zenburn nord neodark northpole nordisk
-                    " solarized8_dark_high Tomorrow-Night-Blue
-                    " thor jelleybeans
+colorscheme deus " bluewery anderson gruvbox CandyPaper
+                 " deus zenburn nord neodark northpole nordisk
+                 " solarized8_dark_high Tomorrow-Night-Blue
+                 " thor jelleybeans
 
 let g:gruvbox_contrast_dark='medium'
 let g:airline_solarized_bg='dark'
@@ -172,9 +172,9 @@ let g:tagbar_iconchars=['$', '-']
 nnoremap <leader>k :TagbarToggle<CR>
 
 " airline
-let g:airline_theme='gruvbox' " bluewery deus hybrid luna base16_ashes
-                              " gruvbox monochrome
-                              " jelleybeans
+let g:airline_theme='hybrid' " bluewery deus hybrid luna base16_ashes
+                             " gruvbox monochrome
+                             " jelleybeans
 
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#fnamemode=':t'
@@ -185,7 +185,8 @@ let g:airline#extensions#tabline#formatter='unique_tail'
 vnoremap <leader>= :Tab /
 
 " fzf
-let $FZF_DEFAULT_COMMAND='rg --files --hidden --follow'
+let $FZF_DEFAULT_COMMAND='rg --files --follow --hidden -g "!{venv,.git}"'
+"let $FZF_DEFAULT_OPTS='--reverse'
 let g:fzf_preview_window='right:50%'
 let g:fzf_buffers_jump=1
 
@@ -214,6 +215,7 @@ autocmd FileType python,c,cpp noremap <buffer> <C-f> :Neoformat<CR>
 " gitgutter
 let g:gitgutter_sign_added='|'
 let g:gitgutter_sign_modified='~'
+let g:gitgutter_sign_removed='-'
 autocmd BufWritePost * silent! :GitGutter
 
 " deoplete
