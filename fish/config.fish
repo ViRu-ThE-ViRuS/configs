@@ -36,7 +36,7 @@ function tmux --description 'Tmux multiplexer'
 end
 
 function tree --description 'Tree'
-    command tree -C -I 'venv|.git' $argv
+    command tree -C -I 'venv|.git|__pycache__' $argv
 end
 
 function vm_ubuntu_start --description 'Start Ubuntu VM (VMWare)'

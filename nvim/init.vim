@@ -11,7 +11,6 @@ Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 
 Plug 'godlygeek/tabular'
-Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-eunuch'
 Plug 'christoomey/vim-tmux-navigator'
 
@@ -64,10 +63,10 @@ set lazyredraw
 set visualbell
 set termguicolors
 set background=dark
-colorscheme deus " bluewery anderson gruvbox CandyPaper
-                 " deus zenburn nord neodark northpole nordisk
-                 " solarized8_dark_high Tomorrow-Night-Blue
-                 " thor jelleybeans
+colorscheme Tomorrow-Night-Eighties " bluewery anderson gruvbox CandyPaper
+                                    " deus zenburn nord neodark northpole nordisk
+                                    " solarized8_dark_high Tomorrow-Night-Blue
+                                    " thor jelleybeans CandyCode
 
 let g:gruvbox_contrast_dark='medium'
 let g:airline_solarized_bg='dark'
@@ -172,9 +171,9 @@ let g:tagbar_iconchars=['$', '-']
 nnoremap <leader>k :TagbarToggle<CR>
 
 " airline
-let g:airline_theme='hybrid' " bluewery deus hybrid luna base16_ashes
-                             " gruvbox monochrome
-                             " jelleybeans
+let g:airline_theme='tomorrow' " bluewery deus hybrid luna base16_ashes
+                               " gruvbox monochrome
+                               " jelleybeans base16_grayscale
 
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#fnamemode=':t'
@@ -360,15 +359,13 @@ cmap Q q
 "         + r : rename
 " <alt-enter> : context menu
 
-" : multiple cursors
-" <C-n> : cursor select next
-" <C-x> : cursor skip next
-" <C-p> : cursor previous
-
 " :GV       : Fugitive commit graph
 " <leader>s : vsp term://shell : split terminal
 " <leader>1 : NERDTreeFind
 " <leader>= : tabular menu
 
-" <c-k> <c-w>H : horizontal to vertical split
-" <c-h> <c-w>K : vertical to horizontal split
+" <c-w> v      : vsplit
+" <c-w> s      : hsplit
+" <c-k> <c-w>H : vertical to horizontal split
+" <c-h> <c-w>K : horizontal to vertical split
+" <c-w> o      : maximize current buffer
