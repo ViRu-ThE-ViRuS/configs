@@ -50,6 +50,7 @@ The configuration files are in `fish` located in `~/.config/fish/`
 ### MISC
 - Brew list output in `brew_output.txt`
 - I use Fira Code font (Fira Code, Retina, 14pts)
+- I use Tiles window manager on MacOS
 - A deprecated vim configuration is present... reference NeoVim configuration
     for updates
     - vim configuration file is `.vimrc`
