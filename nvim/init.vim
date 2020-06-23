@@ -63,15 +63,16 @@ set lazyredraw
 set visualbell
 set termguicolors
 set background=dark
-colorscheme Tomorrow-Night-Eighties " bluewery anderson gruvbox CandyPaper
-                                    " deus zenburn nord neodark northpole nordisk
-                                    " solarized8_dark_high Tomorrow-Night-Blue
-                                    " thor jelleybeans CandyCode
+colorscheme apprentice " gruvbox deus zenburn
+                       " thor northpole anderson CandyPaper
+                       " solarized8_dark_high Tomorrow-Night-Blue
+                       " jellybeans CandyCode apprentice
+                       " bluewery quantum neodark nord nordisk
 
 let g:gruvbox_contrast_dark='medium'
 let g:airline_solarized_bg='dark'
 
-set completeopt=menu,noinsert,noselect
+set completeopt=menu,noinsert,noselect,menuone
 set guifont=FiraCode-Retina:h14
 set guicursor+=i:ver100-iCursor
 set formatoptions=crlnj " t: textwidth
@@ -171,9 +172,9 @@ let g:tagbar_iconchars=['$', '-']
 nnoremap <leader>k :TagbarToggle<CR>
 
 " airline
-let g:airline_theme='tomorrow' " bluewery deus hybrid luna base16_ashes
-                               " gruvbox monochrome
-                               " jelleybeans base16_grayscale
+let g:airline_theme='hybrid' " bluewery deus hybrid luna base16_ashes
+                             " gruvbox monochrome tomorrow ouo
+                             " jelleybeans base16_grayscale
 
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#fnamemode=':t'
@@ -215,6 +216,7 @@ autocmd FileType python,c,cpp noremap <buffer> <C-f> :Neoformat<CR>
 let g:gitgutter_sign_added='|'
 let g:gitgutter_sign_modified='~'
 let g:gitgutter_sign_removed='-'
+let g:gitgutter_use_location_list=1
 autocmd BufWritePost * silent! :GitGutter
 
 " deoplete
@@ -242,31 +244,19 @@ let g:LanguageClient_diagnosticsList='Location'
 let g:LanguageClient_diagnosticsDisplay={
   \       '1': {
   \           'name'          : 'Error',
-  \           'texthl'        : 'Error',
   \           'signText'      : 'x',
-  \           'signTexthl'    : 'LC_ERROR',
-  \           'virtualTexthl' : 'LC_ERROR',
   \       },
   \       '2': {
   \           'name'          : 'Warning',
-  \           'texthl'        : 'Warning',
   \           'signText'      : '!',
-  \           'signTexthl'    : 'LC_ERROR',
-  \           'virtualTexthl' : 'LC_ERROR',
   \       },
   \       '3': {
   \           'name'          : 'Information',
-  \           'texthl'        : 'Info',
   \           'signText'      : 'i',
-  \           'signTexthl'    : 'LC_ERROR',
-  \           'virtualTexthl' : 'LC_ERROR',
   \       },
   \       '4': {
   \           'name'          : 'Hint',
-  \           'texthl'        : 'Info',
   \           'signText'      : 'h',
-  \           'signTexthl'    : 'LC_ERROR',
-  \           'virtualTexthl' : 'LC_ERROR',
   \       },
   \  }
 
