@@ -30,6 +30,7 @@ function fish_prompt
 end
 
 alias vim='nvim'
+alias rmd='rm -rf'
 
 function tmux --description 'Tmux multiplexer'
     command tmux -f ~/.config/tmux/.tmux.conf $argv

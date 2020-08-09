@@ -63,11 +63,12 @@ set lazyredraw
 set visualbell
 set termguicolors
 set background=dark
-colorscheme apprentice " gruvbox deus zenburn
-                       " thor northpole anderson CandyPaper
-                       " solarized8_dark_high Tomorrow-Night-Blue
-                       " jellybeans CandyCode apprentice
-                       " bluewery quantum neodark nord nordisk
+colorscheme gruvbox " gruvbox deus zenburn
+                    " solarized8_dark_high Tomorrow-Night-Blue
+                    " bluewery quantum neodark nord OceanicNext hybrid
+                    " jellybeans apprentice antares PaperColor afterglow
+                    " thor northpole CandyPaper Tomorrow-Night-Eighties
+                    " meta5 jellygrass jellyx
 
 let g:gruvbox_contrast_dark='medium'
 let g:airline_solarized_bg='dark'
@@ -105,7 +106,7 @@ set noshowcmd
 set omnifunc=syntaxcomplete#Complete
 set clipboard^=unnamed,unnamedplus
 set shortmess+=c
-set signcolumn=yes
+set signcolumn=auto
 
 let g:python3_host_prog='/usr/bin/python3'
 
@@ -172,9 +173,9 @@ let g:tagbar_iconchars=['$', '-']
 nnoremap <leader>k :TagbarToggle<CR>
 
 " airline
-let g:airline_theme='hybrid' " bluewery deus hybrid luna base16_ashes
-                             " gruvbox monochrome tomorrow ouo
-                             " jelleybeans base16_grayscale
+let g:airline_theme='gruvbox' " bluewery deus hybrid luna base16_ashes
+                                       " gruvbox monochrome tomorrow ouo
+                                       " jelleybeans base16_grayscale
 
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#fnamemode=':t'
@@ -185,8 +186,8 @@ let g:airline#extensions#tabline#formatter='unique_tail'
 vnoremap <leader>= :Tab /
 
 " fzf
-let $FZF_DEFAULT_COMMAND='rg --files --follow --hidden -g "!{venv,.git}"'
 "let $FZF_DEFAULT_OPTS='--reverse'
+let $FZF_DEFAULT_COMMAND='rg --files --follow --hidden -g "!{venv,.git}"'
 let g:fzf_preview_window='right:50%'
 let g:fzf_buffers_jump=1
 

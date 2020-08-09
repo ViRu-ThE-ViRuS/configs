@@ -8,6 +8,7 @@ gcc
 gdbm
 gettext
 gmp
+go
 htop
 isl
 libevent
@@ -27,11 +28,10 @@ mpfr
 msgpack
 ncurses
 neovim
-openssl
 openssl@1.1
 pcre2
 protobuf
-python
+python@3.8
 readline
 ripgrep
 ruby
