@@ -4,16 +4,15 @@
 Here are the configurations I use for my dev setups.
 The Installation instructions are for *MacOS* as of yet.
 
-#### iTerm2
-- I use iTerm2 as Terminal.app on MacOS doesn't support truecoloring as of yet
-- The profile configuration is `Virus.json`
-
 #### Kitty
-- I am also experimenting with Kitty as my primary terminal, its fast, hash
+- I use Kitty as my primary terminal, its fast, hash
   everything i was missing in alacritty, so its my primary candidate for
   replacing iTerm2.
-- `$ brew cask install kitty`
 The configuration folder is `kitty/`, to be placed in `~/.config/`
+
+#### iTerm2
+- I use iTerm2 as (backup) Terminal.app on MacOS doesn't support truecoloring as of yet
+- The profile configuration is `Virus.json`
 
 #### Alacritty
 - I am experimenting with Alacritty as my primary terminal, because it is
@@ -51,6 +50,8 @@ The configuration files are in `fish` located in `~/.config/fish/`
 - Brew list output in `brew_output.txt`
 - I use Fira Code font (Fira Code, Retina, 14pts)
 - I use Tiles window manager on MacOS
+- Periodically use `brew cleanup ; brew doctor`
+- Periodically update brew casks after checking `brew cask outdated`
 - A deprecated vim configuration is present... reference NeoVim configuration
     for updates
     - vim configuration file is `.vimrc`

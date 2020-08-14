@@ -1,0 +1,5 @@
+cyberduck
+java
+kitty
+vlc
+vmware-fusion
