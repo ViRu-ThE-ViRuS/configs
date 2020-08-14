@@ -290,7 +290,12 @@ let g:LanguageClient_diagnosticsDisplay={
 let g:LanguageClient_serverCommands={
     \ 'python' : ['pyls'],
     \ 'cpp'    : ['clangd'],
-    \ 'c'      : ['clangd']
+    \ 'c'      : ['clangd'],
+    \ 'clojure': ['bash', '-c', 'clojure-lsp']
+    \ }
+
+let g:LanguageClient_rootMarkers={
+    \ 'clojure': ['.git', 'project.clj']
     \ }
 
 highlight link LC_ERROR Pmenu
@@ -303,7 +308,9 @@ endfunction()
 
 augroup LSP
     autocmd!
-    autocmd FileType python,cpp,c call LSPKeyBinds()
+    autocmd FileType python,cpp,c,clojure call LSPKeyBinds()
+
+    autocmd FileType clojure nmap <buffer> <silent> <C-f> <plug>(lcn-format)
 augroup END
 
 call deoplete#custom#source('LanguageClient', 'min_pattern_length', 2)
