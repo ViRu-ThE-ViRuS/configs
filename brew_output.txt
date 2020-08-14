@@ -28,6 +28,7 @@ mpfr
 msgpack
 ncurses
 neovim
+openjdk
 openssl@1.1
 pcre2
 protobuf

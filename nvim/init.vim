@@ -18,8 +18,9 @@ Plug 'airblade/vim-rooter'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+Plug 'itchyny/lightline.vim'
+Plug 'mengelbrecht/lightline-bufferline'
+Plug 'macthecadillac/lightline-gitdiff'
 
 Plug 'flazz/vim-colorschemes'
 Plug 'relastle/bluewery.vim'
@@ -71,7 +72,6 @@ colorscheme gruvbox " gruvbox deus zenburn
                     " meta5 jellygrass jellyx
 
 let g:gruvbox_contrast_dark='medium'
-let g:airline_solarized_bg='dark'
 
 set completeopt=menu,noinsert,noselect,menuone
 set guifont=FiraCode-Retina:h14
@@ -120,7 +120,6 @@ endfunction
 
 function! RandomLook()
     colorscheme random
-    " AirlineTheme random
     colorscheme
 endfunction
 nnoremap <leader>e :call RandomLook()<CR>
@@ -172,15 +171,42 @@ let g:tagbar_autofocus=1
 let g:tagbar_iconchars=['$', '-']
 nnoremap <leader>k :TagbarToggle<CR>
 
-" airline
-let g:airline_theme='gruvbox' " bluewery deus hybrid luna base16_ashes
-                                       " gruvbox monochrome tomorrow ouo
-                                       " jelleybeans base16_grayscale
+" lightline
+"   bluewery deus hybrid luna
+"   base16_ashes gruvbox monochrome
+"   tomorrow ouo jelleybeans
+"   base16_grayscale
 
-let g:airline#extensions#tabline#enabled=1
-let g:airline#extensions#tabline#fnamemode=':t'
-let g:airline#extensions#tabline#buffer_nr_show=1
-let g:airline#extensions#tabline#formatter='unique_tail'
+let g:lightline = {
+            \ 'colorscheme': 'gruvbox',
+            \ 'active': {
+            \   'left': [['mode', 'paste'], ['gitbranch', 'gitstatus', 'readonly']],
+            \   'right': [['filetype'], ['lineinfo'], ['percent']]
+            \ },
+            \ 'tabline': {'left': [['buffers']], 'right':[]},
+            \ 'component': {'gitstatus': '%<%{lightline_gitdiff#get_status()}'},
+            \ 'component_visible_condition': {'gitstatus': 'lightline_gitdiff#get_status() !=# ""'},
+            \ 'component_function': {'gitbranch': 'FugitiveHead'},
+            \ 'component_raw': {'buffers': 1},
+            \ 'component_expand': {
+            \   'buffers': 'lightline#bufferline#buffers',
+            \ },
+            \ 'component_type': {
+            \   'buffers': 'tabsel',
+            \ },
+            \ }
+
+" bufferline
+set showtabline=2
+let g:lightline#bufferline#clickable         = 1
+let g:lightline#bufferline#show_number       = 1
+let g:lightline#bufferline#filename_modifier = ':t'
+
+" gitdiff
+let g:lightline_gitdiff#indicator_added    = '+'
+let g:lightline_gitdiff#indicator_deleted  = '-'
+let g:lightline_gitdiff#indicator_modified = '~'
+let g:lightline_gitdiff#min_winwidth       = '70'
 
 " tabular
 vnoremap <leader>= :Tab /
@@ -198,9 +224,9 @@ set grepprg=rg\ --no-heading\ --vimgrep
 set grepformat=%f:%l:%c:%m
 
 " fugitive
-if PlugLoaded('tpope/vim-fugitive')
-    set statusline+=%{FugitiveStatusline()}
-endif
+"if PlugLoaded('tpope/vim-fugitive')
+    "set statusline+=%{FugitiveStatusline()}
+"endif
 set diffopt+=vertical
 
 " autopairs
@@ -353,10 +379,19 @@ cmap Q q
 " :GV       : Fugitive commit graph
 " <leader>s : vsp term://shell : split terminal
 " <leader>1 : NERDTreeFind
-" <leader>= : tabular menu
+" <leader>= : tabular
 
 " <c-w> v      : vsplit
 " <c-w> s      : hsplit
 " <c-k> <c-w>H : vertical to horizontal split
 " <c-h> <c-w>K : horizontal to vertical split
 " <c-w> o      : maximize current buffer
+
+" join two lines : top one + J
+" increment col of numbers : g<c-a>
+
+" project setup
+"       .lsconf.json  : language server configs
+"       setup.cfg     : flake8, pep8 etc setup
+"       .rgignore     : ripgrep ignore
+"       .nvimrc       : nvim setup like venv

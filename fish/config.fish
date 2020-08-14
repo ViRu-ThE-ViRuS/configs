@@ -16,8 +16,13 @@ set PATH            $PATH /usr/local/Cellar/llvm/10.0.0_3/bin/
 function fish_prompt
     set -l status_copy $status
     set -l target_color 10c891
+    set -l ssh_color    1075c8
 
-    echo -sn (set_color -o $target_color) '$ '
+    if set -q SSH_TTY
+        echo -sn (set_color -o $ssh_color) '$ '
+    else
+        echo -sn (set_color -o $target_color) '$ '
+    end
     set_color normal
 
     set -l CWD (basename $PWD)
