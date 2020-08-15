@@ -13,18 +13,19 @@ Plug 'junegunn/gv.vim'
 Plug 'godlygeek/tabular'
 Plug 'tpope/vim-eunuch'
 Plug 'christoomey/vim-tmux-navigator'
-
 Plug 'airblade/vim-rooter'
-Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
 
-Plug 'itchyny/lightline.vim'
-Plug 'mengelbrecht/lightline-bufferline'
-Plug 'macthecadillac/lightline-gitdiff'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
 Plug 'flazz/vim-colorschemes'
 Plug 'relastle/bluewery.vim'
 Plug 'morhetz/gruvbox'
+
+Plug 'itchyny/lightline.vim'
+Plug 'mengelbrecht/lightline-bufferline'
+Plug 'macthecadillac/lightline-gitdiff'
+Plug 'sainnhe/lightline_foobar.vim'
 
 Plug 'scrooloose/nerdcommenter'
 Plug 'jiangmiao/auto-pairs'
@@ -39,17 +40,16 @@ call plug#end()
 
 syntax on
 
-set modelines=0
 set number
 set cursorline
-set matchpairs+=<:>
 set mouse=a
+set modelines=0
+set matchpairs+=<:>
 
 set history=100
 set hidden
 set splitright
 set splitbelow
-
 set exrc
 set secure
 
@@ -59,17 +59,17 @@ set autowrite
 set nowb
 set undofile
 set undodir=~/.config/undodir
-set lazyredraw
 
+set lazyredraw
 set visualbell
 set termguicolors
 set background=dark
-colorscheme gruvbox " gruvbox deus zenburn
+colorscheme hybrid " gruvbox deus
                     " solarized8_dark_high Tomorrow-Night-Blue
                     " bluewery quantum neodark nord OceanicNext hybrid
                     " jellybeans apprentice antares PaperColor afterglow
                     " thor northpole CandyPaper Tomorrow-Night-Eighties
-                    " meta5 jellygrass jellyx
+                    " meta5 jellygrass jellyx xterm16 hybrid
 
 let g:gruvbox_contrast_dark='medium'
 
@@ -103,10 +103,10 @@ set smartcase
 set laststatus=2
 set noshowmode
 set noshowcmd
-set omnifunc=syntaxcomplete#Complete
 set clipboard^=unnamed,unnamedplus
 set shortmess+=c
 set signcolumn=auto
+set omnifunc=syntaxcomplete#Complete
 
 let g:python3_host_prog='/usr/bin/python3'
 
@@ -132,6 +132,9 @@ function! <SID>StripTrailingWhitespaces()
     call cursor(l, c)
 endfun
 autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
+
+" tabs to spaces
+autocmd BufWritePre * :retab
 
 " nerdtree
 let g:NERDTreeChDirMode=2
@@ -172,13 +175,11 @@ let g:tagbar_iconchars=['$', '-']
 nnoremap <leader>k :TagbarToggle<CR>
 
 " lightline
-"   bluewery deus hybrid luna
-"   base16_ashes gruvbox monochrome
-"   tomorrow ouo jelleybeans
-"   base16_grayscale
-
+"   bluewery deus hybrid luna gruvbox jellybeans darcula
+"   base16_ashes monochrome tomorrow ouo jelleybeans base16_grayscale
+"   srcery_alter tfw_dark
 let g:lightline = {
-            \ 'colorscheme': 'gruvbox',
+            \ 'colorscheme': 'tfw_dark',
             \ 'active': {
             \   'left': [['mode', 'paste'], ['gitbranch', 'gitstatus', 'readonly']],
             \   'right': [['filetype'], ['lineinfo'], ['percent']]
@@ -212,10 +213,12 @@ let g:lightline_gitdiff#min_winwidth       = '70'
 vnoremap <leader>= :Tab /
 
 " fzf
-"let $FZF_DEFAULT_OPTS='--reverse'
 let $FZF_DEFAULT_COMMAND='rg --files --follow --hidden -g "!{venv,.git}"'
 let g:fzf_preview_window='right:50%'
 let g:fzf_buffers_jump=1
+
+" status bar hide when in fzf
+autocmd! FileType fzf set laststatus=0 noshowmode noruler | autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 
 nnoremap <C-p> :Files<CR>
 nnoremap <leader>f :Rg<CR>
@@ -376,15 +379,14 @@ cmap Q q
 "         + r : rename
 " <alt-enter> : context menu
 
-" :GV       : Fugitive commit graph
+" :GV       : Commit graph
 " <leader>s : vsp term://shell : split terminal
 " <leader>1 : NERDTreeFind
 " <leader>= : tabular
 
 " <c-w> v      : vsplit
 " <c-w> s      : hsplit
-" <c-k> <c-w>H : vertical to horizontal split
-" <c-h> <c-w>K : horizontal to vertical split
+" <c-w>HLJK    : move current split
 " <c-w> o      : maximize current buffer
 
 " join two lines : top one + J

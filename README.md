@@ -51,7 +51,9 @@ The configuration files are in `fish` located in `~/.config/fish/`
 - I use Fira Code font (Fira Code, Retina, 14pts)
 - I use Tiles window manager on MacOS
 - Periodically use `brew cleanup ; brew doctor`
+- Periodically glance over unnecessary packages `brew leaves`
 - Periodically update brew casks after checking `brew cask outdated`
+- Brew python pip is seperate from normal pip
 - A deprecated vim configuration is present... reference NeoVim configuration
     for updates
     - vim configuration file is `.vimrc`
