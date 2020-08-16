@@ -1,30 +1,14 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
-SETUVAR --path CLASSPATH:/Users/viraat\x2dchandra/Workspace/class/cs61b\x2dsoftware/lib/emacs\x1e/Users/viraat\x2dchandra/Workspace/class/cs61b\x2dsoftware/lib/gjdb\x2ejar\x1e/Users/viraat\x2dchandra/Workspace/class/cs61b\x2dsoftware/lib/graph\x2dinputs\x1e/Users/viraat\x2dchandra/Workspace/class/cs61b\x2dsoftware/lib/hamcrest\x2dcore\x2d1\x2e3\x2ejar\x1e/Users/viraat\x2dchandra/Workspace/class/cs61b\x2dsoftware/lib/jpt\x2ejar\x1e/Users/viraat\x2dchandra/Workspace/class/cs61b\x2dsoftware/lib/junit\x2d4\x2e12\x2ejar\x1e/Users/viraat\x2dchandra/Workspace/class/cs61b\x2dsoftware/lib/tools\x2ejar\x1e/Users/viraat\x2dchandra/Workspace/class/cs61b\x2dsoftware/lib/ucb\x2ejar\x1e/Users/viraat\x2dchandra/Workspace/class/cs61b\x2dsoftware/lib/ucb\x2dcheckstyle\x2ejar\x1e/Users/viraat\x2dchandra/Workspace/class/cs61b\x2dsoftware/lib/ucb\x2df2007\x2ejar
-SETUVAR --export EDITOR:nvim
-SETUVAR FZF_ALT_C_COMMAND:
-SETUVAR --export FZF_CTRL_T_COMMAND:rg\x20\x2d\x2dfiles\x20\x2d\x2dfollow\x20\x2d\x2dhidden\x20\x2dg\x20\x22\x21\x7bvenv\x2c\x2egit\x7d\x22\x202\x3e\x20/dev/null
-SETUVAR --export FZF_DEFAULT_COMMAND:rg\x20\x2d\x2dfiles\x20\x2d\x2dfollow\x20\x2d\x2dhidden\x20\x2dg\x20\x22\x21\x7bvenv\x2c\x2egit\x7d\x22\x202\x3e\x20/dev/null
-SETUVAR FZF_DEFAULT_OPTS:\x2d\x2dheight\x2040\x25
-SETUVAR FZF_DISABLE_KEYBINDINGS:0
-SETUVAR FZF_LEGACY_KEYBINDINGS:1
-SETUVAR FZF_PREVIEW_DIR_CMD:ls
-SETUVAR FZF_PREVIEW_FILE_CMD:head\x20\x2dn\x2010
-SETUVAR FZF_TMUX_HEIGHT:40\x25
-SETUVAR --export GOBIN:/Users/viraat\x2dchandra/\x2edev/go/bin
-SETUVAR --export --path GOPATH:/Users/viraat\x2dchandra/\x2edev/go
-SETUVAR --export LSCOLORS:xxfxcxdxbxegedabagacad
-SETUVAR --export --path PATH:/usr/local/opt/fzf/bin\x1e/usr/local/bin\x1e/usr/bin\x1e/bin\x1e/usr/sbin\x1e/sbin\x1e/opt/X11/bin\x1e/Library/Apple/usr/bin\x1e/Applications/VMware\x20Fusion\x2eapp/Contents/Public\x1e/usr/local/go/bin\x1e/Applications/kitty\x2eapp/Contents/MacOS\x1e/Users/viraat\x2dchandra/Library/Python/3\x2e7/bin/
-SETUVAR --export ZDOTDIR:/Users/viraat\x2dchandra/\x2econfig/zsh
+SETUVAR LSCOLORS:xxfxcxdxbxegedabagacad
 SETUVAR __fish_initialized:3100
-SETUVAR --export fd:\x2d\x2dtype\x1ef\x1e\x2d\x2dhidden\x1e\x2d\x2dexclude\x1e\x2egit\x1enode_modules\x1evenv
 SETUVAR fish_color_autosuggestion:586e75
 SETUVAR fish_color_cancel:\x2dr
 SETUVAR fish_color_command:eee8d5
-SETUVAR fish_color_comment:586e75
+SETUVAR fish_color_comment:990000
 SETUVAR fish_color_cwd:green
 SETUVAR fish_color_cwd_root:red
-SETUVAR fish_color_end:268bd2
+SETUVAR fish_color_end:009900
 SETUVAR fish_color_error:c82510
 SETUVAR fish_color_escape:00a6b2
 SETUVAR fish_color_history_current:\x2d\x2dbold
@@ -34,52 +18,16 @@ SETUVAR fish_color_match:\x2d\x2dbackground\x3dbrblue
 SETUVAR fish_color_normal:normal
 SETUVAR fish_color_operator:00a6b2
 SETUVAR fish_color_param:93a1a1
-SETUVAR fish_color_quote:268bd2
+SETUVAR fish_color_quote:999900
 SETUVAR fish_color_redirection:6c71c4
-SETUVAR fish_color_search_match:bryellow\x1e\x2d\x2dbackground\x3dblack
+SETUVAR fish_color_search_match:bryellow\x1e\x2d\x2dbackground\x3dbrblack
 SETUVAR fish_color_selection:white\x1e\x2d\x2dbold\x1e\x2d\x2dbackground\x3dbrblack
 SETUVAR fish_color_status:red
 SETUVAR fish_color_user:brgreen
 SETUVAR fish_color_valid_path:\x2d\x2dunderline
 SETUVAR fish_greeting:Stars\x20\x3a\x29
 SETUVAR fish_key_bindings:fish_default_key_bindings
-SETUVAR fish_pager_color_completion:B3A06D
-SETUVAR fish_pager_color_description:B3A06D
-SETUVAR fish_pager_color_prefix:cyan\x1e\x2d\x2dunderline
+SETUVAR fish_pager_color_completion:\x1d
+SETUVAR fish_pager_color_description:B3A06D\x1eyellow
+SETUVAR fish_pager_color_prefix:white\x1e\x2d\x2dbold\x1e\x2d\x2dunderline
 SETUVAR fish_pager_color_progress:brwhite\x1e\x2d\x2dbackground\x3dcyan
-SETUVAR fish_user_paths:/usr/local/opt/fzf/bin
-SETUVAR pure_begin_prompt_with_current_directory:true
-SETUVAR pure_color_command_duration:pure_color_warning
-SETUVAR pure_color_current_directory:pure_color_primary
-SETUVAR pure_color_danger:red
-SETUVAR pure_color_dark:black
-SETUVAR pure_color_git_branch:pure_color_mute
-SETUVAR pure_color_git_dirty:pure_color_mute
-SETUVAR pure_color_git_unpulled_commits:pure_color_info
-SETUVAR pure_color_git_unpushed_commits:pure_color_info
-SETUVAR pure_color_info:cyan
-SETUVAR pure_color_jobs:pure_color_normal
-SETUVAR pure_color_light:white
-SETUVAR pure_color_mute:brblack
-SETUVAR pure_color_normal:normal
-SETUVAR pure_color_primary:blue
-SETUVAR pure_color_prompt_on_error:pure_color_danger
-SETUVAR pure_color_prompt_on_success:pure_color_success
-SETUVAR pure_color_ssh_hostname:pure_color_mute
-SETUVAR pure_color_ssh_separator:pure_color_mute
-SETUVAR pure_color_ssh_user_normal:pure_color_mute
-SETUVAR pure_color_ssh_user_root:pure_color_light
-SETUVAR pure_color_success:magenta
-SETUVAR pure_color_virtualenv:pure_color_mute
-SETUVAR pure_color_warning:yellow
-SETUVAR pure_enable_git:true
-SETUVAR pure_reverse_prompt_symbol_in_vimode:true
-SETUVAR pure_separate_prompt_on_error:false
-SETUVAR pure_show_jobs:false
-SETUVAR pure_symbol_git_dirty:\x2a
-SETUVAR pure_symbol_git_unpulled_commits:\u21e3
-SETUVAR pure_symbol_git_unpushed_commits:\u21e1
-SETUVAR pure_symbol_prompt:\u276f
-SETUVAR pure_symbol_reverse_prompt:\u276e
-SETUVAR pure_symbol_title_bar_separator:\u2014
-SETUVAR pure_threshold_command_duration:5

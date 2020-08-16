@@ -22,10 +22,8 @@ Plug 'flazz/vim-colorschemes'
 Plug 'relastle/bluewery.vim'
 Plug 'morhetz/gruvbox'
 
-Plug 'itchyny/lightline.vim'
-Plug 'mengelbrecht/lightline-bufferline'
-Plug 'macthecadillac/lightline-gitdiff'
-Plug 'sainnhe/lightline_foobar.vim'
+Plug 'pacha/vem-tabline'
+Plug 'pacha/vem-statusline'
 
 Plug 'scrooloose/nerdcommenter'
 Plug 'jiangmiao/auto-pairs'
@@ -63,15 +61,15 @@ set undodir=~/.config/undodir
 set lazyredraw
 set visualbell
 set termguicolors
-set background=dark
-colorscheme gruvbox " gruvbox deus
-                    " solarized8_dark_high Tomorrow-Night-Blue
-                    " bluewery quantum neodark nord OceanicNext hybrid
-                    " jellybeans apprentice antares PaperColor afterglow
-                    " thor northpole CandyPaper Tomorrow-Night-Eighties
-                    " meta5 jellygrass jellyx xterm16 hybrid arcadia
 
-let g:gruvbox_contrast_dark='medium'
+set background=dark
+let g:gruvbox_contrast_dark='medium' " hard medium soft
+colorscheme jellybeans " gruvbox deus Tomorrow-Night-Blue
+                       " bluewery quantum neodark nord OceanicNext
+                       " Tomorrow-Night-Eighties PaperColor
+                       " apprentice antares afterglow thor CandyPaper
+                       " jellyx xterm16 hybrid arcadia jellybeans candycode
+
 
 set completeopt=menu,noinsert,noselect,menuone
 set guifont=FiraCode-Retina:h14
@@ -162,40 +160,16 @@ let g:tagbar_autofocus=1
 let g:tagbar_iconchars=['$', '-']
 nnoremap <leader>k :TagbarToggle<CR>
 
-" lightline
-"   bluewery deus hybrid luna gruvbox jellybeans darcula
-"   base16_ashes monochrome tomorrow ouo jelleybeans base16_grayscale
-"   srcery_alter tfw_dark
-let g:lightline = {
-            \ 'colorscheme': 'gruvbox',
-            \ 'active': {
-            \   'left': [['mode', 'paste'], ['gitbranch', 'gitstatus', 'readonly']],
-            \   'right': [['filetype'], ['lineinfo'], ['percent']]
-            \ },
-            \ 'tabline': {'left': [['buffers']], 'right':[]},
-            \ 'component': {'gitstatus': '%<%{lightline_gitdiff#get_status()}'},
-            \ 'component_visible_condition': {'gitstatus': 'lightline_gitdiff#get_status() !=# ""'},
-            \ 'component_function': {'gitbranch': 'FugitiveHead'},
-            \ 'component_raw': {'buffers': 1},
-            \ 'component_expand': {
-            \   'buffers': 'lightline#bufferline#buffers',
-            \ },
-            \ 'component_type': {
-            \   'buffers': 'tabsel',
-            \ },
-            \ }
-
-" bufferline
+" vem tabline
 set showtabline=2
-let g:lightline#bufferline#clickable         = 1
-let g:lightline#bufferline#show_number       = 1
-let g:lightline#bufferline#filename_modifier = ':t'
+let g:vem_tabline_show=2
+let g:vem_tabline_show_number="buffnr"
 
-" gitdiff
-let g:lightline_gitdiff#indicator_added    = '+'
-let g:lightline_gitdiff#indicator_deleted  = '-'
-let g:lightline_gitdiff#indicator_modified = '~'
-let g:lightline_gitdiff#min_winwidth       = '70'
+" ven statusline
+let g:vem_statusline_parts="mbfpP"
+let g:vem_statusline_filename_format="tail"
+let g:vem_statusline_branch_function="fugitive#head"
+let g:vem_statusline_branch_separator=' ~ '
 
 " tabular
 vnoremap <leader>= :Tab /

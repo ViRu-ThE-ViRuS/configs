@@ -1,17 +1,22 @@
-set fish_greeting   Stars\x20\x3a\x29
+alias vim='nvim'
+alias rmd='rm -rf'
 
-set LSCOLORS    xxfxcxdxbxegedabagacad
-set EDITOR      nvim
-
+set EDITOR                  nvim
+set PATH                    $PATH /Users/viraat-chandra/Library/Python/3.7/bin/
+set PATH                    $PATH /usr/local/opt/llvm/bin/
 set FZF_DEFAULT_COMMAND     'rg --files --follow --hidden -g "!{venv,.git}" 2> /dev/null'
 set FZF_CTRL_T_COMMAND      'rg --files --follow --hidden -g "!{venv,.git}" 2> /dev/null'
 
-set ZDOTDIR     ~/.config/zsh
-# set GOPATH      ~/.dev/go
-# set GOBIN       $GOPATH/bin
+function setup_fish_colors
+    set -U fish_greeting   Stars\x20\x3a\x29
+    set -U fish_color_command         eee8d5
+    set -U fish_color_autosuggestion  586e75
+    set -U fish_color_param           93a1a1
+    set -U fish_color_error           c82510
+    set -U fish_color_redirection     6c71c4
 
-set PATH            $PATH /Users/viraat-chandra/Library/Python/3.7/bin/
-set PATH            $PATH /usr/local/opt/llvm/bin/
+    set -U LSCOLORS     xxfxcxdxbxegedabagacad
+end
 
 function fish_prompt
     set -l status_copy $status
@@ -33,9 +38,6 @@ function fish_prompt
     echo -ns (set_color -o $target_color) '-> '
     set_color normal
 end
-
-alias vim='nvim'
-alias rmd='rm -rf'
 
 function tmux --description 'Tmux multiplexer'
     command tmux -f ~/.config/tmux/.tmux.conf $argv
