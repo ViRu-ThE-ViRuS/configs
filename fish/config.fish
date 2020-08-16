@@ -1,17 +1,17 @@
 set fish_greeting   Stars\x20\x3a\x29
 
-set -Ux LSCOLORS    xxfxcxdxbxegedabagacad
-set -Ux EDITOR      nvim
+set LSCOLORS    xxfxcxdxbxegedabagacad
+set EDITOR      nvim
 
-set -Ux FZF_DEFAULT_COMMAND 'rg --files --follow --hidden -g "!{venv,.git}" 2> /dev/null'
-set -Ux FZF_CTRL_T_COMMAND 'rg --files --follow --hidden -g "!{venv,.git}" 2> /dev/null'
+set FZF_DEFAULT_COMMAND     'rg --files --follow --hidden -g "!{venv,.git}" 2> /dev/null'
+set FZF_CTRL_T_COMMAND      'rg --files --follow --hidden -g "!{venv,.git}" 2> /dev/null'
 
-set -Ux ZDOTDIR     ~/.config/zsh
-set -Ux GOPATH      ~/.dev/go
-set -Ux GOBIN       $GOPATH/bin
+set ZDOTDIR     ~/.config/zsh
+# set GOPATH      ~/.dev/go
+# set GOBIN       $GOPATH/bin
 
 set PATH            $PATH /Users/viraat-chandra/Library/Python/3.7/bin/
-set PATH            $PATH /usr/local/Cellar/llvm/10.0.0_3/bin/
+set PATH            $PATH /usr/local/opt/llvm/bin/
 
 function fish_prompt
     set -l status_copy $status

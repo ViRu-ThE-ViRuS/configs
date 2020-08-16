@@ -64,12 +64,12 @@ set lazyredraw
 set visualbell
 set termguicolors
 set background=dark
-colorscheme hybrid " gruvbox deus
+colorscheme gruvbox " gruvbox deus
                     " solarized8_dark_high Tomorrow-Night-Blue
                     " bluewery quantum neodark nord OceanicNext hybrid
                     " jellybeans apprentice antares PaperColor afterglow
                     " thor northpole CandyPaper Tomorrow-Night-Eighties
-                    " meta5 jellygrass jellyx xterm16 hybrid
+                    " meta5 jellygrass jellyx xterm16 hybrid arcadia
 
 let g:gruvbox_contrast_dark='medium'
 
@@ -111,13 +111,6 @@ set omnifunc=syntaxcomplete#Complete
 let g:python3_host_prog='/usr/bin/python3'
 
 " custom functions
-function! PlugLoaded(name)
-    return (
-        \ has_key(g:plugs, a:name) &&
-        \ isdirectory(g:plugs[a:name].dir) &&
-        \ stridx(&rtp, g:plugs[a:name].dir) >= 0)
-endfunction
-
 function! RandomLook()
     colorscheme random
     colorscheme
@@ -141,11 +134,6 @@ let g:NERDTreeChDirMode=2
 let g:NERDTreeDirArrowExpandable='$'
 let g:NERDTreeDirArrowCollapsible='-'
 
-if PlugLoaded('scrooloose/nerdtree')
-    autocmd StdinReadPre * let s:std_in=1
-    autocmd VimEnter * if argc()==0 && !exists('s:std_in') | NERDTree | endif
-endif
-
 nnoremap <leader>j :NERDTreeToggle<CR>
 nnoremap <leader>1 :NERDTreeFind<CR>
 
@@ -159,7 +147,7 @@ let g:NERDTreeIgnore=[
     \ '^venv$'
 \]
 
-let g:NERDTreeIndicatorMapCustom={
+let g:NERDTreeGitStatusIndicatorMapCustom={
     \ "Modified"  : "~",
     \ "Dirty"     : "~",
     \ "Staged"    : "+",
@@ -179,7 +167,7 @@ nnoremap <leader>k :TagbarToggle<CR>
 "   base16_ashes monochrome tomorrow ouo jelleybeans base16_grayscale
 "   srcery_alter tfw_dark
 let g:lightline = {
-            \ 'colorscheme': 'tfw_dark',
+            \ 'colorscheme': 'gruvbox',
             \ 'active': {
             \   'left': [['mode', 'paste'], ['gitbranch', 'gitstatus', 'readonly']],
             \   'right': [['filetype'], ['lineinfo'], ['percent']]
@@ -217,19 +205,17 @@ let $FZF_DEFAULT_COMMAND='rg --files --follow --hidden -g "!{venv,.git}"'
 let g:fzf_preview_window='right:50%'
 let g:fzf_buffers_jump=1
 
-" status bar hide when in fzf
+set grepprg=rg\ --no-heading\ --vimgrep
+set grepformat=%f:%l:%c:%m
+
 autocmd! FileType fzf set laststatus=0 noshowmode noruler | autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 
 nnoremap <C-p> :Files<CR>
 nnoremap <leader>f :Rg<CR>
 
-set grepprg=rg\ --no-heading\ --vimgrep
-set grepformat=%f:%l:%c:%m
-
 " fugitive
-"if PlugLoaded('tpope/vim-fugitive')
-    "set statusline+=%{FugitiveStatusline()}
-"endif
+"set statusline+=%{FugitiveStatusline()}
+"set statusline=%<%f\ %h%m%r%{FugitiveStatusline()}%=%-14.(%l,%c%V%)\ %P
 set diffopt+=vertical
 
 " autopairs
@@ -307,6 +293,7 @@ endfunction()
 augroup LSP
     autocmd!
     autocmd FileType python,cpp,c call LSPKeyBinds()
+    autocmd FileType python,cpp,c set signcolumn=yes
 augroup END
 
 call deoplete#custom#source('LanguageClient', 'min_pattern_length', 2)

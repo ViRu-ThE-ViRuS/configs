@@ -11,12 +11,14 @@ gmp
 htop
 isl
 libevent
+libffi
 libidn2
 libmpc
 libtermkey
 libunistring
 libuv
 libvterm
+llvm
 luajit
 mpfr
 msgpack
