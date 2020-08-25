@@ -23,22 +23,23 @@ Plug 'relastle/bluewery.vim'
 Plug 'morhetz/gruvbox'
 
 Plug 'pacha/vem-tabline'
-Plug 'pacha/vem-statusline'
 
 Plug 'scrooloose/nerdcommenter'
 Plug 'jiangmiao/auto-pairs'
 Plug 'sbdchd/neoformat'
 
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
 Plug 'autozimu/LanguageClient-neovim', {'branch': 'next','do': 'bash install.sh'}
 Plug 'Shougo/neoinclude.vim'
 Plug 'Shougo/echodoc.vim'
 
 call plug#end()
 
-syntax on
+" enable allows over-riding
+syntax enable
 
 set number
+"set numberwidth=5
 set cursorline
 set mouse=a
 set modelines=0
@@ -61,25 +62,6 @@ set undodir=~/.config/undodir
 set lazyredraw
 set visualbell
 set termguicolors
-
-set background=dark
-let g:gruvbox_contrast_dark='medium' " hard medium soft
-colorscheme jellybeans " gruvbox deus Tomorrow-Night-Blue
-                       " bluewery quantum neodark nord OceanicNext
-                       " Tomorrow-Night-Eighties PaperColor
-                       " apprentice antares afterglow thor CandyPaper
-                       " jellyx xterm16 hybrid arcadia jellybeans candycode
-
-
-set completeopt=menu,noinsert,noselect,menuone
-set guifont=FiraCode-Retina:h14
-set guicursor+=i:ver100-iCursor
-set formatoptions=crlnj " t: textwidth
-                        " c: comments wrap
-                        " r: comment leader
-                        " n: numbered lists
-                        " l: no auto break
-                        " j: remove comment leader when joining lines
 
 set nowrap
 set textwidth=79
@@ -106,26 +88,87 @@ set shortmess+=c
 set signcolumn=auto
 set omnifunc=syntaxcomplete#Complete
 
-let g:python3_host_prog='/usr/bin/python3'
+set completeopt=menu,noinsert,noselect,menuone
+set formatoptions=crlnj " t: textwidth
+                        " c: comments wrap
+                        " r: comment leader
+                        " n: numbered lists
+                        " l: no auto break
+                        " j: remove comment leader when joining lines
 
-" custom functions
-function! RandomLook()
+" colors
+set background=dark
+
+let g:gruvbox_contrast_dark='medium' " hard medium soft
+let g:gruvbox_italic=1
+
+colorscheme neodark " gruvbox deus Tomorrow-Night-Blue
+                     " bluewery quantum neodark nord OceanicNext
+                     " Tomorrow-Night-Eighties PaperColor mod8 evokai
+                     " apprentice antares afterglow thor CandyPaper
+                     " jellyx xterm16 hybrid arcadia jellybeans candycode
+                     " aquamarine PaperColor codedark desertink lucid luna
+                     "
+                     " Tomorrow cake16 solarized8_light_high
+
+let g:python3_host_prog='/usr/bin/python3'
+"set guifont=FiraCode-Retina:h14
+"set guicursor+=i:ver100-iCursor
+
+" customs
+function! RandomColors()
     colorscheme random
     colorscheme
 endfunction
-nnoremap <leader>e :call RandomLook()<CR>
+nnoremap <leader>e :call RandomColors()<CR>
 
-" trim trailing whitespaces
 function! <SID>StripTrailingWhitespaces()
     let l=line(".")
     let c=col(".")
     %s/\s\+$//e
     call cursor(l, c)
 endfun
-autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
+autocmd BufWritePre * :call <SID>StripTrailingWhitespaces() " strip trailing
+autocmd BufWritePre * :retab                                " tab to spaces
 
-" tabs to spaces
-autocmd BufWritePre * :retab
+" statusline
+function! GitPaddedBranch()
+    let l:branchname = fugitive#head()
+    return strlen(l:branchname) > 0?'   '.l:branchname.' ':''
+endfunction
+
+function! GitPaddedStatus()
+  let l:branchname = fugitive#head()
+  let [a,m,r] = GitGutterGetHunkSummary()
+  return strlen(l:branchname) > 0? printf('| +%d ~%d -%d  ', a, m, r):''
+endfunction
+
+function! PaddedModeName()
+    let l:paste_status = &paste
+    if l:paste_status == 1
+        return '  [PASTE] '
+    else
+        return '  '.toupper(get(g:mode_labels, mode(), mode())).' '
+    endif
+endfunction
+
+let g:mode_labels = {
+      \    'n': 'Normal', 'i': 'Insert', 'R': 'Replace', 'v': 'Visual', 'V': 'V-Line', "\<C-v>": 'V-Block',
+      \    'c': 'Command', 's': 'Select', 'S': 'S-Line', "\<C-s>": 'S-Block', 't': 'Terminal'
+      \}
+
+set statusline=
+set statusline+=%#PmenuSel#
+set statusline+=%{PaddedModeName()}
+set statusline+=%#Pmenu#
+set statusline+=%{GitPaddedBranch()}
+set statusline+=%{GitPaddedStatus()}
+set statusline+=%#CursorLine#
+set statusline+=\ %f
+set statusline+=%=
+set statusline+=\ %l:%c
+set statusline+=\ %p%%
+set statusline+=\ %#LineNr#
 
 " nerdtree
 let g:NERDTreeChDirMode=2
@@ -165,12 +208,6 @@ set showtabline=2
 let g:vem_tabline_show=2
 let g:vem_tabline_show_number="buffnr"
 
-" ven statusline
-let g:vem_statusline_parts="mbfpP"
-let g:vem_statusline_filename_format="tail"
-let g:vem_statusline_branch_function="fugitive#head"
-let g:vem_statusline_branch_separator=' ~ '
-
 " tabular
 vnoremap <leader>= :Tab /
 
@@ -188,9 +225,11 @@ nnoremap <C-p> :Files<CR>
 nnoremap <leader>f :Rg<CR>
 
 " fugitive
-"set statusline+=%{FugitiveStatusline()}
-"set statusline=%<%f\ %h%m%r%{FugitiveStatusline()}%=%-14.(%l,%c%V%)\ %P
 set diffopt+=vertical
+
+" nerd commenter
+let g:NERDCreateDefaultMappings=0
+map <leader>c<space> <plug>NERDCommenterToggle
 
 " autopairs
 let g:AutoPairs={'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`', '<':'>', '<<':''}
@@ -208,6 +247,13 @@ let g:gitgutter_sign_modified='~'
 let g:gitgutter_sign_removed='-'
 let g:gitgutter_use_location_list=1
 autocmd BufWritePost * silent! :GitGutter
+
+let g:gitgutter_map_keys=0
+nmap <leader>hs <plug>(GitGutterStageHunk)
+nmap <leader>hu <plug>(GitGutterUndoHunk)
+nmap <leader>hp <plug>(GitGutterPreviewHunk)
+nmap ]c         <plug>(GitGutterNextHunk)
+nmap [c         <plug>(GitGutterPrevHunk)
 
 " deoplete
 let g:deoplete#enable_at_startup=1
@@ -299,23 +345,25 @@ endif
 "hi! Normal ctermbg=NONE guibg=NONE
 "hi! NonText ctermbg=NONE guibg=NONE guifg=NONE ctermfg=NONE
 
+" make comments bold-italic
+highlight Comment cterm=bolditalic gui=bolditalic
+
+" make signcolumn prettier
+autocmd ColorScheme * highlight! link SignColumn LineNr
+
 au! BufWritePost $MYVIMRC source %
 
 map <ScrollWheelUp> <C-Y>
 map <ScrollWheelDown> <C-E>
 
-vnoremap < <gv
-vnoremap > >gv
-
-map H ^
-map L $
-
-nnoremap <up> <nop>
-nnoremap <down> <nop>
-inoremap <up> <nop>
-inoremap <down> <nop>
-inoremap <left> <nop>
-inoremap <right> <nop>
+nmap <up> <nop>
+nmap <down> <nop>
+nmap <left> <nop>
+nmap <right> <nop>
+imap <up> <nop>
+imap <down> <nop>
+imap <left> <nop>
+imap <right> <nop>
 
 nnoremap <m-j> :resize +2<CR>
 nnoremap <m-k> :resize -2<CR>
@@ -327,11 +375,19 @@ nnoremap <leader>t :bn<CR>
 nnoremap <leader>y :bN<CR>
 nnoremap <leader>q :bd!<CR>
 
+vnoremap < <gv
+vnoremap > >gv
+
 nnoremap ; :
 nnoremap : ;
 
+map H ^
+map L $
+
 cmap Wq wq
 cmap Q q
+
+inoremap jj <esc>
 
 " : deoplete languageclient neovim
 " <leader>
@@ -349,9 +405,13 @@ cmap Q q
 " <c-w> s      : hsplit
 " <c-w>HLJK    : move current split
 " <c-w> o      : maximize current buffer
+" gx           : open file location
 
 " join two lines : top one + J
 " increment col of numbers : g<c-a>
+
+" see colors
+" :so $VIMRUNTIME/syntax/hitest.vim
 
 " project setup
 "       .lsconf.json  : language server configs

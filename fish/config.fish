@@ -8,7 +8,8 @@ set FZF_DEFAULT_COMMAND     'rg --files --follow --hidden -g "!{venv,.git}" 2> /
 set FZF_CTRL_T_COMMAND      'rg --files --follow --hidden -g "!{venv,.git}" 2> /dev/null'
 
 function setup_fish_colors
-    set -U fish_greeting   Stars\x20\x3a\x29
+    # set -U fish_greeting   Stars\x20\x3a\x29
+    set -U fish_greeting            " Stars :)"
     set -U fish_color_command         eee8d5
     set -U fish_color_autosuggestion  586e75
     set -U fish_color_param           93a1a1
@@ -22,6 +23,8 @@ function fish_prompt
     set -l status_copy $status
     set -l target_color 10c891
     set -l ssh_color    1075c8
+
+    echo -sn ' '
 
     if set -q SSH_TTY
         echo -sn (set_color -o $ssh_color) '$ '
