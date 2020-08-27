@@ -35,11 +35,10 @@ Plug 'Shougo/echodoc.vim'
 
 call plug#end()
 
-" enable allows over-riding
-syntax enable
+syntax enable " allow over-riding
 
-set number
 "set numberwidth=5
+set number
 set cursorline
 set mouse=a
 set modelines=0
@@ -100,22 +99,25 @@ set formatoptions=crlnj " t: textwidth
 set background=dark
 
 let g:gruvbox_contrast_dark='medium' " hard medium soft
+let g:gruvbox_contrast_light='hard' " hard medium soft
 let g:gruvbox_italic=1
 
-colorscheme neodark " gruvbox deus Tomorrow-Night-Blue
-                     " bluewery quantum neodark nord OceanicNext
-                     " Tomorrow-Night-Eighties PaperColor mod8 evokai
-                     " apprentice antares afterglow thor CandyPaper
-                     " jellyx xterm16 hybrid arcadia jellybeans candycode
-                     " aquamarine PaperColor codedark desertink lucid luna
-                     "
-                     " Tomorrow cake16 solarized8_light_high
+colorscheme autumnleaf " gruvbox deus
+                       " nord OceanicNext quantum neodark
+                       " bluewery Tomorrow-Night-Blue
+                       " arcadia hybrid Tomorrow-Night-Eighties mod8 evokai
+                       " apprentice PaperColor luna CandyPaper jellybeans
+                       " antares afterglow codedark desertink lucid
+                       " xterm16 aquamarine oceanblack thor jellyx candycode
+                       " cake16 solarized8_light_high
+                       " Tomorrow eclipse autumnleaf aurora
 
+let g:loaded_node_provider=0
 let g:python3_host_prog='/usr/bin/python3'
 "set guifont=FiraCode-Retina:h14
 "set guicursor+=i:ver100-iCursor
 
-" customs
+" custom functions
 function! RandomColors()
     colorscheme random
     colorscheme
@@ -205,7 +207,7 @@ nnoremap <leader>k :TagbarToggle<CR>
 
 " vem tabline
 set showtabline=2
-let g:vem_tabline_show=2
+let g:vem_tabline_show=1
 let g:vem_tabline_show_number="buffnr"
 
 " tabular
@@ -318,7 +320,7 @@ augroup END
 
 call deoplete#custom#source('LanguageClient', 'min_pattern_length', 2)
 
-" custom
+" other settings
 if executable('fish')
     set shell=fish
     nnoremap <leader>s :vsp term://fish<CR>
@@ -329,7 +331,13 @@ else
     set shell=sh
     nnoremap <leader>s :vsp term://sh<CR>
 endif
+
+" seamless terminal navigation
 tnoremap <ESC> <C-\><C-n>
+tnoremap <c-h> <C-\><C-N><C-w>h
+tnoremap <c-j> <C-\><C-N><C-w>j
+tnoremap <c-k> <C-\><C-N><C-w>k
+tnoremap <c-l> <C-\><C-N><C-w>l
 
 if exists("tmux")
     let &t_SI="\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
@@ -345,7 +353,7 @@ endif
 "hi! Normal ctermbg=NONE guibg=NONE
 "hi! NonText ctermbg=NONE guibg=NONE guifg=NONE ctermfg=NONE
 
-" make comments bold-italic
+" make comments bolditalic
 highlight Comment cterm=bolditalic gui=bolditalic
 
 " make signcolumn prettier
@@ -356,6 +364,7 @@ au! BufWritePost $MYVIMRC source %
 map <ScrollWheelUp> <C-Y>
 map <ScrollWheelDown> <C-E>
 
+" disable arrow keys
 nmap <up> <nop>
 nmap <down> <nop>
 nmap <left> <nop>
@@ -370,7 +379,9 @@ nnoremap <m-k> :resize -2<CR>
 nnoremap <m-h> :vertical resize -2<CR>
 nnoremap <m-l> :vertical resize +2<CR>
 
+" utility
 nnoremap <C-w><C-l> :lclose<CR> :pclose<CR> :ccl<CR>
+nnoremap <leader>2 <c-w>o
 nnoremap <leader>t :bn<CR>
 nnoremap <leader>y :bN<CR>
 nnoremap <leader>q :bd!<CR>
@@ -384,10 +395,11 @@ nnoremap : ;
 map H ^
 map L $
 
+inoremap jj <esc>
+
+" fix common typos
 cmap Wq wq
 cmap Q q
-
-inoremap jj <esc>
 
 " : deoplete languageclient neovim
 " <leader>
@@ -401,20 +413,18 @@ inoremap jj <esc>
 " <leader>1 : NERDTreeFind
 " <leader>= : tabular
 
-" <c-w> v      : vsplit
-" <c-w> s      : hsplit
-" <c-w>HLJK    : move current split
-" <c-w> o      : maximize current buffer
-" gx           : open file location
+" <c-w> v             : vsplit
+" <c-w> s             : hsplit
+" <c-w>HLJK           : move current split
+" <c-w> o | <leader>2 : maximize current buffer
+" gx                  : open file location
 
-" join two lines : top one + J
-" increment col of numbers : g<c-a>
-
-" see colors
-" :so $VIMRUNTIME/syntax/hitest.vim
+" see colors :so $VIMRUNTIME/syntax/hitest.vim
 
 " project setup
+"       .nvimrc       : nvim setup like venv
 "       .lsconf.json  : language server configs
 "       setup.cfg     : flake8, pep8 etc setup
 "       .rgignore     : ripgrep ignore
-"       .nvimrc       : nvim setup like venv
+
+" autopep8 formatting -> setup.cfg under [flake8]
