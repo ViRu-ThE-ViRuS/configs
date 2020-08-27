@@ -102,18 +102,21 @@ let g:gruvbox_contrast_dark='medium' " hard medium soft
 let g:gruvbox_contrast_light='hard' " hard medium soft
 let g:gruvbox_italic=1
 
-colorscheme autumnleaf " gruvbox deus
-                       " nord OceanicNext quantum neodark
-                       " bluewery Tomorrow-Night-Blue
-                       " arcadia hybrid Tomorrow-Night-Eighties mod8 evokai
-                       " apprentice PaperColor luna CandyPaper jellybeans
-                       " antares afterglow codedark desertink lucid
-                       " xterm16 aquamarine oceanblack thor jellyx candycode
-                       " cake16 solarized8_light_high
-                       " Tomorrow eclipse autumnleaf aurora
+colorscheme eclipse " gruvbox deus
+                    " nord OceanicNext quantum neodark
+                    " bluewery Tomorrow-Night-Blue
+                    " arcadia hybrid Tomorrow-Night-Eighties mod8 evokai
+                    " apprentice PaperColor luna CandyPaper jellybeans default
+                    " antares afterglow codedark desertink lucid
+                    " xterm16 aquamarine oceanblack thor jellyx candycode
+
+                    " cake16 solarized8_light_high
+                    " Tomorrow eclipse autumnleaf aurora
 
 let g:loaded_node_provider=0
+let g:loaded_python_provider=0
 let g:python3_host_prog='/usr/bin/python3'
+
 "set guifont=FiraCode-Retina:h14
 "set guicursor+=i:ver100-iCursor
 
@@ -131,7 +134,7 @@ function! <SID>StripTrailingWhitespaces()
     call cursor(l, c)
 endfun
 autocmd BufWritePre * :call <SID>StripTrailingWhitespaces() " strip trailing
-autocmd BufWritePre * :retab                                " tab to spaces
+autocmd BufWritePre * :retab " tab to spaces
 
 " statusline
 function! GitPaddedBranch()
@@ -176,6 +179,7 @@ set statusline+=\ %#LineNr#
 let g:NERDTreeChDirMode=2
 let g:NERDTreeDirArrowExpandable='$'
 let g:NERDTreeDirArrowCollapsible='-'
+let g:NERDTreeMinimalUI=1
 
 nnoremap <leader>j :NERDTreeToggle<CR>
 nnoremap <leader>1 :NERDTreeFind<CR>
