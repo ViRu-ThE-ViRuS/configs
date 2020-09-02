@@ -22,24 +22,22 @@ Plug 'flazz/vim-colorschemes'
 Plug 'relastle/bluewery.vim'
 Plug 'morhetz/gruvbox'
 
-Plug 'itchyny/lightline.vim'
-Plug 'mengelbrecht/lightline-bufferline'
-Plug 'macthecadillac/lightline-gitdiff'
-Plug 'sainnhe/lightline_foobar.vim'
+Plug 'pacha/vem-tabline'
 
 Plug 'scrooloose/nerdcommenter'
 Plug 'jiangmiao/auto-pairs'
 Plug 'sbdchd/neoformat'
 
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
 Plug 'autozimu/LanguageClient-neovim', {'branch': 'next','do': 'bash install.sh'}
 Plug 'Shougo/neoinclude.vim'
 Plug 'Shougo/echodoc.vim'
 
 call plug#end()
 
-syntax on
+syntax enable " allow over-riding
 
+"set numberwidth=5
 set number
 set cursorline
 set mouse=a
@@ -63,25 +61,6 @@ set undodir=~/.config/undodir
 set lazyredraw
 set visualbell
 set termguicolors
-set background=dark
-colorscheme hybrid " gruvbox deus
-                    " solarized8_dark_high Tomorrow-Night-Blue
-                    " bluewery quantum neodark nord OceanicNext hybrid
-                    " jellybeans apprentice antares PaperColor afterglow
-                    " thor northpole CandyPaper Tomorrow-Night-Eighties
-                    " meta5 jellygrass jellyx xterm16 hybrid
-
-let g:gruvbox_contrast_dark='medium'
-
-set completeopt=menu,noinsert,noselect,menuone
-set guifont=FiraCode-Retina:h14
-set guicursor+=i:ver100-iCursor
-set formatoptions=crlnj " t: textwidth
-                        " c: comments wrap
-                        " r: comment leader
-                        " n: numbered lists
-                        " l: no auto break
-                        " j: remove comment leader when joining lines
 
 set nowrap
 set textwidth=79
@@ -108,43 +87,99 @@ set shortmess+=c
 set signcolumn=auto
 set omnifunc=syntaxcomplete#Complete
 
+set completeopt=menu,noinsert,noselect,menuone
+set formatoptions=crlnj " t: textwidth
+                        " c: comments wrap
+                        " r: comment leader
+                        " n: numbered lists
+                        " l: no auto break
+                        " j: remove comment leader when joining lines
+
+" colors
+set background=dark
+
+let g:gruvbox_contrast_dark='medium' " hard medium soft
+let g:gruvbox_contrast_light='hard' " hard medium soft
+let g:gruvbox_italic=1
+
+colorscheme eclipse " gruvbox deus
+                    " nord OceanicNext quantum neodark
+                    " bluewery Tomorrow-Night-Blue
+                    " arcadia hybrid Tomorrow-Night-Eighties mod8 evokai
+                    " apprentice PaperColor luna CandyPaper jellybeans default
+                    " antares afterglow codedark desertink lucid
+                    " xterm16 aquamarine oceanblack thor jellyx candycode
+
+                    " cake16 solarized8_light_high
+                    " Tomorrow eclipse autumnleaf aurora
+
+let g:loaded_node_provider=0
+let g:loaded_python_provider=0
 let g:python3_host_prog='/usr/bin/python3'
 
-" custom functions
-function! PlugLoaded(name)
-    return (
-        \ has_key(g:plugs, a:name) &&
-        \ isdirectory(g:plugs[a:name].dir) &&
-        \ stridx(&rtp, g:plugs[a:name].dir) >= 0)
-endfunction
+"set guifont=FiraCode-Retina:h14
+"set guicursor+=i:ver100-iCursor
 
-function! RandomLook()
+" custom functions
+function! RandomColors()
     colorscheme random
     colorscheme
 endfunction
-nnoremap <leader>e :call RandomLook()<CR>
+nnoremap <leader>e :call RandomColors()<CR>
 
-" trim trailing whitespaces
 function! <SID>StripTrailingWhitespaces()
     let l=line(".")
     let c=col(".")
     %s/\s\+$//e
     call cursor(l, c)
 endfun
-autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
+autocmd BufWritePre * :call <SID>StripTrailingWhitespaces() " strip trailing
+autocmd BufWritePre * :retab " tab to spaces
 
-" tabs to spaces
-autocmd BufWritePre * :retab
+" statusline
+function! GitPaddedBranch()
+    let l:branchname = fugitive#head()
+    return strlen(l:branchname) > 0?'   '.l:branchname.' ':''
+endfunction
+
+function! GitPaddedStatus()
+  let l:branchname = fugitive#head()
+  let [a,m,r] = GitGutterGetHunkSummary()
+  return strlen(l:branchname) > 0? printf('| +%d ~%d -%d  ', a, m, r):''
+endfunction
+
+function! PaddedModeName()
+    let l:paste_status = &paste
+    if l:paste_status == 1
+        return '  [PASTE] '
+    else
+        return '  '.toupper(get(g:mode_labels, mode(), mode())).' '
+    endif
+endfunction
+
+let g:mode_labels = {
+      \    'n': 'Normal', 'i': 'Insert', 'R': 'Replace', 'v': 'Visual', 'V': 'V-Line', "\<C-v>": 'V-Block',
+      \    'c': 'Command', 's': 'Select', 'S': 'S-Line', "\<C-s>": 'S-Block', 't': 'Terminal'
+      \}
+
+set statusline=
+set statusline+=%#PmenuSel#
+set statusline+=%{PaddedModeName()}
+set statusline+=%#Pmenu#
+set statusline+=%{GitPaddedBranch()}
+set statusline+=%{GitPaddedStatus()}
+set statusline+=%#CursorLine#
+set statusline+=\ %f
+set statusline+=%=
+set statusline+=\ %l:%c
+set statusline+=\ %p%%
+set statusline+=\ %#LineNr#
 
 " nerdtree
 let g:NERDTreeChDirMode=2
 let g:NERDTreeDirArrowExpandable='$'
 let g:NERDTreeDirArrowCollapsible='-'
-
-if PlugLoaded('scrooloose/nerdtree')
-    autocmd StdinReadPre * let s:std_in=1
-    autocmd VimEnter * if argc()==0 && !exists('s:std_in') | NERDTree | endif
-endif
+let g:NERDTreeMinimalUI=1
 
 nnoremap <leader>j :NERDTreeToggle<CR>
 nnoremap <leader>1 :NERDTreeFind<CR>
@@ -159,7 +194,7 @@ let g:NERDTreeIgnore=[
     \ '^venv$'
 \]
 
-let g:NERDTreeIndicatorMapCustom={
+let g:NERDTreeGitStatusIndicatorMapCustom={
     \ "Modified"  : "~",
     \ "Dirty"     : "~",
     \ "Staged"    : "+",
@@ -174,40 +209,10 @@ let g:tagbar_autofocus=1
 let g:tagbar_iconchars=['$', '-']
 nnoremap <leader>k :TagbarToggle<CR>
 
-" lightline
-"   bluewery deus hybrid luna gruvbox jellybeans darcula
-"   base16_ashes monochrome tomorrow ouo jelleybeans base16_grayscale
-"   srcery_alter tfw_dark
-let g:lightline = {
-            \ 'colorscheme': 'tfw_dark',
-            \ 'active': {
-            \   'left': [['mode', 'paste'], ['gitbranch', 'gitstatus', 'readonly']],
-            \   'right': [['filetype'], ['lineinfo'], ['percent']]
-            \ },
-            \ 'tabline': {'left': [['buffers']], 'right':[]},
-            \ 'component': {'gitstatus': '%<%{lightline_gitdiff#get_status()}'},
-            \ 'component_visible_condition': {'gitstatus': 'lightline_gitdiff#get_status() !=# ""'},
-            \ 'component_function': {'gitbranch': 'FugitiveHead'},
-            \ 'component_raw': {'buffers': 1},
-            \ 'component_expand': {
-            \   'buffers': 'lightline#bufferline#buffers',
-            \ },
-            \ 'component_type': {
-            \   'buffers': 'tabsel',
-            \ },
-            \ }
-
-" bufferline
+" vem tabline
 set showtabline=2
-let g:lightline#bufferline#clickable         = 1
-let g:lightline#bufferline#show_number       = 1
-let g:lightline#bufferline#filename_modifier = ':t'
-
-" gitdiff
-let g:lightline_gitdiff#indicator_added    = '+'
-let g:lightline_gitdiff#indicator_deleted  = '-'
-let g:lightline_gitdiff#indicator_modified = '~'
-let g:lightline_gitdiff#min_winwidth       = '70'
+let g:vem_tabline_show=1
+let g:vem_tabline_show_number="buffnr"
 
 " tabular
 vnoremap <leader>= :Tab /
@@ -217,20 +222,20 @@ let $FZF_DEFAULT_COMMAND='rg --files --follow --hidden -g "!{venv,.git}"'
 let g:fzf_preview_window='right:50%'
 let g:fzf_buffers_jump=1
 
-" status bar hide when in fzf
+set grepprg=rg\ --no-heading\ --vimgrep
+set grepformat=%f:%l:%c:%m
+
 autocmd! FileType fzf set laststatus=0 noshowmode noruler | autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 
 nnoremap <C-p> :Files<CR>
 nnoremap <leader>f :Rg<CR>
 
-set grepprg=rg\ --no-heading\ --vimgrep
-set grepformat=%f:%l:%c:%m
-
 " fugitive
-"if PlugLoaded('tpope/vim-fugitive')
-    "set statusline+=%{FugitiveStatusline()}
-"endif
 set diffopt+=vertical
+
+" nerd commenter
+let g:NERDCreateDefaultMappings=0
+map <leader>c<space> <plug>NERDCommenterToggle
 
 " autopairs
 let g:AutoPairs={'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`', '<':'>', '<<':''}
@@ -248,6 +253,13 @@ let g:gitgutter_sign_modified='~'
 let g:gitgutter_sign_removed='-'
 let g:gitgutter_use_location_list=1
 autocmd BufWritePost * silent! :GitGutter
+
+let g:gitgutter_map_keys=0
+nmap <leader>hs <plug>(GitGutterStageHunk)
+nmap <leader>hu <plug>(GitGutterUndoHunk)
+nmap <leader>hp <plug>(GitGutterPreviewHunk)
+nmap ]c         <plug>(GitGutterNextHunk)
+nmap [c         <plug>(GitGutterPrevHunk)
 
 " deoplete
 let g:deoplete#enable_at_startup=1
@@ -311,14 +323,15 @@ endfunction()
 
 augroup LSP
     autocmd!
-    autocmd FileType python,cpp,c,clojure call LSPKeyBinds()
 
+    autocmd FileType python,cpp,c,clojure call LSPKeyBinds()
+    autocmd FileType python,cpp,c,clojure set signcolumn=yes
     autocmd FileType clojure nmap <buffer> <silent> <C-f> <plug>(lcn-format)
 augroup END
 
 call deoplete#custom#source('LanguageClient', 'min_pattern_length', 2)
 
-" custom
+" other settings
 if executable('fish')
     set shell=fish
     nnoremap <leader>s :vsp term://fish<CR>
@@ -329,7 +342,13 @@ else
     set shell=sh
     nnoremap <leader>s :vsp term://sh<CR>
 endif
+
+" seamless terminal navigation
 tnoremap <ESC> <C-\><C-n>
+tnoremap <c-h> <C-\><C-N><C-w>h
+tnoremap <c-j> <C-\><C-N><C-w>j
+tnoremap <c-k> <C-\><C-N><C-w>k
+tnoremap <c-l> <C-\><C-N><C-w>l
 
 if exists("tmux")
     let &t_SI="\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
@@ -345,37 +364,51 @@ endif
 "hi! Normal ctermbg=NONE guibg=NONE
 "hi! NonText ctermbg=NONE guibg=NONE guifg=NONE ctermfg=NONE
 
+" make comments bolditalic
+highlight Comment cterm=bolditalic gui=bolditalic
+
+" make signcolumn prettier
+autocmd ColorScheme * highlight! link SignColumn LineNr
+
 au! BufWritePost $MYVIMRC source %
 
 map <ScrollWheelUp> <C-Y>
 map <ScrollWheelDown> <C-E>
 
-vnoremap < <gv
-vnoremap > >gv
-
-map H ^
-map L $
-
-nnoremap <up> <nop>
-nnoremap <down> <nop>
-inoremap <up> <nop>
-inoremap <down> <nop>
-inoremap <left> <nop>
-inoremap <right> <nop>
+" disable arrow keys
+nmap <up> <nop>
+nmap <down> <nop>
+nmap <left> <nop>
+nmap <right> <nop>
+imap <up> <nop>
+imap <down> <nop>
+imap <left> <nop>
+imap <right> <nop>
 
 nnoremap <m-j> :resize +2<CR>
 nnoremap <m-k> :resize -2<CR>
 nnoremap <m-h> :vertical resize -2<CR>
 nnoremap <m-l> :vertical resize +2<CR>
 
+" utility
 nnoremap <C-w><C-l> :lclose<CR> :pclose<CR> :ccl<CR>
+nnoremap <leader>2 <c-w>o
 nnoremap <leader>t :bn<CR>
 nnoremap <leader>y :bN<CR>
 nnoremap <leader>q :bd!<CR>
 
+vnoremap < <gv
+vnoremap > >gv
+
 nnoremap ; :
 nnoremap : ;
 
+map H ^
+map L $
+
+inoremap jj <esc>
+
+" fix common typos
 cmap Wq wq
 cmap Q q
 
@@ -391,16 +424,18 @@ cmap Q q
 " <leader>1 : NERDTreeFind
 " <leader>= : tabular
 
-" <c-w> v      : vsplit
-" <c-w> s      : hsplit
-" <c-w>HLJK    : move current split
-" <c-w> o      : maximize current buffer
+" <c-w> v             : vsplit
+" <c-w> s             : hsplit
+" <c-w>HLJK           : move current split
+" <c-w> o | <leader>2 : maximize current buffer
+" gx                  : open file location
 
-" join two lines : top one + J
-" increment col of numbers : g<c-a>
+" see colors :so $VIMRUNTIME/syntax/hitest.vim
 
 " project setup
+"       .nvimrc       : nvim setup like venv
 "       .lsconf.json  : language server configs
 "       setup.cfg     : flake8, pep8 etc setup
 "       .rgignore     : ripgrep ignore
-"       .nvimrc       : nvim setup like venv
+
+" autopep8 formatting -> setup.cfg under [flake8]

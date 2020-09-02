@@ -4,6 +4,7 @@ cp ~/.config/tmux/.tmux.conf tmux/.tmux.conf
 cp ~/.config/alacritty/* alacritty/
 cp -r ~/.config/fish/* fish/
 cp -r ~/.config/kitty/* kitty/
+cp ~/.config/emacs/init.el emacs/init.el
 cp ~/.config/zsh/.zshrc zsh/
 cp ~/.zshenv zsh/
 

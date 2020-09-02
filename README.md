@@ -33,6 +33,9 @@ The configuration file is `init.vim` located in `~/.config/nvim/`
 
 The configuration file is `.tmux.conf` located in `~/.config/tmux/`
 
+- setup terminfo profile using `tic -x ~/.config/tmux/terminfo` for colors and
+  fonts
+
 #### zsh
 - I use zsh as my secondary bash prompt...
 - It is installed by default on modern versions of *MacOS*

@@ -1,22 +1,30 @@
-set fish_greeting   Stars\x20\x3a\x29
+alias vim='nvim'
+alias rmd='rm -rf'
 
-set -Ux LSCOLORS    xxfxcxdxbxegedabagacad
-set -Ux EDITOR      nvim
+set EDITOR                  nvim
+set PATH                    $PATH /Users/viraat-chandra/Library/Python/3.7/bin/
+set PATH                    $PATH /usr/local/opt/llvm/bin/
+set FZF_DEFAULT_COMMAND     'rg --files --follow --hidden -g "!{venv,.git}" 2> /dev/null'
+set FZF_CTRL_T_COMMAND      'rg --files --follow --hidden -g "!{venv,.git}" 2> /dev/null'
 
-set -Ux FZF_DEFAULT_COMMAND 'rg --files --follow --hidden -g "!{venv,.git}" 2> /dev/null'
-set -Ux FZF_CTRL_T_COMMAND 'rg --files --follow --hidden -g "!{venv,.git}" 2> /dev/null'
+function setup_fish_colors
+    # set -U fish_greeting   Stars\x20\x3a\x29
+    set -U fish_greeting            " Stars :)"
+    set -U fish_color_command         eee8d5
+    set -U fish_color_autosuggestion  586e75
+    set -U fish_color_param           93a1a1
+    set -U fish_color_error           c82510
+    set -U fish_color_redirection     6c71c4
 
-set -Ux ZDOTDIR     ~/.config/zsh
-set -Ux GOPATH      ~/.dev/go
-set -Ux GOBIN       $GOPATH/bin
-
-set PATH            $PATH /Users/viraat-chandra/Library/Python/3.7/bin/
-set PATH            $PATH /usr/local/Cellar/llvm/10.0.0_3/bin/
+    set -U LSCOLORS     xxfxcxdxbxegedabagacad
+end
 
 function fish_prompt
     set -l status_copy $status
     set -l target_color 10c891
     set -l ssh_color    1075c8
+
+    echo -sn ' '
 
     if set -q SSH_TTY
         echo -sn (set_color -o $ssh_color) '$ '
@@ -33,9 +41,6 @@ function fish_prompt
     echo -ns (set_color -o $target_color) '-> '
     set_color normal
 end
-
-alias vim='nvim'
-alias rmd='rm -rf'
 
 function tmux --description 'Tmux multiplexer'
     command tmux -f ~/.config/tmux/.tmux.conf $argv
