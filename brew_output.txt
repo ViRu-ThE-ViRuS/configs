@@ -37,7 +37,7 @@ openssl@1.1
 p11-kit
 pcre2
 pkg-config
-python@3.8
+pyenv
 readline
 ripgrep
 sqlite
