@@ -93,12 +93,11 @@ set title
 set nofoldenable
 
 set completeopt=menu,noinsert,noselect,menuone
-set formatoptions=tcnjlr " t: textwidth autowrap
-                          " c: comments autowrap using textwidth
-                          " n: numbered lists autoindent
-                          " j: autoremove comment leader when joining lines
-                          " l: no auto break
-                          " r: autoinsert comment leader
+set formatoptions=cnjlr " c: comments autowrap using textwidth
+                        " n: numbered lists autoindent
+                        " j: autoremove comment leader when joining lines
+                        " l: no auto break
+                        " r: autoinsert comment leader
 
 " colors
 set background=dark
@@ -107,16 +106,16 @@ let g:gruvbox_contrast_dark='medium' " hard medium soft
 let g:gruvbox_contrast_light='hard' " hard medium soft
 let g:gruvbox_italic=1
 
-colorscheme cake16 " gruvbox deus
-                      " nord OceanicNext quantum neodark
-                      " bluewery Tomorrow-Night-Blue
-                      " arcadia hybrid Tomorrow-Night-Eighties mod8 evokai
-                      " apprentice PaperColor luna CandyPaper jellybeans default
-                      " antares afterglow codedark desertink lucid
-                      " lettuce aquamarine oceanblack thor jellyx candycode
+colorscheme luna " gruvbox deus
+                    " nord OceanicNext quantum neodark
+                    " bluewery Tomorrow-Night-Blue
+                    " arcadia hybrid Tomorrow-Night-Eighties mod8 evokai
+                    " apprentice PaperColor luna CandyPaper jellybeans default
+                    " antares afterglow codedark desertink lucid
+                    " lettuce aquamarine oceanblack thor jellyx candycode
 
-                      " cake16 solarized8_light_high
-                      " Tomorrow eclipse autumnleaf aurora
+                    " cake16 solarized8_light_high
+                    " Tomorrow eclipse autumnleaf aurora
 
 let g:loaded_node_provider=0
 let g:loaded_python_provider=0

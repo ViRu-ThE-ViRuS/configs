@@ -53,7 +53,7 @@ The configuration files are in `fish` located in `~/.config/fish/`
 - Brew list output in `brew_output.txt`
 - I use Fira Code font (Fira Code, Retina, 14pts)
 - I use Tiles window manager on MacOS
-- Periodically use `brew cleanup ; brew doctor`
+- Periodically use `brew cleanup --prune 5; brew doctor`
 - Periodically glance over unnecessary packages `brew leaves`
 - Periodically update brew casks after checking `brew cask outdated`
 - Brew python pip is seperate from normal pip

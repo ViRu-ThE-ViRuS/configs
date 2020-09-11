@@ -11,6 +11,6 @@ cp ~/.zshenv zsh/
 switch (uname)
     case Darwin
         brew list > brew_output.txt
-        brew cask list > brew_cask_output.txt
+        brew list --cask > brew_cask_output.txt
     case '*'
 end

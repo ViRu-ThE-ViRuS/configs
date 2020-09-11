@@ -1,5 +1,6 @@
 autoconf
 automake
+bdw-gc
 clang-format
 cmake
 cscope
@@ -12,6 +13,7 @@ gdbm
 gettext
 gmp
 gnutls
+guile
 htop
 isl
 jansson
@@ -21,6 +23,7 @@ libidn2
 libmpc
 libtasn1
 libtermkey
+libtool
 libunistring
 libuv
 libvterm
