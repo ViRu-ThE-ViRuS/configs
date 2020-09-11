@@ -69,10 +69,12 @@ set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 set expandtab
+set smarttab
 set autoindent
 set noshiftround
 set scrolloff=3
 set backspace=2
+set autoread
 
 set nohlsearch
 set incsearch
@@ -86,14 +88,16 @@ set clipboard^=unnamed,unnamedplus
 set shortmess+=c
 set signcolumn=auto
 set omnifunc=syntaxcomplete#Complete
+set display+=lastline
+set title
+set nofoldenable
 
 set completeopt=menu,noinsert,noselect,menuone
-set formatoptions=crlnj " t: textwidth
-                        " c: comments wrap
-                        " r: comment leader
-                        " n: numbered lists
+set formatoptions=cnjlr " c: comments autowrap using textwidth
+                        " n: numbered lists autoindent
+                        " j: autoremove comment leader when joining lines
                         " l: no auto break
-                        " j: remove comment leader when joining lines
+                        " r: autoinsert comment leader
 
 " colors
 set background=dark
@@ -102,13 +106,13 @@ let g:gruvbox_contrast_dark='medium' " hard medium soft
 let g:gruvbox_contrast_light='hard' " hard medium soft
 let g:gruvbox_italic=1
 
-colorscheme eclipse " gruvbox deus
+colorscheme luna " gruvbox deus
                     " nord OceanicNext quantum neodark
                     " bluewery Tomorrow-Night-Blue
                     " arcadia hybrid Tomorrow-Night-Eighties mod8 evokai
                     " apprentice PaperColor luna CandyPaper jellybeans default
                     " antares afterglow codedark desertink lucid
-                    " xterm16 aquamarine oceanblack thor jellyx candycode
+                    " lettuce aquamarine oceanblack thor jellyx candycode
 
                     " cake16 solarized8_light_high
                     " Tomorrow eclipse autumnleaf aurora

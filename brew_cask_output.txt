@@ -1,4 +1,5 @@
 cyberduck
 kitty
+transmission
 vlc
 vmware-fusion
