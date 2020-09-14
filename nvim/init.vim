@@ -106,11 +106,12 @@ let g:gruvbox_contrast_dark='medium' " hard medium soft
 let g:gruvbox_contrast_light='hard' " hard medium soft
 let g:gruvbox_italic=1
 
-colorscheme luna " gruvbox deus
+colorscheme xterm16 " gruvbox deus
                     " nord OceanicNext quantum neodark
                     " bluewery Tomorrow-Night-Blue
                     " arcadia hybrid Tomorrow-Night-Eighties mod8 evokai
                     " apprentice PaperColor luna CandyPaper jellybeans default
+                    " materialtheme materialbox
                     " antares afterglow codedark desertink lucid
                     " lettuce aquamarine oceanblack thor jellyx candycode
 
@@ -365,7 +366,8 @@ endif
 highlight Comment cterm=bolditalic gui=bolditalic
 
 " make signcolumn prettier
-autocmd ColorScheme * highlight! link SignColumn LineNr
+"autocmd ColorScheme * highlight! link SignColumn LineNr
+autocmd BufEnter,ColorScheme * highlight clear SignColumn
 
 au! BufWritePost $MYVIMRC source %
 

@@ -2,10 +2,14 @@ alias vim='nvim'
 alias rmd='rm -rf'
 
 set EDITOR                  nvim
-set PATH                    $PATH /Users/viraat-chandra/Library/Python/3.7/bin/
-set PATH                    $PATH /usr/local/opt/llvm/bin/
 set FZF_DEFAULT_COMMAND     'rg --files --follow --hidden -g "!{venv,.git}" 2> /dev/null'
 set FZF_CTRL_T_COMMAND      'rg --files --follow --hidden -g "!{venv,.git}" 2> /dev/null'
+
+set   -g   fish_user_paths   "/Users/viraat-chandra/Library/Python/3.7/bin"   $fish_user_paths
+set   -g   fish_user_paths   "/usr/local/opt/llvm/bin"                       $fish_user_paths
+set   -g   fish_user_paths   "/usr/local/sbin"                               $fish_user_paths
+# set PATH                    $PATH /Users/viraat-chandra/Library/Python/3.7/bin/
+# set PATH                    $PATH /usr/local/opt/llvm/bin/
 
 function setup_fish_colors
     # set -U fish_greeting   Stars\x20\x3a\x29
@@ -61,3 +65,6 @@ end
 function vm_list_running --description 'List Running VMs (VMWare)'
     command vmrun -T ws list $argv
 end
+
+# pyenv config
+status --is-interactive; and source (pyenv init -|psub)
