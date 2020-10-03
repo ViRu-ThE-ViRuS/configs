@@ -38,7 +38,8 @@ call plug#end()
 syntax enable " allow over-riding
 
 "set numberwidth=5
-set number
+set nonumber
+set signcolumn=yes
 set cursorline
 set mouse=a
 set modelines=0
@@ -86,7 +87,6 @@ set noshowmode
 set noshowcmd
 set clipboard^=unnamed,unnamedplus
 set shortmess+=c
-set signcolumn=auto
 set omnifunc=syntaxcomplete#Complete
 set display+=lastline
 set title
@@ -106,16 +106,17 @@ let g:gruvbox_contrast_dark='medium' " hard medium soft
 let g:gruvbox_contrast_light='hard' " hard medium soft
 let g:gruvbox_italic=1
 
-colorscheme luna " gruvbox deus
-                    " nord OceanicNext quantum neodark
-                    " bluewery Tomorrow-Night-Blue
-                    " arcadia hybrid Tomorrow-Night-Eighties mod8 evokai
-                    " apprentice PaperColor luna CandyPaper jellybeans default
-                    " antares afterglow codedark desertink lucid
-                    " lettuce aquamarine oceanblack thor jellyx candycode
+colorscheme codedark " gruvbox deus
+                " nord OceanicNext quantum neodark
+                " bluewery Tomorrow-Night-Blue
+                " arcadia hybrid Tomorrow-Night-Eighties mod8 evokai
+                " apprentice PaperColor luna CandyPaper jellybeans default
+                " materialtheme materialbox
+                " antares afterglow codedark desertink lucid slate
+                " aquamarine oceanblack thor jellyx candycode murphy Dim
 
-                    " cake16 solarized8_light_high
-                    " Tomorrow eclipse autumnleaf aurora
+                " cake16 solarized8_light_high
+                " Tomorrow eclipse autumnleaf aurora White2
 
 let g:loaded_node_provider=0
 let g:loaded_python_provider=0
@@ -214,7 +215,7 @@ let g:tagbar_iconchars=['$', '-']
 nnoremap <leader>k :TagbarToggle<CR>
 
 " vem tabline
-set showtabline=2
+set showtabline=1
 let g:vem_tabline_show=1
 let g:vem_tabline_show_number="buffnr"
 
@@ -225,6 +226,7 @@ vnoremap <leader>= :Tab /
 let $FZF_DEFAULT_COMMAND='rg --files --follow --hidden -g "!{venv,.git}"'
 let g:fzf_preview_window='right:50%'
 let g:fzf_buffers_jump=1
+let g:fzf_layout={'down': '40%'}
 
 set grepprg=rg\ --no-heading\ --vimgrep
 set grepformat=%f:%l:%c:%m
@@ -257,6 +259,7 @@ let g:gitgutter_sign_modified='~'
 let g:gitgutter_sign_removed='-'
 let g:gitgutter_use_location_list=1
 autocmd BufWritePost * silent! :GitGutter
+autocmd BufEnter * silent! :GitGutter
 
 let g:gitgutter_map_keys=0
 nmap <leader>hs <plug>(GitGutterStageHunk)
@@ -372,7 +375,8 @@ endif
 highlight Comment cterm=bolditalic gui=bolditalic
 
 " make signcolumn prettier
-autocmd ColorScheme * highlight! link SignColumn LineNr
+"autocmd ColorScheme * highlight! link SignColumn LineNr
+autocmd BufEnter,ColorScheme * highlight clear SignColumn
 
 au! BufWritePost $MYVIMRC source %
 
