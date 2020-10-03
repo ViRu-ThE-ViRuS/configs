@@ -106,17 +106,17 @@ let g:gruvbox_contrast_dark='medium' " hard medium soft
 let g:gruvbox_contrast_light='hard' " hard medium soft
 let g:gruvbox_italic=1
 
-colorscheme desertink " gruvbox deus
-                   " nord OceanicNext quantum neodark
-                   " bluewery Tomorrow-Night-Blue
-                   " arcadia hybrid Tomorrow-Night-Eighties mod8 evokai
-                   " apprentice PaperColor luna CandyPaper jellybeans default
-                   " materialtheme materialbox
-                   " antares afterglow codedark desertink lucid
-                   " aquamarine oceanblack thor jellyx candycode murphy
+colorscheme codedark " gruvbox deus
+                " nord OceanicNext quantum neodark
+                " bluewery Tomorrow-Night-Blue
+                " arcadia hybrid Tomorrow-Night-Eighties mod8 evokai
+                " apprentice PaperColor luna CandyPaper jellybeans default
+                " materialtheme materialbox
+                " antares afterglow codedark desertink lucid slate
+                " aquamarine oceanblack thor jellyx candycode murphy Dim
 
-                   " cake16 solarized8_light_high
-                   " Tomorrow eclipse autumnleaf aurora
+                " cake16 solarized8_light_high
+                " Tomorrow eclipse autumnleaf aurora White2
 
 let g:loaded_node_provider=0
 let g:loaded_python_provider=0
@@ -215,7 +215,7 @@ let g:tagbar_iconchars=['$', '-']
 nnoremap <leader>k :TagbarToggle<CR>
 
 " vem tabline
-set showtabline=2
+set showtabline=1
 let g:vem_tabline_show=1
 let g:vem_tabline_show_number="buffnr"
 
