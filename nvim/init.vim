@@ -90,8 +90,9 @@ set shortmess+=c
 set omnifunc=syntaxcomplete#Complete
 set display+=lastline
 set title
-set nofoldenable
 
+" set nofoldenable
+set foldmethod=manual
 set completeopt=menu,noinsert,noselect,menuone
 set formatoptions=cnjlr " c: comments autowrap using textwidth
                         " n: numbered lists autoindent
@@ -106,7 +107,7 @@ let g:gruvbox_contrast_dark='medium' " hard medium soft
 let g:gruvbox_contrast_light='hard' " hard medium soft
 let g:gruvbox_italic=1
 
-colorscheme codedark " gruvbox deus
+colorscheme OceanicNext " gruvbox deus
                 " nord OceanicNext quantum neodark
                 " bluewery Tomorrow-Night-Blue
                 " arcadia hybrid Tomorrow-Night-Eighties mod8 evokai
@@ -401,6 +402,8 @@ nnoremap <leader>q :bd!<CR>
 vnoremap < <gv
 vnoremap > >gv
 
+nnoremap <space> za
+
 nnoremap ; :
 nnoremap : ;
 
@@ -429,7 +432,6 @@ cmap Q q
 " <c-w> s             : hsplit
 " <c-w>HLJK           : move current split
 " <c-w> o | <leader>2 : maximize current buffer
-" gx                  : open file location
 
 " see colors :so $VIMRUNTIME/syntax/hitest.vim
 
