@@ -107,17 +107,17 @@ let g:gruvbox_contrast_dark='medium' " hard medium soft
 let g:gruvbox_contrast_light='hard' " hard medium soft
 let g:gruvbox_italic=1
 
-colorscheme OceanicNext " gruvbox deus
-                " nord OceanicNext quantum neodark
-                " bluewery Tomorrow-Night-Blue
-                " arcadia hybrid Tomorrow-Night-Eighties mod8 evokai
-                " apprentice PaperColor luna CandyPaper jellybeans default
-                " materialtheme materialbox
-                " antares afterglow codedark desertink lucid slate
-                " aquamarine oceanblack thor jellyx candycode murphy Dim
+colorscheme Tomorrow-Night-Blue " gruvbox deus
+                                " nord OceanicNext quantum neodark
+                                " bluewery Tomorrow-Night-Blue
+                                " arcadia hybrid Tomorrow-Night-Eighties mod8 evokai
+                                " apprentice PaperColor luna CandyPaper jellybeans default
+                                " materialtheme materialbox
+                                " antares afterglow codedark desertink lucid slate
+                                " aquamarine oceanblack thor jellyx candycode murphy Dim
 
-                " cake16 solarized8_light_high
-                " Tomorrow eclipse autumnleaf aurora White2
+                                " cake16 solarized8_light_high
+                                " Tomorrow eclipse autumnleaf aurora White2
 
 let g:loaded_node_provider=0
 let g:loaded_python_provider=0
@@ -394,7 +394,6 @@ nnoremap <m-l> :vertical resize +2<CR>
 
 " utility
 nnoremap <C-w><C-l> :lclose<CR> :pclose<CR> :ccl<CR>
-nnoremap <leader>2 <c-w>o
 nnoremap <leader>t :bn<CR>
 nnoremap <leader>y :bN<CR>
 nnoremap <leader>q :bd!<CR>
@@ -428,6 +427,8 @@ cmap Q q
 " <leader>1 : NERDTreeFind
 " <leader>= : tabular
 
+" <leader>2 : AutoHighlightToggle
+
 " <c-w> v             : vsplit
 " <c-w> s             : hsplit
 " <c-w>HLJK           : move current split
@@ -442,3 +443,25 @@ cmap Q q
 "       .rgignore     : ripgrep ignore
 
 " autopep8 formatting -> setup.cfg under [flake8]
+
+" custom functions
+nnoremap <leader>2 :if AutoHighlightToggle()<Bar>set hls<Bar>endif<CR>
+function! AutoHighlightToggle()
+  let @/ = ''
+  if exists('#auto_highlight')
+    au! auto_highlight
+    augroup! auto_highlight
+    setl updatetime=5000
+    echo 'Highlight current word: off'
+    set nohlsearch
+    return 0
+  else
+    augroup auto_highlight
+      au!
+      au CursorHold * let @/ = '\V\<'.escape(expand('<cword>'), '\').'\>'
+    augroup end
+    setl updatetime=500
+    echo 'Highlight current word: ON'
+    return 1
+  endif
+endfunction
