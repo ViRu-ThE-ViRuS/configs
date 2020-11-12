@@ -36,7 +36,7 @@
 
 ;; smoother scrolling
 (setq scroll-margin 10
-   scroll-step 5
+   scroll-step 10
    next-line-add-newlines nil
    scroll-conservatively 10000
    scroll-preserve-screen-position 1)
@@ -63,7 +63,8 @@
  initial-major-mode 'org-mode
  sentence-end-double-space nil
  confirm-kill-emacs 'y-or-n-p
- help-window-select t)
+ help-window-select t
+ set-fringe-mode 10)
 
 (fset 'yer-of-no-p 'y-or-n-p)
 (delete-selection-mode 1) ;; delete selected text when typing
@@ -97,16 +98,6 @@
 (setq split-height-threshold 0)
 (setq split-width-threshold nil)
 
-;; evil mode
-(use-package evil
-  :config
-  (evil-mode 1)
-  (setq x-select-enable-clipboard nil))
-
-(use-package evil-leader
-  :config
-  (evil-leader/set-leader "\\"))
-
 ;; clipboard management
 (use-package simpleclip
   :config
@@ -125,3 +116,78 @@
   :config
   (rich-minority-mode 1)
   (setf rm-blacklist ""))
+
+;; File tree
+(use-package neotree
+  :config
+  (setq neo-window-width 32
+        neo-create-file-auto-open t
+        neo-banner-message nil
+        neo-show-updir-line t
+        neo-window-fixed-size nil
+        neo-vc-integration nil
+        neo-mode-line-type 'neotree
+        neo-smart-open t
+        neo-show-hidden-files t
+        neo-mode-line-type 'none
+        neo-auto-indent-point t)
+  (setq neo-theme (if (display-graphic-p) 'nerd 'arrow))
+  (setq neo-hidden-regexp-list '("venv" "\\.pyc$" "~$" "\\.git" "__pycache__" ".DS_Store")))
+
+;; evil leader
+(require 'evil-leader)
+(global-evil-leader-mode)
+
+;; evil mode
+(use-package evil
+  :config
+  (evil-mode 1)
+  (setq x-select-enable-clipboard nil)
+  (evil-set-leader 'normal (kbd "\\")))
+
+;; vi-like tilde on empty lines
+(use-package vi-tilde-fringe
+  :config
+  (global-vi-tilde-fringe-mode 1))
+
+;; fuzzy option completion
+(use-package ivy
+  :diminish
+  :config
+  (ivy-mode 1)
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-count-format "(%d/%d) ")
+  (setq enable-recursive-minibuffers t)
+  (setq ivy-re-builders-alist
+      '((swiper . ivy--regex-plus)
+        (t      . ivy--regex-fuzzy))))
+
+(use-package ivy-rich
+  :config
+  (ivy-rich-mode 1)
+  (setq ivy-rich-path-style 'abbrev))
+
+;; local finder
+(use-package swiper)
+
+;; better menus
+(use-package counsel
+  :config
+  (global-set-key (kbd "M-x") 'counsel-M-x)
+  (global-set-key (kbd "s-P") 'counsel-M-x)
+  (global-set-key (kbd "C-x C-f") 'counsel-find-file))
+
+;; gitgutter
+(use-package git-gutter
+  :diminish
+  :config
+  (global-git-gutter-mode 't)
+  (set-face-background 'git-gutter:modified 'nil)
+  (set-face-foreground 'git-gutter:added "green4")
+  (set-face-foreground 'git-gutter:deleted "red"))
+
+;; terminal
+(use-package shell-pop
+  :config
+  (custom-set-variables
+   '(shell-pop-shell-type (quote ("ansi-term" "*ansi-term*" (lambda nil (ansi-term shell-pop-term-shell)))))))

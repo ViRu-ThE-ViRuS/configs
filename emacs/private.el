@@ -1,6 +1,6 @@
 ;; general
 (blink-cursor-mode 0) ;; disable blinking cursor
-;; (global-display-line-numbers-mode)
+(global-display-line-numbers-mode)
 
 ;; theme
 (use-package gruvbox-theme)
@@ -8,7 +8,7 @@
 
 ;; font
 (setq-default line-spacing 1)
-(set-frame-font "Fira Code Retina 12" nil t)
+(set-frame-font "Fira Code Retina 13" nil t)
 (mac-auto-operator-composition-mode t)
 
 ;; macos keybinds
@@ -18,6 +18,7 @@
 (global-set-key (kbd "s-q") 'save-buffers-kill-emacs)
 (global-set-key (kbd "s-a") 'mark-whole-buffer)
 (global-set-key (kbd "s-w") (kbd "C-x 0"))
+(global-set-key (kbd "C-x C") (lambda () (interactive) (find-file "~/.config/emacs/init.el")))
 
 ;;      editing
 (global-set-key (kbd "s-<backspace>") 'kill-whole-line) ;; kill line
@@ -39,3 +40,16 @@
 ;;      buffer navigation
 (global-set-key (kbd "s-<") 'previous-buffer)
 (global-set-key (kbd "s->") 'next-buffer)
+
+;;      evil mode keymaps
+(define-key evil-motion-state-map (kbd "C-h") 'evil-window-left)
+(define-key evil-motion-state-map (kbd "C-j") 'evil-window-down)
+(define-key evil-motion-state-map (kbd "C-k") 'evil-window-up)
+(define-key evil-motion-state-map (kbd "C-l") 'evil-window-right)
+
+(evil-leader/set-key
+  "j" 'neotree-toggle
+  "p" 'find-file
+  "t" 'ivy-switch-buffer
+  "f" 'swiper
+  "s" 'shell-pop)
