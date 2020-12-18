@@ -1,6 +1,6 @@
 ;; general
 (blink-cursor-mode 0) ;; disable blinking cursor
-(global-display-line-numbers-mode)
+;; (global-display-line-numbers-mode)
 
 ;; theme
 (use-package gruvbox-theme)

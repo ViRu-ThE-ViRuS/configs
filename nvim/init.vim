@@ -107,21 +107,21 @@ let g:gruvbox_contrast_dark='medium' " hard medium soft
 let g:gruvbox_contrast_light='hard' " hard medium soft
 let g:gruvbox_italic=1
 
-colorscheme Tomorrow-Night-Blue " gruvbox deus
-                                " nord OceanicNext quantum neodark
-                                " bluewery Tomorrow-Night-Blue
-                                " arcadia hybrid Tomorrow-Night-Eighties mod8 evokai
-                                " apprentice PaperColor luna CandyPaper jellybeans default
-                                " materialtheme materialbox
-                                " antares afterglow codedark desertink lucid slate
-                                " aquamarine oceanblack thor jellyx candycode murphy Dim
+colorscheme ansi_blows " gruvbox deus
+                 " nord OceanicNext quantum neodark
+                 " bluewery Tomorrow-Night-Blue
+                 " arcadia hybrid Tomorrow-Night-Eighties mod8 evokai
+                 " apprentice PaperColor luna CandyPaper jellybeans default
+                 " materialtheme materialbox
+                 " antares afterglow codedark desertink lucid slate
+                 " aquamarine oceanblack thor jellyx candycode murphy Dim
 
-                                " cake16 solarized8_light_high
-                                " Tomorrow eclipse autumnleaf aurora White2
+                 " cake16 solarized8_light_high
+                 " Tomorrow eclipse autumnleaf aurora White2
 
 let g:loaded_node_provider=0
 let g:loaded_python_provider=0
-let g:python3_host_prog='/usr/bin/python3'
+let g:python3_host_prog='/usr/local/bin/python3'
 
 "set guifont=FiraCode-Retina:h14
 "set guicursor+=i:ver100-iCursor
@@ -140,7 +140,7 @@ function! <SID>StripTrailingWhitespaces()
     call cursor(l, c)
 endfun
 autocmd BufWritePre * :call <SID>StripTrailingWhitespaces() " strip trailing
-autocmd BufWritePre * :retab " tab to spaces
+" autocmd BufWritePre * :retab " tab to spaces
 
 " statusline
 function! GitPaddedBranch()
@@ -285,30 +285,47 @@ highlight link EchoDocFloat Pmenu
 
 " languageclient neovim
 set completefunc=LanguageClient#complete
-command! Errors execute "lopen"
+
+let g:LanguageClient_loggingLevel = 'DEBUG'
+let g:LanguageClient_loggingFile  = expand('~/.local/share/nvim/LanguageClient.log')
+let g:LanguageClient_serverStderr = expand('~/.local/share/nvim/LanguageServer.log')
+
+let g:LanguageClient_diagnosticsDisplay={
+ \         1: {
+ \             "name": "Error",
+ \             "signText": "x",
+ \             "signTexthl": "",
+ \             "virtualTexthl": "",
+ \             "texthl": "",
+ \         },
+ \         2: {
+ \             "name": "Warning",
+ \             "signText": "!",
+ \             "signTexthl": "",
+ \             "virtualTexthl": "",
+ \             "texthl": "",
+ \         },
+ \         3: {
+ \             "name": "Information",
+ \             "signText": "i",
+ \             "signTexthl": "",
+ \             "virtualTexthl": "",
+ \             "texthl": "",
+ \         },
+ \         4: {
+ \             "name": "Hint",
+ \             "signText": "h",
+ \             "signTexthl": "",
+ \             "virtualTexthl": "",
+ \             "texthl": "",
+ \         },
+ \     }
+
 
 let g:LanguageClient_changeThrottle=0.5
 let g:LanguageClient_useVirtualText='No'
 let g:LanguageClient_settingsPath='.lsconf.json'
 let g:LanguageClient_diagnosticsList='Location'
-let g:LanguageClient_diagnosticsDisplay={
-  \       '1': {
-  \           'name'          : 'Error',
-  \           'signText'      : 'x',
-  \       },
-  \       '2': {
-  \           'name'          : 'Warning',
-  \           'signText'      : '!',
-  \       },
-  \       '3': {
-  \           'name'          : 'Information',
-  \           'signText'      : 'i',
-  \       },
-  \       '4': {
-  \           'name'          : 'Hint',
-  \           'signText'      : 'h',
-  \       },
-  \  }
 
 let g:LanguageClient_serverCommands={
     \ 'python' : ['pyls'],
@@ -372,6 +389,7 @@ highlight Comment cterm=bolditalic gui=bolditalic
 "autocmd ColorScheme * highlight! link SignColumn LineNr
 autocmd BufEnter,ColorScheme * highlight clear SignColumn
 
+command! Errors execute "lopen"
 au! BufWritePost $MYVIMRC source %
 
 map <ScrollWheelUp> <C-Y>
@@ -402,6 +420,7 @@ vnoremap < <gv
 vnoremap > >gv
 
 nnoremap <space> za
+nnoremap <leader>2 <C-w>o
 
 nnoremap ; :
 nnoremap : ;
@@ -426,8 +445,9 @@ cmap Q q
 " <leader>s : vsp term://shell : split terminal
 " <leader>1 : NERDTreeFind
 " <leader>= : tabular
+" :Errors   : Error list
 
-" <leader>2 : AutoHighlightToggle
+" <leader>3 : AutoHighlightToggle
 
 " <c-w> v             : vsplit
 " <c-w> s             : hsplit
@@ -445,7 +465,7 @@ cmap Q q
 " autopep8 formatting -> setup.cfg under [flake8]
 
 " custom functions
-nnoremap <leader>2 :if AutoHighlightToggle()<Bar>set hls<Bar>endif<CR>
+nnoremap <leader>3 :if AutoHighlightToggle()<Bar>set hls<Bar>endif<CR>
 function! AutoHighlightToggle()
   let @/ = ''
   if exists('#auto_highlight')

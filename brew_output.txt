@@ -1,6 +1,7 @@
 autoconf
 automake
 bdw-gc
+c-ares
 cairo
 clang-format
 cmake
@@ -27,7 +28,9 @@ icu4c
 isl
 jansson
 jasper
+jemalloc
 jpeg
+libev
 libevent
 libffi
 libidn2
@@ -50,6 +53,7 @@ ncurses
 neovim
 netpbm
 nettle
+nghttp2
 openjdk
 openssl@1.1
 p11-kit

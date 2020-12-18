@@ -36,7 +36,7 @@
 
 ;; smoother scrolling
 (setq scroll-margin 10
-   scroll-step 10
+   scroll-step 5
    next-line-add-newlines nil
    scroll-conservatively 10000
    scroll-preserve-screen-position 1)
@@ -135,6 +135,7 @@
   (setq neo-hidden-regexp-list '("venv" "\\.pyc$" "~$" "\\.git" "__pycache__" ".DS_Store")))
 
 ;; evil leader
+(add-to-list 'load-path "~/.config/emacs/lisp/")
 (require 'evil-leader)
 (global-evil-leader-mode)
 
