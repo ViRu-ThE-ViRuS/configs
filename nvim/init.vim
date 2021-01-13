@@ -37,13 +37,13 @@ call plug#end()
 
 syntax enable " allow over-riding
 
-"set numberwidth=5
-set nonumber
+set number
 set signcolumn=yes
 set cursorline
 set mouse=a
 set modelines=0
 set matchpairs+=<:>
+"set numberwidth=5
 
 set history=100
 set hidden
@@ -107,17 +107,17 @@ let g:gruvbox_contrast_dark='medium' " hard medium soft
 let g:gruvbox_contrast_light='hard' " hard medium soft
 let g:gruvbox_italic=1
 
-colorscheme ansi_blows " gruvbox deus
-                 " nord OceanicNext quantum neodark
-                 " bluewery Tomorrow-Night-Blue
-                 " arcadia hybrid Tomorrow-Night-Eighties mod8 evokai
-                 " apprentice PaperColor luna CandyPaper jellybeans default
-                 " materialtheme materialbox
-                 " antares afterglow codedark desertink lucid slate
-                 " aquamarine oceanblack thor jellyx candycode murphy Dim
+colorscheme candycode " gruvbox deus
+                      " nord OceanicNext quantum neodark
+                      " bluewery Tomorrow-Night-Blue
+                      " arcadia hybrid Tomorrow-Night-Eighties mod8 evokai
+                      " apprentice PaperColor luna CandyPaper jellybeans default
+                      " materialtheme materialbox
+                      " antares afterglow codedark desertink lucid slate
+                      " aquamarine oceanblack thor jellyx candycode murphy Dim
 
-                 " cake16 solarized8_light_high
-                 " Tomorrow eclipse autumnleaf aurora White2
+                      " cake16 solarized8_light_high
+                      " Tomorrow eclipse autumnleaf aurora White2
 
 let g:loaded_node_provider=0
 let g:loaded_python_provider=0

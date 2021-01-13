@@ -21,6 +21,7 @@ gmp
 gnutls
 gobject-introspection
 graphite2
+gsl
 guile
 harfbuzz
 htop
@@ -35,6 +36,7 @@ libevent
 libffi
 libidn2
 libmpc
+libomp
 libpng
 libtasn1
 libtermkey
