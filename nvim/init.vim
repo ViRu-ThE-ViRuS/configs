@@ -37,7 +37,7 @@ call plug#end()
 
 syntax enable " allow over-riding
 
-set number
+set nonumber
 set signcolumn=yes
 set cursorline
 set mouse=a
@@ -320,7 +320,6 @@ let g:LanguageClient_diagnosticsDisplay={
  \             "texthl": "",
  \         },
  \     }
-
 
 let g:LanguageClient_changeThrottle=0.5
 let g:LanguageClient_useVirtualText='No'
