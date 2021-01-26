@@ -1,6 +1,6 @@
 ;; general
 (blink-cursor-mode 0) ;; disable blinking cursor
-;; (global-display-line-numbers-mode)
+(global-display-line-numbers-mode)
 
 ;; theme
 (use-package gruvbox-theme)
@@ -49,7 +49,7 @@
 
 (evil-leader/set-key
   "j" 'neotree-toggle
-  "p" 'find-file
+  "p" 'counsel-find-file
   "t" 'ivy-switch-buffer
   "f" 'swiper
   "s" 'shell-pop)

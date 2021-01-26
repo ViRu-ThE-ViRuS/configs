@@ -1,6 +1,6 @@
 ;; setup repositories
 (require 'package)
-(add-to-list 'package-archives (cons "melpa" "https://melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (package-initialize)
 
 ;; configure use-package
@@ -72,18 +72,17 @@
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (setq require-final-newline t)
-
 ;; transparent title bar macos
 (when (memq window-system '(mac ns))
   (add-to-list 'default-frame-alist '(ns-appearance . light))
   (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t)))
 
-;; toolbar and scrollbar
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-
 ;; filename in title bar
 (setq-default frame-title-format "%b")
+
+;; toolbar and scroll bar
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
 
 (global-visual-line-mode 0) ;; wrap lines
 (global-hl-line-mode 1) ;; hl current line
@@ -136,8 +135,9 @@
 
 ;; evil leader
 (add-to-list 'load-path "~/.config/emacs/lisp/")
-(require 'evil-leader)
-(global-evil-leader-mode)
+(use-package evil-leader
+  :config
+  (global-evil-leader-mode))
 
 ;; evil mode
 (use-package evil
@@ -154,29 +154,43 @@
 ;; fuzzy option completion
 (use-package ivy
   :diminish
+  :bind
+  ("C-s"     . swiper)
+  ("M-x"     . counsel-M-x)
+  ("C-x C-f" . counsel-find-file)
   :config
   (ivy-mode 1)
   (setq ivy-use-virtual-buffers t)
-  (setq ivy-count-format "(%d/%d) ")
+  (setq ivy-count-format         ""
+        ivy-initial-inputs-alist nil)
   (setq enable-recursive-minibuffers t)
   (setq ivy-re-builders-alist
       '((swiper . ivy--regex-plus)
         (t      . ivy--regex-fuzzy))))
 
 (use-package ivy-rich
+  :after counsel
   :config
   (ivy-rich-mode 1)
   (setq ivy-rich-path-style 'abbrev))
 
 ;; local finder
-(use-package swiper)
+(use-package swiper
+  :config
+  (global-set-key "\C-s" 'swiper)
+  (global-set-key "\C-r" 'swiper)
+  (global-set-key (kbd "s-f") 'swiper))
 
 ;; better menus
 (use-package counsel
   :config
   (global-set-key (kbd "M-x") 'counsel-M-x)
   (global-set-key (kbd "s-P") 'counsel-M-x)
+  (global-set-key (kbd "s-o") 'counsel-find-file)
   (global-set-key (kbd "C-x C-f") 'counsel-find-file))
+
+(use-package smex) ;; recent commands in M-x
+(use-package flx)  ;; fuzzy matching
 
 ;; gitgutter
 (use-package git-gutter
