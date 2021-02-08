@@ -47,9 +47,38 @@
 (define-key evil-motion-state-map (kbd "C-k") 'evil-window-up)
 (define-key evil-motion-state-map (kbd "C-l") 'evil-window-right)
 
+(evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
+(evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
+(evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
+(evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
+(evil-define-key 'normal neotree-mode-map (kbd "g") 'neotree-refresh)
+(evil-define-key 'normal neotree-mode-map (kbd "n") 'neotree-next-line)
+(evil-define-key 'normal neotree-mode-map (kbd "p") 'neotree-previous-line)
+(evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
+(evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle)
+
+(evil-define-key nil evil-normal-state-map
+  (kbd "C-p") 'counsel-find-file)
+
+(with-eval-after-load 'evil-maps
+  (define-key evil-motion-state-map (kbd ":") 'evil-repeat-find-char)
+  (define-key evil-motion-state-map (kbd ";") 'evil-ex))
+
+(setq evil-search-module 'swiper)
+(setq evil-vsplit-window-right 't)
+(setq evil-vsplit-window-below 't)
+(setq evil-ex-hl-update-delay 0.01)
+
 (evil-leader/set-key
   "j" 'neotree-toggle
   "p" 'counsel-find-file
-  "t" 'ivy-switch-buffer
+  "t" 'next-buffer
+  "y" 'previous-buffer
   "f" 'swiper
-  "s" 'shell-pop)
+  "s" 'shell-pop
+  "q" 'kill-this-buffer
+
+  "f" 'lsp-format-buffer
+  "r" 'lsp-rename
+  "d" 'lsp-find-definition
+  "u" 'lsp-find-references)

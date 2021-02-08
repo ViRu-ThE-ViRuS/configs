@@ -107,17 +107,17 @@ let g:gruvbox_contrast_dark='medium' " hard medium soft
 let g:gruvbox_contrast_light='hard' " hard medium soft
 let g:gruvbox_italic=1
 
-colorscheme candycode " gruvbox deus
-                      " nord OceanicNext quantum neodark
-                      " bluewery Tomorrow-Night-Blue
-                      " arcadia hybrid Tomorrow-Night-Eighties mod8 evokai
-                      " apprentice PaperColor luna CandyPaper jellybeans default
-                      " materialtheme materialbox
-                      " antares afterglow codedark desertink lucid slate
-                      " aquamarine oceanblack thor jellyx candycode murphy Dim
+colorscheme ir_black " gruvbox deus
+                     " nord OceanicNext quantum neodark
+                     " bluewery Tomorrow-Night-Blue
+                     " arcadia hybrid Tomorrow-Night-Eighties mod8 evokai
+                     " apprentice PaperColor luna CandyPaper jellybeans default
+                     " materialtheme materialbox peaksea
+                     " antares afterglow codedark desertink lucid slate
+                     " aquamarine oceanblack thor jellyx candycode murphy Dim ir_black
 
-                      " cake16 solarized8_light_high
-                      " Tomorrow eclipse autumnleaf aurora White2
+                     " cake16 solarized8_light_high
+                     " Tomorrow eclipse autumnleaf aurora White2
 
 let g:loaded_node_provider=0
 let g:loaded_python_provider=0

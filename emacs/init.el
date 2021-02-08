@@ -72,6 +72,7 @@
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (setq require-final-newline t)
+
 ;; transparent title bar macos
 (when (memq window-system '(mac ns))
   (add-to-list 'default-frame-alist '(ns-appearance . light))
@@ -134,7 +135,7 @@
   (setq neo-hidden-regexp-list '("venv" "\\.pyc$" "~$" "\\.git" "__pycache__" ".DS_Store")))
 
 ;; evil leader
-(add-to-list 'load-path "~/.config/emacs/lisp/")
+;; (add-to-list 'load-path "~/.config/emacs/lisp/")
 (use-package evil-leader
   :config
   (global-evil-leader-mode))
@@ -146,18 +147,9 @@
   (setq x-select-enable-clipboard nil)
   (evil-set-leader 'normal (kbd "\\")))
 
-;; vi-like tilde on empty lines
-(use-package vi-tilde-fringe
-  :config
-  (global-vi-tilde-fringe-mode 1))
-
 ;; fuzzy option completion
 (use-package ivy
   :diminish
-  :bind
-  ("C-s"     . swiper)
-  ("M-x"     . counsel-M-x)
-  ("C-x C-f" . counsel-find-file)
   :config
   (ivy-mode 1)
   (setq ivy-use-virtual-buffers t)
@@ -175,11 +167,7 @@
   (setq ivy-rich-path-style 'abbrev))
 
 ;; local finder
-(use-package swiper
-  :config
-  (global-set-key "\C-s" 'swiper)
-  (global-set-key "\C-r" 'swiper)
-  (global-set-key (kbd "s-f") 'swiper))
+(use-package swiper)
 
 ;; better menus
 (use-package counsel
@@ -206,3 +194,31 @@
   :config
   (custom-set-variables
    '(shell-pop-shell-type (quote ("ansi-term" "*ansi-term*" (lambda nil (ansi-term shell-pop-term-shell)))))))
+
+;; lsp mode
+(use-package lsp-mode
+  :config
+  (setq lsp-idle-delay 0.5
+        lsp-enable-symbol-highlighting t
+        lsp-diagnostic-package :none
+        lsp-enable-on-type-formatting nil
+        lsp-signature-auto-acgtivate nil
+        lsp-modeline-code-actions-enable nil
+        lsp-modeline-diagnostics-enable nil
+        lsp-enable-folding nil
+        lsp-enable-imenu nil
+        lsp-enable-snippet nil
+        lsp-enable-completion-at-point nil
+        lsp-prefer-capf t)
+  :hook
+  ((python-mode
+     c-mode
+     c++-mode
+     c-or-c++-mode) . lsp))
+
+;; company mode
+(use-package company
+  :config
+  (global-company-mode t)
+  (setq company-minimum-prefix-length 1
+        company-idle-delay 0.0))
