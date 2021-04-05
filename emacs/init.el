@@ -202,7 +202,7 @@
         lsp-enable-symbol-highlighting t
         lsp-diagnostic-package :none
         lsp-enable-on-type-formatting nil
-        lsp-signature-auto-acgtivate nil
+        lsp-signature-auto-activate nil
         lsp-modeline-code-actions-enable nil
         lsp-modeline-diagnostics-enable nil
         lsp-enable-folding nil
