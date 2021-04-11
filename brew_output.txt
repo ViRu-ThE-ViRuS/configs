@@ -48,6 +48,7 @@ libvterm
 libxml2
 llvm
 luajit
+luajit-openresty
 lzo
 mpfr
 msgpack
@@ -68,6 +69,7 @@ python@3.9
 readline
 ripgrep
 sqlite
+tcl-tk
 texinfo
 tmux
 tree

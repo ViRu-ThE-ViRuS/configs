@@ -64,17 +64,17 @@
   (define-key evil-motion-state-map (kbd ":") 'evil-repeat-find-char)
   (define-key evil-motion-state-map (kbd ";") 'evil-ex))
 
-(setq evil-search-module 'swiper)
-(setq evil-vsplit-window-right 't)
-(setq evil-vsplit-window-below 't)
-(setq evil-ex-hl-update-delay 0.01)
+(setq evil-search-module 'swiper
+      evil-vsplit-window-right 't
+      evil-vsplit-window-below 't
+      evil-ex-hl-update-delay 0.01)
 
 (evil-leader/set-key
   "j" 'neotree-toggle
   "p" 'counsel-find-file
   "t" 'next-buffer
   "y" 'previous-buffer
-  "f" 'swiper
+  "F" 'swiper
   "s" 'shell-pop
   "q" 'kill-this-buffer
 
@@ -82,3 +82,5 @@
   "r" 'lsp-rename
   "d" 'lsp-find-definition
   "u" 'lsp-find-references)
+
+;; hello my name is viraat chandra and i love to program

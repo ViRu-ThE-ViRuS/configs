@@ -107,17 +107,17 @@ let g:gruvbox_contrast_dark='medium' " hard medium soft
 let g:gruvbox_contrast_light='hard' " hard medium soft
 let g:gruvbox_italic=1
 
-colorscheme ir_black " gruvbox deus
-                     " nord OceanicNext quantum neodark
-                     " bluewery Tomorrow-Night-Blue
-                     " arcadia hybrid Tomorrow-Night-Eighties mod8 evokai
-                     " apprentice PaperColor luna CandyPaper jellybeans default
-                     " materialtheme materialbox peaksea
-                     " antares afterglow codedark desertink lucid slate
-                     " aquamarine oceanblack thor jellyx candycode murphy Dim ir_black
+colorscheme aquamarine " gruvbox deus
+               " nord OceanicNext quantum neodark
+               " bluewery Tomorrow-Night-Blue
+               " arcadia hybrid Tomorrow-Night-Eighties mod8 evokai
+               " apprentice PaperColor luna CandyPaper jellybeans default
+               " materialtheme materialbox peaksea
+               " antares afterglow codedark desertink lucid slate af
+               " aquamarine oceanblack thor jellyx candycode murphy Dim ir_black
 
-                     " cake16 solarized8_light_high
-                     " Tomorrow eclipse autumnleaf aurora White2
+               " cake16 solarized8_light_high
+               " Tomorrow eclipse autumnleaf aurora White2
 
 let g:loaded_node_provider=0
 let g:loaded_python_provider=0
@@ -224,7 +224,6 @@ let g:vem_tabline_show_number="buffnr"
 vnoremap <leader>= :Tab /
 
 " fzf
-let $FZF_DEFAULT_COMMAND='rg --files --follow --hidden -g "!{venv,.git}"'
 let g:fzf_preview_window='right:50%'
 let g:fzf_buffers_jump=1
 let g:fzf_layout={'down': '40%'}
@@ -236,6 +235,7 @@ autocmd! FileType fzf set laststatus=0 noshowmode noruler | autocmd BufLeave <bu
 
 nnoremap <C-p> :Files<CR>
 nnoremap <leader>f :Rg<CR>
+nnoremap <leader>z :Rg TODO<CR>
 
 " fugitive
 set diffopt+=vertical
@@ -280,8 +280,8 @@ autocmd InsertLeave,CompleteDone * silent! pclose!
 
 " echodoc
 let g:echodoc#enable_at_startup=1
-let g:echodoc#type='floating'
-highlight link EchoDocFloat Pmenu
+let g:echodoc#type='popup'
+highlight link EchoDocPopup Pmenu
 
 " languageclient neovim
 set completefunc=LanguageClient#complete
@@ -322,9 +322,12 @@ let g:LanguageClient_diagnosticsDisplay={
  \     }
 
 let g:LanguageClient_changeThrottle=0.5
-let g:LanguageClient_useVirtualText='No'
 let g:LanguageClient_settingsPath='.lsconf.json'
 let g:LanguageClient_diagnosticsList='Location'
+
+let g:LanguageClient_showCompletionDocs=0
+let g:LanguageClient_useFloatingHover=0
+let g:LanguageClient_useVirtualText='No'
 
 let g:LanguageClient_serverCommands={
     \ 'python' : ['pyls'],

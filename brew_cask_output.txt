@@ -1,5 +1,6 @@
 cyberduck
 kitty
 transmission
+typora
 vlc
 vmware-fusion

@@ -4,9 +4,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("8f97d5ec8a774485296e366fdde6ff5589cf9e319a584b845b6f7fa788c9fa9a" default))
+   '("6b5c518d1c250a8ce17463b7e435e9e20faa84f3f7defba8b579d4f5925f60c1" "7661b762556018a44a29477b84757994d8386d6edee909409fabe0631952dad9" default))
  '(package-selected-packages
-   '(gruvbox-theme company-capf company lsp-mode shell-pop git-gutter flx smex counsel swiper ivy-rich ivy evil-leader neotree rich-minority smartparens simpleclip exec-path-from-shell use-package))
+   '(company treemacs-evil pyenv lsp-treemacs lsp-mode python-mode gruvbox-theme shell-pop git-gutter counsel swiper ivy-rich ivy which-key use-package undo-tree smartparens simpleclip rich-minority no-littering neotree evil-leader))
  '(shell-pop-shell-type
    '("ansi-term" "*ansi-term*"
      (lambda nil
