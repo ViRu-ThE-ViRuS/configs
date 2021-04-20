@@ -38,6 +38,7 @@ libidn2
 libmpc
 libomp
 libpng
+libpthread-stubs
 libtasn1
 libtermkey
 libtiff
@@ -45,11 +46,19 @@ libtool
 libunistring
 libuv
 libvterm
+libx11
+libxau
+libxcb
+libxdmcp
+libxext
 libxml2
+libxrender
 llvm
 luajit
 luajit-openresty
 lzo
+m4
+mpdecimal
 mpfr
 msgpack
 ncurses
@@ -78,4 +87,5 @@ unibilium
 utf8proc
 webp
 wget
+xorgproto
 xz

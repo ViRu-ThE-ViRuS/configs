@@ -142,6 +142,27 @@ endfun
 autocmd BufWritePre * :call <SID>StripTrailingWhitespaces() " strip trailing
 " autocmd BufWritePre * :retab " tab to spaces
 
+function! AutoHighlightToggle()
+  let @/ = ''
+  if exists('#auto_highlight')
+    au! auto_highlight
+    augroup! auto_highlight
+    setl updatetime=5000
+    echo 'Highlight current word: off'
+    set nohlsearch
+    return 0
+  else
+    augroup auto_highlight
+      au!
+      au CursorHold * let @/ = '\V\<'.escape(expand('<cword>'), '\').'\>'
+    augroup end
+    setl updatetime=500
+    echo 'Highlight current word: ON'
+    return 1
+  endif
+endfunction
+nnoremap <leader>3 :if AutoHighlightToggle()<Bar>set hls<Bar>endif<CR>
+
 " statusline
 function! GitPaddedBranch()
     let l:branchname = fugitive#head()
@@ -228,10 +249,12 @@ let g:fzf_preview_window='right:50%'
 let g:fzf_buffers_jump=1
 let g:fzf_layout={'down': '40%'}
 
+let $FZF_DEFAULT_COMMAND='rg --files --follow --hidden -g "!{.cache,venv,.git}" 2> /dev/null'
+
 set grepprg=rg\ --no-heading\ --vimgrep
 set grepformat=%f:%l:%c:%m
 
-autocmd! FileType fzf set laststatus=0 noshowmode noruler | autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+autocmd! FileType fzf set laststatus=0 noruler | autocmd BufLeave <buffer> set laststatus=2 ruler
 
 nnoremap <C-p> :Files<CR>
 nnoremap <leader>f :Rg<CR>
@@ -250,9 +273,6 @@ let g:AutoPairsMapSpace=0
 let g:AutoPairsMultilineClose=0
 let g:AutoPairsShortcutToggle=''
 let g:AutoPairsShortcutFastWrap='<c-w>'
-
-" neoformat
-autocmd FileType python,c,cpp noremap <buffer> <C-f> :Neoformat<CR>
 
 " gitgutter
 let g:gitgutter_sign_added='|'
@@ -280,13 +300,11 @@ autocmd InsertLeave,CompleteDone * silent! pclose!
 
 " echodoc
 let g:echodoc#enable_at_startup=1
-let g:echodoc#type='popup'
-highlight link EchoDocPopup Pmenu
+let g:echodoc#type='echo'
 
 " languageclient neovim
 set completefunc=LanguageClient#complete
-
-let g:LanguageClient_loggingLevel = 'DEBUG'
+let g:LanguageClient_loggingLevel = 'WARN'
 let g:LanguageClient_loggingFile  = expand('~/.local/share/nvim/LanguageClient.log')
 let g:LanguageClient_serverStderr = expand('~/.local/share/nvim/LanguageServer.log')
 
@@ -326,7 +344,7 @@ let g:LanguageClient_settingsPath='.lsconf.json'
 let g:LanguageClient_diagnosticsList='Location'
 
 let g:LanguageClient_showCompletionDocs=0
-let g:LanguageClient_useFloatingHover=0
+let g:LanguageClient_useFloatingHover=1
 let g:LanguageClient_useVirtualText='No'
 
 let g:LanguageClient_serverCommands={
@@ -337,10 +355,12 @@ let g:LanguageClient_serverCommands={
 
 highlight link LC_ERROR Pmenu
 function! LSPKeyBinds()
-    nnoremap <buffer> <silent> <leader>d :call LanguageClient#textDocument_definition()<CR>
-    nnoremap <buffer> <silent> <leader>u :call LanguageClient#textDocument_references()<CR>
-    nnoremap <buffer> <silent> <leader>r :call LanguageClient#textDocument_rename()<CR>
-    nnoremap <buffer> <silent> <a-cr> :call LanguageClient_contextMenu()<CR>
+    nmap <buffer> <silent> <leader>d <Plug>(lcn-definition)
+    nmap <buffer> <silent> <leader>u <Plug>(lcn-references)
+    nmap <buffer> <silent> <leader>r <Plug>(lcn-rename)
+    nmap <buffer> <silent> <leader>h <Plug>(lcn-hover)
+    nmap <buffer> <silent> <a-cr> <Plug>(lcn-code-action)
+    nmap <buffer> <silent> <a-m>  <Plug>(lcn-menu)
 endfunction()
 
 augroup LSP
@@ -350,6 +370,9 @@ augroup LSP
 augroup END
 
 call deoplete#custom#source('LanguageClient', 'min_pattern_length', 2)
+
+" neoformat
+autocmd FileType python,c,cpp noremap <buffer> <C-f> :Neoformat<CR>
 
 " other settings
 if executable('fish')
@@ -441,49 +464,29 @@ cmap Q q
 "         + d : goto definition
 "         + u : show usages
 "         + r : rename
-" <alt-enter> : context menu
+" <alt-enter> : code action
+" <alt-m>     : context menu
 
 " :GV       : Commit graph
+" :Errors   : Error list
 " <leader>s : vsp term://shell : split terminal
 " <leader>1 : NERDTreeFind
+" <leader>2 : close other windows
+" <leader>3 : toggle word highlight
 " <leader>= : tabular
-" :Errors   : Error list
 
 " <leader>3 : AutoHighlightToggle
 
-" <c-w> v             : vsplit
-" <c-w> s             : hsplit
-" <c-w>HLJK           : move current split
-" <c-w> o | <leader>2 : maximize current buffer
+" <c-w>v             : vsplit
+" <c-w>s             : hsplit
+" <c-w>HLJK          : move current split
+" <c-w>o             : close other windows
 
 " see colors :so $VIMRUNTIME/syntax/hitest.vim
 
 " project setup
 "       .nvimrc       : nvim setup like venv
-"       .lsconf.json  : language server configs
-"       setup.cfg     : flake8, pep8 etc setup
+"       .lsconf.json  : language server config
 "       .rgignore     : ripgrep ignore
-
-" autopep8 formatting -> setup.cfg under [flake8]
-
-" custom functions
-nnoremap <leader>3 :if AutoHighlightToggle()<Bar>set hls<Bar>endif<CR>
-function! AutoHighlightToggle()
-  let @/ = ''
-  if exists('#auto_highlight')
-    au! auto_highlight
-    augroup! auto_highlight
-    setl updatetime=5000
-    echo 'Highlight current word: off'
-    set nohlsearch
-    return 0
-  else
-    augroup auto_highlight
-      au!
-      au CursorHold * let @/ = '\V\<'.escape(expand('<cword>'), '\').'\>'
-    augroup end
-    setl updatetime=500
-    echo 'Highlight current word: ON'
-    return 1
-  endif
-endfunction
+"       .clang-format : clang-format config
+"       setup.cfg     : pycodestyle config
