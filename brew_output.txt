@@ -1,5 +1,6 @@
 autoconf
 automake
+bat
 bdw-gc
 c-ares
 cairo
@@ -7,7 +8,6 @@ clang-format
 cmake
 cscope
 ctags
-emacs-mac
 fish
 fontconfig
 freetype
@@ -85,6 +85,7 @@ tree
 unbound
 unibilium
 utf8proc
+watch
 webp
 wget
 xorgproto

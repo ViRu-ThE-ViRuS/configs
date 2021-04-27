@@ -6,27 +6,26 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'majutsushi/tagbar'
+Plug 'pacha/vem-tabline'
 Plug 'airblade/vim-gitgutter'
+
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
-
 Plug 'godlygeek/tabular'
 Plug 'tpope/vim-eunuch'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'airblade/vim-rooter'
 
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-
 Plug 'flazz/vim-colorschemes'
 Plug 'relastle/bluewery.vim'
 Plug 'morhetz/gruvbox'
 
-Plug 'pacha/vem-tabline'
-
 Plug 'scrooloose/nerdcommenter'
 Plug 'jiangmiao/auto-pairs'
 Plug 'sbdchd/neoformat'
+
+Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf.vim'
 
 Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
 Plug 'autozimu/LanguageClient-neovim', {'branch': 'next','do': 'bash install.sh'}
@@ -107,14 +106,14 @@ let g:gruvbox_contrast_dark='medium' " hard medium soft
 let g:gruvbox_contrast_light='hard' " hard medium soft
 let g:gruvbox_italic=1
 
-colorscheme aquamarine " gruvbox deus
+colorscheme desertink " gruvbox deus
                " nord OceanicNext quantum neodark
                " bluewery Tomorrow-Night-Blue
-               " arcadia hybrid Tomorrow-Night-Eighties mod8 evokai
+               " arcadia hybrid Tomorrow-Night-Eighties mod8
                " apprentice PaperColor luna CandyPaper jellybeans default
                " materialtheme materialbox peaksea
-               " antares afterglow codedark desertink lucid slate af
-               " aquamarine oceanblack thor jellyx candycode murphy Dim ir_black
+               " antares afterglow codedark desertink lucid slate
+               " aquamarine oceanblack jellyx candycode murphy Dim ir_black
 
                " cake16 solarized8_light_high
                " Tomorrow eclipse autumnleaf aurora White2
@@ -140,7 +139,6 @@ function! <SID>StripTrailingWhitespaces()
     call cursor(l, c)
 endfun
 autocmd BufWritePre * :call <SID>StripTrailingWhitespaces() " strip trailing
-" autocmd BufWritePre * :retab " tab to spaces
 
 function! AutoHighlightToggle()
   let @/ = ''
@@ -207,9 +205,25 @@ let g:NERDTreeChDirMode=2
 let g:NERDTreeDirArrowExpandable='$'
 let g:NERDTreeDirArrowCollapsible='-'
 let g:NERDTreeMinimalUI=1
+let g:NERDTreeAutoDeleteBuffer=1
+
+function! NERDTreeBinds()
+    nmap <buffer> <silent> <leader>r mm
+    nmap <buffer> <silent> <leader>d md
+    nmap <buffer> <silent> <leader>n ma
+endfunction()
+
+augroup NERDtree
+    autocmd!
+    autocmd FileType nerdtree call NERDTreeBinds()
+augroup END
 
 nnoremap <leader>j :NERDTreeToggle<CR>
 nnoremap <leader>1 :NERDTreeFind<CR>
+
+" prevent other buffers replacing NERDTree in its window
+autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
+    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 
 let g:NERDTreeIgnore=[
     \ '\~$',
@@ -249,11 +263,7 @@ let g:fzf_preview_window='right:50%'
 let g:fzf_buffers_jump=1
 let g:fzf_layout={'down': '40%'}
 
-let $FZF_DEFAULT_COMMAND='rg --files --follow --hidden -g "!{.cache,venv,.git}" 2> /dev/null'
-
-set grepprg=rg\ --no-heading\ --vimgrep
-set grepformat=%f:%l:%c:%m
-
+let $FZF_DEFAULT_COMMAND='rg --files --follow --hidden --no-ignore -g "!{.DS_Store,.cache,venv,.git}" 2> /dev/null'
 autocmd! FileType fzf set laststatus=0 noruler | autocmd BufLeave <buffer> set laststatus=2 ruler
 
 nnoremap <C-p> :Files<CR>
@@ -355,12 +365,12 @@ let g:LanguageClient_serverCommands={
 
 highlight link LC_ERROR Pmenu
 function! LSPKeyBinds()
-    nmap <buffer> <silent> <leader>d <Plug>(lcn-definition)
-    nmap <buffer> <silent> <leader>u <Plug>(lcn-references)
-    nmap <buffer> <silent> <leader>r <Plug>(lcn-rename)
-    nmap <buffer> <silent> <leader>h <Plug>(lcn-hover)
-    nmap <buffer> <silent> <a-cr> <Plug>(lcn-code-action)
-    nmap <buffer> <silent> <a-m>  <Plug>(lcn-menu)
+    nmap <buffer> <silent> <leader>d <plug>(lcn-definition)
+    nmap <buffer> <silent> <leader>u <plug>(lcn-references)
+    nmap <buffer> <silent> <leader>r <plug>(lcn-rename)
+    nmap <buffer> <silent> <leader>h <plug>(lcn-hover)
+    nmap <buffer> <silent> <a-cr> <plug>(lcn-code-action)
+    nmap <buffer> <silent> <a-m>  <plug>(lcn-menu)
 endfunction()
 
 augroup LSP
@@ -386,13 +396,14 @@ else
     nnoremap <leader>s :vsp term://sh<CR>
 endif
 
-" seamless terminal navigation
+" inbuilt terminal seamless navigation
 tnoremap <ESC> <C-\><C-n>
 tnoremap <c-h> <C-\><C-N><C-w>h
 tnoremap <c-j> <C-\><C-N><C-w>j
 tnoremap <c-k> <C-\><C-N><C-w>k
 tnoremap <c-l> <C-\><C-N><C-w>l
 
+" cursorshape
 if exists("tmux")
     let &t_SI="\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
     let &t_SR="\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
@@ -404,19 +415,20 @@ else
 endif
 
 " help with transparent backgrounds
-"hi! Normal ctermbg=NONE guibg=NONE
-"hi! NonText ctermbg=NONE guibg=NONE guifg=NONE ctermfg=NONE
+" hi! Normal ctermbg=NONE guibg=NONE
+" hi! NonText ctermbg=NONE guibg=NONE guifg=NONE ctermfg=NONE
 
 " make comments bolditalic
 highlight Comment cterm=bolditalic gui=bolditalic
 
 " make signcolumn prettier
-"autocmd ColorScheme * highlight! link SignColumn LineNr
+" autocmd ColorScheme * highlight! link SignColumn LineNr
 autocmd BufEnter,ColorScheme * highlight clear SignColumn
 
-command! Errors execute "lopen"
+" autoreload when editing config
 au! BufWritePost $MYVIMRC source %
 
+" faster mouse scrolling
 map <ScrollWheelUp> <C-Y>
 map <ScrollWheelDown> <C-E>
 
@@ -430,21 +442,8 @@ imap <down> <nop>
 imap <left> <nop>
 imap <right> <nop>
 
-nnoremap <m-j> :resize +2<CR>
-nnoremap <m-k> :resize -2<CR>
-nnoremap <m-h> :vertical resize -2<CR>
-nnoremap <m-l> :vertical resize +2<CR>
-
 " utility
-nnoremap <C-w><C-l> :lclose<CR> :pclose<CR> :ccl<CR>
-nnoremap <leader>t :bn<CR>
-nnoremap <leader>y :bN<CR>
-nnoremap <leader>q :bd!<CR>
-
-vnoremap < <gv
-vnoremap > >gv
-
-nnoremap <space> za
+command! Errors execute "lopen"
 nnoremap <leader>2 <C-w>o
 
 nnoremap ; :
@@ -452,8 +451,31 @@ nnoremap : ;
 
 map H ^
 map L $
-
 inoremap jj <esc>
+
+nmap U <c-r>
+
+" autocmd BufWritePre * :retab " tab to spaces
+
+" buffer resizing
+nnoremap <m-j> :resize +2<CR>
+nnoremap <m-k> :resize -2<CR>
+nnoremap <m-h> :vertical resize -2<CR>
+nnoremap <m-l> :vertical resize +2<CR>
+
+" buffer closing and navigation
+nnoremap <C-w><C-l> :lclose<CR> :pclose<CR> :ccl<CR>
+nnoremap <leader>t :bn<CR>
+nnoremap <leader>y :bN<CR>
+nnoremap <leader>q :bd!<CR>
+
+" indenting
+vnoremap < <gv
+vnoremap > >gv
+
+" folds
+" make folds using zf
+nnoremap <space> za
 
 " fix common typos
 cmap Wq wq

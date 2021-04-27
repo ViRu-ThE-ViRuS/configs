@@ -2,9 +2,11 @@ alias vim='nvim'
 alias rmd='rm -rf'
 
 set EDITOR                  nvim
-set FZF_DEFAULT_COMMAND     'rg --files --follow --hidden -g "!{.cache,venv,.git}" 2> /dev/null'
-set FZF_CTRL_T_COMMAND      'rg --files --follow --hidden -g "!{.cache,venv,.git}" 2> /dev/null'
-set FZF_CTRL_R_OPTS         '--reverse'
+
+set FZF_DEFAULT_COMMAND     'rg --files --follow --hidden --no-ignore -g "!{.DS_Store,.cache,venv,.git}" 2> /dev/null'
+set FZF_CTRL_T_COMMAND      $FZF_DEFAULT_COMMAND
+set FZF_DEFAULT_OPTS        '--reverse --height 50%'
+set FZF_CTRL_T_OPTS         '--preview "bat --style=numbers --color=always --line-range :500 {}"'
 
 set   -g   fish_user_paths   "/Users/viraat-chandra/Library/Python/3.7/bin"   $fish_user_paths
 set   -g   fish_user_paths   "/usr/local/opt/llvm/bin"                       $fish_user_paths
