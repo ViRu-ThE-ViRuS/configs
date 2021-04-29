@@ -106,7 +106,7 @@ let g:gruvbox_contrast_dark='medium' " hard medium soft
 let g:gruvbox_contrast_light='hard' " hard medium soft
 let g:gruvbox_italic=1
 
-colorscheme desertink " gruvbox deus
+colorscheme materialtheme " gruvbox deus
                " nord OceanicNext quantum neodark
                " bluewery Tomorrow-Night-Blue
                " arcadia hybrid Tomorrow-Night-Eighties mod8
@@ -122,15 +122,12 @@ let g:loaded_node_provider=0
 let g:loaded_python_provider=0
 let g:python3_host_prog='/usr/local/bin/python3'
 
-"set guifont=FiraCode-Retina:h14
-"set guicursor+=i:ver100-iCursor
-
 " custom functions
 function! RandomColors()
     colorscheme random
     colorscheme
 endfunction
-nnoremap <leader>e :call RandomColors()<CR>
+nnoremap <silent> <leader>e :call RandomColors()<CR>
 
 function! <SID>StripTrailingWhitespaces()
     let l=line(".")
@@ -138,12 +135,12 @@ function! <SID>StripTrailingWhitespaces()
     %s/\s\+$//e
     call cursor(l, c)
 endfun
-autocmd BufWritePre * :call <SID>StripTrailingWhitespaces() " strip trailing
+autocmd! BufWritePre * :call <SID>StripTrailingWhitespaces() " strip trailing
 
 function! AutoHighlightToggle()
   let @/ = ''
   if exists('#auto_highlight')
-    au! auto_highlight
+    autocmd! auto_highlight
     augroup! auto_highlight
     setl updatetime=5000
     echo 'Highlight current word: off'
@@ -151,8 +148,8 @@ function! AutoHighlightToggle()
     return 0
   else
     augroup auto_highlight
-      au!
-      au CursorHold * let @/ = '\V\<'.escape(expand('<cword>'), '\').'\>'
+      autocmd!
+      autocmd CursorHold * let @/ = '\V\<'.escape(expand('<cword>'), '\').'\>'
     augroup end
     setl updatetime=500
     echo 'Highlight current word: ON'
@@ -175,17 +172,26 @@ endfunction
 
 function! PaddedModeName()
     let l:paste_status = &paste
+    let l:mode_labels = {
+          \    'n': 'Normal', 'i': 'Insert', 'R': 'Replace', 'v': 'Visual', 'V': 'V-Line', "\<C-v>": 'V-Block',
+          \    'c': 'Command', 's': 'Select', 'S': 'S-Line', "\<C-s>": 'S-Block', 't': 'Terminal'
+          \}
+
     if l:paste_status == 1
         return '  [PASTE] '
     else
-        return '  '.toupper(get(g:mode_labels, mode(), mode())).' '
+        return '  '.toupper(get(l:mode_labels, mode(), mode())).' '
     endif
 endfunction
 
-let g:mode_labels = {
-      \    'n': 'Normal', 'i': 'Insert', 'R': 'Replace', 'v': 'Visual', 'V': 'V-Line', "\<C-v>": 'V-Block',
-      \    'c': 'Command', 's': 'Select', 'S': 'S-Line', "\<C-s>": 'S-Block', 't': 'Terminal'
-      \}
+function! GetTagName()
+    let l:tagname = trim(execute("TagbarCurrentTag"))
+    if l:tagname != 'No current tag'
+        return ' '.l:tagname.' '
+    else
+        return ''
+    endif
+endfun
 
 set statusline=
 set statusline+=%#PmenuSel#
@@ -196,9 +202,14 @@ set statusline+=%{GitPaddedStatus()}
 set statusline+=%#CursorLine#
 set statusline+=\ %f
 set statusline+=%=
+set statusline+=%#Pmenu#
+set statusline+=%{GetTagName()}
+set statusline+=%#CursorLine#
 set statusline+=\ %l:%c
 set statusline+=\ %p%%
 set statusline+=\ %#LineNr#
+set statusline+=%#Pmenu#
+set statusline+=%y
 
 " nerdtree
 let g:NERDTreeChDirMode=2
@@ -220,10 +231,6 @@ augroup END
 
 nnoremap <leader>j :NERDTreeToggle<CR>
 nnoremap <leader>1 :NERDTreeFind<CR>
-
-" prevent other buffers replacing NERDTree in its window
-autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
-    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
 
 let g:NERDTreeIgnore=[
     \ '\~$',
@@ -251,8 +258,8 @@ let g:tagbar_iconchars=['$', '-']
 nnoremap <leader>k :TagbarToggle<CR>
 
 " vem tabline
-set showtabline=1
-let g:vem_tabline_show=1
+"set showtabline=2
+let g:vem_tabline_show=2
 let g:vem_tabline_show_number="buffnr"
 
 " tabular
@@ -349,13 +356,14 @@ let g:LanguageClient_diagnosticsDisplay={
  \         },
  \     }
 
-let g:LanguageClient_changeThrottle=0.5
+let g:LanguageClient_changeThrottle=0.1
 let g:LanguageClient_settingsPath='.lsconf.json'
-let g:LanguageClient_diagnosticsList='Location'
-
 let g:LanguageClient_showCompletionDocs=0
 let g:LanguageClient_useFloatingHover=1
 let g:LanguageClient_useVirtualText='No'
+
+let g:LanguageClient_diagnosticsList='Location'
+command! Errors execute "lopen"
 
 let g:LanguageClient_serverCommands={
     \ 'python' : ['pyls'],
@@ -382,7 +390,7 @@ augroup END
 call deoplete#custom#source('LanguageClient', 'min_pattern_length', 2)
 
 " neoformat
-autocmd FileType python,c,cpp noremap <buffer> <C-f> :Neoformat<CR>
+autocmd! FileType python,c,cpp noremap <buffer> <C-f> :Neoformat<CR>
 
 " other settings
 if executable('fish')
@@ -418,15 +426,19 @@ endif
 " hi! Normal ctermbg=NONE guibg=NONE
 " hi! NonText ctermbg=NONE guibg=NONE guifg=NONE ctermfg=NONE
 
-" make comments bolditalic
-highlight Comment cterm=bolditalic gui=bolditalic
+augroup ColorsUpdate
+    autocmd!
 
-" make signcolumn prettier
-" autocmd ColorScheme * highlight! link SignColumn LineNr
-autocmd BufEnter,ColorScheme * highlight clear SignColumn
+    " make comments bolditalic
+    autocmd BufEnter,ColorScheme * highlight Comment cterm=bold,italic gui=bold,italic
+
+    " make signcolumn prettier
+    autocmd BufEnter,ColorScheme * highlight clear SignColumn
+    autocmd BufEnter,ColorScheme * highlight link SignColumn LineNr
+augroup END
 
 " autoreload when editing config
-au! BufWritePost $MYVIMRC source %
+autocmd! BufWritePost $MYVIMRC source %
 
 " faster mouse scrolling
 map <ScrollWheelUp> <C-Y>
@@ -443,7 +455,6 @@ imap <left> <nop>
 imap <right> <nop>
 
 " utility
-command! Errors execute "lopen"
 nnoremap <leader>2 <C-w>o
 
 nnoremap ; :
