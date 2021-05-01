@@ -1,2 +1,5 @@
 .DS_Store
 fish/_fish_variables
+undodir/
+nvim/plugin
+*.appimage

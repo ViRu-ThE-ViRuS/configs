@@ -1,4 +1,4 @@
-cp ~/.config/nvim/init.vim nvim/
+cp -r ~/.config/nvim/* nvim/
 cp -r ~/.config/tmux/* tmux/
 cp ~/.config/tmux/.tmux.conf tmux/.tmux.conf
 cp ~/.config/alacritty/* alacritty/

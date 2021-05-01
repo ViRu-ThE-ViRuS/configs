@@ -523,3 +523,4 @@ cmap Q q
 "       .rgignore     : ripgrep ignore
 "       .clang-format : clang-format config
 "       setup.cfg     : pycodestyle config
+
