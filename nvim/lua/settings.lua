@@ -8,7 +8,18 @@ vim.g.loaded_node_provider = 0
 vim.g.loaded_python_provider = 0
 vim.g.python3_host_prog = vim.fn.systemlist('which python3')[1]
 
-vim.cmd 'colorscheme gruvbox'
+vim.cmd 'colorscheme apprentice'
+-- gruvbox deus
+-- nord OceanicNext quantum neodark
+-- bluewery Tomorrow-Night-Blue
+-- arcadia hybrid Tomorrow-Night-Eighties mod8
+-- apprentice PaperColor luna CandyPaper jellybeans default
+-- materialtheme materialbox peaksea
+-- antares afterglow codedark desertink lucid slate angr
+-- aquamarine oceanblack jellyx candycode murphy Dim ir_black
+--
+-- cake16 solarized8_light_high
+-- Tomorrow eclipse autumnleaf aurora White2
 
 vim.o.mouse = 'a'
 vim.o.modelines = 0

@@ -50,9 +50,6 @@ cnoreabbrev <expr> WQ ((getcmdtype() is# ':' && getcmdline() is# 'WQ')?('wq'):('
 cnoreabbrev <expr> Wq ((getcmdtype() is# ':' && getcmdline() is# 'Wq')?('wq'):('Wq'))
 ]]
 
-utils.map('i', '<tab>', '<plug>(completion_smart_tab)', { noremap = false })
-utils.map('i', '<s-tab>', '<plug>(completion_smart_s_tab)', { noremap = false })
-
 vim.cmd [[
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"

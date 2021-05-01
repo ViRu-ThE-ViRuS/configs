@@ -1,7 +1,9 @@
 vim.cmd [[
 autocmd TextYankPost * lua vim.highlight.on_yank {on_visual = false}
 autocmd BufWritePre * lua require('utils').StripTrailingWhitespaces()
-autocmd! BufWritePost */nvim/init.lua luafile $MYVIMRC
+
+autocmd! BufWritePost ~/.config/nvim/init.lua luafile $MYVIMRC
+autocmd! BufWritePost ~/.config/nvim/lua/*.lua luafile %
 
 augroup ColorsUpdate
     autocmd!

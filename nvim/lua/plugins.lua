@@ -12,7 +12,7 @@ return require('packer').startup(function()
     use 'Xuyuanp/nerdtree-git-plugin'
     use 'majutsushi/tagbar'
     use 'pacha/vem-tabline'
-    use {'airblade/vim-gitgutter', cmds = {'GitGutterHunkSummary'} }
+    use 'airblade/vim-gitgutter'
     use 'tpope/vim-fugitive'
 
     use 'christoomey/vim-tmux-navigator'
@@ -22,6 +22,8 @@ return require('packer').startup(function()
 
     use 'neovim/nvim-lspconfig'
     use 'nvim-lua/completion-nvim'
+    use 'steelsojka/completion-buffers'
+    use 'nvim-lua/lsp-status.nvim'
 
     use { 'junegunn/fzf', run = function() vim.fn['fzf#install']() end }
     use 'junegunn/fzf.vim'

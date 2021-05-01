@@ -1,9 +1,10 @@
 local utils = {}
 
-utils.map = function (mode, lhs, rhs, opts)
+utils.map = function (mode, lhs, rhs, opts, buffer_nr)
     local options = { noremap = true }
     if opts then options = vim.tbl_extend('force', options, opts) end
-    vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+    if buffer_nr then vim.api.nvim_buf_set_keymap(buffer_nr, mode, lhs, rhs, options)
+    else vim.api.nvim_set_keymap(mode, lhs, rhs, options) end
 end
 
 utils.RandomColors = function()

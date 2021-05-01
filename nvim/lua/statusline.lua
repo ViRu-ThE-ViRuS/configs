@@ -1,16 +1,19 @@
+local lsp_status = require('lsp-status')
+
 local colors = {
-    active     = '%#StatusLine#',
-    inactive   = '%#StatuslineNC#',
-    mode       = '%#PmenuSel#',
-    git        = '%#Pmenu#',
-    file       = '%#CursorLine#',
-    tagname    = '%#Pmenu#',
-    line_col   = '%#CursorLine#',
-    percentage = '%#CursorLine#',
-    filetype   = '%#Pmenu#',
+    active      = '%#StatusLine#',
+    inactive    = '%#StatuslineNC#',
+    mode        = '%#PmenuSel#',
+    git         = '%#Pmenu#',
+    file        = '%#CursorLine#',
+    diagnostics = '%#PmenuSel#',
+    tagname     = '%#Pmenu#',
+    line_col    = '%#CursorLine#',
+    percentage  = '%#CursorLine#',
+    filetype    = '%#Pmenu#',
 }
 
-local modes = setmetatable({
+local modes = {
     ['n']  = 'Normal',
     ['no'] = 'N-Pending',
     ['v']  = 'Visual',
@@ -31,11 +34,7 @@ local modes = setmetatable({
     ['r?'] = 'Confirm',
     ['!']  = 'Shell',
     ['t']  = 'Terminal'
-}, {
-    __index = function()
-      return 'Unknown'
-    end
-})
+}
 
 local get_current_mode = function()
     local current_mode = vim.api.nvim_get_mode().mode
@@ -59,7 +58,7 @@ local get_git_status = function()
 end
 
 local get_tag_name = function()
-    return vim.fn['tagbar#currenttag']('[%s]', '')
+    return vim.fn['tagbar#currenttag'](' [%s] ', '')
 end
 
 local get_filename = function()
@@ -75,13 +74,50 @@ local get_percentage = function()
 end
 
 local get_filetype = function()
-    return '%y'
+    return ' %y '
+end
+
+local config = {
+    indicator_errors = '[x]',
+    indicator_warnings = '[!]',
+    indicator_info = '[i]',
+    indicator_hint = '[@]',
+    indicator_seperator = ''
+}
+local get_diagnostics = function()
+    if #vim.lsp.buf_get_clients(0) == 0 then return '' end
+
+    local status_parts = {}
+    local diagnostics = lsp_status.diagnostics(0) or nil
+
+    if diagnostics then
+        if diagnostics.errors and diagnostics.errors > 0 then
+            table.insert(status_parts, config.indicator_errors .. config.indicator_seperator .. diagnostics.errors)
+        end
+
+        if diagnostics.warnings and diagnostics.warnings > 0 then
+            table.insert(status_parts, config.indicator_warnings .. config.indicator_seperator .. diagnostics.warnings)
+        end
+
+        if diagnostics.info and diagnostics.info > 0 then
+            table.insert(status_parts, config.indicator_info .. config.indicator_seperator .. diagnostics.info)
+        end
+
+        if diagnostics.hints and diagnostics.hints > 0 then
+            table.insert(status_parts, config.indicator_hint .. config.indicator_seperator .. diagnostics.hints)
+        end
+    end
+
+    local status_diagnostics = vim.trim(table.concat(status_parts, '  '))
+    if status_diagnostics ~= '' then return ' ' .. status_diagnostics .. ' ' end
+    return ''
 end
 
 Statusline = function()
     local mode = colors.mode .. get_current_mode()
     local git = colors.git .. get_git_status()
     local filename = colors.file .. get_filename()
+    local diagnostics = colors.diagnostics .. get_diagnostics()
     local tagname = colors.tagname .. get_tag_name()
     local line_col = colors.line_col .. get_line_col()
     local percentage = colors.percentage .. get_percentage()
@@ -90,7 +126,7 @@ Statusline = function()
     return table.concat({
         colors.active, mode, git, filename,
         '%=% ',
-        tagname, line_col, percentage,  filetype
+        diagnostics, tagname, line_col, percentage,  filetype
     })
 end
 
