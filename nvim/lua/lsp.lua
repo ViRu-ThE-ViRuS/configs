@@ -2,11 +2,10 @@ local utils = require('utils')
 local lsp = require('lspconfig')
 local lsp_status = require('lsp-status')
 
+-- setup keymaps and autocommands
 local on_attach = function(client, buffer_nr)
     print('[LSP] Active')
-    require('completion').on_attach(client)
 
-    vim.api.nvim_buf_set_option(buffer_nr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
     lsp_status.on_attach(client)
 
 	utils.map('n','<leader>d', '<cmd>lua vim.lsp.buf.definition()<cr>', { silent = true }, buffer_nr)
@@ -23,30 +22,11 @@ local on_attach = function(client, buffer_nr)
         utils.map('v','<c-f>', '<cmd>lua vim.lsp.buf.range_formatting()<cr>', { silent = true }, buffer_nr)
     end
 
-    vim.cmd [[
-    command! Errors :lua vim.lsp.diagnostic.set_loclist()<cr>
-    ]]
+    vim.cmd [[ command! Errors :lua vim.lsp.diagnostic.set_loclist()<cr> ]]
+    vim.api.nvim_buf_set_option(buffer_nr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 end
 
-local servers = { 'clangd', 'pyls' }
-for _, server in ipairs(servers) do
-    lsp[server].setup { on_attach = on_attach, capabilities = lsp_status.capabilities }
-end
-
-local sumneko_lua_root = '/home/viraat-chandra/.local/lsp/lua-language-server/'
-local sumneko_lua_bin = sumneko_lua_root .. 'bin/Linux/lua-language-server'
-lsp['sumneko_lua'].setup {
-    cmd = { sumneko_lua_bin, '-E', sumneko_lua_root .. 'main.lua' },
-    settings = {
-        Lua = {
-            runtime = { version = 'LuaJIT', path = vim.split(package.path, ';') },
-            diagnostics = { globals = {'vim'} },
-            workspace = { library = {[vim.fn.expand('$VIMRUNTIME/lua')] = true, [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true} }
-        }
-    },
-    on_attach = on_attach
-}
-
+-- custom handlers
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
     vim.lsp.diagnostic.on_publish_diagnostics, {
         signs = true,
@@ -68,28 +48,54 @@ vim.lsp.handlers["textDocument/definition"] = function(_, _, result)
     end
 end
 
-vim.fn.sign_define("LspDiagnosticsSignError", {text = "x" })       -- , texthl = "GruvboxRed"})
-vim.fn.sign_define("LspDiagnosticsSignWarning", {text = "!" })     -- , texthl = "GruvboxYellow"})
-vim.fn.sign_define("LspDiagnosticsSignInformation", {text = "i" }) -- , texthl = "GruvboxBlue"})
-vim.fn.sign_define("LspDiagnosticsSignHint", {text = "@" })        -- , texthl = "GruvboxAqua"})
+-- custom signs
+vim.fn.sign_define("LspDiagnosticsSignError", {text = "x" })
+vim.fn.sign_define("LspDiagnosticsSignWarning", {text = "!" })
+vim.fn.sign_define("LspDiagnosticsSignInformation", {text = "i" })
+vim.fn.sign_define("LspDiagnosticsSignHint", {text = "@" })
 
-vim.cmd [[ autocmd BufEnter * lua require'completion'.on_attach() ]]
-vim.g.completion_matching_strategy_list = {'exact', 'substring', 'fuzzy', 'all'}
-vim.g.completion_confirm_key = ''
-vim.g.completion_trigger_on_delete = 1
-vim.g.completion_auto_change_source = 1
-vim.g.completion_trigger_keyword_length = 3
-vim.g.completion_menu_length = 10
-vim.g.completion_abbr_length = 50
+-- lsp setup
+lsp['clangd'].setup{ on_attach = on_attach, capabilities = lsp_status.capabilities }
+lsp['pyls'].setup{ on_attach = on_attach, capabilities = lsp_status.capabilities }
 
-vim.g.completion_chain_complete_list = {
-  default = {
-    { complete_items = { 'lsp' } },
-    { complete_items = { 'buffers' } },
-    { mode = { '<c-p>' } },
-    { mode = { '<c-n>' } }
-  }
+local sumneko_lua_root = '/home/viraat-chandra/.local/lsp/lua-language-server/'
+local sumneko_lua_bin = sumneko_lua_root .. 'bin/Linux/lua-language-server'
+lsp['sumneko_lua'].setup {
+    cmd = { sumneko_lua_bin, '-E', sumneko_lua_root .. 'main.lua' },
+    settings = {
+        Lua = {
+            runtime = { version = 'LuaJIT', path = vim.split(package.path, ';') },
+            diagnostics = { globals = {'vim'} },
+            workspace = { library = {[vim.fn.expand('$VIMRUNTIME/lua')] = true, [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true} }
+        }
+    },
+    on_attach = on_attach
 }
 
-utils.map('i', '<tab>', '<plug>(completion_smart_tab)', { noremap = false })
-utils.map('i', '<s-tab>', '<plug>(completion_smart_s_tab)', { noremap = false })
+-- completion setup
+require('compe').setup {
+    debug = false,
+    enabled = true,
+    autocomplete = true,
+    min_length = 1,
+    preselect = 'enable',
+    max_abbr_width = 100,
+    max_kind_width = 100,
+    max_menu_width = 100,
+    documentation = true,
+
+    source = {
+        path = true,
+        buffer = true,
+        calc = true,
+        nvim_lsp = true,
+        nvim_lua = true
+    }
+}
+
+utils.map('i', '<c-space>', 'compe#complete()', { silent = true, expr = true })
+utils.map('i', '<cr>', 'compe#confirm("<cr>")', { silent = true, expr = true })
+utils.map('i', '<c-e>', 'compe#close("<c-e>")', { silent = true, expr = true })
+utils.map('i', '<c-f>', 'compe#scroll({ "delta": +4 })', { silent = true, expr = true })
+utils.map('i', '<c-d>', 'compe#scroll({ "delta": -4 })', { silent = true, expr = true })
+

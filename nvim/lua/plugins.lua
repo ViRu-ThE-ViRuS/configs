@@ -1,4 +1,4 @@
--- Auto install packer.nvim if not exists
+-- auto install packer.nvim if not exists
 local install_path = vim.fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   vim.api.nvim_command('!git clone https://github.com/wbthomason/packer.nvim '..install_path)
@@ -21,9 +21,8 @@ return require('packer').startup(function()
     use 'airblade/vim-rooter'
 
     use 'neovim/nvim-lspconfig'
-    use 'nvim-lua/completion-nvim'
-    use 'steelsojka/completion-buffers'
     use 'nvim-lua/lsp-status.nvim'
+    use 'hrsh7th/nvim-compe'
 
     use { 'junegunn/fzf', run = function() vim.fn['fzf#install']() end }
     use 'junegunn/fzf.vim'

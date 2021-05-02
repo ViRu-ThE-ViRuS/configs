@@ -21,6 +21,7 @@ vim.cmd 'colorscheme apprentice'
 -- cake16 solarized8_light_high
 -- Tomorrow eclipse autumnleaf aurora White2
 
+-- global options
 vim.o.mouse = 'a'
 vim.o.modelines = 0
 vim.o.history = 100
@@ -51,6 +52,7 @@ vim.o.background = "dark"
 vim.o.diffopt = 'internal,filler,vertical'
 vim.o.undodir = '~/.config/undodir'
 
+-- window local options
 vim.wo.number = true
 vim.wo.signcolumn = 'yes'
 vim.wo.cursorline = true
@@ -58,6 +60,7 @@ vim.wo.wrap = false
 vim.wo.colorcolumn = "+1"
 vim.wo.foldmethod = "manual"
 
+-- buffer local options
 vim.bo.matchpairs = "(:),{:},[:],<:>"
 vim.bo.textwidth = 79
 vim.bo.formatoptions = "cnjlr"
@@ -78,6 +81,10 @@ set expandtab
 set autoindent
 set smartindent
 
+]]
+
+-- cursor setup
+vim.cmd [[
 if exists("tmux")
     let &t_SI="\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
     let &t_SR="\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
