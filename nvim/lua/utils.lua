@@ -30,6 +30,11 @@ utils.symbol_config = {
     indicator_hint      = '[@]',
     indicator_warning   = '[!]',
     indicator_error     = '[x]',
+
+    sign_info      = 'i',
+    sign_hint      = '@',
+    sign_warning   = '!',
+    sign_error     = 'x'
 }
 
 return utils

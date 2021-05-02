@@ -5,10 +5,11 @@ require('autocommands')         -- setup autocommands
 require('plugins')              -- setup plugins
 require('settings')             -- general setup
 require('keymaps')              -- setup general keymaps
-require('lsp')                  -- setup lsp + completion
+require('lsp')                  -- setup lsp
 require('statusline')           -- setup custom statusline
 
 -- plugin configs
+require('plug-config/completion')
 require('plug-config/nerdtree')
 require('plug-config/tagbar')
 require('plug-config/tabline')
