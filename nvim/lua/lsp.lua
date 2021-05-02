@@ -1,12 +1,9 @@
 local utils = require('utils')
 local lsp = require('lspconfig')
-local lsp_status = require('lsp-status')
 
 -- setup keymaps and autocommands
 local on_attach = function(client, buffer_nr)
     print('[LSP] Active')
-
-    lsp_status.on_attach(client)
 
 	utils.map('n','<leader>d', '<cmd>lua vim.lsp.buf.definition()<cr>', { silent = true }, buffer_nr)
 	utils.map('n','<leader>u', '<cmd>lua vim.lsp.buf.references()<cr>', { silent = true }, buffer_nr)
@@ -55,8 +52,8 @@ vim.fn.sign_define("LspDiagnosticsSignInformation", {text = "i" })
 vim.fn.sign_define("LspDiagnosticsSignHint", {text = "@" })
 
 -- lsp setup
-lsp['clangd'].setup{ on_attach = on_attach, capabilities = lsp_status.capabilities }
-lsp['pyls'].setup{ on_attach = on_attach, capabilities = lsp_status.capabilities }
+lsp['clangd'].setup{ on_attach = on_attach }
+lsp['pyls'].setup{ on_attach = on_attach }
 
 local sumneko_lua_root = '/home/viraat-chandra/.local/lsp/lua-language-server/'
 local sumneko_lua_bin = sumneko_lua_root .. 'bin/Linux/lua-language-server'

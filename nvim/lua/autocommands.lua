@@ -1,4 +1,23 @@
 -- TODO(vir): setup autocommands via lua api
+local symbol_config = require('utils').symbol_config
+
+Cmdline_diagnostics = function ()
+    local line_diagnostics = vim.lsp.diagnostic.get_line_diagnostics()
+    local line_diagnostic = line_diagnostics[#line_diagnostics]
+
+    if line_diagnostic then
+        local message = line_diagnostic.message
+        local severity_level = line_diagnostic.severity
+
+        local severity = 'seperator'
+        if severity_level == 4 then severity = 'hint'
+        elseif severity_level == 3 then severity = 'info'
+        elseif severity_level == 2 then severity = 'warning'
+        elseif severity_level == 1 then severity = 'error' end
+
+        print(symbol_config['indicator_' .. severity] .. ': ' .. message)
+    end
+end
 
 vim.cmd [[
 autocmd TextYankPost * lua vim.highlight.on_yank {on_visual = false}
@@ -6,6 +25,9 @@ autocmd BufWritePre * lua require('utils').StripTrailingWhitespaces()
 
 autocmd! BufWritePost ~/.config/nvim/init.lua luafile $MYVIMRC
 autocmd! BufWritePost ~/.config/nvim/lua/*.lua luafile %
+
+autocmd CursorHold,CursorHoldI * lua Cmdline_diagnostics()
+autocmd CursorMoved,CursorMovedI * echo ''
 
 augroup ColorsUpdate
     autocmd!

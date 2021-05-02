@@ -21,7 +21,6 @@ return require('packer').startup(function()
     use 'airblade/vim-rooter'
 
     use 'neovim/nvim-lspconfig'
-    use 'nvim-lua/lsp-status.nvim'
     use 'hrsh7th/nvim-compe'
 
     use { 'junegunn/fzf', run = function() vim.fn['fzf#install']() end }

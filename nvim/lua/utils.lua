@@ -23,4 +23,13 @@ utils.StripTrailingWhitespaces = function()
     vim.api.nvim_win_set_cursor(0, cursor)
 end
 
+-- diagnostics symbol config
+utils.symbol_config = {
+    indicator_seperator = '',
+    indicator_info      = '[i]',
+    indicator_hint      = '[@]',
+    indicator_warning   = '[!]',
+    indicator_error     = '[x]',
+}
+
 return utils

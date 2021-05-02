@@ -51,6 +51,7 @@ vim.o.completeopt = "menu,noinsert,noselect,menuone"
 vim.o.background = "dark"
 vim.o.diffopt = 'internal,filler,vertical'
 vim.o.undodir = '~/.config/undodir'
+vim.o.updatetime = 1000
 
 -- window local options
 vim.wo.number = true

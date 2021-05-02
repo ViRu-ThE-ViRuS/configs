@@ -1,4 +1,4 @@
-local lsp_status = require('lsp-status')
+local symbol_config = require('utils').symbol_config
 
 -- color config
 local colors = {
@@ -88,41 +88,33 @@ local get_filetype = function()
     return ' %y '
 end
 
--- diagnostics symbol config
-local symbol_config = {
-    indicator_errors = '[x]',
-    indicator_warnings = '[!]',
-    indicator_info = '[i]',
-    indicator_hint = '[@]',
-    indicator_seperator = ''
-}
-
 -- get current file diagnostics
 local get_diagnostics = function()
     if #vim.lsp.buf_get_clients(0) == 0 then return '' end
 
     local status_parts = {}
-    local diagnostics = lsp_status.diagnostics(0) or nil
+    local errors = vim.lsp.diagnostic.get_count(0, 'Error')
+    local warnings = vim.lsp.diagnostic.get_count(0, 'Warning')
+    local hints = vim.lsp.diagnostic.get_count(0, 'Hint')
+    local infos = vim.lsp.diagnostic.get_count(0, 'Info')
 
-    if diagnostics then
-        if diagnostics.errors and diagnostics.errors > 0 then
-            table.insert(status_parts, symbol_config.indicator_errors .. symbol_config.indicator_seperator .. diagnostics.errors)
-        end
-
-        if diagnostics.warnings and diagnostics.warnings > 0 then
-            table.insert(status_parts, symbol_config.indicator_warnings .. symbol_config.indicator_seperator .. diagnostics.warnings)
-        end
-
-        if diagnostics.info and diagnostics.info > 0 then
-            table.insert(status_parts, symbol_config.indicator_info .. symbol_config.indicator_seperator .. diagnostics.info)
-        end
-
-        if diagnostics.hints and diagnostics.hints > 0 then
-            table.insert(status_parts, symbol_config.indicator_hint .. symbol_config.indicator_seperator .. diagnostics.hints)
-        end
+    if errors > 0 then
+        table.insert(status_parts, symbol_config.indicator_error .. symbol_config.indicator_seperator .. errors)
     end
 
-    local status_diagnostics = vim.trim(table.concat(status_parts, '  '))
+    if warnings > 0 then
+        table.insert(status_parts, symbol_config.indicator_warning .. symbol_config.indicator_seperator .. warnings)
+    end
+
+    if infos > 0 then
+        table.insert(status_parts, symbol_config.indicator_info .. symbol_config.indicator_seperator .. infos)
+    end
+
+    if hints > 0 then
+        table.insert(status_parts, symbol_config.indicator_hint .. symbol_config.indicator_seperator .. hints)
+    end
+
+    local status_diagnostics = vim.trim(table.concat(status_parts, ' '))
     if status_diagnostics ~= '' then return ' ' .. status_diagnostics .. ' ' end
     return ''
 end
