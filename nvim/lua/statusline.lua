@@ -3,7 +3,7 @@ local symbol_config = require('utils').symbol_config
 -- color config
 local colors = {
     active      = '%#StatusLine#',
-    inactive    = '%#StatuslineNC#',
+    inactive    = '%#StatusLineNC#',
     mode        = '%#PmenuSel#',
     git         = '%#Pmenu#',
     file        = '%#CursorLine#',
@@ -38,6 +38,12 @@ local modes = {
     ['t']  = 'Terminal'
 }
 
+-- is buffer truncated
+local is_truncated = function(width)
+  local current_width = vim.api.nvim_win_get_width(0)
+  return current_width < width
+end
+
 -- get the display name for current mode
 local get_current_mode = function()
     local current_mode = vim.api.nvim_get_mode().mode
@@ -65,6 +71,7 @@ end
 -- TODO(vir): release tagbar dependency
 -- get current tag name
 local get_tag_name = function()
+    if is_truncated(120) then return '' end
     return vim.fn['tagbar#currenttag'](' [%s] ', '')
 end
 
@@ -80,7 +87,7 @@ end
 
 -- get current percentage through file
 local get_percentage = function()
-    return '%p%% '
+    return ' %p%% '
 end
 
 -- get current file type
@@ -90,6 +97,7 @@ end
 
 -- get current file diagnostics
 local get_diagnostics = function()
+    if is_truncated(120) then return '' end
     if #vim.lsp.buf_get_clients(0) == 0 then return '' end
 
     local status_parts = {}
@@ -119,22 +127,52 @@ local get_diagnostics = function()
     return ''
 end
 
--- statusline function
-Statusline = function()
+-- active statusline
+local statusline_active = function()
     local mode = colors.mode .. get_current_mode()
     local git = colors.git .. get_git_status()
     local filename = colors.file .. get_filename()
     local diagnostics = colors.diagnostics .. get_diagnostics()
     local tagname = colors.tagname .. get_tag_name()
-    local line_col = colors.line_col .. get_line_col()
-    local percentage = colors.percentage .. get_percentage()
+    local line_col = colors.line_col .. get_line_col() local percentage = colors.percentage .. get_percentage()
     local filetype = colors.filetype .. get_filetype()
 
     return table.concat({
-        colors.active, mode, git, filename,
+        colors.active, mode, git, filename, colors.inactive,
         '%=% ',
-        diagnostics, tagname, line_col, percentage,  filetype
+        diagnostics, tagname, line_col, percentage,  filetype, colors.inactive
     })
 end
 
-vim.cmd [[ set statusline=%!v:lua.Statusline() ]]
+-- special statusline
+local statusline_special = function(mode)
+    return colors.active .. ' ' .. mode .. ' ' .. colors.inactive
+end
+
+-- generate statusline
+StatusLine = function(mode)
+    if mode == 'explorer' then
+        return statusline_special('Explorer')
+    elseif mode == 'quick_fix' then
+        return statusline_special('QuickFix')
+    else
+        return statusline_active()
+    end
+end
+
+vim.cmd [[
+set statusline=%!v:lua.StatusLine()
+
+augroup Statusline
+    autocmd!
+    autocmd WinEnter,BufEnter,FileType NvimTree setlocal statusline=%!v:lua.StatusLine('explorer')
+    autocmd WinEnter,BufEnter,FileType qf setlocal statusline=%!v:lua.StatusLine('quick_fix')
+augroup end
+]]
+
+vim.g.tagbar_status_func = 'CleanTagbarStatus'
+vim.cmd [[
+function! CleanTagbarStatus(current, sort, fname, flags) abort
+    return '%#StatusLine# Tagbar %#StatusLineNC#'
+endfunction
+]]

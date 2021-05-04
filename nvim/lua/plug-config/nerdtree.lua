@@ -1,3 +1,4 @@
+-- deprecated
 local utils = require('utils')
 
 vim.g.NERDTreeChDirMode = 2
@@ -25,7 +26,6 @@ vim.g.NERDTreeGitStatusIndicatorMapCustom = {
     ['Deleted'] = 'x',
     ['Clean'] = ''
 }
-
 
 utils.map('n', '<leader>j', '<cmd>NERDTreeToggle<cr>')
 utils.map('n', '<leader>1', '<cmd>NERDTreeFind<cr>')

@@ -5,6 +5,8 @@ utils.map('v', '<', '<gv')
 utils.map('v', '>', '>gv')
 utils.map('n', 'H', '^')
 utils.map('n', 'L', '$')
+utils.map('v', 'H', '^')
+utils.map('v', 'L', '$')
 utils.map('i', 'jj', '<esc>')
 utils.map('n', 'U', '<c-r>')
 
@@ -12,7 +14,7 @@ utils.map('n', 'U', '<c-r>')
 utils.map('n', '<space>', 'za')
 
 -- buffer navigation
-utils.map('n', '<c-w><c-l>', '<cmd>cclose<cr> <cmd>pclose<cr> <cmd>lclose<cr>')
+utils.map('n', '<c-w><c-l>', ':cclose<cr> :pclose<cr> :lclose<cr>')
 utils.map('n', '<leader>2', '<c-w>o')
 utils.map('n', '<leader>t', '<cmd>bn<cr>')
 utils.map('n', '<leader>y', '<cmd>bN<cr>')

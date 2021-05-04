@@ -10,7 +10,7 @@ require('statusline')           -- setup custom statusline
 
 -- plugin configs
 require('plug-config/completion')
-require('plug-config/nerdtree')
+require('plug-config/tree')
 require('plug-config/tagbar')
 require('plug-config/tabline')
 require('plug-config/gitgutter')
@@ -18,3 +18,4 @@ require('plug-config/tabular')
 require('plug-config/nerdcommenter')
 require('plug-config/autopairs')
 require('plug-config/fzf')
+require('plug-config/treesitter')

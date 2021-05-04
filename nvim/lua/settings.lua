@@ -8,15 +8,15 @@ vim.g.loaded_node_provider = 0
 vim.g.loaded_python_provider = 0
 vim.g.python3_host_prog = vim.fn.systemlist('which python3')[1]
 
-vim.cmd 'colorscheme codedark'
+vim.cmd 'colorscheme solarized8_dark_high'
 -- gruvbox deus
 -- nord OceanicNext quantum neodark
 -- bluewery Tomorrow-Night-Blue
 -- arcadia hybrid Tomorrow-Night-Eighties mod8
 -- apprentice PaperColor luna CandyPaper jellybeans default
--- materialtheme materialbox peaksea
--- antares afterglow codedark desertink lucid slate angr
--- aquamarine oceanblack jellyx candycode murphy Dim ir_black
+-- materialtheme materialbox peaksea solarized8_dark_high
+-- antares afterglow codedark desertink lucid slate angr default
+-- aquamarine oceanblack jellyx candycode ir_black
 --
 -- cake16 solarized8_light_high
 -- Tomorrow eclipse autumnleaf aurora White2
@@ -29,6 +29,7 @@ vim.o.hidden = true
 vim.o.splitright = true
 vim.o.splitbelow = true
 vim.o.backup = false
+vim.o.writebackup = false
 vim.o.autowrite = true
 vim.o.lazyredraw = true
 vim.o.termguicolors = true
@@ -81,7 +82,6 @@ set shiftwidth=4
 set expandtab
 set autoindent
 set smartindent
-
 ]]
 
 -- cursor setup
