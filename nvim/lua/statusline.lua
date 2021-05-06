@@ -1,4 +1,6 @@
-local symbol_config = require('utils').symbol_config
+local utils = require('utils')
+local symbol_config = utils.symbol_config
+local truncation_limit = utils.truncation_limit
 
 -- color config
 local colors = {
@@ -63,6 +65,8 @@ local get_git_status = function()
 
     if meta['branch'] == '' then
         return ''
+    elseif is_truncated(truncation_limit) then
+        return string.format(' %s ', meta['branch'])
     else
         return string.format(' %s | +%s ~%s -%s ', meta['branch'], meta['added'], meta['modified'], meta['removed'])
     end
@@ -70,8 +74,8 @@ end
 
 -- TODO(vir): release tagbar dependency
 -- get current tag name
-local get_tag_name = function()
-    if is_truncated(120) then return '' end
+local get_tagname = function()
+    if is_truncated(truncation_limit) then return '' end
     return vim.fn['tagbar#currenttag'](' [%s] ', '')
 end
 
@@ -87,7 +91,11 @@ end
 
 -- get current percentage through file
 local get_percentage = function()
-    return ' %p%% '
+    if is_truncated(truncation_limit) then
+        return ''
+    else
+        return ' %p%% '
+    end
 end
 
 -- get current file type
@@ -97,29 +105,31 @@ end
 
 -- get current file diagnostics
 local get_diagnostics = function()
-    if is_truncated(120) then return '' end
     if #vim.lsp.buf_get_clients(0) == 0 then return '' end
 
     local status_parts = {}
     local errors = vim.lsp.diagnostic.get_count(0, 'Error')
-    local warnings = vim.lsp.diagnostic.get_count(0, 'Warning')
-    local hints = vim.lsp.diagnostic.get_count(0, 'Hint')
-    local infos = vim.lsp.diagnostic.get_count(0, 'Info')
 
     if errors > 0 then
         table.insert(status_parts, symbol_config.indicator_error .. symbol_config.indicator_seperator .. errors)
     end
 
-    if warnings > 0 then
-        table.insert(status_parts, symbol_config.indicator_warning .. symbol_config.indicator_seperator .. warnings)
-    end
+    if not is_truncated(truncation_limit) then
+        local warnings = vim.lsp.diagnostic.get_count(0, 'Warning')
+        local hints = vim.lsp.diagnostic.get_count(0, 'Hint')
+        local infos = vim.lsp.diagnostic.get_count(0, 'Info')
 
-    if infos > 0 then
-        table.insert(status_parts, symbol_config.indicator_info .. symbol_config.indicator_seperator .. infos)
-    end
+        if warnings > 0 then
+            table.insert(status_parts, symbol_config.indicator_warning .. symbol_config.indicator_seperator .. warnings)
+        end
 
-    if hints > 0 then
-        table.insert(status_parts, symbol_config.indicator_hint .. symbol_config.indicator_seperator .. hints)
+        if infos > 0 then
+            table.insert(status_parts, symbol_config.indicator_info .. symbol_config.indicator_seperator .. infos)
+        end
+
+        if hints > 0 then
+            table.insert(status_parts, symbol_config.indicator_hint .. symbol_config.indicator_seperator .. hints)
+        end
     end
 
     local status_diagnostics = vim.trim(table.concat(status_parts, ' '))
@@ -133,14 +143,15 @@ local statusline_active = function()
     local git = colors.git .. get_git_status()
     local filename = colors.file .. get_filename()
     local diagnostics = colors.diagnostics .. get_diagnostics()
-    local tagname = colors.tagname .. get_tag_name()
-    local line_col = colors.line_col .. get_line_col() local percentage = colors.percentage .. get_percentage()
+    local tagname = colors.tagname .. get_tagname()
+    local line_col = colors.line_col .. get_line_col()
+    local percentage = colors.percentage .. get_percentage()
     local filetype = colors.filetype .. get_filetype()
 
     return table.concat({
-        colors.active, mode, git, filename, colors.inactive,
+        colors.active, mode, git, diagnostics, filename, colors.inactive,
         '%=% ',
-        diagnostics, tagname, line_col, percentage,  filetype, colors.inactive
+        tagname, line_col, percentage,  filetype, colors.inactive
     })
 end
 

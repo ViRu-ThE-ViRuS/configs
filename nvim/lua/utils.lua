@@ -1,5 +1,8 @@
 local utils = {}
 
+-- setup truncation limits
+utils.truncation_limit = 120
+
 -- setup keymaps
 utils.map = function (mode, lhs, rhs, opts, buffer_nr)
     local options = { noremap = true }
