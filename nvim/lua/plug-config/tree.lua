@@ -26,7 +26,7 @@ vim.g.nvim_tree_bindings = {
     ["<c-x>"]         = tree_callback("split"),
     ["<bs>"]          = tree_callback("close_node"),
     ["I"]             = tree_callback("toggle_dotfiles"),
-    ["R"]         = tree_callback("refresh"),
+    ["R"]             = tree_callback("refresh"),
     ["<leader>n"]     = tree_callback("create"),
     ["<leader>d"]     = tree_callback("remove"),
     ["<leader>r"]     = tree_callback("full_rename"),
@@ -42,12 +42,13 @@ vim.g.nvim_tree_icons = {
         empty = '-'
     },
     git = {
-        modified  = '~',
-        dirty     = '~',
+        unstaged  = '~',
         staged    = '+',
-        untracked = '*',
         unmerged  = '=',
+        untracked = '*',
         deleted   = 'x',
+        ignored   = '-',
+        -- renamed   = '->'
     },
     lsp = {
         ['info']    = utils.symbol_config.sign_info,
