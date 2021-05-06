@@ -5,6 +5,8 @@ vim.g.gruvbox_contrast_dark = 'medium'
 vim.g.gruvbox_contrast_light = 'hard'
 vim.g.gruvbox_italic = 'hard'
 vim.g.loaded_node_provider = 0
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_perl_provider = 0
 vim.g.loaded_python_provider = 0
 vim.g.python3_host_prog = vim.fn.systemlist('which python3')[1]
 
@@ -51,7 +53,6 @@ vim.o.title = true
 vim.o.completeopt = "menu,noinsert,noselect,menuone"
 vim.o.background = "dark"
 vim.o.diffopt = 'internal,filler,vertical'
-vim.o.undodir = '~/.config/undodir'
 vim.o.updatetime = 1000
 
 -- window local options
@@ -68,6 +69,11 @@ vim.bo.textwidth = 79
 vim.bo.formatoptions = "cnjlr"
 vim.bo.swapfile = false
 vim.bo.undofile = true
+
+-- vim.o.undodir = '~/.config/undodir'
+vim.cmd [[
+set undodir=~/.config/undodir
+]]
 
 -- vim.o.tabstop = 4
 -- vim.o.softtabstop = 4
