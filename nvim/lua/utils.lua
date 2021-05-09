@@ -40,4 +40,10 @@ utils.symbol_config = {
     sign_error     = 'x'
 }
 
+-- is buffer truncated
+utils.is_truncated = function(width)
+  local current_width = vim.api.nvim_win_get_width(0)
+  return current_width < width
+end
+
 return utils

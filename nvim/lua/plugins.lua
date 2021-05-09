@@ -22,9 +22,8 @@ return require('packer').startup(function()
     use { 'nvim-treesitter/nvim-treesitter', run = function() vim.api.nvim_exec('TSUpdate', 0) end }
     use 'neovim/nvim-lspconfig'
     use 'hrsh7th/nvim-compe'
+    use { 'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}} }
 
-    use { 'junegunn/fzf', run = function() vim.fn['fzf#install']() end }
-    use 'junegunn/fzf.vim'
     use 'scrooloose/nerdcommenter'
     use 'jiangmiao/auto-pairs'
 

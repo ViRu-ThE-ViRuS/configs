@@ -79,3 +79,4 @@ else
     vim.o.shell = 'bash'
     utils.map('n', '<leader>s', '<cmd>vsp term://bash<cr>')
 end
+

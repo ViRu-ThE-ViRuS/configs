@@ -40,12 +40,6 @@ local modes = {
     ['t']  = 'Terminal'
 }
 
--- is buffer truncated
-local is_truncated = function(width)
-  local current_width = vim.api.nvim_win_get_width(0)
-  return current_width < width
-end
-
 -- get the display name for current mode
 local get_current_mode = function()
     local current_mode = vim.api.nvim_get_mode().mode
@@ -65,7 +59,7 @@ local get_git_status = function()
 
     if meta['branch'] == '' then
         return ''
-    elseif is_truncated(truncation_limit) then
+    elseif utils.is_truncated(truncation_limit) then
         return string.format(' %s ', meta['branch'])
     else
         return string.format(' %s | +%s ~%s -%s ', meta['branch'], meta['added'], meta['modified'], meta['removed'])
@@ -75,7 +69,7 @@ end
 -- TODO(vir): release tagbar dependency
 -- get current tag name
 local get_tagname = function()
-    if is_truncated(truncation_limit) then return '' end
+    if utils.is_truncated(truncation_limit) then return '' end
     return vim.fn['tagbar#currenttag'](' [%s] ', '')
 end
 
@@ -91,7 +85,7 @@ end
 
 -- get current percentage through file
 local get_percentage = function()
-    if is_truncated(truncation_limit) then
+    if utils.is_truncated(truncation_limit) then
         return ''
     else
         return ' %p%% '
@@ -114,7 +108,7 @@ local get_diagnostics = function()
         table.insert(status_parts, symbol_config.indicator_error .. symbol_config.indicator_seperator .. errors)
     end
 
-    if not is_truncated(truncation_limit) then
+    if not utils.is_truncated(truncation_limit) then
         local warnings = vim.lsp.diagnostic.get_count(0, 'Warning')
         local hints = vim.lsp.diagnostic.get_count(0, 'Hint')
         local infos = vim.lsp.diagnostic.get_count(0, 'Info')

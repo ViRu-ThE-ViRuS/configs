@@ -10,7 +10,7 @@ vim.g.loaded_perl_provider = 0
 vim.g.loaded_python_provider = 0
 vim.g.python3_host_prog = vim.fn.systemlist('which python3')[1]
 
-vim.cmd 'colorscheme solarized8_dark_high'
+vim.cmd 'colorscheme gruvbox'
 -- gruvbox deus
 -- nord OceanicNext quantum neodark
 -- bluewery Tomorrow-Night-Blue
