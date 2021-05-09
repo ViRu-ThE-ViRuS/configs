@@ -10,12 +10,12 @@ vim.g.loaded_perl_provider = 0
 vim.g.loaded_python_provider = 0
 vim.g.python3_host_prog = vim.fn.systemlist('which python3')[1]
 
-vim.cmd 'colorscheme gruvbox'
+vim.cmd 'colorscheme desertink'
 -- gruvbox deus
 -- nord OceanicNext quantum neodark
 -- bluewery Tomorrow-Night-Blue
 -- arcadia hybrid Tomorrow-Night-Eighties mod8
--- apprentice PaperColor luna CandyPaper jellybeans default
+-- apprentice PaperColor luna CandyPaper jellybeans
 -- materialtheme materialbox peaksea solarized8_dark_high
 -- antares afterglow codedark desertink lucid slate angr default
 -- aquamarine oceanblack jellyx candycode ir_black

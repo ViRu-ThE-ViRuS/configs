@@ -40,10 +40,16 @@ utils.symbol_config = {
     sign_error     = 'x'
 }
 
--- is buffer truncated
-utils.is_truncated = function(width)
+-- is buffer horizontally truncated
+utils.is_htruncated = function(width)
   local current_width = vim.api.nvim_win_get_width(0)
   return current_width < width
+end
+
+-- is buffer verticall truncated
+utils.is_vtruncated = function(height)
+  local current_height = vim.api.nvim_win_get_height(0)
+  return current_height < height
 end
 
 return utils

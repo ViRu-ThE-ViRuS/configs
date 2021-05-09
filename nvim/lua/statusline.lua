@@ -59,7 +59,7 @@ local get_git_status = function()
 
     if meta['branch'] == '' then
         return ''
-    elseif utils.is_truncated(truncation_limit) then
+    elseif utils.is_htruncated(truncation_limit) then
         return string.format(' %s ', meta['branch'])
     else
         return string.format(' %s | +%s ~%s -%s ', meta['branch'], meta['added'], meta['modified'], meta['removed'])
@@ -69,7 +69,7 @@ end
 -- TODO(vir): release tagbar dependency
 -- get current tag name
 local get_tagname = function()
-    if utils.is_truncated(truncation_limit) then return '' end
+    if utils.is_htruncated(truncation_limit) then return '' end
     return vim.fn['tagbar#currenttag'](' [%s] ', '')
 end
 
@@ -85,7 +85,7 @@ end
 
 -- get current percentage through file
 local get_percentage = function()
-    if utils.is_truncated(truncation_limit) then
+    if utils.is_htruncated(truncation_limit) then
         return ''
     else
         return ' %p%% '
@@ -108,7 +108,7 @@ local get_diagnostics = function()
         table.insert(status_parts, symbol_config.indicator_error .. symbol_config.indicator_seperator .. errors)
     end
 
-    if not utils.is_truncated(truncation_limit) then
+    if not utils.is_htruncated(truncation_limit) then
         local warnings = vim.lsp.diagnostic.get_count(0, 'Warning')
         local hints = vim.lsp.diagnostic.get_count(0, 'Hint')
         local infos = vim.lsp.diagnostic.get_count(0, 'Info')

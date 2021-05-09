@@ -19,8 +19,10 @@ OnAttach = function(client, buffer_nr)
         utils.map('v','<c-f>', '<cmd>lua vim.lsp.buf.range_formatting()<cr>', { silent = true }, buffer_nr)
     end
 
-    vim.cmd [[ command! Errors :lua vim.lsp.diagnostic.set_loclist()<cr> ]]
     vim.api.nvim_buf_set_option(buffer_nr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+    vim.cmd [[ command! Errors :lua vim.lsp.diagnostic.set_loclist()<cr> ]]
+    utils.map('n', '<leader>l', '<cmd>Errors<cr>')
 end
 
 -- pyls setup

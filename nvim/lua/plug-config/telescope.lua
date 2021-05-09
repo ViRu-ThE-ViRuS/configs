@@ -1,3 +1,4 @@
+-- TODO(vir): fix bugs in live_grep
 local utils = require('utils')
 
 require('telescope').setup{
@@ -34,7 +35,7 @@ Hybrid_find_files = function()
         follow = true
     }
 
-    if utils.is_truncated(120) then
+    if utils.is_htruncated(120) then
         return require('telescope.builtin').find_files(require('telescope.themes').get_dropdown(args))
     else
         return require('telescope.builtin').find_files(args)
@@ -42,7 +43,7 @@ Hybrid_find_files = function()
 end
 
 Hybrid_live_grep = function()
-    if utils.is_truncated(120) then
+    if utils.is_htruncated(120) then
         return require('telescope.builtin').live_grep(require('telescope.themes').get_dropdown({}))
     else
         return require('telescope.builtin').live_grep({})
@@ -59,7 +60,7 @@ Hybrid_grep = function(todo)
         args.search = vim.fn.expand('<cword>')
     end
 
-    if utils.is_truncated(120) then
+    if utils.is_htruncated(120) then
         return require('telescope.builtin').grep_string(require('telescope.themes').get_dropdown(args))
     else
         return require('telescope.builtin').grep_string(args)
@@ -70,3 +71,4 @@ utils.map('n', '<c-p>', '<cmd>lua Hybrid_find_files()<cr>')
 utils.map('n', '<leader>f', '<cmd>lua Hybrid_live_grep()<cr>')
 utils.map('n', '<leader>z', '<cmd>lua Hybrid_grep(true)<cr>')
 utils.map('n', '<leader>F', '<cmd>lua Hybrid_grep()<cr>')
+
