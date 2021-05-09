@@ -2,4 +2,5 @@
 fish/_fish_variables
 undodir/
 nvim/plugin
+nvim/plugged
 *.appimage

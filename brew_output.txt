@@ -13,7 +13,6 @@ fontconfig
 freetype
 fribidi
 fzf
-gcc
 gdbm
 gettext
 glib
@@ -56,6 +55,7 @@ libxrender
 llvm
 luajit
 luajit-openresty
+luv
 lzo
 m4
 mpdecimal
@@ -74,7 +74,6 @@ pcre2
 pixman
 pkg-config
 pyenv
-python@3.9
 readline
 ripgrep
 sqlite

@@ -1,3 +1,4 @@
+" TODO(vir): start transition to lua
 filetype plugin indent on
 
 set rtp+=~/.config/nvim
@@ -71,9 +72,12 @@ set softtabstop=4
 set expandtab
 set smarttab
 set autoindent
-set noshiftround
-set scrolloff=3
+set smartindent
+set shiftround  " no
+set scrolloff=8
+set sidescrolloff=8
 set backspace=2
+set nojoinspaces
 set autoread
 
 set nohlsearch
@@ -106,21 +110,21 @@ let g:gruvbox_contrast_dark='medium' " hard medium soft
 let g:gruvbox_contrast_light='hard' " hard medium soft
 let g:gruvbox_italic=1
 
-colorscheme materialtheme " gruvbox deus
-               " nord OceanicNext quantum neodark
-               " bluewery Tomorrow-Night-Blue
-               " arcadia hybrid Tomorrow-Night-Eighties mod8
-               " apprentice PaperColor luna CandyPaper jellybeans default
-               " materialtheme materialbox peaksea
-               " antares afterglow codedark desertink lucid slate
-               " aquamarine oceanblack jellyx candycode murphy Dim ir_black
+colorscheme OceanicNext " gruvbox deus
+                 " nord OceanicNext quantum neodark
+                 " bluewery Tomorrow-Night-Blue
+                 " arcadia hybrid Tomorrow-Night-Eighties mod8
+                 " apprentice PaperColor luna CandyPaper jellybeans default
+                 " materialtheme materialbox peaksea
+                 " antares afterglow codedark desertink lucid slate angr
+                 " aquamarine oceanblack jellyx candycode murphy Dim ir_black
 
-               " cake16 solarized8_light_high
-               " Tomorrow eclipse autumnleaf aurora White2
+                 " cake16 solarized8_light_high
+                 " Tomorrow eclipse autumnleaf aurora White2
 
 let g:loaded_node_provider=0
 let g:loaded_python_provider=0
-let g:python3_host_prog='/usr/local/bin/python3'
+let g:python3_host_prog='/usr/bin/python3'
 
 " custom functions
 function! RandomColors()
@@ -184,15 +188,6 @@ function! PaddedModeName()
     endif
 endfunction
 
-function! GetTagName()
-    let l:tagname = trim(execute("TagbarCurrentTag"))
-    if l:tagname != 'No current tag'
-        return ' '.l:tagname.' '
-    else
-        return ''
-    endif
-endfun
-
 set statusline=
 set statusline+=%#PmenuSel#
 set statusline+=%{PaddedModeName()}
@@ -203,7 +198,7 @@ set statusline+=%#CursorLine#
 set statusline+=\ %f
 set statusline+=%=
 set statusline+=%#Pmenu#
-set statusline+=%{GetTagName()}
+set statusline+=%{tagbar#currenttag('\ [%s]\ ','')}
 set statusline+=%#CursorLine#
 set statusline+=\ %l:%c
 set statusline+=\ %p%%
@@ -270,7 +265,7 @@ let g:fzf_preview_window='right:50%'
 let g:fzf_buffers_jump=1
 let g:fzf_layout={'down': '40%'}
 
-let $FZF_DEFAULT_COMMAND='rg --files --follow --hidden --no-ignore -g "!{.DS_Store,.cache,venv,.git}" 2> /dev/null'
+let $FZF_DEFAULT_COMMAND='rg --files --follow --smart-case --hidden --no-ignore -g "!{.DS_Store,.cache,venv,.git}" 2> /dev/null'
 autocmd! FileType fzf set laststatus=0 noruler | autocmd BufLeave <buffer> set laststatus=2 ruler
 
 nnoremap <C-p> :Files<CR>
@@ -296,8 +291,7 @@ let g:gitgutter_sign_added='|'
 let g:gitgutter_sign_modified='~'
 let g:gitgutter_sign_removed='-'
 let g:gitgutter_use_location_list=1
-autocmd BufWritePost * silent! :GitGutter
-autocmd BufEnter * silent! :GitGutter
+autocmd BufWritePost,BufEnter * silent! :GitGutter
 
 let g:gitgutter_map_keys=0
 nmap <leader>hs <plug>(GitGutterStageHunk)
@@ -368,7 +362,7 @@ command! Errors execute "lopen"
 let g:LanguageClient_serverCommands={
     \ 'python' : ['pyls'],
     \ 'cpp'    : ['clangd'],
-    \ 'c'      : ['clangd']
+    \ 'c'      : ['clangd'],
     \ }
 
 highlight link LC_ERROR Pmenu
@@ -400,8 +394,8 @@ elseif executable('zsh')
     set shell=zsh
     nnoremap <leader>s :vsp term://zsh<CR>
 else
-    set shell=sh
-    nnoremap <leader>s :vsp term://sh<CR>
+    set shell=bash
+    nnoremap <leader>s :vsp term://bash<CR>
 endif
 
 " inbuilt terminal seamless navigation
@@ -438,7 +432,7 @@ augroup ColorsUpdate
 augroup END
 
 " autoreload when editing config
-autocmd! BufWritePost $MYVIMRC source %
+autocmd! BufWritePost $MYVIMRC source % | redraw
 
 " faster mouse scrolling
 map <ScrollWheelUp> <C-Y>
@@ -466,7 +460,7 @@ inoremap jj <esc>
 
 nmap U <c-r>
 
-" autocmd BufWritePre * :retab " tab to spaces
+" autocmd! BufWritePre * :retab " tab to spaces
 
 " buffer resizing
 nnoremap <m-j> :resize +2<CR>
@@ -489,8 +483,12 @@ vnoremap > >gv
 nnoremap <space> za
 
 " fix common typos
-cmap Wq wq
-cmap Q q
+"cmap Wq wq
+"cmap Q q
+cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
+cnoreabbrev <expr> Q ((getcmdtype() is# ':' && getcmdline() is# 'Q')?('q'):('Q'))
+cnoreabbrev <expr> WQ ((getcmdtype() is# ':' && getcmdline() is# 'WQ')?('wq'):('WQ'))
+cnoreabbrev <expr> Wq ((getcmdtype() is# ':' && getcmdline() is# 'Wq')?('wq'):('Wq'))
 
 " : deoplete languageclient neovim
 " <leader>
@@ -523,4 +521,3 @@ cmap Q q
 "       .rgignore     : ripgrep ignore
 "       .clang-format : clang-format config
 "       setup.cfg     : pycodestyle config
-
