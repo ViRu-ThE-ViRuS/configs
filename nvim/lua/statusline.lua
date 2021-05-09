@@ -8,12 +8,12 @@ local colors = {
     inactive    = '%#StatusLineNC#',
     mode        = '%#PmenuSel#',
     git         = '%#Pmenu#',
+    diagnostics = '%#PmenuSbar#',
     file        = '%#CursorLine#',
-    diagnostics = '%#PmenuSel#',
-    tagname     = '%#Pmenu#',
+    tagname     = '%#PmenuSbar#',
     line_col    = '%#CursorLine#',
     percentage  = '%#CursorLine#',
-    filetype    = '%#Pmenu#',
+    filetype    = '%#PmenuSel#',
 }
 
 -- mode display name table
@@ -75,7 +75,7 @@ end
 
 -- get current file name
 local get_filename = function()
-    return ' %<%f '
+    return ' %f '
 end
 
 -- get current line/col
@@ -135,15 +135,16 @@ end
 local statusline_active = function()
     local mode = colors.mode .. get_current_mode()
     local git = colors.git .. get_git_status()
-    local filename = colors.file .. get_filename()
     local diagnostics = colors.diagnostics .. get_diagnostics()
+    local truncator = '%<'
+    local filename = colors.file .. get_filename()
     local tagname = colors.tagname .. get_tagname()
     local line_col = colors.line_col .. get_line_col()
     local percentage = colors.percentage .. get_percentage()
     local filetype = colors.filetype .. get_filetype()
 
     return table.concat({
-        colors.active, mode, git, diagnostics, filename, colors.inactive,
+        colors.active, mode, git, diagnostics, truncator, filename, colors.inactive,
         '%=% ',
         tagname, line_col, percentage,  filetype, colors.inactive
     })
@@ -181,3 +182,4 @@ function! CleanTagbarStatus(current, sort, fname, flags) abort
     return '%#StatusLine# Tagbar %#StatusLineNC#'
 endfunction
 ]]
+
