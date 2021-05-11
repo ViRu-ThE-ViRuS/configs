@@ -8,6 +8,12 @@ vim.g.nvim_tree_group_empty = 1
 vim.g.nvim_tree_lsp_diagnostics = 1
 vim.g.nvim_tree_auto_close = 1
 
+vim.g.nvim_tree_show_icons = {
+    git = 1,
+    folders = 1,
+    files = 0
+}
+
 vim.g.nvim_tree_ignore = {
     '*.pyc',
     '.DS_Store',
@@ -36,11 +42,11 @@ vim.g.nvim_tree_bindings = {
 }
 
 vim.g.nvim_tree_icons = {
-    folder = {
-        default = '-',
-        open = '-',
-        empty = '-'
-    },
+    --folder = {
+        --default = '-',
+        --open = '-',
+        --empty = '-'
+    --},
     git = {
         unstaged  = '~',
         staged    = '+',

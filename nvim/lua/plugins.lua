@@ -8,7 +8,7 @@ end
 return require('packer').startup(function()
     use 'wbthomason/packer.nvim'
 
-    use 'kyazdani42/nvim-tree.lua'
+    use { 'kyazdani42/nvim-tree.lua', requires = {{'kyazdani42/nvim-web-devicons'}} }
     use 'majutsushi/tagbar'
     use 'pacha/vem-tabline'
     use 'airblade/vim-gitgutter'
@@ -23,6 +23,7 @@ return require('packer').startup(function()
     use 'neovim/nvim-lspconfig'
     use 'hrsh7th/nvim-compe'
 
+    --use 'folke/trouble.nvim'
     --use { 'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}} }
     use { 'junegunn/fzf', run = function() vim.fn['fzf#install']() end }
     use 'junegunn/fzf.vim'
@@ -30,9 +31,11 @@ return require('packer').startup(function()
     use 'scrooloose/nerdcommenter'
     use 'jiangmiao/auto-pairs'
 
-    use 'junegunn/gv.vim'
+    --use 'junegunn/gv.vim'
     use 'morhetz/gruvbox'
     use 'relastle/bluewery.vim'
+    use 'shaunsingh/moonlight.nvim'
+    use 'marko-cerovac/material.nvim'
     use 'flazz/vim-colorschemes'
 end)
 

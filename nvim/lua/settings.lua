@@ -1,22 +1,43 @@
 vim.cmd 'filetype plugin indent on'
 vim.cmd 'syntax enable'
 
-vim.g.gruvbox_contrast_dark = 'medium'
-vim.g.gruvbox_contrast_light = 'hard'
-vim.g.gruvbox_italic = 'hard'
 vim.g.loaded_node_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_python_provider = 0
 vim.g.python3_host_prog = vim.fn.systemlist('which python3')[1]
 
-vim.cmd 'colorscheme desertink'
+vim.g.gruvbox_contrast_dark = 'medium'
+vim.g.gruvbox_contrast_light = 'hard'
+vim.g.gruvbox_italic = 1
+
+vim.g.material_italic_comments = true
+vim.g.material_italic_keywords = true
+vim.g.material_italic_functions = true
+vim.g.material_italic_variables = false
+vim.g.material_borders = true
+vim.g.material_style='oceanic'
+-- oceanic
+
+vim.g.moonlight_italic_comments = true
+vim.g.moonlight_italic_keywords = true
+vim.g.moonlight_italic_functions = true
+vim.g.moonlight_italic_variables = false
+vim.g.moonlight_borders = true
+vim.g.moonlight_style = 'moonlight'
+
+vim.o.background = "dark"
+
+--require('material').set()
+require('moonlight').set()
+--vim.cmd 'colorscheme gruvbox'
+
 -- gruvbox deus
 -- nord OceanicNext quantum neodark
 -- bluewery Tomorrow-Night-Blue
 -- arcadia hybrid Tomorrow-Night-Eighties mod8
--- apprentice PaperColor luna CandyPaper jellybeans
--- materialtheme materialbox peaksea solarized8_dark_high
+-- apprentice PaperColor luna CandyPaper jellybeans abra
+-- materialtheme materialbox peaksea solarized8_dark_high moonlight
 -- antares afterglow codedark desertink lucid slate angr default
 -- aquamarine oceanblack jellyx candycode ir_black
 --
@@ -51,7 +72,6 @@ vim.o.omnifunc = "syntaxcomplete#Complete"
 vim.o.display = "lastline,msgsep"
 vim.o.title = true
 vim.o.completeopt = "menu,noinsert,noselect,menuone"
-vim.o.background = "dark"
 vim.o.diffopt = 'internal,filler,vertical'
 vim.o.updatetime = 1000
 

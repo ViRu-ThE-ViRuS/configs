@@ -13,5 +13,5 @@ utils.map('n', ']c', '<plug>(GitGutterNextHunk)', { noremap = false})
 utils.map('n', '[c', '<plug>(GitGutterPrevHunk)', { noremap = false})
 
 vim.cmd [[
-autocmd BufWritePost,BufEnter * silent! :GitGutter
+autocmd! BufWritePost,BufEnter * silent! :GitGutter
 ]]

@@ -20,14 +20,14 @@ Cmdline_diagnostics = function ()
 end
 
 vim.cmd [[
-autocmd TextYankPost * lua vim.highlight.on_yank {on_visual = false}
-autocmd BufWritePre * lua require('utils').StripTrailingWhitespaces()
+autocmd! TextYankPost * lua vim.highlight.on_yank {on_visual = false}
+autocmd! BufWritePre * lua require('utils').StripTrailingWhitespaces()
 
 autocmd! BufWritePost ~/.config/nvim/init.lua luafile $MYVIMRC
 autocmd! BufWritePost ~/.config/nvim/lua/*.lua luafile %
 
-autocmd CursorHold,CursorHoldI * lua Cmdline_diagnostics()
-autocmd CursorMoved,CursorMovedI * echo ''
+autocmd! CursorHold,CursorHoldI * lua Cmdline_diagnostics()
+autocmd! CursorMoved,CursorMovedI * echo ''
 
 augroup ColorsUpdate
     autocmd!
