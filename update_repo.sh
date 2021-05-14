@@ -1,12 +1,12 @@
-cp -r ~/.config/nvim/* nvim/
-cp -r ~/.config/tmux/* tmux/
-cp ~/.config/tmux/.tmux.conf tmux/.tmux.conf
-cp ~/.config/alacritty/* alacritty/
-cp -r ~/.config/fish/* fish/
-cp -r ~/.config/kitty/* kitty/
-cp ~/.config/emacs/*.el emacs/
-cp ~/.config/zsh/.zshrc zsh/
-cp ~/.zshenv zsh/
+cp -r ~/.config/nvim/* nvim/ 2&> /dev/null
+cp -r ~/.config/tmux/* tmux/ 2&> /dev/null
+cp ~/.config/tmux/.tmux.conf tmux/.tmux.conf 2&> /dev/null
+cp ~/.config/alacritty/* alacritty/ 2&> /dev/null
+cp -r ~/.config/fish/* fish/ 2&> /dev/null
+cp -r ~/.config/kitty/* kitty/ 2&> /dev/null
+cp ~/.config/emacs/*.el emacs/ 2&> /dev/null
+cp ~/.config/zsh/.zshrc zsh/ 2&> /dev/null
+cp ~/.zshenv zsh/ 2&> /dev/null
 
 switch (uname)
     case Darwin
