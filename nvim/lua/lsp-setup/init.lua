@@ -38,7 +38,7 @@ OnAttach = function(_, buffer_nr)
 end
 
 -- pyls setup
-lsp['pyls'].setup{ on_attach = OnAttach }
+lsp['pyls'].setup{ on_attach = OnAttach, cmd = {"pylsp"} }
 
 -- clangd setup
 lsp['clangd'].setup{ on_attach = OnAttach }
