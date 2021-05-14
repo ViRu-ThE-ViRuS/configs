@@ -46,23 +46,22 @@
 (define-key evil-motion-state-map (kbd "C-j") 'evil-window-down)
 (define-key evil-motion-state-map (kbd "C-k") 'evil-window-up)
 (define-key evil-motion-state-map (kbd "C-l") 'evil-window-right)
+(define-key evil-motion-state-map (kbd "C-f") 'lsp-format-buffer)
+(define-key evil-normal-state-map (kbd "C-p") 'counsel-find-file)
 
+(evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
 (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
 (evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
 (evil-define-key 'normal neotree-mode-map (kbd "q") 'neotree-hide)
-(evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
-(evil-define-key 'normal neotree-mode-map (kbd "g") 'neotree-refresh)
+(evil-define-key 'normal neotree-mode-map (kbd "R") 'neotree-refresh)
 (evil-define-key 'normal neotree-mode-map (kbd "n") 'neotree-next-line)
 (evil-define-key 'normal neotree-mode-map (kbd "p") 'neotree-previous-line)
 (evil-define-key 'normal neotree-mode-map (kbd "A") 'neotree-stretch-toggle)
-(evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle)
-
-(evil-define-key nil evil-normal-state-map
-  (kbd "C-p") 'counsel-find-file)
+(evil-define-key 'normal neotree-mode-map (kbd "I") 'neotree-hidden-file-toggle)
 
 (with-eval-after-load 'evil-maps
-  (define-key evil-motion-state-map (kbd ":") 'evil-repeat-find-char)
-  (define-key evil-motion-state-map (kbd ";") 'evil-ex))
+    (define-key evil-motion-state-map (kbd ":") 'evil-repeat-find-char)
+    (define-key evil-motion-state-map (kbd ";") 'evil-ex))
 
 (setq evil-search-module 'swiper
       evil-vsplit-window-right 't
@@ -71,16 +70,18 @@
 
 (evil-leader/set-key
   "j" 'neotree-toggle
-  "p" 'counsel-find-file
   "t" 'next-buffer
   "y" 'previous-buffer
   "F" 'swiper
   "s" 'shell-pop
   "q" 'kill-this-buffer
 
-  "f" 'lsp-format-buffer
   "r" 'lsp-rename
   "d" 'lsp-find-definition
   "u" 'lsp-find-references)
+
+;;      lsp mode shit
+(with-eval-after-load 'lsp-mode
+  (setq lsp-modeline-diagnostics-scope :workspace))
 
 ;; hello my name is viraat chandra and i love to program

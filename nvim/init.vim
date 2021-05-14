@@ -360,7 +360,7 @@ let g:LanguageClient_diagnosticsList='Location'
 command! Errors execute "lopen"
 
 let g:LanguageClient_serverCommands={
-    \ 'python' : ['pyls'],
+    \ 'python' : ['pylsp'],
     \ 'cpp'    : ['clangd'],
     \ 'c'      : ['clangd'],
     \ }
