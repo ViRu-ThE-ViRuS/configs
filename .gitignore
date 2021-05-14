@@ -3,5 +3,6 @@ fish/_fish_variables
 undodir/
 nvim/plugin
 nvim/plugged
+nvim/.netrwhist
 *.appimage
 nvim/nvim.appimage
