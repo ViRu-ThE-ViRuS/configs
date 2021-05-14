@@ -4,3 +4,4 @@ undodir/
 nvim/plugin
 nvim/plugged
 *.appimage
+nvim/nvim.appimage
