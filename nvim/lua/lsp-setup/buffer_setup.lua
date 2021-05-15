@@ -8,9 +8,10 @@ ToggleDiagnosticsList = function()
     if not diagnostics_set then
         vim.lsp.diagnostic.set_loclist()
         diagnostics_set = true
+        vim.cmd [[ wincmd p ]]
     else
-        vim.cmd [[ lclose ]]
         diagnostics_set = false
+        vim.cmd [[ lclose ]]
     end
 end
 
