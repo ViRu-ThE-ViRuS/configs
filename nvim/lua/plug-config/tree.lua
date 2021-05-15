@@ -6,7 +6,7 @@ vim.g.nvim_tree_indent_markers = 1
 vim.g.nvim_tree_add_trailing = 1
 vim.g.nvim_tree_group_empty = 1
 vim.g.nvim_tree_lsp_diagnostics = 1
-vim.g.nvim_tree_auto_close = 1
+vim.g.nvim_tree_auto_close = 0
 
 vim.g.nvim_tree_show_icons = {
     git = 1,
@@ -64,5 +64,6 @@ vim.g.nvim_tree_icons = {
     }
 }
 
+--utils.map('n', '<leader>1', '<cmd>NvimTreeFindFile<cr>')
 utils.map('n', '<leader>j', '<cmd>NvimTreeToggle<cr>')
-utils.map('n', '<leader>1', '<cmd>NvimTreeFindFile<cr>')
+

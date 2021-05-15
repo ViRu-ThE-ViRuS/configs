@@ -15,7 +15,6 @@ utils.map('n', '<space>', 'za')
 
 -- buffer navigation
 utils.map('n', '<c-w><c-l>', ':cclose<cr> :pclose<cr> :lclose<cr>')
-utils.map('n', '<leader>2', '<c-w>o')
 utils.map('n', '<leader>t', '<cmd>bn<cr>')
 utils.map('n', '<leader>y', '<cmd>bN<cr>')
 utils.map('n', '<leader>q', '<cmd>bd!<cr>')
@@ -48,7 +47,8 @@ utils.map('i', '<left>', '<nop>')
 utils.map('i', '<right>', '<nop>')
 
 -- utility functions
-utils.map('n', '<leader>e', '<cmd>lua require("utils").RandomColors()<cr>')
+utils.map('n', '<leader>1', '<c-w>o')
+utils.map('n', '<leader>2', '<cmd>lua require("utils").RandomColors()<cr>')
 utils.map('n', '<leader>3', '<cmd>if AutoHighlightToggle()<bar>set hlsearch<bar>endif<cr>')
 
 -- utility maps
