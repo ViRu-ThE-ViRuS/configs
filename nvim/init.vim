@@ -294,15 +294,12 @@ let g:gitgutter_use_location_list=1
 autocmd BufWritePost,BufEnter * silent! :GitGutter
 
 let g:gitgutter_map_keys=0
+vmap <leader>hs <plug>(GitGutterStageHunk)
 nmap <leader>hs <plug>(GitGutterStageHunk)
 nmap <leader>hu <plug>(GitGutterUndoHunk)
 nmap <leader>hp <plug>(GitGutterPreviewHunk)
 nmap ]c         <plug>(GitGutterNextHunk)
 nmap [c         <plug>(GitGutterPrevHunk)
-
-vmap <leader>hs <plug>(GitGutterStageHunk)
-vmap <leader>hu <plug>(GitGutterUndoHunk)
-vmap <leader>hp <plug>(GitGutterPreviewHunk)
 
 " deoplete
 let g:deoplete#enable_at_startup=1
