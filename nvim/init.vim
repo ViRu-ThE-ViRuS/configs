@@ -300,6 +300,10 @@ nmap <leader>hp <plug>(GitGutterPreviewHunk)
 nmap ]c         <plug>(GitGutterNextHunk)
 nmap [c         <plug>(GitGutterPrevHunk)
 
+vmap <leader>hs <plug>(GitGutterStageHunk)
+vmap <leader>hu <plug>(GitGutterUndoHunk)
+vmap <leader>hp <plug>(GitGutterPreviewHunk)
+
 " deoplete
 let g:deoplete#enable_at_startup=1
 call deoplete#custom#source('_', 'matchers', ['matcher_fuzzy', 'matcher_length'])
