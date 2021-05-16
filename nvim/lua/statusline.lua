@@ -46,20 +46,22 @@ local get_current_mode = function()
     return string.format(' %s ', modes[current_mode]):upper()
 end
 
--- TODO(vir): release fugitive and gitgutter dependencies
+-- TODO(vir): release gitsigns dependencies
 -- get git information of current file
 local get_git_status = function()
     local meta = {}
-    meta['branch'] = vim.fn['fugitive#head']()
+    local gitsigns_summary = vim.b.gitsigns_status_dict
 
-    local git_summary = vim.fn['GitGutterGetHunkSummary']()
-    meta['added'] = git_summary[1]
-    meta['modified'] = git_summary[2]
-    meta['removed'] = git_summary[3]
-
-    if meta['branch'] == '' then
+    if not gitsigns_summary then
         return ''
-    elseif utils.is_htruncated(truncation_limit) then
+    end
+
+    meta['branch'] = gitsigns_summary['head']
+    meta['added'] = gitsigns_summary['added']
+    meta['modified'] = gitsigns_summary['changed']
+    meta['removed'] = gitsigns_summary['removed']
+
+    if utils.is_htruncated(truncation_limit) then
         return string.format(' %s ', meta['branch'])
     else
         return string.format(' %s | +%s ~%s -%s ', meta['branch'], meta['added'], meta['modified'], meta['removed'])
@@ -161,6 +163,8 @@ StatusLine = function(mode)
         return statusline_special('Explorer')
     elseif mode == 'quick_fix' then
         return statusline_special('QuickFix')
+    elseif mode == 'git' then
+        return statusline_special('Git')
     else
         return statusline_active()
     end
@@ -173,6 +177,7 @@ augroup Statusline
     autocmd!
     autocmd WinEnter,BufEnter,FileType NvimTree setlocal statusline=%!v:lua.StatusLine('explorer')
     autocmd WinEnter,BufEnter,FileType qf setlocal statusline=%!v:lua.StatusLine('quick_fix')
+    autocmd WinEnter,BufEnter,FileType fugitive setlocal statusline=%!v:lua.StatusLine('git')
 augroup end
 ]]
 

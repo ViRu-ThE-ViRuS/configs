@@ -51,7 +51,7 @@ setup_buffer.setup_autocmds = function()
 
         augroup LSP_popup_help
             autocmd! * <buffer>
-            autocmd CursorHold,CursorHoldI <buffer> lua vim.lsp.diagnostic.show_line_diagnostics()
+            autocmd CursorHold <buffer> lua vim.lsp.diagnostic.show_line_diagnostics()
             autocmd CursorHoldI <buffer> lua vim.lsp.buf.signature_help()
         augroup END
     ]]

@@ -11,14 +11,6 @@ vim.g.gruvbox_contrast_dark = 'medium'
 vim.g.gruvbox_contrast_light = 'hard'
 vim.g.gruvbox_italic = 1
 
-vim.g.material_italic_comments = true
-vim.g.material_italic_keywords = true
-vim.g.material_italic_functions = true
-vim.g.material_italic_variables = false
-vim.g.material_borders = true
-vim.g.material_style='oceanic'
--- oceanic
-
 vim.g.moonlight_italic_comments = true
 vim.g.moonlight_italic_keywords = true
 vim.g.moonlight_italic_functions = true
@@ -28,7 +20,6 @@ vim.g.moonlight_style = 'moonlight'
 
 vim.o.background = "dark"
 
---require('material').set()
 require('moonlight').set()
 --vim.cmd 'colorscheme gruvbox'
 

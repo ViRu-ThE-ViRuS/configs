@@ -1,3 +1,4 @@
+-- deprecated
 local utils = require('utils')
 
 vim.g.gitgutter_sign_added = '|'
