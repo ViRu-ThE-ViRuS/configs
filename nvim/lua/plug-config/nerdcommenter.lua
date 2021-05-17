@@ -1,3 +1,4 @@
+-- deprecated
 local utils = require('utils')
 
 vim.g.NERDCreateDefaultMappings = 0

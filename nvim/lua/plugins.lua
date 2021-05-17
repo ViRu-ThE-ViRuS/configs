@@ -8,32 +8,31 @@ end
 return require('packer').startup(function()
     use 'wbthomason/packer.nvim'
 
-    use { 'kyazdani42/nvim-tree.lua', requires = {{'kyazdani42/nvim-web-devicons'}} }
-    use 'majutsushi/tagbar'
-    use 'pacha/vem-tabline'
-    use 'tpope/vim-fugitive'
-    use { 'lewis6991/gitsigns.nvim', requires = {'nvim-lua/plenary.nvim'} }
-
+    use 'airblade/vim-rooter'  -- TODO(vir): check if still usefull
+    use 'jiangmiao/auto-pairs' -- TODO(vir): update to a lua plugin
+    use 'tpope/vim-fugitive'   -- TODO(vir): find alternative
+    use 'majutsushi/tagbar'    -- TODO(vir): find alternative
     use 'christoomey/vim-tmux-navigator'
     use 'tpope/vim-eunuch'
     use 'godlygeek/tabular'
-    use 'airblade/vim-rooter'
 
-    use { 'nvim-treesitter/nvim-treesitter', run = function() vim.api.nvim_exec('TSUpdate', 0) end }
+    use 'b3nj5m1n/kommentary'
+    use 'akinsho/nvim-bufferline.lua'
+    use { 'lewis6991/gitsigns.nvim', requires = {'nvim-lua/plenary.nvim'} }
+    use { 'kyazdani42/nvim-tree.lua', requires = {{'kyazdani42/nvim-web-devicons'}} }
+
     use 'neovim/nvim-lspconfig'
     use 'hrsh7th/nvim-compe'
     use 'onsails/lspkind-nvim'
+    use { 'nvim-treesitter/nvim-treesitter', run = function() vim.api.nvim_exec('TSUpdate', 0) end }
 
-    --use { 'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}} }
-    use { 'junegunn/fzf', run = function() vim.fn['fzf#install']() end }
     use 'junegunn/fzf.vim'
-
-    use 'scrooloose/nerdcommenter'
-    use 'jiangmiao/auto-pairs'
+    use { 'junegunn/fzf', run = function() vim.fn['fzf#install']() end }
+    --use { 'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}} }
 
     use 'morhetz/gruvbox'
     use 'relastle/bluewery.vim'
-    use 'shaunsingh/moonlight.nvim'
     use 'flazz/vim-colorschemes'
+    use 'shaunsingh/moonlight.nvim'
 end)
 

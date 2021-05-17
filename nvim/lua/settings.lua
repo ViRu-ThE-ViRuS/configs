@@ -27,7 +27,7 @@ require('moonlight').set()
 -- nord OceanicNext quantum neodark
 -- bluewery Tomorrow-Night-Blue
 -- arcadia hybrid Tomorrow-Night-Eighties mod8
--- apprentice PaperColor luna CandyPaper jellybeans abra
+-- apprentice PaperColor luna CandyPaper jellybeans abra bogster
 -- materialtheme materialbox peaksea solarized8_dark_high moonlight
 -- antares afterglow codedark desertink lucid slate angr default
 -- aquamarine oceanblack jellyx candycode ir_black
