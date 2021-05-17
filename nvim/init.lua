@@ -23,3 +23,13 @@ require('plug-config/autopairs')
 require('plug-config/fzf')
 require('plug-config/treesitter')
 require('plug-config/lspkind')
+
+-- notes ---
+-- see colors: so $VIMRUNTIME/syntax/hitest.vim
+--
+-- project setup:
+--  .nvimrc       : nvim setup like venv
+--  .lsconf.json  : language server config
+--  .rgignore     : ripgrep ignore
+--  .clang-format : clang-format config
+--  setup.cfg     : pycodestyle config

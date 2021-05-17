@@ -5,6 +5,8 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   vim.cmd [[packadd packer.nvim]]
 end
 
+vim.cmd [[ command! Ps PackerSync ]]
+
 return require('packer').startup(function()
     use 'wbthomason/packer.nvim'
 
@@ -34,5 +36,7 @@ return require('packer').startup(function()
     use 'relastle/bluewery.vim'
     use 'flazz/vim-colorschemes'
     use 'shaunsingh/moonlight.nvim'
+
+    -- use 'tweekmonster/startuptime.vim'
 end)
 
