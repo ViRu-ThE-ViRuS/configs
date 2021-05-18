@@ -1,6 +1,5 @@
 local utils = require('utils')
 local symbol_config = utils.symbol_config
-local modes = utils.modes
 local truncation_limit = utils.truncation_limit
 
 -- color config
@@ -20,10 +19,10 @@ local colors = {
 -- get the display name for current mode
 local get_current_mode = function()
     local current_mode = vim.api.nvim_get_mode().mode
-    return string.format(' %s ', modes[current_mode]):upper()
+    return string.format(' %s ', utils.modes[current_mode]):upper()
 end
 
--- TODO(vir): release gitsigns dependencies
+-- NOTE(vir): release gitsigns dependencies?
 -- get git information of current file
 local get_git_status = function()
     local meta = {}
@@ -45,11 +44,16 @@ local get_git_status = function()
     end
 end
 
--- TODO(vir): release tagbar dependency
 -- get current tag name
 local get_tagname = function()
-    if utils.is_htruncated(truncation_limit) then return '' end
-    return vim.fn['tagbar#currenttag'](' [%s] ', '')
+    if utils.TagState.name == nil or
+        utils.is_htruncated(utils.truncation_limit_s) then
+        return ''
+    elseif utils.is_htruncated(utils.truncation_limit) then
+        return string.format(" [ %s ] ", utils.TagState.name)
+    else
+        return string.format(" [ %s %s ] ", utils.TagState.icon, utils.TagState.name)
+    end
 end
 
 -- get current file name
@@ -148,20 +152,20 @@ StatusLine = function(mode)
 end
 
 vim.cmd [[
-set statusline=%!v:lua.StatusLine()
+    set statusline=%!v:lua.StatusLine()
 
-augroup Statusline
-    autocmd!
-    autocmd WinEnter,BufEnter,FileType NvimTree setlocal statusline=%!v:lua.StatusLine('explorer')
-    autocmd WinEnter,BufEnter,FileType qf setlocal statusline=%!v:lua.StatusLine('quick_fix')
-    autocmd WinEnter,BufEnter,FileType fugitive setlocal statusline=%!v:lua.StatusLine('git')
-augroup end
+    augroup Statusline
+        autocmd!
+        autocmd WinEnter,BufEnter,FileType NvimTree setlocal statusline=%!v:lua.StatusLine('explorer')
+        autocmd WinEnter,BufEnter,FileType qf setlocal statusline=%!v:lua.StatusLine('quick_fix')
+        autocmd WinEnter,BufEnter,FileType fugitive setlocal statusline=%!v:lua.StatusLine('git')
+    augroup end
 ]]
 
-vim.g.tagbar_status_func = 'CleanTagbarStatus'
 vim.cmd [[
-function! CleanTagbarStatus(current, sort, fname, flags) abort
-    return '%#StatusLine# Tagbar %#StatusLineNC#'
-endfunction
+    function! CleanTagbarStatus(current, sort, fname, flags) abort
+        return '%#StatusLine# Tagbar %#StatusLineNC#'
+    endfunction
 ]]
+vim.g.tagbar_status_func = 'CleanTagbarStatus'
 

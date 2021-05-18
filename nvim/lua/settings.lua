@@ -1,5 +1,5 @@
-vim.cmd 'filetype plugin indent on'
-vim.cmd 'syntax enable'
+vim.cmd [[ filetype plugin indent on ]]
+vim.cmd [[ syntax enable ]]
 
 vim.g.loaded_node_provider = 0
 vim.g.loaded_ruby_provider = 0
@@ -30,7 +30,7 @@ vim.o.background = "dark"
 vim.o.termguicolors = true
 
 -- require('moonlight').set()
-vim.cmd 'colorscheme moonfly'
+vim.cmd [[ colorscheme moonfly ]]
 
 -- gruvbox deus
 -- nord OceanicNext quantum neodark
@@ -89,11 +89,8 @@ vim.bo.formatoptions = "cnjlr"
 vim.bo.swapfile = false
 vim.bo.undofile = true
 
+-- TODO(vir): figure this out
 -- vim.o.undodir = '~/.config/undodir'
-vim.cmd [[
-set undodir=~/.config/undodir
-]]
-
 -- vim.o.tabstop = 4
 -- vim.o.softtabstop = 4
 -- vim.o.shiftwidth = 4
@@ -101,24 +98,25 @@ set undodir=~/.config/undodir
 -- vim.o.autoindent = true
 -- vim.o.smartindent = true
 vim.cmd [[
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-set expandtab
-set autoindent
-set smartindent
+    set undodir=~/.config/undodir
+    set tabstop=4
+    set softtabstop=4
+    set shiftwidth=4
+    set expandtab
+    set autoindent
+    set smartindent
 ]]
 
 -- cursor setup
 vim.cmd [[
-if exists("tmux")
-    let &t_SI="\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-    let &t_SR="\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
-    let &t_EI="\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-else
-    let &t_SI="\<Esc>]50;CursorShape=1\x7"
-    let &t_SR="\<Esc>]50;CursorShape=2\x7"
-    let &t_EI="\<Esc>]50;CursorShape=0\x7"
-endif
+    if exists("tmux")
+        let &t_SI="\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+        let &t_SR="\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
+        let &t_EI="\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+    else
+        let &t_SI="\<Esc>]50;CursorShape=1\x7"
+        let &t_SR="\<Esc>]50;CursorShape=2\x7"
+        let &t_EI="\<Esc>]50;CursorShape=0\x7"
+    endif
 ]]
 

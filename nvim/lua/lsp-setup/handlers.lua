@@ -1,4 +1,3 @@
--- custom handlers
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
     vim.lsp.diagnostic.on_publish_diagnostics, {
         signs = true,
@@ -20,12 +19,3 @@ vim.lsp.handlers["textDocument/definition"] = function(_, _, result)
     end
 end
 
--- local lsputil = require('lsputil')
--- vim.lsp.handlers['textDocument/codeAction'] = lsputil.codeAction.code_action_handler
--- vim.lsp.handlers['textDocument/references'] = lsputil.locations.references_handler
--- vim.lsp.handlers['textDocument/definition'] = lsputil.locations.definition_handler
--- vim.lsp.handlers['textDocument/declaration'] = lsputil.locations.declaration_handler
--- vim.lsp.handlers['textDocument/typeDefinition'] = lsputil.locations.typeDefinition_handler
--- vim.lsp.handlers['textDocument/implementation'] = lsputil.locations.implementation_handler
--- vim.lsp.handlers['textDocument/documentSymbol'] = lsputil.symbols.document_handler
--- vim.lsp.handlers['workspace/symbol'] = lsputil.symbols.workspace_handler

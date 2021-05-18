@@ -1,12 +1,12 @@
-local utils = {}
+M = {}
 
 -- setup truncation limits
-utils.truncation_limit_s = 80
-utils.truncation_limit = 120
-utils.truncation_limit_l = 160
+M.truncation_limit_s = 80
+M.truncation_limit = 120
+M.truncation_limit_l = 160
 
 -- setup keymaps
-utils.map = function (mode, lhs, rhs, opts, buffer_nr)
+M.map = function (mode, lhs, rhs, opts, buffer_nr)
     local options = { noremap = true }
     if opts then options = vim.tbl_extend('force', options, opts) end
     if buffer_nr then vim.api.nvim_buf_set_keymap(buffer_nr, mode, lhs, rhs, options)
@@ -14,7 +14,7 @@ utils.map = function (mode, lhs, rhs, opts, buffer_nr)
 end
 
 -- randomize colorscheme
-utils.RandomColors = function()
+M.RandomColors = function()
     vim.cmd [[
     colorscheme random
     colorscheme
@@ -22,14 +22,26 @@ utils.RandomColors = function()
 end
 
 -- strip trailing whitespaces in file
-utils.StripTrailingWhitespaces = function()
+M.StripTrailingWhitespaces = function()
     local cursor = vim.api.nvim_win_get_cursor(0)
     vim.api.nvim_command('%s/\\s\\+$//e')
     vim.api.nvim_win_set_cursor(0, cursor)
 end
 
+-- is buffer horizontally truncated
+M.is_htruncated = function(width)
+  local current_width = vim.api.nvim_win_get_width(0)
+  return current_width < width
+end
+
+-- is buffer verticall truncated
+M.is_vtruncated = function(height)
+  local current_height = vim.api.nvim_win_get_height(0)
+  return current_height < height
+end
+
 -- diagnostics symbol config
-utils.symbol_config = {
+M.symbol_config = {
     indicator_seperator = '',
     indicator_info      = '[i]',
     indicator_hint      = '[@]',
@@ -42,20 +54,9 @@ utils.symbol_config = {
     sign_error     = 'x'
 }
 
--- is buffer horizontally truncated
-utils.is_htruncated = function(width)
-  local current_width = vim.api.nvim_win_get_width(0)
-  return current_width < width
-end
-
--- is buffer verticall truncated
-utils.is_vtruncated = function(height)
-  local current_height = vim.api.nvim_win_get_height(0)
-  return current_height < height
-end
 
 -- mode display name table
-utils.modes = {
+M.modes = {
     ['n']  = 'Normal',
     ['no'] = 'N-Pending',
     ['v']  = 'Visual',
@@ -78,4 +79,12 @@ utils.modes = {
     ['t']  = 'Terminal'
 }
 
-return utils
+-- current TagState [updated async]
+M.TagState = {
+    name = nil,
+    detail = nil,
+    kind = nil,
+    icon = nil
+}
+
+return M

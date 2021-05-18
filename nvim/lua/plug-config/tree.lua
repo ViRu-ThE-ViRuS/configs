@@ -57,10 +57,10 @@ vim.g.nvim_tree_icons = {
         -- renamed   = '->'
     },
     lsp = {
-        ['info']    = utils.symbol_config.sign_info,
-        ['hint ']   = utils.symbol_config.sign_hint,
-        ['warning'] = utils.symbol_config.sign_warning,
-        ['error']   = utils.symbol_config.sign_error
+        info = utils.symbol_config.sign_info,
+        hint = utils.symbol_config.sign_hint,
+        warning = utils.symbol_config.sign_warning,
+        error = utils.symbol_config.sign_error
     }
 }
 
