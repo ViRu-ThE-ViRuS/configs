@@ -1,7 +1,9 @@
 local utils = {}
 
 -- setup truncation limits
+utils.truncation_limit_s = 80
 utils.truncation_limit = 120
+utils.truncation_limit_l = 160
 
 -- setup keymaps
 utils.map = function (mode, lhs, rhs, opts, buffer_nr)
@@ -51,5 +53,29 @@ utils.is_vtruncated = function(height)
   local current_height = vim.api.nvim_win_get_height(0)
   return current_height < height
 end
+
+-- mode display name table
+utils.modes = {
+    ['n']  = 'Normal',
+    ['no'] = 'N-Pending',
+    ['v']  = 'Visual',
+    ['V']  = 'V-Line',
+    [''] = 'V-Block',
+    ['s']  = 'Select',
+    ['S']  = 'S-Line',
+    [''] = 'S-Block',
+    ['i']  = 'Insert',
+    ['ic'] = 'Insert',
+    ['R']  = 'Replace',
+    ['Rv'] = 'V-Replace',
+    ['c']  = 'Command',
+    ['cv'] = 'Vim-Ex ',
+    ['ce'] = 'Ex',
+    ['r']  = 'Prompt',
+    ['rm'] = 'More',
+    ['r?'] = 'Confirm',
+    ['!']  = 'Shell',
+    ['t']  = 'Terminal'
+}
 
 return utils

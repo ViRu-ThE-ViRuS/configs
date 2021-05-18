@@ -13,7 +13,7 @@ return require('packer').startup(function()
     use 'airblade/vim-rooter'  -- TODO(vir): check if still usefull
     use 'jiangmiao/auto-pairs' -- TODO(vir): update to a lua plugin
     use 'tpope/vim-fugitive'   -- TODO(vir): find alternative
-    use 'majutsushi/tagbar'    -- TODO(vir): find alternative
+    use 'preservim/tagbar'     -- TODO(vir): find alternative
     use 'christoomey/vim-tmux-navigator'
     use 'tpope/vim-eunuch'
     use 'godlygeek/tabular'
@@ -36,6 +36,9 @@ return require('packer').startup(function()
     use 'relastle/bluewery.vim'
     use 'flazz/vim-colorschemes'
     use 'shaunsingh/moonlight.nvim'
+    use 'folke/tokyonight.nvim'
+    use 'bluz71/vim-moonfly-colors'
+    use 'bluz71/vim-nightfly-guicolors'
 
     -- use 'tweekmonster/startuptime.vim'
 end)

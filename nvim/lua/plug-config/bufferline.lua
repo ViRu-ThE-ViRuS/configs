@@ -5,7 +5,7 @@ require('bufferline').setup {
         mappings = false,
         diagnostics = false,
 
-        indicator_icon = '|',
+        indicator_icon = '▎',
         buffer_close_icon = 'x',
         close_icon = 'x',
         modified_icon = '~',

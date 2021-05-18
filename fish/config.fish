@@ -25,6 +25,7 @@ set FZF_CTRL_T_OPTS         '--preview "bat --style=numbers --color=always --lin
 
 # beast ubuntu
 # set FZF_CTRL_T_OPTS          '--preview "batcat --style=numbers --color=always --line-range :500 {}"'
+# set fish_user_paths          $fish_user_paths ~/.local/bin
 
 function setup_fish_colors
     # set -U fish_greeting   Stars\x20\x3a\x29

@@ -18,19 +18,27 @@ vim.g.moonlight_italic_variables = false
 vim.g.moonlight_borders = true
 vim.g.moonlight_style = 'moonlight'
 
-vim.o.background = "dark"
+vim.g.tokyonight_sidebars = {'qf', 'terminal', 'packer', 'NvimTree', 'fugitive', 'tagbar'}
+vim.g.tokyonight_italic_comments = true
+vim.g.tokyonight_italic_keywords = true
+vim.g.tokyonight_italic_functions = true
+vim.g.tokyonight_italic_variables = false
+vim.g.tokyonight_borders = true
+vim.g.tokyonight_style = 'storm' -- storm night
 
-require('moonlight').set()
---vim.cmd 'colorscheme gruvbox'
+vim.o.background = "dark"
+vim.o.termguicolors = true
+
+-- require('moonlight').set()
+vim.cmd 'colorscheme moonfly'
 
 -- gruvbox deus
 -- nord OceanicNext quantum neodark
--- bluewery Tomorrow-Night-Blue
--- arcadia hybrid Tomorrow-Night-Eighties mod8
--- apprentice PaperColor luna CandyPaper jellybeans abra bogster
--- materialtheme materialbox peaksea solarized8_dark_high moonlight
--- antares afterglow codedark desertink lucid slate angr default
--- aquamarine oceanblack jellyx candycode ir_black
+-- bluewery Tomorrow-Night-Blue tokyonight
+-- Tomorrow-Night-Eighties apprentice luna CandyPaper jellybeans
+-- materialbox solarized8_dark_high moonlight nightfly
+-- antares codedark desertink default moonfly
+-- aquamarine oceanblack ir_black
 --
 -- cake16 solarized8_light_high
 -- Tomorrow eclipse autumnleaf aurora White2
