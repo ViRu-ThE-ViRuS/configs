@@ -2,6 +2,7 @@ local utils = require('utils')
 ToggleDiagnosticsList = require('lsp-setup/utils').ToggleDiagnosticsList
 CMDLineDiagnostics = require('lsp-setup/utils').CMDLineDiagnostics
 RefreshTagState = require('lsp-setup/utils').RefreshTagState
+SetupLspIconHighlights = require('lsp-setup/utils').SetupLspIconHighlights
 
 M = {}
 
@@ -32,6 +33,8 @@ M.setup_highlights = function()
         highlight! link LspReferenceWrite IncSearch
         highlight! clear LspReferenceText
     ]]
+
+    SetupLspIconHighlights()
 end
 
 -- setup buffer autocommands
@@ -51,7 +54,7 @@ M.setup_autocmds = function()
 
         augroup LspUpdateStates
             autocmd! * <buffer>
-            autocmd CursorMoved,CursorMovedI <buffer> lua RefreshTagState()
+            autocmd CursorMoved,CursorMovedI,BufEnter <buffer> lua RefreshTagState()
             autocmd CursorHold,CursorHoldI <buffer> lua CMDLineDiagnostics()
             autocmd CursorMoved,CursorMovedI <buffer> echo ''
         augroup END

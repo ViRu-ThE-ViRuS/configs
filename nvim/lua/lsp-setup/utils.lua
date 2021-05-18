@@ -15,32 +15,32 @@ local lsp_kinds = {
 
 -- lsp str(kind) -> icon(kind)
 local lsp_icons = {
-    File = {icon = "", hl = "TSURI"},
-    Module = {icon = "", hl = "TSNamespace"},
-    Namespace = {icon = "", hl = "TSNamespace"},
-    Package = {icon = "", hl = "TSNamespace"},
-    Class = {icon = "𝓒", hl = "TSType"},
-    Method = {icon = "ƒ", hl = "TSMethod"},
-    Property = {icon = "", hl = "TSMethod"},
-    Field = {icon = "", hl = "TSField"},
-    Constructor = {icon = "", hl = "TSConstructor"},
-    Enum = {icon = "ℰ", hl = "TSType"},
-    Interface = {icon = "ﰮ", hl = "TSType"},
-    Function = {icon = "", hl = "TSFunction"},
-    Variable = {icon = "", hl = "TSConstant"},
-    Constant = {icon = "", hl = "TSConstant"},
-    String = {icon = "𝓐", hl = "TSString"},
-    Number = {icon = "#", hl = "TSNumber"},
-    Boolean = {icon = "⊨", hl = "TSBoolean"},
-    Array = {icon = "", hl = "TSConstant"},
-    Object = {icon = "⦿", hl = "TSType"},
-    Key = {icon = "🔐", hl = "TSType"},
-    Null = {icon = "NULL", hl = "TSType"},
-    EnumMember = {icon = "", hl = "TSField"},
-    Struct = {icon = "𝓢", hl = "TSType"},
-    Event = {icon = "🗲", hl = "TSType"},
-    Operator = {icon = "+", hl = "TSOperator"},
-    TypeParameter = {icon = "𝙏", hl = "TSParameter"},
+    File          = {icon = "",    hl = "TSURI"},
+    Module        = {icon = "",    hl = "TSNamespace"},
+    Namespace     = {icon = "",    hl = "TSNamespace"},
+    Package       = {icon = "",    hl = "TSNamespace"},
+    Class         = {icon = "𝓒",    hl = "TSType"},
+    Method        = {icon = "ƒ",    hl = "TSMethod"},
+    Property      = {icon = "",    hl = "TSMethod"},
+    Field         = {icon = "",    hl = "TSField"},
+    Constructor   = {icon = "",    hl = "TSConstructor"},
+    Enum          = {icon = "ℰ",    hl = "TSType"},
+    Interface     = {icon = "ﰮ",    hl = "TSType"},
+    Function      = {icon = "",    hl = "TSFunction"},
+    Variable      = {icon = "",    hl = "TSConstant"},
+    Constant      = {icon = "",    hl = "TSConstant"},
+    String        = {icon = "𝓐",    hl = "TSString"},
+    Number        = {icon = "#",    hl = "TSNumber"},
+    Boolean       = {icon = "⊨",    hl = "TSBoolean"},
+    Array         = {icon = "",    hl = "TSConstant"},
+    Object        = {icon = "⦿",    hl = "TSType"},
+    Key           = {icon = "🔐",   hl = "TSType"},
+    Null          = {icon = "NULL", hl = "TSType"},
+    EnumMember    = {icon = "",    hl = "TSField"},
+    Struct        = {icon = "𝓢",    hl = "TSType"},
+    Event         = {icon = "🗲",    hl = "TSType"},
+    Operator      = {icon = "+",    hl = "TSOperator"},
+    TypeParameter = {icon = "𝙏",    hl = "TSParameter"}
 }
 
 -- toggle quickfix list
@@ -80,10 +80,11 @@ M.RefreshTagState = function()
     vim.lsp.buf_request(0, 'textDocument/documentSymbol', { textDocument = vim.lsp.util.make_text_document_params() },
         function(_, _, results, _)
             if results == nil or type(results) ~= 'table' then
-                utils.TagState['kind'] = nil
-                utils.TagState['name'] = nil
-                utils.TagState['detail'] = nil
-                utils.TagState['icon'] = nil
+                utils.TagState.kind = nil
+                utils.TagState.name = nil
+                utils.TagState.detail = nil
+                utils.TagState.icon = nil
+                utils.TagState.iconhl = nil
                 return
             end
 
@@ -91,14 +92,20 @@ M.RefreshTagState = function()
                 if result['range']['start']['line'] <= hovered_line and
                     hovered_line <= result['range']['end']['line'] then
 
-                    utils.TagState['kind'] = lsp_kinds[result['kind']]
-                    utils.TagState['name'] = result['name']
-                    utils.TagState['detail'] = result['detail']
-                    utils.TagState['icon'] = lsp_icons[utils.TagState['kind']]['icon']
+                    utils.TagState.kind = lsp_kinds[result.kind]
+                    utils.TagState.name = result.name
+                    utils.TagState.detail = result.detail
+                    utils.TagState.icon = lsp_icons[utils.TagState.kind].icon
+                    utils.TagState.iconhl = lsp_icons[utils.TagState.kind].hl
                     break
                 end
             end
         end)
 end
 
+M.SetupLspIconHighlights = function()
+    return
+end
+
 return M
+

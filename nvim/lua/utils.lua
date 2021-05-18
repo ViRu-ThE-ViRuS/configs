@@ -79,12 +79,27 @@ M.modes = {
     ['t']  = 'Terminal'
 }
 
+-- statusline colors
+M.statusline_colors = {
+    active      = '%#StatusLine#',
+    inactive    = '%#StatusLineNC#',
+    mode        = '%#PmenuSel#',
+    git         = '%#Pmenu#',
+    diagnostics = '%#PmenuSbar#',
+    file        = '%#CursorLine#',
+    tagname     = '%#PmenuSbar#',
+    line_col    = '%#CursorLine#',
+    percentage  = '%#CursorLine#',
+    filetype    = '%#PmenuSel#',
+}
+
 -- current TagState [updated async]
 M.TagState = {
     name = nil,
     detail = nil,
     kind = nil,
-    icon = nil
+    icon = nil,
+    iconhl = nil
 }
 
 return M

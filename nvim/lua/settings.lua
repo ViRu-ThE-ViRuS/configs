@@ -24,13 +24,13 @@ vim.g.tokyonight_italic_keywords = true
 vim.g.tokyonight_italic_functions = true
 vim.g.tokyonight_italic_variables = false
 vim.g.tokyonight_borders = true
-vim.g.tokyonight_style = 'storm' -- storm night
+vim.g.tokyonight_style = 'night' -- storm night
 
 vim.o.background = "dark"
 vim.o.termguicolors = true
 
 -- require('moonlight').set()
-vim.cmd [[ colorscheme moonfly ]]
+vim.cmd [[ colorscheme tokyonight ]]
 
 -- gruvbox deus
 -- nord OceanicNext quantum neodark

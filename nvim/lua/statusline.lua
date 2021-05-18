@@ -1,20 +1,7 @@
 local utils = require('utils')
 local symbol_config = utils.symbol_config
 local truncation_limit = utils.truncation_limit
-
--- color config
-local colors = {
-    active      = '%#StatusLine#',
-    inactive    = '%#StatusLineNC#',
-    mode        = '%#PmenuSel#',
-    git         = '%#Pmenu#',
-    diagnostics = '%#PmenuSbar#',
-    file        = '%#CursorLine#',
-    tagname     = '%#PmenuSbar#',
-    line_col    = '%#CursorLine#',
-    percentage  = '%#CursorLine#',
-    filetype    = '%#PmenuSel#',
-}
+local colors = utils.statusline_colors
 
 -- get the display name for current mode
 local get_current_mode = function()
@@ -47,7 +34,8 @@ end
 -- get current tag name
 local get_tagname = function()
     if utils.TagState.name == nil or
-        utils.is_htruncated(utils.truncation_limit_s) then
+        utils.is_htruncated(utils.truncation_limit_s) or
+        #vim.lsp.buf_get_clients(0) == 0 then
         return ''
     elseif utils.is_htruncated(utils.truncation_limit) then
         return string.format(" [ %s ] ", utils.TagState.name)
