@@ -1,4 +1,4 @@
-" TODO(vir): start transition to lua
+" deprecated
 filetype plugin indent on
 
 set rtp+=~/.config/nvim
