@@ -1,5 +1,6 @@
 local lsp = require('lspconfig')
 local setup_buffer = require('lsp-setup/buffer_setup')
+local oslib = require('lib/oslib')
 
 -- setup keymaps and autocommands
 OnAttach = function(_, buffer_nr)
@@ -18,8 +19,8 @@ lsp['pyls'].setup{ on_attach = OnAttach, cmd = {"pylsp"} }
 lsp['clangd'].setup{ on_attach = OnAttach }
 
 -- sumneko_lua setup
-local sumneko_lua_root = '/home/viraat-chandra/.local/lsp/lua-language-server/'
-local sumneko_lua_bin = sumneko_lua_root .. 'bin/Linux/lua-language-server'
+local sumneko_lua_root = oslib.get_homedir() .. '/.local/lsp/lua-language-server/'
+local sumneko_lua_bin = sumneko_lua_root .. 'bin/' .. oslib.get_os() .. '/lua-language-server'
 lsp['sumneko_lua'].setup {
     cmd = { sumneko_lua_bin, '-E', sumneko_lua_root .. 'main.lua' },
     settings = {

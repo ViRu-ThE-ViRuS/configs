@@ -30,15 +30,15 @@ vim.g.NERDTreeGitStatusIndicatorMapCustom = {
 utils.map('n', '<leader>j', '<cmd>NERDTreeToggle<cr>')
 utils.map('n', '<leader>1', '<cmd>NERDTreeFind<cr>')
 
-vim.api.nvim_exec([[
-function NERDTreeBinds()
-    nmap <buffer> <silent> <leader>r mm
-    nmap <buffer> <silent> <leader>d md
-    nmap <buffer> <silent> <leader>n ma
-endfunction()
+vim.cmd [[
+    function NERDTreeBinds()
+        nmap <buffer> <silent> <leader>r mm
+        nmap <buffer> <silent> <leader>d md
+        nmap <buffer> <silent> <leader>n ma
+    endfunction()
 
-augroup NERDTree
-    autocmd!
-    autocmd FileType nerdtree call NERDTreeBinds()
-augroup END
-]], true)
+    augroup NERDTree
+        autocmd!
+        autocmd FileType nerdtree call NERDTreeBinds()
+    augroup END
+]]

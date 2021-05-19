@@ -16,8 +16,8 @@ end
 -- randomize colorscheme
 M.RandomColors = function()
     vim.cmd [[
-    colorscheme random
-    colorscheme
+        colorscheme random
+        colorscheme
     ]]
 end
 

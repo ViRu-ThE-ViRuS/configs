@@ -30,7 +30,7 @@ vim.o.background = "dark"
 vim.o.termguicolors = true
 
 -- require('moonlight').set()
-vim.cmd [[ colorscheme tokyonight ]]
+vim.cmd [[ colorscheme nightfly ]]
 
 -- gruvbox deus
 -- nord OceanicNext quantum neodark

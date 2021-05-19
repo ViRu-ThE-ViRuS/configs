@@ -26,7 +26,7 @@ return require('packer').startup(function()
     use 'neovim/nvim-lspconfig'
     use 'hrsh7th/nvim-compe'
     use 'onsails/lspkind-nvim'
-    use { 'nvim-treesitter/nvim-treesitter', run = function() vim.api.nvim_exec('TSUpdate', 0) end }
+    use { 'nvim-treesitter/nvim-treesitter', run = function() vim.cmd [[ TSUpdate ]] end }
 
     use 'junegunn/fzf.vim'
     use { 'junegunn/fzf', run = function() vim.fn['fzf#install']() end }
