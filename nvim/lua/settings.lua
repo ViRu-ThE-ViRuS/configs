@@ -36,8 +36,7 @@ vim.g.tokyonight_style = 'night' -- storm night
 vim.o.background = "dark"
 vim.o.termguicolors = true
 
--- require('moonlight').set()
-vim.cmd [[ colorscheme moonlight ]]
+vim.cmd [[ colorscheme nightfly ]]
 
 -- gruvbox deus
 -- nord OceanicNext quantum neodark
@@ -72,6 +71,7 @@ vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.showmode = false
 vim.o.showcmd = false
+vim.o.joinspaces = false
 vim.o.clipboard = "unnamed,unnamedplus"
 vim.o.shortmess = "filnxtToOFc"
 vim.o.omnifunc = "syntaxcomplete#Complete"
@@ -80,6 +80,9 @@ vim.o.title = true
 vim.o.completeopt = "menu,noinsert,noselect,menuone"
 vim.o.diffopt = 'internal,filler,vertical'
 vim.o.updatetime = 1000
+vim.o.pumblend = 10 -- transparency popup
+vim.o.equalalways = true
+vim.o.wildmode = "full"
 
 -- window local options
 vim.wo.number = true
@@ -87,12 +90,12 @@ vim.wo.signcolumn = 'yes'
 vim.wo.cursorline = true
 vim.wo.wrap = false
 vim.wo.colorcolumn = "+1"
-vim.wo.foldmethod = "manual"
+vim.wo.foldmethod = "marker" -- {{{ }}}
 
 -- buffer local options
 vim.bo.matchpairs = "(:),{:},[:],<:>"
 vim.bo.textwidth = 79
-vim.bo.formatoptions = "cnjlr"
+vim.bo.formatoptions = "cqnjlr"
 vim.bo.swapfile = false
 vim.bo.undofile = true
 
