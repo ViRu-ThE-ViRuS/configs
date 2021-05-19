@@ -10,7 +10,7 @@ vim.cmd [[ command! Ps PackerSync ]]
 return require('packer').startup(function()
     use 'wbthomason/packer.nvim'
 
-    use 'airblade/vim-rooter'  -- TODO(vir): check if still usefull
+    -- use 'airblade/vim-rooter'
     use 'jiangmiao/auto-pairs' -- TODO(vir): update to a lua plugin
     use 'tpope/vim-fugitive'   -- TODO(vir): find alternative
     use 'preservim/tagbar'     -- TODO(vir): find alternative
@@ -21,7 +21,7 @@ return require('packer').startup(function()
     use 'b3nj5m1n/kommentary'
     use 'akinsho/nvim-bufferline.lua'
     use { 'lewis6991/gitsigns.nvim', requires = {'nvim-lua/plenary.nvim'} }
-    use { 'kyazdani42/nvim-tree.lua', requires = {{'kyazdani42/nvim-web-devicons'}} }
+    use { 'kyazdani42/nvim-tree.lua', requires = {'kyazdani42/nvim-web-devicons'} }
 
     use 'neovim/nvim-lspconfig'
     use 'hrsh7th/nvim-compe'
@@ -30,7 +30,7 @@ return require('packer').startup(function()
 
     use 'junegunn/fzf.vim'
     use { 'junegunn/fzf', run = function() vim.fn['fzf#install']() end }
-    --use { 'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}} }
+    -- use { 'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}} }
 
     use 'morhetz/gruvbox'
     use 'relastle/bluewery.vim'

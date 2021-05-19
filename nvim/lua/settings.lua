@@ -1,11 +1,18 @@
-vim.cmd [[ filetype plugin indent on ]]
-vim.cmd [[ syntax enable ]]
+vim.cmd [[
+    filetype plugin indent on
+    syntax enable
+]]
 
+-- disable other providers
 vim.g.loaded_node_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_python_provider = 0
-vim.g.python3_host_prog = vim.fn.systemlist('which python3')[1]
+
+-- setup python path
+local handle = io.popen('which python3')
+vim.g.python3_host_prog = handle:read("*a")
+handle:close()
 
 vim.g.gruvbox_contrast_dark = 'medium'
 vim.g.gruvbox_contrast_light = 'hard'
@@ -30,7 +37,7 @@ vim.o.background = "dark"
 vim.o.termguicolors = true
 
 -- require('moonlight').set()
-vim.cmd [[ colorscheme nightfly ]]
+vim.cmd [[ colorscheme moonlight ]]
 
 -- gruvbox deus
 -- nord OceanicNext quantum neodark
@@ -108,15 +115,17 @@ vim.cmd [[
 ]]
 
 -- cursor setup
-vim.cmd [[
-    if exists("tmux")
+if os.getenv('TMUX') then
+    vim.cmd [[
         let &t_SI="\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
         let &t_SR="\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
         let &t_EI="\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-    else
+    ]]
+else
+    vim.cmd [[
         let &t_SI="\<Esc>]50;CursorShape=1\x7"
         let &t_SR="\<Esc>]50;CursorShape=2\x7"
         let &t_EI="\<Esc>]50;CursorShape=0\x7"
-    endif
-]]
+    ]]
+end
 

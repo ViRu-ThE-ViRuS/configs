@@ -37,8 +37,6 @@ local get_tagname = function()
         utils.is_htruncated(utils.truncation_limit_s) or
         #vim.lsp.buf_get_clients(0) == 0 then
         return ''
-    elseif utils.is_htruncated(utils.truncation_limit) then
-        return string.format(" [ %s ] ", utils.TagState.name)
     else
         return string.format(" [ %s %s ] ", utils.TagState.icon, utils.TagState.name)
     end
@@ -148,12 +146,10 @@ vim.cmd [[
         autocmd WinEnter,BufEnter,FileType qf setlocal statusline=%!v:lua.StatusLine('quick_fix')
         autocmd WinEnter,BufEnter,FileType fugitive setlocal statusline=%!v:lua.StatusLine('git')
     augroup end
-]]
 
-vim.cmd [[
     function! CleanTagbarStatus(current, sort, fname, flags) abort
         return '%#StatusLine# Tagbar %#StatusLineNC#'
     endfunction
 ]]
-vim.g.tagbar_status_func = 'CleanTagbarStatus'
 
+vim.g.tagbar_status_func = 'CleanTagbarStatus'

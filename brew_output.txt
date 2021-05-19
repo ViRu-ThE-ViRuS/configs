@@ -52,9 +52,10 @@ libxdmcp
 libxext
 libxml2
 libxrender
-llvm
+lua
 luajit
 luajit-openresty
+luarocks
 luv
 lzo
 m4
@@ -66,6 +67,7 @@ neovim
 netpbm
 nettle
 nghttp2
+ninja
 openjdk
 openssl@1.1
 p11-kit
@@ -74,6 +76,7 @@ pcre2
 pixman
 pkg-config
 pyenv
+python@3.9
 readline
 ripgrep
 sqlite
@@ -81,6 +84,7 @@ tcl-tk
 texinfo
 tmux
 tree
+tree-sitter
 unbound
 unibilium
 utf8proc

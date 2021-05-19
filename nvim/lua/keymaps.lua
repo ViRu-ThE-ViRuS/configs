@@ -55,15 +55,13 @@ utils.map('n', '<leader>3', '<cmd>if AutoHighlightToggle()<bar>set hlsearch<bar>
 utils.map('n', ';', ':')
 utils.map('n', ':', ';')
 
+-- cursor, tab behaviour with completions
 vim.cmd [[
     cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
     cnoreabbrev <expr> Q ((getcmdtype() is# ':' && getcmdline() is# 'Q')?('q'):('Q'))
     cnoreabbrev <expr> WQ ((getcmdtype() is# ':' && getcmdline() is# 'WQ')?('wq'):('WQ'))
     cnoreabbrev <expr> Wq ((getcmdtype() is# ':' && getcmdline() is# 'Wq')?('wq'):('Wq'))
-]]
 
--- tab behaviour with completions
-vim.cmd [[
     inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
     inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 ]]
