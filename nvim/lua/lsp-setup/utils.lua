@@ -74,23 +74,34 @@ M.CMDLineDiagnostics = function ()
     end
 end
 
+-- reset tag state
+local resetTagState = function()
+    utils.TagState.kind = nil
+    utils.TagState.name = nil
+    utils.TagState.detail = nil
+    utils.TagState.icon = nil
+    utils.TagState.iconhl = nil
+end
+
 -- update TagState async
 M.RefreshTagState = function()
     local hovered_line = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())[1]
+
     vim.lsp.buf_request(0, 'textDocument/documentSymbol', { textDocument = vim.lsp.util.make_text_document_params() },
         function(_, _, results, _)
             if results == nil or type(results) ~= 'table' then
-                utils.TagState.kind = nil
-                utils.TagState.name = nil
-                utils.TagState.detail = nil
-                utils.TagState.icon = nil
-                utils.TagState.iconhl = nil
+                resetTagState()
                 return
             end
 
             for _, result in pairs(results) do
-                if result['range']['start']['line'] <= hovered_line and
-                    hovered_line <= result['range']['end']['line'] then
+                local range = result.range
+                if result.range == nil then
+                    range = result.location.range
+                end
+
+                if range['start']['line'] <= hovered_line and
+                    hovered_line <= range['end']['line'] then
 
                     utils.TagState.kind = lsp_kinds[result.kind]
                     utils.TagState.name = result.name
@@ -101,8 +112,11 @@ M.RefreshTagState = function()
                 end
             end
         end)
+    -- resetTagState()
 end
 
+
+-- setup statusline icon highlights
 M.SetupLspIconHighlights = function()
     return
 end
