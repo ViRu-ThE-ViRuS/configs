@@ -17,7 +17,7 @@ require('plug-config/kommentary')
 require('plug-config/treesitter')
 require('plug-config/lspkind')
 
-require('plug-config/tagbar')
+require('plug-config/vista')
 require('plug-config/tabular')
 require('plug-config/autopairs')
 require('plug-config/fzf')

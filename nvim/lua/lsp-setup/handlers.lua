@@ -6,7 +6,7 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
     }
 )
 
-vim.lsp.handlers["textDocument/definition"] = function(_, _, result)
+vim.lsp.handlers['textDocument/definition'] = function(_, _, result)
     if not result or vim.tbl_isempty(result) then
         print("[LSP] No definition found...")
         return

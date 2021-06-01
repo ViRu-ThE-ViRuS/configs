@@ -7,20 +7,23 @@ cairo
 clang-format
 cmake
 cscope
-ctags
 fish
 fontconfig
 freetype
 fribidi
 fzf
+gd
 gdbm
+gdk-pixbuf
 gettext
 glib
 gmp
 gnutls
 gobject-introspection
 graphite2
+graphviz
 gsl
+gts
 guile
 harfbuzz
 htop
@@ -38,6 +41,7 @@ libmpc
 libomp
 libpng
 libpthread-stubs
+librsvg
 libtasn1
 libtermkey
 libtiff
@@ -52,6 +56,8 @@ libxdmcp
 libxext
 libxml2
 libxrender
+libyaml
+llvm
 lua
 luajit
 luajit-openresty
@@ -71,6 +77,7 @@ ninja
 openjdk
 openssl@1.1
 p11-kit
+pango
 pcre
 pcre2
 pixman
@@ -80,6 +87,7 @@ python@3.9
 readline
 ripgrep
 sqlite
+swig
 tcl-tk
 texinfo
 tmux
@@ -87,6 +95,7 @@ tree
 tree-sitter
 unbound
 unibilium
+universal-ctags
 utf8proc
 watch
 webp

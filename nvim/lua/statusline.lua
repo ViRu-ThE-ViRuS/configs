@@ -132,6 +132,10 @@ StatusLine = function(mode)
         return statusline_special('QuickFix')
     elseif mode == 'git' then
         return statusline_special('Git')
+    elseif mode == 'outline' then
+        return statusline_special('Outline')
+    elseif mode == 'vista' then
+        return statusline_special('Vista')
     else
         return statusline_active()
     end
@@ -145,6 +149,8 @@ vim.cmd [[
         autocmd WinEnter,BufEnter,FileType NvimTree setlocal statusline=%!v:lua.StatusLine('explorer')
         autocmd WinEnter,BufEnter,FileType qf setlocal statusline=%!v:lua.StatusLine('quick_fix')
         autocmd WinEnter,BufEnter,FileType fugitive setlocal statusline=%!v:lua.StatusLine('git')
+        autocmd WinEnter,BufEnter,FileType Outline setlocal statusline=%!v:lua.StatusLine('outline')
+        autocmd WinEnter,BufEnter,FileType vista setlocal statusline=%!v:lua.StatusLine('vista')
     augroup end
 
     function! CleanTagbarStatus(current, sort, fname, flags) abort

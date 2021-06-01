@@ -42,6 +42,9 @@ local lsp_icons = {
     Operator      = {icon = "+",    hl = "TSOperator"},
     TypeParameter = {icon = "𝙏",    hl = "TSParameter"}
 }
+M.GetLSPIcon = function (key)
+    return lsp_icons[key].icon
+end
 
 -- toggle quickfix list
 M.ToggleDiagnosticsList = function()

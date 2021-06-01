@@ -1,8 +1,3 @@
-vim.cmd [[
-    filetype plugin indent on
-    syntax enable
-]]
-
 -- disable other providers
 vim.g.loaded_node_provider = 0
 vim.g.loaded_ruby_provider = 0
@@ -11,7 +6,7 @@ vim.g.loaded_python_provider = 0
 
 -- setup python path
 local handle = io.popen('which python3')
-vim.g.python3_host_prog = handle:read("*a")
+vim.g.python3_host_prog = handle:read("*a"):sub(1, -2)
 handle:close()
 
 vim.g.gruvbox_contrast_dark = 'medium'
@@ -25,18 +20,10 @@ vim.g.moonlight_italic_variables = false
 vim.g.moonlight_borders = true
 vim.g.moonlight_style = 'moonlight'
 
-vim.g.tokyonight_sidebars = {'qf', 'terminal', 'packer', 'NvimTree', 'fugitive', 'tagbar'}
-vim.g.tokyonight_italic_comments = true
-vim.g.tokyonight_italic_keywords = true
-vim.g.tokyonight_italic_functions = true
-vim.g.tokyonight_italic_variables = false
-vim.g.tokyonight_borders = true
-vim.g.tokyonight_style = 'night' -- storm night
-
-vim.o.background = "dark"
 vim.o.termguicolors = true
+vim.o.background = "dark"
 
-vim.cmd [[ colorscheme nightfly ]]
+vim.cmd [[ colorscheme neodark ]]
 
 -- gruvbox deus
 -- nord OceanicNext quantum neodark
@@ -84,8 +71,7 @@ vim.o.pumblend = 10 -- transparency popup
 vim.o.equalalways = true
 vim.o.wildmode = "full"
 
--- window local options
-vim.wo.number = true
+vim.wo.number = false
 vim.wo.signcolumn = 'yes'
 vim.wo.cursorline = true
 vim.wo.wrap = false

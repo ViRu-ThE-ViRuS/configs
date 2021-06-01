@@ -10,13 +10,12 @@ vim.cmd [[ command! Ps PackerSync ]]
 return require('packer').startup(function()
     use 'wbthomason/packer.nvim'
 
-    -- use 'airblade/vim-rooter'
-    use 'jiangmiao/auto-pairs' -- TODO(vir): update to a lua plugin
-    use 'tpope/vim-fugitive'   -- TODO(vir): find alternative
-    use 'preservim/tagbar'     -- TODO(vir): find alternative
     use 'christoomey/vim-tmux-navigator'
     use 'tpope/vim-eunuch'
     use 'godlygeek/tabular'
+    use 'jiangmiao/auto-pairs' -- TODO(vir): update to a lua plugin
+    use 'tpope/vim-fugitive'   -- TODO(vir): find alternative
+    use 'liuchengxu/vista.vim'
 
     use 'b3nj5m1n/kommentary'
     use 'akinsho/nvim-bufferline.lua'
@@ -36,8 +35,6 @@ return require('packer').startup(function()
     use 'relastle/bluewery.vim'
     use 'flazz/vim-colorschemes'
     use 'shaunsingh/moonlight.nvim'
-    use 'folke/tokyonight.nvim'
-    use 'bluz71/vim-moonfly-colors'
     use 'bluz71/vim-nightfly-guicolors'
 
     -- use 'tweekmonster/startuptime.vim'
