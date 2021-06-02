@@ -23,11 +23,11 @@ vim.g.moonlight_style = 'moonlight'
 vim.o.termguicolors = true
 vim.o.background = "dark"
 
-vim.cmd [[ colorscheme neodark ]]
+vim.cmd [[ colorscheme rigel ]]
 
 -- gruvbox deus
 -- nord OceanicNext quantum neodark
--- bluewery Tomorrow-Night-Blue tokyonight
+-- bluewery Tomorrow-Night-Blue tokyonight rigel
 -- Tomorrow-Night-Eighties apprentice luna CandyPaper jellybeans
 -- materialbox solarized8_dark_high moonlight nightfly
 -- antares codedark desertink default moonfly

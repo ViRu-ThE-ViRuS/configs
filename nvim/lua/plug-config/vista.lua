@@ -2,6 +2,7 @@ local utils = require('utils')
 local GetLSPIcon = require('lsp-setup/utils').GetLSPIcon
 
 vim.g.vista_icon_indent = {"╰─▸ ", "├─▸ "}
+vim.g.vista_fold_toggle_icons = {">", "$"}
 vim.g.vista_fzf_preview = {'right:50%'}
 vim.g.vista_disable_statusline = true
 

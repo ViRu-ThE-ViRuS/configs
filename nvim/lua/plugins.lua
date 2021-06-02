@@ -33,10 +33,11 @@ return require('packer').startup(function()
 
     use 'morhetz/gruvbox'
     use 'relastle/bluewery.vim'
+    use 'Rigellute/rigel'
     use 'flazz/vim-colorschemes'
     use 'shaunsingh/moonlight.nvim'
     use 'bluz71/vim-nightfly-guicolors'
 
-    -- use 'tweekmonster/startuptime.vim'
+    use 'tweekmonster/startuptime.vim'
 end)
 
