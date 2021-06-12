@@ -27,8 +27,9 @@ return require('packer').startup(function()
     use 'onsails/lspkind-nvim'
     use { 'nvim-treesitter/nvim-treesitter', run = function() vim.cmd [[ TSUpdate ]] end }
 
-    use 'junegunn/fzf.vim'
     use { 'junegunn/fzf', run = function() vim.fn['fzf#install']() end }
+    use 'junegunn/fzf.vim'
+    use 'ojroques/nvim-lspfuzzy'
     -- use { 'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}} }
 
     use 'morhetz/gruvbox'

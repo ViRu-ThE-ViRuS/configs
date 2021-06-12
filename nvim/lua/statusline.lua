@@ -100,6 +100,11 @@ local get_diagnostics = function()
     return ''
 end
 
+-- special statusline
+local statusline_special = function(mode)
+    return colors.active .. ' ' .. mode .. ' ' .. colors.inactive
+end
+
 -- active statusline
 local statusline_active = function()
     local mode = colors.mode .. get_current_mode()
@@ -119,23 +124,12 @@ local statusline_active = function()
     })
 end
 
--- special statusline
-local statusline_special = function(mode)
-    return colors.active .. ' ' .. mode .. ' ' .. colors.inactive
-end
-
 -- generate statusline
 StatusLine = function(mode)
-    if mode == 'explorer' then
-        return statusline_special('Explorer')
-    elseif mode == 'quick_fix' then
-        return statusline_special('QuickFix')
-    elseif mode == 'git' then
-        return statusline_special('Git')
-    elseif mode == 'outline' then
-        return statusline_special('Outline')
-    elseif mode == 'vista' then
-        return statusline_special('Vista')
+    if mode then
+        return statusline_special(mode)
+    elseif vim.bo.buftype == 'terminal' then
+        return statusline_special('Terminal')
     else
         return statusline_active()
     end
@@ -146,11 +140,11 @@ vim.cmd [[
 
     augroup Statusline
         autocmd!
-        autocmd WinEnter,BufEnter,FileType NvimTree setlocal statusline=%!v:lua.StatusLine('explorer')
-        autocmd WinEnter,BufEnter,FileType qf setlocal statusline=%!v:lua.StatusLine('quick_fix')
-        autocmd WinEnter,BufEnter,FileType fugitive setlocal statusline=%!v:lua.StatusLine('git')
-        autocmd WinEnter,BufEnter,FileType Outline setlocal statusline=%!v:lua.StatusLine('outline')
-        autocmd WinEnter,BufEnter,FileType vista setlocal statusline=%!v:lua.StatusLine('vista')
+        autocmd WinEnter,BufEnter,FileType NvimTree setlocal statusline=%!v:lua.StatusLine('Explorer')
+        autocmd WinEnter,BufEnter,FileType qf setlocal statusline=%!v:lua.StatusLine('QuickFix')
+        autocmd WinEnter,BufEnter,FileType fugitive setlocal statusline=%!v:lua.StatusLine('Git')
+        autocmd WinEnter,BufEnter,FileType Outline setlocal statusline=%!v:lua.StatusLine('Outline')
+        autocmd WinEnter,BufEnter,FileType vista setlocal statusline=%!v:lua.StatusLine('VISTA')
     augroup end
 
     function! CleanTagbarStatus(current, sort, fname, flags) abort

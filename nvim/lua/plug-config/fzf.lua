@@ -1,6 +1,6 @@
 local utils = require('utils')
 
-vim.g.fzf_preview_window = 'right:50%'
+vim.g.fzf_preview_window = 'right:50%:+{2}-/2'
 vim.g.fzf_buffers_jump = 1
 vim.g.fzf_layout = {['down'] = '40%'}
 
