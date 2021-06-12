@@ -3,7 +3,7 @@ local symbol_config = require('utils').symbol_config
 -- setup lsps
 require('lsp-setup')
 
--- setup handlers
+-- setup custom handlers
 require('lsp-setup/handlers')
 
 -- custom signs

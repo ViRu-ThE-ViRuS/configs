@@ -20,14 +20,17 @@ vim.g.moonlight_italic_variables = false
 vim.g.moonlight_borders = true
 vim.g.moonlight_style = 'moonlight'
 
+vim.g.everforest_background = 'hard'
+vim.g.everforest_enable_italic = 1
+
 vim.o.termguicolors = true
 vim.o.background = "dark"
 
-vim.cmd [[ colorscheme rigel ]]
+vim.cmd [[ colorscheme gruvbox ]]
 
 -- gruvbox deus
 -- nord OceanicNext quantum neodark
--- bluewery Tomorrow-Night-Blue tokyonight rigel
+-- bluewery Tomorrow-Night-Blue tokyonight rigel adventurous
 -- Tomorrow-Night-Eighties apprentice luna CandyPaper jellybeans
 -- materialbox solarized8_dark_high moonlight nightfly
 -- antares codedark desertink default moonfly

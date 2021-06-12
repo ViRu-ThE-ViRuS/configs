@@ -33,8 +33,9 @@ return require('packer').startup(function()
     -- use { 'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}} }
 
     use 'morhetz/gruvbox'
+    use 'sainnhe/gruvbox-material'
+    use 'sainnhe/everforest'
     use 'relastle/bluewery.vim'
-    use 'Rigellute/rigel'
     use 'flazz/vim-colorschemes'
     use 'shaunsingh/moonlight.nvim'
     use 'bluz71/vim-nightfly-guicolors'
