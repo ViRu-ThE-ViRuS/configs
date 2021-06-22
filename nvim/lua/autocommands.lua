@@ -15,8 +15,8 @@ vim.cmd [[
     augroup UISetup
         autocmd!
         autocmd BufEnter,ColorScheme * highlight Comment cterm=bold,italic gui=bold,italic
-        autocmd BufEnter,ColorScheme * highlight clear SignColumn
-        autocmd BufEnter,ColorScheme * highlight link SignColumn LineNr
+        autocmd BufEnter,ColorScheme * highlight LineNr ctermbg=NONE guibg=NONE
+        autocmd BufEnter,ColorScheme * highlight SignColumn ctermbg=NONE guibg=NONE
     augroup END
 
     function! AutoHighlightToggle()

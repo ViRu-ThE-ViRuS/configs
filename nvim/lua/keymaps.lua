@@ -48,7 +48,7 @@ utils.map('i', '<right>', '<nop>')
 
 -- utility functions
 utils.map('n', '<leader>1', '<c-w>o')
-utils.map('n', '<leader>2', '<cmd>lua require("utils").RandomColors()<cr>')
+utils.map('n', '<leader>2', '<cmd>lua require("utils").RandomColors()<cr>', { silent=false })
 utils.map('n', '<leader>3', '<cmd>if AutoHighlightToggle()<bar>set hlsearch<bar>endif<cr>')
 
 -- utility maps
@@ -69,12 +69,12 @@ vim.cmd [[
 -- terminal setup
 if vim.fn.exists('fish') then
     vim.o.shell = 'fish'
-    utils.map('n', '<leader>s', '<cmd>vsp term://fish<cr>')
+    utils.map('n', '<leader>s', '<cmd>vsp term://fish<cr><cmd>startinsert<cr>')
 elseif vim.fn.exists('zsh') then
     vim.o.shell = 'zsh'
-    utils.map('n', '<leader>s', '<cmd>vsp term://zsh<cr>')
+    utils.map('n', '<leader>s', '<cmd>vsp term://zsh<cr><cmd>startinsert<cr>')
 else
     vim.o.shell = 'bash'
-    utils.map('n', '<leader>s', '<cmd>vsp term://bash<cr>')
+    utils.map('n', '<leader>s', '<cmd>vsp term://bash<cr><cmd>startinsert<cr>')
 end
 

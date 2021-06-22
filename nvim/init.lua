@@ -16,10 +16,11 @@ require('plug-config/gitsigns')
 require('plug-config/kommentary')
 require('plug-config/treesitter')
 require('plug-config/lspkind')
+require('plug-config/pears')
+require('plug-config/neoscroll')
 
 require('plug-config/vista')
 require('plug-config/tabular')
-require('plug-config/autopairs')
 require('plug-config/lspfuzzy')
 require('plug-config/fzf')
 -- require('plug-config/telescope')
@@ -33,3 +34,4 @@ require('plug-config/fzf')
 --  .rgignore     : ripgrep ignore
 --  .clang-format : clang-format config
 --  setup.cfg     : pycodestyle config
+

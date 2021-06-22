@@ -13,11 +13,11 @@ return require('packer').startup(function()
     use 'christoomey/vim-tmux-navigator'
     use 'tpope/vim-eunuch'
     use 'godlygeek/tabular'
-    use 'jiangmiao/auto-pairs' -- TODO(vir): update to a lua plugin
-    use 'tpope/vim-fugitive'   -- TODO(vir): find alternative
     use 'liuchengxu/vista.vim'
+    use 'tpope/vim-fugitive'   -- TODO(vir): find alternative
 
     use 'b3nj5m1n/kommentary'
+    use 'steelsojka/pears.nvim'
     use 'akinsho/nvim-bufferline.lua'
     use { 'lewis6991/gitsigns.nvim', requires = {'nvim-lua/plenary.nvim'} }
     use { 'kyazdani42/nvim-tree.lua', requires = {'kyazdani42/nvim-web-devicons'} }
@@ -32,14 +32,16 @@ return require('packer').startup(function()
     use 'ojroques/nvim-lspfuzzy'
     -- use { 'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}} }
 
-    use 'morhetz/gruvbox'
-    use 'sainnhe/gruvbox-material'
-    use 'sainnhe/everforest'
-    use 'relastle/bluewery.vim'
-    use 'flazz/vim-colorschemes'
-    use 'shaunsingh/moonlight.nvim'
+    use 'karb94/neoscroll.nvim'
+
     use 'bluz71/vim-nightfly-guicolors'
+    use 'bluz71/vim-moonfly-colors'
+    use 'RRethy/nvim-base16'
+    use 'tomasiser/vim-code-dark'
+    use 'sainnhe/everforest'
+    use 'sainnhe/gruvbox-material'
+    -- use 'flazz/vim-colorschemes'
+    -- use { 'npxbr/gruvbox.nvim', requires={ "rktjmp/lush.nvim" } }
 
-    use 'tweekmonster/startuptime.vim'
+    use 'dstein64/vim-startuptime'
 end)
-

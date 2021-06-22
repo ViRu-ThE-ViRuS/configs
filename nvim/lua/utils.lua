@@ -15,10 +15,14 @@ end
 
 -- randomize colorscheme
 M.RandomColors = function()
-    vim.cmd [[
-        colorscheme random
-        colorscheme
-    ]]
+    local colorschemes = {}
+    local colorscheme_files = vim.fn.globpath(vim.o.rtp, "colors/*.vim", true, true)
+
+    for _, colorscheme_file in ipairs(colorscheme_files) do
+        table.insert(colorschemes, vim.fn.fnamemodify(colorscheme_file, ':t:r'))
+    end
+
+    vim.cmd(string.format('colorscheme %s\ncolorscheme', colorschemes[math.random(1, #colorschemes)]))
 end
 
 -- strip trailing whitespaces in file

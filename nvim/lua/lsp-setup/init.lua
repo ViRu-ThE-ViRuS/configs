@@ -5,6 +5,7 @@ local oslib = require('lib/oslib')
 -- setup keymaps and autocommands
 OnAttach = function(_, buffer_nr)
     print('[LSP] Active')
+    -- print('[LSP] Active : ' .. oslib.get_cwd())
 
     setup_buffer.setup_general_keymaps(buffer_nr)
     setup_buffer.setup_options(buffer_nr)
@@ -32,4 +33,3 @@ lsp['sumneko_lua'].setup {
     },
     on_attach = OnAttach
 }
-

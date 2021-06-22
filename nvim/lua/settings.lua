@@ -9,27 +9,25 @@ local handle = io.popen('which python3')
 vim.g.python3_host_prog = handle:read("*a"):sub(1, -2)
 handle:close()
 
-vim.g.gruvbox_contrast_dark = 'medium'
+vim.g.gruvbox_material_background = 'hard'
+vim.g.gruvbox_material_enable_italic = 1
+vim.g.gruvbox_contrast_dark = 'hard'
 vim.g.gruvbox_contrast_light = 'hard'
 vim.g.gruvbox_italic = 1
-
-vim.g.moonlight_italic_comments = true
-vim.g.moonlight_italic_keywords = true
-vim.g.moonlight_italic_functions = true
-vim.g.moonlight_italic_variables = false
-vim.g.moonlight_borders = true
-vim.g.moonlight_style = 'moonlight'
 
 vim.g.everforest_background = 'hard'
 vim.g.everforest_enable_italic = 1
 
+vim.g.moonflyItalics = 1
+vim.g.moonflyNormalFloat = 1
+vim.g.moonflyUnderlineMatchParen=1
+
 vim.o.termguicolors = true
 vim.o.background = "dark"
+vim.cmd [[ colorscheme base16-black-metal-mayhem ]]
 
-vim.cmd [[ colorscheme gruvbox ]]
-
--- gruvbox deus
--- nord OceanicNext quantum neodark
+-- gruvbox deus everforest
+-- nord OceanicNext quantum neodark moonlight
 -- bluewery Tomorrow-Night-Blue tokyonight rigel adventurous
 -- Tomorrow-Night-Eighties apprentice luna CandyPaper jellybeans
 -- materialbox solarized8_dark_high moonlight nightfly
@@ -71,6 +69,7 @@ vim.o.completeopt = "menu,noinsert,noselect,menuone"
 vim.o.diffopt = 'internal,filler,vertical'
 vim.o.updatetime = 1000
 vim.o.pumblend = 10 -- transparency popup
+vim.o.pumheight = 10
 vim.o.equalalways = true
 vim.o.wildmode = "full"
 
@@ -88,22 +87,17 @@ vim.bo.formatoptions = "cqnjlr"
 vim.bo.swapfile = false
 vim.bo.undofile = true
 
+vim.o.tabstop = 4
+vim.o.softtabstop = 4
+vim.o.shiftwidth = 4
+vim.o.expandtab = true
+vim.o.autoindent = true
+vim.o.smartindent = true
+
 -- TODO(vir): figure this out
 -- vim.o.undodir = '~/.config/undodir'
--- vim.o.tabstop = 4
--- vim.o.softtabstop = 4
--- vim.o.shiftwidth = 4
--- vim.o.expandtab = true
--- vim.o.autoindent = true
--- vim.o.smartindent = true
 vim.cmd [[
     set undodir=~/.config/undodir
-    set tabstop=4
-    set softtabstop=4
-    set shiftwidth=4
-    set expandtab
-    set autoindent
-    set smartindent
 ]]
 
 -- cursor setup
@@ -120,4 +114,3 @@ else
         let &t_EI="\<Esc>]50;CursorShape=0\x7"
     ]]
 end
-

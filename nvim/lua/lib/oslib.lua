@@ -26,4 +26,8 @@ M.get_homedir = function()
     return os.getenv('HOME')
 end
 
+M.get_cwd = function()
+    return vim.fn['getcwd']()
+end
+
 return M
