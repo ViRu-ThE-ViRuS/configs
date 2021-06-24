@@ -24,7 +24,11 @@ vim.g.moonflyUnderlineMatchParen=1
 
 vim.o.termguicolors = true
 vim.o.background = "dark"
-vim.cmd [[ colorscheme base16-black-metal-mayhem ]]
+
+-- can takeup a lot of startup time
+vim.defer_fn(function()
+    vim.cmd [[ colorscheme gruvbox-material ]]
+end, 0)
 
 -- gruvbox deus everforest
 -- nord OceanicNext quantum neodark moonlight
@@ -33,6 +37,8 @@ vim.cmd [[ colorscheme base16-black-metal-mayhem ]]
 -- materialbox solarized8_dark_high moonlight nightfly
 -- antares codedark desertink default moonfly
 -- aquamarine oceanblack ir_black
+--
+-- base16-black-metal-bathory gruvbox-material
 --
 -- cake16 solarized8_light_high
 -- Tomorrow eclipse autumnleaf aurora White2

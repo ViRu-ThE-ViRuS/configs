@@ -5,6 +5,7 @@ vim.g.fzf_buffers_jump = 1
 vim.g.fzf_layout = {['down'] = '40%'}
 
 utils.map('n', '<c-p>', '<cmd>Files<cr>')
+utils.map('n', '<c-b>', '<cmd>Buffers<cr>')
 utils.map('n', '<leader>f', '<cmd>Rg<cr>')
 utils.map('n', '<leader>z', '<cmd>Rg TODO<cr>')
 

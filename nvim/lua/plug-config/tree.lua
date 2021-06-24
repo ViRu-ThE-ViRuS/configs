@@ -8,10 +8,9 @@ vim.g.nvim_tree_group_empty = 1
 vim.g.nvim_tree_lsp_diagnostics = 1
 vim.g.nvim_tree_auto_close = 0
 
-vim.g.nvim_tree_show_icons = {
-    git = 1,
-    folders = 1,
-    files = 0
+vim.g.nvim_tree_window_picker_exclude = {
+    filetype = { 'packer', 'qf', 'fugitive', 'Outline', 'vista' },
+    buftype = { 'terminal' }
 }
 
 vim.g.nvim_tree_ignore = {
@@ -38,15 +37,21 @@ vim.g.nvim_tree_bindings = {
     ["<leader>r"]     = tree_callback("full_rename"),
     ["[c"]            = tree_callback("prev_git_item"),
     ["]c"]            = tree_callback("next_git_item"),
-    ["q"]             = tree_callback("close"),
+    ["q"]             = tree_callback("close")
+}
+
+vim.g.nvim_tree_show_icons = {
+    git = 1,
+    folders = 1,
+    files = 0
 }
 
 vim.g.nvim_tree_icons = {
-    --folder = {
-        --default = '-',
-        --open = '-',
-        --empty = '-'
-    --},
+    -- folder = {
+        -- default = '-',
+        -- open = '-',
+        -- empty = '-',
+    -- },
     git = {
         unstaged  = '~',
         staged    = '+',
@@ -64,6 +69,4 @@ vim.g.nvim_tree_icons = {
     }
 }
 
---utils.map('n', '<leader>1', '<cmd>NvimTreeFindFile<cr>')
 utils.map('n', '<leader>j', '<cmd>NvimTreeToggle<cr>')
-

@@ -23,6 +23,4 @@ require('compe').setup {
 utils.map('i', '<c-space>', 'compe#complete()', { silent = true, expr = true })
 utils.map('i', '<cr>', 'compe#confirm("<cr>")', { silent = true, expr = true })
 utils.map('i', '<c-e>', 'compe#close("<c-e>")', { silent = true, expr = true })
-utils.map('i', '<c-f>', 'compe#scroll({ "delta": +4 })', { silent = true, expr = true })
-utils.map('i', '<c-d>', 'compe#scroll({ "delta": -4 })', { silent = true, expr = true })
 

@@ -10,15 +10,16 @@ vim.cmd [[ command! Ps PackerSync ]]
 return require('packer').startup(function()
     use 'wbthomason/packer.nvim'
 
-    use 'christoomey/vim-tmux-navigator'
     use 'tpope/vim-eunuch'
     use 'godlygeek/tabular'
     use 'liuchengxu/vista.vim'
     use 'tpope/vim-fugitive'   -- TODO(vir): find alternative
 
+    use 'aserowy/tmux.nvim'
     use 'b3nj5m1n/kommentary'
     use 'steelsojka/pears.nvim'
     use 'akinsho/nvim-bufferline.lua'
+
     use { 'lewis6991/gitsigns.nvim', requires = {'nvim-lua/plenary.nvim'} }
     use { 'kyazdani42/nvim-tree.lua', requires = {'kyazdani42/nvim-web-devicons'} }
 

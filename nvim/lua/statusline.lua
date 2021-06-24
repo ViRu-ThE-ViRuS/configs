@@ -141,10 +141,10 @@ vim.cmd [[
     augroup Statusline
         autocmd!
         autocmd WinEnter,BufEnter,FileType NvimTree setlocal statusline=%!v:lua.StatusLine('Explorer')
-        autocmd WinEnter,BufEnter,FileType qf setlocal statusline=%!v:lua.StatusLine('QuickFix')
         autocmd WinEnter,BufEnter,FileType fugitive setlocal statusline=%!v:lua.StatusLine('Git')
         autocmd WinEnter,BufEnter,FileType Outline setlocal statusline=%!v:lua.StatusLine('Outline')
         autocmd WinEnter,BufEnter,FileType vista setlocal statusline=%!v:lua.StatusLine('VISTA')
+        autocmd WinEnter,BufEnter,FileType qf setlocal statusline=%!v:lua.StatusLine('QuickFix')
     augroup end
 
     function! CleanTagbarStatus(current, sort, fname, flags) abort
