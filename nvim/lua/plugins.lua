@@ -19,18 +19,17 @@ return require('packer').startup(function()
     use 'b3nj5m1n/kommentary'
     use 'steelsojka/pears.nvim'
     use 'akinsho/nvim-bufferline.lua'
-
     use { 'lewis6991/gitsigns.nvim', requires = {'nvim-lua/plenary.nvim'} }
     use { 'kyazdani42/nvim-tree.lua', requires = {'kyazdani42/nvim-web-devicons'} }
 
     use 'neovim/nvim-lspconfig'
     use 'hrsh7th/nvim-compe'
     use 'onsails/lspkind-nvim'
+    use 'ojroques/nvim-lspfuzzy'
     use { 'nvim-treesitter/nvim-treesitter', run = function() vim.cmd [[ TSUpdate ]] end }
 
     use { 'junegunn/fzf', run = function() vim.fn['fzf#install']() end }
     use 'junegunn/fzf.vim'
-    use 'ojroques/nvim-lspfuzzy'
     -- use { 'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}} }
 
     use 'karb94/neoscroll.nvim'

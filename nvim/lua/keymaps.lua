@@ -10,13 +10,17 @@ utils.map('v', 'L', '$')
 utils.map('i', 'jj', '<esc>')
 utils.map('n', 'U', '<c-r>')
 
+-- quickfix list
+utils.map('n','[q', '<cmd>cprevious<cr>')
+utils.map('n',']q', '<cmd>cnext<cr>')
+
 -- folds
 utils.map('n', '<space>', 'za')
 
 -- buffer navigation
 utils.map('n', '<c-w><c-l>', ':cclose<cr> :pclose<cr> :lclose<cr>')
 utils.map('n', '<leader>t', '<cmd>bn<cr>')
-utils.map('n', '<leader>y', '<cmd>bN<cr>')
+utils.map('n', '<leader>o', '<c-^>', { noremap = false })
 utils.map('n', '<leader>q', '<cmd>bd!<cr>')
 
 -- buffer resizing

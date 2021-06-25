@@ -46,10 +46,11 @@ M.GetLSPIcon = function (key)
     return lsp_icons[key].icon
 end
 
--- toggle quickfix list
+-- toggle diagnostics list
 M.ToggleDiagnosticsList = function()
     if not diagnostics_set then
         vim.lsp.diagnostic.set_loclist()
+
         diagnostics_set = true
         vim.cmd [[ wincmd p ]]
     else
@@ -117,7 +118,6 @@ M.RefreshTagState = function()
         end)
     -- resetTagState()
 end
-
 
 -- setup statusline icon highlights
 M.SetupLspIconHighlights = function()

@@ -22,13 +22,13 @@ vim.g.moonflyItalics = 1
 vim.g.moonflyNormalFloat = 1
 vim.g.moonflyUnderlineMatchParen=1
 
-vim.o.termguicolors = true
-vim.o.background = "dark"
+vim.opt.termguicolors = true
+vim.opt.background = "dark"
 
 -- can takeup a lot of startup time
-vim.defer_fn(function()
-    vim.cmd [[ colorscheme gruvbox-material ]]
-end, 0)
+-- vim.defer_fn(function()
+    vim.cmd [[ colorscheme codedark ]]
+-- end, 0)
 
 -- gruvbox deus everforest
 -- nord OceanicNext quantum neodark moonlight
@@ -39,66 +39,66 @@ end, 0)
 -- aquamarine oceanblack ir_black
 --
 -- base16-black-metal-bathory gruvbox-material
+-- moonlight nightfly moonfly codedark everforest
 --
 -- cake16 solarized8_light_high
 -- Tomorrow eclipse autumnleaf aurora White2
-
 -- global options
-vim.o.mouse = 'a'
-vim.o.modelines = 0
-vim.o.history = 100
-vim.o.hidden = true
-vim.o.splitright = true
-vim.o.splitbelow = true
-vim.o.backup = false
-vim.o.writebackup = false
-vim.o.autowrite = true
-vim.o.lazyredraw = true
-vim.o.termguicolors = true
-vim.o.smarttab = true
-vim.o.scrolloff = 8
-vim.o.sidescrolloff = 8
-vim.o.joinspaces = false
-vim.o.hlsearch = false
-vim.o.incsearch = true
-vim.o.ignorecase = true
-vim.o.smartcase = true
-vim.o.showmode = false
-vim.o.showcmd = false
-vim.o.joinspaces = false
-vim.o.clipboard = "unnamed,unnamedplus"
-vim.o.shortmess = "filnxtToOFc"
-vim.o.omnifunc = "syntaxcomplete#Complete"
-vim.o.display = "lastline,msgsep"
-vim.o.title = true
-vim.o.completeopt = "menu,noinsert,noselect,menuone"
-vim.o.diffopt = 'internal,filler,vertical'
-vim.o.updatetime = 1000
-vim.o.pumblend = 10 -- transparency popup
-vim.o.pumheight = 10
-vim.o.equalalways = true
-vim.o.wildmode = "full"
+vim.opt.mouse = 'a'
+vim.opt.modelines = 0
+vim.opt.history = 100
+vim.opt.hidden = true
+vim.opt.splitright = true
+vim.opt.splitbelow = true
+vim.opt.backup = false
+vim.opt.writebackup = false
+vim.opt.autowrite = true
+vim.opt.lazyredraw = true
+vim.opt.termguicolors = true
+vim.opt.smarttab = true
+vim.opt.scrolloff = 8
+vim.opt.sidescrolloff = 8
+vim.opt.joinspaces = false
+vim.opt.hlsearch = false
+vim.opt.incsearch = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.showmode = false
+vim.opt.showcmd = false
+vim.opt.joinspaces = false
+vim.opt.clipboard = "unnamed,unnamedplus"
+vim.opt.shortmess = "filnxtToOFc"
+vim.opt.omnifunc = "syntaxcomplete#Complete"
+vim.opt.display = "lastline,msgsep"
+vim.opt.title = true
+vim.opt.completeopt = "menu,noinsert,noselect,menuone"
+vim.opt.diffopt = 'internal,filler,vertical'
+vim.opt.updatetime = 1000
+vim.opt.pumblend = 10
+vim.opt.pumheight = 10
+vim.opt.equalalways = true
+vim.opt.wildmode = "full"
 
-vim.wo.number = false
-vim.wo.signcolumn = 'yes'
-vim.wo.cursorline = true
-vim.wo.wrap = false
-vim.wo.colorcolumn = "+1"
-vim.wo.foldmethod = "marker" -- {{{ }}}
+vim.opt.number = false
+vim.opt.signcolumn = 'yes'
+vim.opt.cursorline = true
+vim.opt.wrap = false
+vim.opt.colorcolumn = "+1"
+vim.opt.foldmethod = "marker" -- {{{ }}}
 
 -- buffer local options
-vim.bo.matchpairs = "(:),{:},[:],<:>"
-vim.bo.textwidth = 79
 vim.bo.formatoptions = "cqnjlr"
-vim.bo.swapfile = false
-vim.bo.undofile = true
+vim.opt.matchpairs = "(:),{:},[:],<:>"
+vim.opt.textwidth = 79
+vim.opt.swapfile = false
+vim.opt.undofile = true
 
-vim.o.tabstop = 4
-vim.o.softtabstop = 4
-vim.o.shiftwidth = 4
-vim.o.expandtab = true
-vim.o.autoindent = true
-vim.o.smartindent = true
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true
+vim.opt.autoindent = true
+vim.opt.smartindent = true
 
 -- TODO(vir): figure this out
 -- vim.o.undodir = '~/.config/undodir'

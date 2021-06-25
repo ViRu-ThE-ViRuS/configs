@@ -10,12 +10,12 @@ require('statusline')           -- setup custom statusline
 
 -- plugin configs
 require('plug-config/tree')
+require('plug-config/bufferline')
 
 -- NOTE(vir): defer some configs to decrease startup time
 vim.defer_fn(function()
     require('plug-config/tmux')
     require('plug-config/completion')
-    require('plug-config/bufferline')
     require('plug-config/gitsigns')
     require('plug-config/kommentary')
     require('plug-config/treesitter')

@@ -18,8 +18,6 @@ M.setup_general_keymaps = function(buffer_nr)
 
     utils.map('n','[e', '<cmd>lua vim.lsp.diagnostic.goto_prev({ popup_opts = { border = "single", focusable = false } })<cr>', { silent = true }, buffer_nr)
     utils.map('n',']e', '<cmd>lua vim.lsp.diagnostic.goto_next({ popup_opts = { border = "single", focusable = false } })<cr>', { silent = true }, buffer_nr)
-    utils.map('n','[q', '<cmd>cprevious<cr>', { silent = true }, buffer_nr)
-    utils.map('n',']q', '<cmd>cnext<cr>', { silent = true }, buffer_nr)
 
     utils.map('n', '<leader>e', '<cmd>lua ToggleDiagnosticsList()<cr>', { silent = true }, buffer_nr)
 end
