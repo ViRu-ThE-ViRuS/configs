@@ -1,3 +1,4 @@
+local core = require('lib/core')
 M = {}
 
 -- setup truncation limits
@@ -15,13 +16,8 @@ end
 
 -- randomize colorscheme
 M.RandomColors = function()
-    local colorschemes = {}
-    local colorscheme_files = vim.fn.globpath(vim.o.rtp, "colors/*.vim", true, true)
-
-    for _, colorscheme_file in ipairs(colorscheme_files) do
-        table.insert(colorschemes, vim.fn.fnamemodify(colorscheme_file, ':t:r'))
-    end
-
+    local colorscheme_paths = vim.fn.globpath(vim.o.rtp, 'colors/*.vim', true, true)
+    local colorschemes = core.foreach(colorscheme_paths, core.strip_fname)
     vim.cmd(string.format('colorscheme %s\ncolorscheme', colorschemes[math.random(1, #colorschemes)]))
 end
 

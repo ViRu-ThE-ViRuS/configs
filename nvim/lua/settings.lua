@@ -1,4 +1,4 @@
--- disable other providers
+-- disable unused providers
 vim.g.loaded_node_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
@@ -9,40 +9,6 @@ local handle = io.popen('which python3')
 vim.g.python3_host_prog = handle:read("*a"):sub(1, -2)
 handle:close()
 
-vim.g.gruvbox_material_background = 'hard'
-vim.g.gruvbox_material_enable_italic = 1
-vim.g.gruvbox_contrast_dark = 'hard'
-vim.g.gruvbox_contrast_light = 'hard'
-vim.g.gruvbox_italic = 1
-
-vim.g.everforest_background = 'hard'
-vim.g.everforest_enable_italic = 1
-
-vim.g.moonflyItalics = 1
-vim.g.moonflyNormalFloat = 1
-vim.g.moonflyUnderlineMatchParen=1
-
-vim.opt.termguicolors = true
-vim.opt.background = "dark"
-
--- can takeup a lot of startup time
--- vim.defer_fn(function()
-    vim.cmd [[ colorscheme codedark ]]
--- end, 0)
-
--- gruvbox deus everforest
--- nord OceanicNext quantum neodark moonlight
--- bluewery Tomorrow-Night-Blue tokyonight rigel adventurous
--- Tomorrow-Night-Eighties apprentice luna CandyPaper jellybeans
--- materialbox solarized8_dark_high moonlight nightfly
--- antares codedark desertink default moonfly
--- aquamarine oceanblack ir_black
---
--- base16-black-metal-bathory gruvbox-material
--- moonlight nightfly moonfly codedark everforest
---
--- cake16 solarized8_light_high
--- Tomorrow eclipse autumnleaf aurora White2
 -- global options
 vim.opt.mouse = 'a'
 vim.opt.modelines = 0
