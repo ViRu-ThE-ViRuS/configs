@@ -1,7 +1,7 @@
 -- hello my name is viraat chandra and i love to program
 
 -- setup
-require('colors')               -- setup colorscheme
+require('colorscheme')          -- setup colorscheme
 require('settings')             -- general setup
 require('autocommands')         -- setup autocommands
 require('plugins')              -- setup plugins
