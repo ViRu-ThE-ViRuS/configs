@@ -53,7 +53,7 @@ vim.opt.colorcolumn = "+1"
 vim.opt.foldmethod = "marker" -- {{{ }}}
 
 -- buffer local options
-vim.bo.formatoptions = "cqnjlr"
+vim.opt.formatoptions = "cqnjlr"
 vim.opt.matchpairs = "(:),{:},[:],<:>"
 vim.opt.textwidth = 79
 vim.opt.swapfile = false

@@ -23,21 +23,21 @@ vim.g.nvim_tree_ignore = {
 }
 
 vim.g.nvim_tree_bindings = {
-    ["<cr>"]          = tree_callback("edit"),
-    ["o"]             = tree_callback("edit"),
-    ["<2-leftmouse>"] = tree_callback("edit"),
-    ["C"]             = tree_callback("cd"),
-    ["<c-v>"]         = tree_callback("vsplit"),
-    ["<c-x>"]         = tree_callback("split"),
-    ["<bs>"]          = tree_callback("close_node"),
-    ["I"]             = tree_callback("toggle_dotfiles"),
-    ["R"]             = tree_callback("refresh"),
-    ["<leader>n"]     = tree_callback("create"),
-    ["<leader>d"]     = tree_callback("remove"),
-    ["<leader>r"]     = tree_callback("full_rename"),
-    ["[c"]            = tree_callback("prev_git_item"),
-    ["]c"]            = tree_callback("next_git_item"),
-    ["q"]             = tree_callback("close")
+    { key = "<cr>"          , cb = tree_callback("edit") },
+    { key = "o"             , cb = tree_callback("edit") },
+    { key = "<2-leftmouse>" , cb = tree_callback("edit") },
+    { key = "C"             , cb = tree_callback("cd") },
+    { key = "<c-v>"         , cb = tree_callback("vsplit") },
+    { key = "<c-x>"         , cb = tree_callback("split") },
+    { key = "<bs>"          , cb = tree_callback("close_node") },
+    { key = "I"             , cb = tree_callback("toggle_dotfiles") },
+    { key = "R"             , cb = tree_callback("refresh") },
+    { key = "<leader>n"     , cb = tree_callback("create") },
+    { key = "<leader>d"     , cb = tree_callback("remove") },
+    { key = "<leader>r"     , cb = tree_callback("full_rename") },
+    { key = "[c"            , cb = tree_callback("prev_git_item") },
+    { key = "]c"            , cb = tree_callback("next_git_item") },
+    { key = "q"             , cb = tree_callback("close") },
 }
 
 vim.g.nvim_tree_show_icons = {

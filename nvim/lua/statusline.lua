@@ -128,8 +128,6 @@ end
 StatusLine = function(mode)
     if mode then
         return statusline_special(mode)
-    elseif vim.bo.buftype == 'terminal' then
-        return statusline_special('Terminal')
     else
         return statusline_active()
     end
@@ -145,6 +143,7 @@ vim.cmd [[
         autocmd WinEnter,BufEnter,FileType Outline setlocal statusline=%!v:lua.StatusLine('Outline')
         autocmd WinEnter,BufEnter,FileType vista setlocal statusline=%!v:lua.StatusLine('VISTA')
         autocmd WinEnter,BufEnter,FileType qf setlocal statusline=%!v:lua.StatusLine('QuickFix')
+        autocmd TermEnter * setlocal statusline=%!v:lua.StatusLine('Terminal')
     augroup end
 
     function! CleanTagbarStatus(current, sort, fname, flags) abort
