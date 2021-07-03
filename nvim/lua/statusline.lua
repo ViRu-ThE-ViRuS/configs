@@ -124,6 +124,9 @@ local statusline_active = function()
     })
 end
 
+-- module
+M = {}
+
 -- generate statusline
 StatusLine = function(mode)
     if mode then
@@ -132,6 +135,7 @@ StatusLine = function(mode)
         return statusline_active()
     end
 end
+M.StatusLine = StatusLine
 
 vim.cmd [[
     set statusline=%!v:lua.StatusLine()
@@ -153,3 +157,5 @@ vim.cmd [[
 ]]
 
 vim.g.tagbar_status_func = 'CleanTagbarStatus'
+
+return M
