@@ -56,7 +56,6 @@ M.symbol_config = {
     sign_error     = 'x'
 }
 
-
 -- mode display name table
 M.modes = {
     ['n']  = 'Normal',

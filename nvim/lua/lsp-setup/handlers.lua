@@ -7,7 +7,7 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
 vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
     vim.lsp.handlers.hover, { border = 'single', focusable=false })
 
-vim.lsp.handlers['signature_help'] = function(_, _, result)
+vim.lsp.handlers['textDocument/signatureHelp'] = function(_, _, result)
     if not (result and result.signatures and result.signatures[1]) then
         return
     end
