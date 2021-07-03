@@ -1,6 +1,7 @@
 local utils = require('utils')
-local StatusLine = require('statusline')
+local StatusLine = require('statusline').StatusLine
 
+-- module export
 M = {}
 
 -- lsp int(kind) -> str(kind) map

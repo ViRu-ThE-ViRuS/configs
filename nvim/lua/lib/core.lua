@@ -1,3 +1,4 @@
+-- module export
 M = {}
 
 -- apply f to all elements in table

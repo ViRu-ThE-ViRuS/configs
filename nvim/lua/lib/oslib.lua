@@ -1,3 +1,4 @@
+-- module export
 M = {}
 
 -- get operating system name

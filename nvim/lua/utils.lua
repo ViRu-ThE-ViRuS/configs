@@ -1,4 +1,6 @@
 local core = require('lib/core')
+
+-- module export
 M = {}
 
 -- setup truncation limits

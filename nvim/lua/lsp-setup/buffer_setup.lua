@@ -4,6 +4,7 @@ CMDLineDiagnostics = require('lsp-setup/utils').CMDLineDiagnostics
 RefreshTagState = require('lsp-setup/utils').RefreshTagState
 SetupLspIconHighlights = require('lsp-setup/utils').SetupLspIconHighlights
 
+-- module export
 M = {}
 
 -- setup general keymaps

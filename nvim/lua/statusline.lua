@@ -44,6 +44,10 @@ end
 
 -- get current file name
 local get_filename = function()
+    if utils.is_htruncated(truncation_limit) then
+        return ' %t '
+    end
+
     return ' %f '
 end
 
