@@ -143,6 +143,7 @@ vim.cmd [[
         autocmd WinEnter,BufEnter,FileType Outline setlocal statusline=%!v:lua.StatusLine('Outline')
         autocmd WinEnter,BufEnter,FileType vista setlocal statusline=%!v:lua.StatusLine('VISTA')
         autocmd WinEnter,BufEnter,FileType qf setlocal statusline=%!v:lua.StatusLine('QuickFix')
+        autocmd WinEnter,BufEnter,FileType Diagnostics setlocal statusline=%!v:lua.StatusLine('Diagnostics')
         autocmd TermEnter * setlocal statusline=%!v:lua.StatusLine('Terminal')
     augroup end
 

@@ -2,9 +2,6 @@ local utils = require('utils')
 
 M = {}
 
--- are lsp diagnostics visisble
-local diagnostics_set = false
-
 -- lsp int(kind) -> str(kind) map
 local lsp_kinds = {
     "File", "Module", "Namespace", "Package", "Class", "Method", "Property",
@@ -46,16 +43,32 @@ M.GetLSPIcon = function (key)
     return lsp_icons[key].icon
 end
 
+-- lsp diagnostic list visible?
+local diagnostics_set = {}
+
+-- lsp diagnostic buffer nrs
+local diagnostics_buffer = {}
+
 -- toggle diagnostics list
 M.ToggleDiagnosticsList = function()
-    if not diagnostics_set then
-        vim.lsp.diagnostic.set_loclist()
+    local current_buf = vim.api.nvim_get_current_buf()
 
-        diagnostics_set = true
-        vim.cmd [[ wincmd p ]]
+    if not diagnostics_set[current_buf] then
+        vim.lsp.diagnostic.set_loclist()
+        diagnostics_set[current_buf] = true
+        diagnostics_buffer[current_buf] = vim.api.nvim_get_current_buf()
+
+        vim.cmd [[
+            setlocal nobuflisted
+            setlocal buftype=nofile
+            setlocal bufhidden=wipe
+            setlocal filetype=Diagnostics
+            wincmd p
+        ]]
     else
-        diagnostics_set = false
-        vim.cmd [[ lclose ]]
+        diagnostics_set[current_buf] = false
+        vim.api.nvim_buf_delete(diagnostics_buffer[current_buf], {})
+        -- vim.cmd [[ lclose ]]
     end
 end
 
