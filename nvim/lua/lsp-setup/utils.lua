@@ -46,9 +46,6 @@ end
 -- lsp diagnostic list visible?
 local diagnostics_set = {}
 
--- lsp diagnostic buffer nrs
-local diagnostics_buffer = {}
-
 -- toggle diagnostics list
 M.ToggleDiagnosticsList = function()
     local current_buf = vim.api.nvim_get_current_buf()
@@ -56,19 +53,15 @@ M.ToggleDiagnosticsList = function()
     if not diagnostics_set[current_buf] then
         vim.lsp.diagnostic.set_loclist()
         diagnostics_set[current_buf] = true
-        diagnostics_buffer[current_buf] = vim.api.nvim_get_current_buf()
 
         vim.cmd [[
             setlocal nobuflisted
-            setlocal buftype=nofile
             setlocal bufhidden=wipe
-            setlocal filetype=Diagnostics
             wincmd p
         ]]
     else
         diagnostics_set[current_buf] = false
-        vim.api.nvim_buf_delete(diagnostics_buffer[current_buf], {})
-        -- vim.cmd [[ lclose ]]
+        vim.cmd [[ lclose ]]
     end
 end
 
