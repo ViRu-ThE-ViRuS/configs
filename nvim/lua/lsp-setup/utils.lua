@@ -1,5 +1,4 @@
 local utils = require('utils')
-local StatusLine = require('statusline').StatusLine
 
 -- module export
 M = {}
@@ -59,7 +58,8 @@ M.ToggleDiagnosticsList = function()
         vim.cmd [[
             setlocal nobuflisted
             setlocal bufhidden=wipe
-            setlocal statusline=%!v:lua.StatusLine('Diagnostics')
+            setlocal signcolumn=no
+            setlocal filetype=diagnostics
             wincmd p
         ]]
     else

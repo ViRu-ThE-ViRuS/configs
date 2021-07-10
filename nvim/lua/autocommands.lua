@@ -19,6 +19,11 @@ vim.cmd [[
         autocmd BufEnter,ColorScheme * highlight SignColumn ctermbg=NONE guibg=NONE
     augroup END
 
+    augroup TerminalSetup
+        autocmd!
+        autocmd TermOpen * setlocal filetype=terminal
+    augroup end
+
     function! AutoHighlightToggle()
       let @/ = ''
       if exists('#auto_highlight')

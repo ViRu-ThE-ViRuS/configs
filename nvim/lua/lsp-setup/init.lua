@@ -14,10 +14,10 @@ OnAttach = function(_, buffer_nr)
 end
 
 -- pyls setup
-lsp['pyls'].setup{ on_attach = OnAttach, cmd = {"pylsp"} }
+lsp['pyls'].setup { on_attach = OnAttach, cmd = {"pylsp"} }
 
 -- clangd setup
-lsp['clangd'].setup{ on_attach = OnAttach }
+lsp['clangd'].setup { on_attach = OnAttach }
 
 -- sumneko_lua setup
 local sumneko_lua_root = oslib.get_homedir() .. '/.local/lsp/lua-language-server/'

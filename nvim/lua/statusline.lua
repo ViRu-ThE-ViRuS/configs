@@ -109,8 +109,22 @@ local statusline_special = function(mode)
     return colors.active .. ' ' .. mode .. ' ' .. colors.inactive
 end
 
+-- inactive statusline
+local statusline_inactive = function()
+    local filename = colors.file .. get_filename()
+    local line_col = colors.line_col .. get_line_col()
+    local percentage = colors.percentage .. get_percentage()
+    local filetype = colors.filetype .. get_filetype()
+
+    return table.concat({
+        colors.active, filename, colors.inactive,
+        '%=% ',
+        line_col, percentage, filetype, colors.inactive
+    })
+end
+
 -- active statusline
-local statusline_active = function()
+local statusline_normal = function()
     local mode = colors.mode .. get_current_mode()
     local git = colors.git .. get_git_status()
     local diagnostics = colors.diagnostics .. get_diagnostics()
@@ -136,30 +150,34 @@ StatusLine = function(mode)
     if mode then
         return statusline_special(mode)
     else
-        return statusline_active()
+        return statusline_normal()
     end
 end
 M.StatusLine = StatusLine
 
+-- generate inactive statusline
+StatusLineInactive = function()
+    return statusline_inactive()
+end
+M.StatusLineInactive = StatusLineInactive
+
 vim.cmd [[
-    set statusline=%!v:lua.StatusLine()
+    " set statusline=%!v:lua.StatusLine()
 
     augroup Statusline
         autocmd!
-        autocmd WinEnter,BufEnter,FileType NvimTree setlocal statusline=%!v:lua.StatusLine('Explorer')
-        autocmd WinEnter,BufEnter,FileType fugitive setlocal statusline=%!v:lua.StatusLine('Git')
-        autocmd WinEnter,BufEnter,FileType Outline setlocal statusline=%!v:lua.StatusLine('Outline')
-        autocmd WinEnter,BufEnter,FileType vista setlocal statusline=%!v:lua.StatusLine('VISTA')
-        autocmd WinEnter,BufEnter,FileType qf setlocal statusline=%!v:lua.StatusLine('QuickFix')
-        autocmd WinEnter,BufEnter,FileType Diagnostics setlocal statusline=%!v:lua.StatusLine('Diagnostics')
-        autocmd TermEnter * setlocal statusline=%!v:lua.StatusLine('Terminal')
+
+        autocmd WinEnter,BufEnter * setlocal statusline=%!v:lua.StatusLine()
+        autocmd WinLeave,BufLeave * setlocal statusline=%!v:lua.StatusLineInactive()
+        autocmd TermOpen,TermEnter * setlocal statusline=%!v:lua.StatusLine('Terminal')
+
+        autocmd WinEnter,BufEnter,WinLeave,BufLeave,FileType NvimTree setlocal statusline=%!v:lua.StatusLine('Explorer')
+        autocmd WinEnter,BufEnter,WinLeave,BufLeave,FileType fugitive setlocal statusline=%!v:lua.StatusLine('Git')
+        autocmd WinEnter,BufEnter,WinLeave,BufLeave,FileType Outline setlocal statusline=%!v:lua.StatusLine('Outline')
+        autocmd WinEnter,BufEnter,WinLeave,BufLeave,FileType vista setlocal statusline=%!v:lua.StatusLine('VISTA')
+        autocmd WinEnter,BufEnter,WinLeave,BufLeave,FileType qf setlocal statusline=%!v:lua.StatusLine('QuickFix')
+        autocmd WinEnter,BufEnter,WinLeave,BufLeave,FileType diagnostics setlocal statusline=%!v:lua.StatusLine('Diagnostics')
     augroup end
-
-    function! CleanTagbarStatus(current, sort, fname, flags) abort
-        return '%#StatusLine# Tagbar %#StatusLineNC#'
-    endfunction
 ]]
-
-vim.g.tagbar_status_func = 'CleanTagbarStatus'
 
 return M
