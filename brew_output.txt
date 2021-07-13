@@ -2,11 +2,13 @@ autoconf
 automake
 bat
 bdw-gc
+brotli
 c-ares
 cairo
 clang-format
 cmake
 cscope
+efm-langserver
 fish
 fontconfig
 freetype
@@ -74,6 +76,7 @@ netpbm
 nettle
 nghttp2
 ninja
+node
 openjdk
 openssl@1.1
 p11-kit

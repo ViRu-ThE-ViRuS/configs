@@ -45,7 +45,7 @@ vim.opt.pumheight = 10
 vim.opt.equalalways = true
 vim.opt.wildmode = "full"
 
-vim.opt.number = false
+vim.opt.number = true
 vim.opt.signcolumn = 'yes'
 vim.opt.cursorline = true
 vim.opt.wrap = false

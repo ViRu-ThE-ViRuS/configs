@@ -21,7 +21,6 @@ vim.defer_fn(function()
     require('plug-config/kommentary')
     require('plug-config/treesitter')
     require('plug-config/lspkind')
-    require('plug-config/neoscroll')
     require('plug-config/lspfuzzy')
     require('plug-config/pears')
 
@@ -31,13 +30,12 @@ vim.defer_fn(function()
     -- require('plug-config/telescope')
 end, 0)
 
--- notes ---
--- see colors: so $VIMRUNTIME/syntax/hitest.vim
+-- notes --
+-- so $VIMRUNTIME/syntax/hitest.vim : see colors
 --
 -- project setup:
---  .nvimrc       : nvim setup like venv
---  .lsconf.json  : language server config
---  .rgignore     : ripgrep ignore
---  .clang-format : clang-format config
---  setup.cfg     : pycodestyle config
-
+--  .nvimrc             : nvim setup like venv
+--  .rgignore           : ripgrep ignore
+--  .clang-format       : clang-format config
+--  .pep8               : autopep8 config
+--  pyrightconfig.json  : pyright config

@@ -40,6 +40,13 @@ utils.map('t', '<c-j>', '<c-\\><c-w>j')
 utils.map('t', '<c-k>', '<c-\\><c-w>k')
 utils.map('t', '<c-l>', '<c-\\><c-w>l')
 
+-- split navigation
+-- TODO(vir): check plugin tmux.lua
+utils.map('n', '<c-k>', '<cmd>wincmd k<cr>')
+utils.map('n', '<c-j>', '<cmd>wincmd j<cr>')
+utils.map('n', '<c-h>', '<cmd>wincmd h<cr>')
+utils.map('n', '<c-l>', '<cmd>wincmd l<cr>')
+
 -- hardcore mode
 utils.map('n', '<up>', '<nop>')
 utils.map('n', '<down>', '<nop>')

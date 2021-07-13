@@ -32,8 +32,6 @@ return require('packer').startup(function()
     use 'junegunn/fzf.vim'
     -- use { 'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}} }
 
-    use 'karb94/neoscroll.nvim'
-
     use 'bluz71/vim-nightfly-guicolors'
     use 'bluz71/vim-moonfly-colors'
     use 'shaunsingh/moonlight.nvim'
@@ -42,7 +40,6 @@ return require('packer').startup(function()
     use 'glepnir/zephyr-nvim'
     use 'Mofiqul/vscode.nvim'
     use 'sainnhe/gruvbox-material'
-    -- use 'flazz/vim-colorschemes'
 
     use 'dstein64/vim-startuptime'
 end)
