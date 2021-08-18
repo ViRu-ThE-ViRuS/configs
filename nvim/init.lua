@@ -23,6 +23,7 @@ vim.defer_fn(function()
     require('plug-config/lspkind')
     require('plug-config/lspfuzzy')
     require('plug-config/pears')
+    require('plug-config/signature')
 
     require('plug-config/vista')
     require('plug-config/tabular')

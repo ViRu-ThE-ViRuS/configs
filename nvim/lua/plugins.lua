@@ -26,6 +26,7 @@ return require('packer').startup(function()
     use 'neovim/nvim-lspconfig'
     use 'hrsh7th/nvim-compe'
     use 'onsails/lspkind-nvim'
+    use 'ray-x/lsp_signature.nvim'
     use 'ojroques/nvim-lspfuzzy'
     use { 'nvim-treesitter/nvim-treesitter', run = function() vim.cmd [[ TSUpdate ]] end }
 
@@ -41,6 +42,7 @@ return require('packer').startup(function()
     use 'glepnir/zephyr-nvim'
     use 'Mofiqul/vscode.nvim'
     use 'sainnhe/gruvbox-material'
+    use 'EdenEast/nightfox.nvim'
 
     use 'dstein64/vim-startuptime'
 end)
