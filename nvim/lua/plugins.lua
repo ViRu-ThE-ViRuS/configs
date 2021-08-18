@@ -19,8 +19,9 @@ return require('packer').startup(function()
     use 'b3nj5m1n/kommentary'
     use 'steelsojka/pears.nvim'
     use 'akinsho/nvim-bufferline.lua'
+    use 'kyazdani42/nvim-web-devicons'
+    use 'kyazdani42/nvim-tree.lua'
     use { 'lewis6991/gitsigns.nvim', requires = {'nvim-lua/plenary.nvim'} }
-    use { 'kyazdani42/nvim-tree.lua', requires = {'kyazdani42/nvim-web-devicons'} }
 
     use 'neovim/nvim-lspconfig'
     use 'hrsh7th/nvim-compe'

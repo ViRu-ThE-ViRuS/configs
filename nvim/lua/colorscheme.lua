@@ -1,6 +1,7 @@
 vim.g.gruvbox_material_background = 'hard'
 vim.g.gruvbox_contrast_dark = 'hard'
 vim.g.gruvbox_contrast_light = 'hard'
+vim.g.gruvbox_material_ui_contrast = 'high'
 vim.g.gruvbox_material_sign_column_background = 'none'
 vim.g.gruvbox_material_diagnostic_virtual_text = 'colored'
 vim.g.gruvbox_material_diagnostic_text_highlight = 1
@@ -8,6 +9,7 @@ vim.g.gruvbox_material_better_performance = 1
 vim.g.gruvbox_material_enable_italic = 1
 
 vim.g.everforest_background = 'hard'
+vim.g.everforest_ui_contrast = 'high'
 vim.g.everforest_sign_column_background = 'none'
 vim.g.everforest_diagnostic_virtual_text = 'colored'
 vim.g.everforest_diagnostic_text_highlight = 1
@@ -25,7 +27,7 @@ vim.opt.background = "dark"
 
 -- can takeup a lot of startup time
 -- vim.defer_fn(function()
-    vim.cmd [[ colorscheme gruvbox-material ]]
+    vim.cmd [[ colorscheme everforest ]]
 -- end, 0)
 
 -- gruvbox deus everforest

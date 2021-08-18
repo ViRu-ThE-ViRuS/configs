@@ -19,11 +19,13 @@ gdbm
 gdk-pixbuf
 gettext
 glib
+glib-networking
 gmp
 gnutls
 gobject-introspection
 graphite2
 graphviz
+gsettings-desktop-schemas
 gsl
 gts
 guile
@@ -67,6 +69,7 @@ luarocks
 luv
 lzo
 m4
+megatools
 mpdecimal
 mpfr
 msgpack

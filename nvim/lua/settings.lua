@@ -10,6 +10,7 @@ vim.g.python3_host_prog = handle:read("*a"):sub(1, -2)
 handle:close()
 
 -- global options
+vim.opt.shell = 'bash'
 vim.opt.mouse = 'a'
 vim.opt.modelines = 0
 vim.opt.history = 100
@@ -45,7 +46,7 @@ vim.opt.pumheight = 10
 vim.opt.equalalways = true
 vim.opt.wildmode = "full"
 
-vim.opt.number = true
+vim.opt.number = false
 vim.opt.signcolumn = 'yes'
 vim.opt.cursorline = true
 vim.opt.wrap = false

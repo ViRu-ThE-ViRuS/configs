@@ -22,6 +22,7 @@ vim.cmd [[
     augroup TerminalSetup
         autocmd!
         autocmd TermOpen * setlocal filetype=terminal
+        autocmd TermOpen * setlocal nonumber
     augroup end
 
     function! AutoHighlightToggle()

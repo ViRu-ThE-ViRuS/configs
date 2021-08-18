@@ -22,8 +22,8 @@ vim.lsp.handlers['textDocument/signatureHelp'] = function(_, _, result)
 end
 
 -- keep preview window open
-vim.lsp.util.close_preview_autocmd = function(events, winnr)
-    events = vim.tbl_filter(function(v) return v ~= 'CursorMovedI' and v ~= 'BufLeave' end, events)
-    local autocommand  = 'autocmd ' .. table.concat(events, ',') .. ' <buffer> ++once lua pcall(vim.api.nvim_win_close, ' .. winnr .. ', true)'
-    vim.cmd(autocommand)
-end
+-- vim.lsp.util.close_preview_autocmd = function(events, winnr)
+--     events = vim.tbl_filter(function(v) return v ~= 'CursorMovedI' and v ~= 'BufLeave' end, events)
+--     local autocommand  = 'autocmd ' .. table.concat(events, ',') .. ' <buffer> ++once lua pcall(vim.api.nvim_win_close, ' .. winnr .. ', true)'
+--     vim.cmd(autocommand)
+-- end
