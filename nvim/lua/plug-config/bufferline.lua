@@ -1,8 +1,6 @@
 require('bufferline').setup {
     options = {
-        numbers = 'buffer_id',
-        number_style = '',
-        mappings = false,
+        numbers = function(args) return args.id; end,
         diagnostics = false,
 
         indicator_icon = '▎',
