@@ -1,5 +1,6 @@
 cyberduck
 kitty
+obsidian
 transmission
 vlc
 vmware-fusion

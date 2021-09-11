@@ -60,6 +60,7 @@ M.ToggleDiagnosticsList = function()
             setlocal bufhidden=wipe
             setlocal signcolumn=no
             setlocal filetype=diagnostics
+            setlocal number
             wincmd p
         ]]
     else
@@ -101,7 +102,7 @@ M.RefreshTagState = function()
     local hovered_line = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())[1]
 
     vim.lsp.buf_request(0, 'textDocument/documentSymbol', { textDocument = vim.lsp.util.make_text_document_params() },
-        function(_, _, results, _)
+        function(_, results, _, _)
             if results == nil or type(results) ~= 'table' then
                 resetTagState()
                 return
