@@ -46,3 +46,4 @@ return require('packer').startup(function()
 
     use 'dstein64/vim-startuptime'
 end)
+
