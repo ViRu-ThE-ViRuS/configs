@@ -10,7 +10,7 @@ utils.map('n', '<c-p>f', '<cmd>Rg<cr>')
 utils.map('n', '<c-p>z', '<cmd>Rg TODO<cr>')
 
 vim.cmd [[
-    let $FZF_DEFAULT_COMMAND = 'rg --files --follow --smart-case --hidden --no-ignore -g "!{.DS_Store,.cache,venv,.git}" 2> /dev/null'
+    let $FZF_DEFAULT_COMMAND = 'rg --files --follow --smart-case --hidden --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache}" 2> /dev/null'
     let $FZF_DEFAULT_OPTS = '--bind ctrl-a:select-all'
     autocmd! FileType fzf set laststatus=0 noruler | autocmd BufLeave <buffer> set laststatus=2 ruler
 
