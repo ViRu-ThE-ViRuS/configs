@@ -1,12 +1,10 @@
 local utils = require('utils')
 local tree_callback = require('nvim-tree/config').nvim_tree_callback
 
-vim.g.nvim_tree_follow = 1
 vim.g.nvim_tree_indent_markers = 1
 vim.g.nvim_tree_add_trailing = 1
 vim.g.nvim_tree_group_empty = 1
 vim.g.nvim_tree_lsp_diagnostics = 1
-vim.g.nvim_tree_auto_close = 0
 
 vim.g.nvim_tree_window_picker_exclude = {
     filetype = { 'packer', 'qf', 'fugitive', 'Outline', 'vista' },
@@ -56,6 +54,7 @@ vim.g.nvim_tree_icons = {
         unstaged  = '~',
         staged    = '+',
         unmerged  = '=',
+
         untracked = '*',
         deleted   = 'x',
         ignored   = '-',
@@ -70,3 +69,6 @@ vim.g.nvim_tree_icons = {
 }
 
 utils.map('n', '<leader>j', '<cmd>NvimTreeToggle<cr>')
+require('nvim-tree').setup({
+    update_focused_file = { enable = true, update_cwd = true }
+})
