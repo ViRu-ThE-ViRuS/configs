@@ -31,6 +31,7 @@ vim.g.nvim_tree_icons = {
         -- open = '-',
         -- empty = '-',
     -- },
+    default = '',
     git = {
         unstaged  = '~',
         staged    = '+',
@@ -52,7 +53,7 @@ vim.g.nvim_tree_icons = {
 utils.map('n', '<leader>j', '<cmd>NvimTreeToggle<cr>')
 require('nvim-tree').setup({
     update_focused_file = { enable = true, update_cwd = true },
-    lsp_diagnostics = false,
+    diagnostics = { enable = false },
     view = {
         mappings = {
             list = {

@@ -1,6 +1,7 @@
 cyberduck
 kitty
 logitech-options
+microsoft-teams
 obsidian
 transmission
 vlc

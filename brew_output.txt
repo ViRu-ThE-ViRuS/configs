@@ -18,6 +18,7 @@ gd
 gdbm
 gdk-pixbuf
 gettext
+git-lfs
 glib
 glib-networking
 gmp
