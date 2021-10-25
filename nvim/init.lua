@@ -20,7 +20,6 @@ vim.defer_fn(function()
     require('plug-config/gitsigns')
     require('plug-config/kommentary')
     require('plug-config/treesitter')
-    require('plug-config/lspkind')
     require('plug-config/lspfuzzy')
     require('plug-config/pears')
     require('plug-config/signature')
@@ -40,4 +39,3 @@ end, 0)
 --  .clang-format       : clang-format config
 --  .pep8               : autopep8 config
 --  pyrightconfig.json  : pyright config
-

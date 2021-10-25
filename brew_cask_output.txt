@@ -4,5 +4,6 @@ logitech-options
 microsoft-teams
 obsidian
 transmission
+unity-hub
 vlc
 vmware-fusion

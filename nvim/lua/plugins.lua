@@ -21,10 +21,13 @@ return require('packer').startup(function()
     use 'akinsho/nvim-bufferline.lua'
     use 'kyazdani42/nvim-web-devicons'
     use 'kyazdani42/nvim-tree.lua'
-    use { 'lewis6991/gitsigns.nvim', requires = {'nvim-lua/plenary.nvim'} }
+    use { 'lewis6991/gitsigns.nvim', requires = 'nvim-lua/plenary.nvim' }
 
     use 'neovim/nvim-lspconfig'
-    use 'hrsh7th/nvim-compe'
+    use 'hrsh7th/cmp-nvim-lsp'
+    use 'hrsh7th/cmp-buffer'
+    use 'hrsh7th/nvim-cmp'
+
     use 'onsails/lspkind-nvim'
     use 'ray-x/lsp_signature.nvim'
     use 'ojroques/nvim-lspfuzzy'

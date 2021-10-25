@@ -16,12 +16,14 @@ end
 
 -- pyright setup
 lsp["pyright"].setup {
+    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
     on_attach = OnAttach,
     flags = {debounce_text_changes = 150}
 }
 
 -- clangd setup
 lsp["clangd"].setup {
+    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
     on_attach = OnAttach,
     flags = {debounce_text_changes = 150}
 }
@@ -30,6 +32,7 @@ lsp["clangd"].setup {
 local sumneko_lua_root = oslib.get_homedir() .. "/.local/lsp/lua-language-server/"
 local sumneko_lua_bin = sumneko_lua_root .. "bin/" .. oslib.get_os() .. "/lua-language-server"
 lsp["sumneko_lua"].setup {
+    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
     cmd = {sumneko_lua_bin, "-E", sumneko_lua_root .. "main.lua"},
     settings = {
         Lua = {
@@ -47,6 +50,7 @@ lsp["sumneko_lua"].setup {
 -- efm setup
 local efm_prettier = {formatCommand = "prettier --stdin-filepath ${INPUT}", formatStdin = true}
 lsp["efm"].setup {
+    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
     init_options = {documentFormatting = true},
     filetypes = {
         "css",
