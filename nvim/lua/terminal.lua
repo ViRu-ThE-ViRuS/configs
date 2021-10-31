@@ -31,7 +31,7 @@ M.ToggleTarget = function()
 
     -- if visible, close
     local target_winid = vim.fn.bufwinid(M.TargetTerminal.buf_nr)
-    if target_winid ~= -1 then
+    if target_winid ~= -1 and #vim.api.nvim_list_wins() ~= 1 then
         vim.api.nvim_win_close(target_winid, false)
         return
     end

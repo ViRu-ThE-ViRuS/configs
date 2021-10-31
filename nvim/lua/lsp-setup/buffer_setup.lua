@@ -15,8 +15,8 @@ M.setup_general_keymaps = function(_, buffer_nr)
 	utils.map('n','K', '<cmd>lua vim.lsp.buf.hover()<cr>', { silent = true }, buffer_nr)
     utils.map('n','<a-cr>', '<cmd>lua vim.lsp.buf.code_action()<cr>', { silent = true }, buffer_nr)
 
-    utils.map('n','[e', '<cmd>lua vim.lsp.diagnostic.goto_prev({ popup_opts = { border = "single", focusable = false } })<cr>', { silent = true }, buffer_nr)
-    utils.map('n',']e', '<cmd>lua vim.lsp.diagnostic.goto_next({ popup_opts = { border = "single", focusable = false } })<cr>', { silent = true }, buffer_nr)
+    utils.map('n','[e', '<cmd>lua vim.lsp.diagnostic.goto_prev({ popup_opts = { border = "rounded", focusable = false } })<cr>', { silent = true }, buffer_nr)
+    utils.map('n',']e', '<cmd>lua vim.lsp.diagnostic.goto_next({ popup_opts = { border = "rounded", focusable = false } })<cr>', { silent = true }, buffer_nr)
     utils.map('n', '<leader>e', '<cmd>lua ToggleDiagnosticsList()<cr>', { silent = true }, buffer_nr)
 end
 
@@ -58,7 +58,8 @@ M.setup_autocmds = function()
 
         augroup LspPopupHelp
             autocmd! * <buffer>
-            autocmd CursorHold <buffer> lua vim.lsp.diagnostic.show_line_diagnostics({ border='single', focusable=false })
+            autocmd CursorHold <buffer> lua vim.lsp.diagnostic.show_line_diagnostics({ border='rounded', focusable=false })
+            " autocmd CursorHold <buffer> lua vim.lsp.buf.hover()
             " autocmd CursorHoldI <buffer> lua vim.lsp.buf.signature_help()
         augroup END
 

@@ -10,7 +10,7 @@
 --     max_abbr_width = 100,
 --     max_kind_width = 100,
 --     max_menu_width = 100,
---     documentation = {border = "single"},
+--     documentation = {border = "rounded"},
 --     source = {
 --         path = true,
 --         buffer = true,
@@ -29,7 +29,10 @@
 local cmp = require('cmp')
 
 cmp.setup({
-    snippet = {},
+    snippet = {
+        -- TODO(vir): figure this out
+        expand = function() end
+    },
     mapping = {
       ['<cr>'] = cmp.mapping.confirm({ select = true, behaviour = cmp.ConfirmBehavior.Replace }),
       ['<c-space>'] = cmp.mapping.complete(),
@@ -50,8 +53,8 @@ cmp.setup({
         ghost_text = false,
     },
     documentation = {
-        border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" }
-        -- border = 'single'
+        -- border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+        border = 'rounded'
     },
     formatting = {
         format = require("lspkind").cmp_format({
@@ -65,4 +68,3 @@ cmp.setup({
             }),
     },
 })
-
