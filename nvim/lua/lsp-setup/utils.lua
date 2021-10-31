@@ -1,4 +1,5 @@
 local utils = require('utils')
+local StatusLine = require('statusline').StatusLine
 
 -- module export
 M = {}
@@ -55,14 +56,14 @@ M.ToggleDiagnosticsList = function()
         vim.lsp.diagnostic.set_loclist()
         diagnostics_set[current_buf] = true
 
-        vim.cmd [[
-            setlocal nobuflisted
-            setlocal bufhidden=wipe
-            setlocal signcolumn=no
-            setlocal filetype=diagnostics
-            setlocal number
-            wincmd p
-        ]]
+        vim.opt_local.buflisted = false
+        vim.opt_local.number = true
+        vim.opt_local.signcolumn = 'no'
+        vim.opt_local.bufhidden = 'wipe'
+        vim.opt_local.filetype = 'diagnostics'
+        vim.opt_local.statusline = StatusLine('Diagnostics')
+
+        vim.cmd [[ wincmd p ]]
     else
         diagnostics_set[current_buf] = false
         vim.cmd [[ lclose ]]

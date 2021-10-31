@@ -41,7 +41,6 @@ utils.map('t', '<c-k>', '<c-\\><c-w>k')
 utils.map('t', '<c-l>', '<c-\\><c-w>l')
 
 -- split navigation
--- TODO(vir): check plugin tmux.lua
 utils.map('n', '<c-k>', '<cmd>wincmd k<cr>')
 utils.map('n', '<c-j>', '<cmd>wincmd j<cr>')
 utils.map('n', '<c-h>', '<cmd>wincmd h<cr>')
@@ -68,15 +67,15 @@ utils.map('n', ':', ';')
 -- utils.map('n', 'Y', 'yy')
 
 -- cursor, tab behaviour with completions
-vim.cmd [[
-    cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
-    cnoreabbrev <expr> Q ((getcmdtype() is# ':' && getcmdline() is# 'Q')?('q'):('Q'))
-    cnoreabbrev <expr> WQ ((getcmdtype() is# ':' && getcmdline() is# 'WQ')?('wq'):('WQ'))
-    cnoreabbrev <expr> Wq ((getcmdtype() is# ':' && getcmdline() is# 'Wq')?('wq'):('Wq'))
+-- vim.cmd [[
+--     cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
+--     cnoreabbrev <expr> Q ((getcmdtype() is# ':' && getcmdline() is# 'Q')?('q'):('Q'))
+--     cnoreabbrev <expr> WQ ((getcmdtype() is# ':' && getcmdline() is# 'WQ')?('wq'):('WQ'))
+--     cnoreabbrev <expr> Wq ((getcmdtype() is# ':' && getcmdline() is# 'Wq')?('wq'):('Wq'))
 
-    inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-    inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-]]
+--     inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+--     inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+-- ]]
 
 -- terminal setup
 if vim.fn.exists('fish') then
@@ -89,4 +88,10 @@ else
     vim.o.shell = 'bash'
     utils.map('n', '<leader>s', '<cmd>vsp term://bash<cr>')
 end
+
+-- coconut oil remaps
+utils.map('i', ',', ',<c-g>u')
+utils.map('i', '.', '.<c-g>u')
+utils.map('i', '!', '!<c-g>u')
+utils.map('i', '?', '?<c-g>u')
 

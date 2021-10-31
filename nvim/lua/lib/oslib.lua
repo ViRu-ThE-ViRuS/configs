@@ -31,4 +31,11 @@ M.get_cwd = function()
     return vim.fn['getcwd']()
 end
 
+M.get_python = function()
+    local handle = io.popen('which python3')
+    local python = handle:read("*a"):sub(1, -2)
+    handle:close()
+    return python
+end
+
 return M

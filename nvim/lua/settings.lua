@@ -1,3 +1,5 @@
+local oslib = require('lib/oslib')
+
 -- disable unused providers
 vim.g.loaded_node_provider = 0
 vim.g.loaded_ruby_provider = 0
@@ -5,9 +7,7 @@ vim.g.loaded_perl_provider = 0
 vim.g.loaded_python_provider = 0
 
 -- setup python path
-local handle = io.popen('which python3')
-vim.g.python3_host_prog = handle:read("*a"):sub(1, -2)
-handle:close()
+vim.g.python3_host_prog = oslib.get_python()
 
 -- global options
 vim.opt.shell = 'bash'
@@ -67,11 +67,7 @@ vim.opt.expandtab = true
 vim.opt.autoindent = true
 vim.opt.smartindent = true
 
--- TODO(vir): figure this out
--- vim.o.undodir = '~/.config/undodir'
-vim.cmd [[
-    set undodir=~/.config/undodir
-]]
+vim.opt.undodir = oslib.get_homedir() .. '/.config/undodir/'
 
 -- cursor setup
 if os.getenv('TMUX') then
@@ -87,3 +83,4 @@ else
         let &t_EI="\<Esc>]50;CursorShape=0\x7"
     ]]
 end
+

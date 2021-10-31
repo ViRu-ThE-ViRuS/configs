@@ -16,12 +16,11 @@ vim.g.everforest_diagnostic_text_highlight = 1
 vim.g.everforest_better_performance = 1
 vim.g.everforest_enable_italic = 1
 
--- local nightfox = require('nightfox')
--- nightfox.setup({
---         fox = "nightfox",
---         styles = {comments = "italic", keywords = "bold", functions = "italic,bold"}
--- })
--- nightfox.load()
+local nightfox = require('nightfox')
+nightfox.setup({
+        fox = "nightfox",
+        styles = {comments = "italic", keywords = "bold", functions = "italic,bold"}
+})
 
 vim.g.moonflyItalics = 1
 vim.g.moonflyNormalFloat = 1
@@ -34,7 +33,7 @@ vim.opt.background = "dark"
 
 -- can takeup a lot of startup time
 -- vim.defer_fn(function()
-    vim.cmd [[ colorscheme base16-monokai ]]
+    vim.cmd [[ colorscheme moonfly ]]
 -- end, 0)
 
 -- gruvbox deus everforest

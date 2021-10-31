@@ -163,17 +163,17 @@ M.StatusLineInactive = StatusLineInactive
 
 vim.cmd [[
     " set statusline=%!v:lua.StatusLine()
+    let statusline_blacklist = ['terminal', 'vista', 'diagnostics', 'qf']
 
-    augroup Statusline
+    augroup StatusLine
         autocmd!
+        autocmd! FileType diagnostics
 
-        autocmd WinEnter,BufEnter * setlocal statusline=%!v:lua.StatusLine()
-        autocmd WinLeave,BufLeave * setlocal statusline=%!v:lua.StatusLineInactive()
-        autocmd TermOpen,TermEnter * setlocal statusline=%!v:lua.StatusLine('Terminal')
+        autocmd WinEnter,BufEnter * if index(statusline_blacklist, &ft) < 0 | setlocal statusline=%!v:lua.StatusLine()
+        autocmd WinLeave,BufLeave * if index(statusline_blacklist, &ft) < 0 | setlocal statusline=%!v:lua.StatusLineInactive()
+        autocmd TermOpen * setlocal statusline=%!v:lua.StatusLine('Terminal')
 
         autocmd WinEnter,BufEnter,WinLeave,BufLeave,FileType NvimTree setlocal statusline=%!v:lua.StatusLine('Explorer')
-        autocmd WinEnter,BufEnter,WinLeave,BufLeave,FileType fugitive setlocal statusline=%!v:lua.StatusLine('Git')
-        autocmd WinEnter,BufEnter,WinLeave,BufLeave,FileType Outline setlocal statusline=%!v:lua.StatusLine('Outline')
         autocmd WinEnter,BufEnter,WinLeave,BufLeave,FileType vista setlocal statusline=%!v:lua.StatusLine('VISTA')
         autocmd WinEnter,BufEnter,WinLeave,BufLeave,FileType qf setlocal statusline=%!v:lua.StatusLine('QuickFix')
         autocmd WinEnter,BufEnter,WinLeave,BufLeave,FileType diagnostics setlocal statusline=%!v:lua.StatusLine('Diagnostics')

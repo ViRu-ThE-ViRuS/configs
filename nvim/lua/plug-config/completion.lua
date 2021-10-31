@@ -41,10 +41,9 @@ cmp.setup({
     },
     sources = {
       { name = 'nvim_lsp' },
-      { name = 'nvim_lua' },
       { name = 'treesitter' },
       { name = 'path' },
-      { name = 'buffer', keyword_length = 5 }
+      { name = 'buffer', keyword_length = 3 }
     },
     experimental = {
         native_menu = false,
@@ -58,12 +57,11 @@ cmp.setup({
         format = require("lspkind").cmp_format({
             with_text = true,
             menu = {
-                nvim_lua = "[lua]",
                 nvim_lsp = "[lsp]",
                 treesitter = "[ts]",
                 buffer = "[buf]",
                 path = '[path]'
-                }
+            }
             }),
     },
 })

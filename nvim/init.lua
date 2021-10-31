@@ -8,6 +8,7 @@ require('plugins')              -- setup plugins
 require('keymaps')              -- setup general keymaps
 require('lsp')                  -- setup lsp
 require('statusline')           -- setup custom statusline
+require('terminal')             -- setup custom terminal behaviors
 
 -- plugin configs
 require('plug-config/tree')
@@ -39,3 +40,4 @@ end, 0)
 --  .clang-format       : clang-format config
 --  .pep8               : autopep8 config
 --  pyrightconfig.json  : pyright config
+

@@ -10,15 +10,6 @@ vim.g.nvim_tree_window_picker_exclude = {
     buftype = { 'terminal' }
 }
 
-vim.g.nvim_tree_ignore = {
-    '*.pyc',
-    '.DS_Store',
-    'node_modules',
-    '__pycache__',
-    'venv',
-    '.git'
-}
-
 vim.g.nvim_tree_show_icons = {
     git = 1,
     folders = 1,
@@ -52,8 +43,11 @@ vim.g.nvim_tree_icons = {
 
 utils.map('n', '<leader>j', '<cmd>NvimTreeToggle<cr>')
 require('nvim-tree').setup({
-    update_focused_file = { enable = true, update_cwd = true },
+    update_focused_file = { enable = true, update_cwd = false },
     diagnostics = { enable = false },
+    filters = {
+        custom = { '*.pyc', '.DS_Store', 'node_modules', '__pycache__', 'venv', '.git' }
+    },
     view = {
         mappings = {
             list = {

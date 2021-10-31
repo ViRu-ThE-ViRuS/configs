@@ -4,6 +4,7 @@ bat
 bdw-gc
 brotli
 c-ares
+ca-certificates
 cairo
 clang-format
 cmake
@@ -43,6 +44,7 @@ libevent
 libffi
 libidn2
 libmpc
+libnghttp2
 libomp
 libpng
 libpthread-stubs
