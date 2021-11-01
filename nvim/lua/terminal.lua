@@ -33,7 +33,11 @@ M.ToggleTarget = function(open)
     local target_winid = vim.fn.bufwinid(M.TargetTerminal.buf_nr)
     if target_winid ~= -1 and #vim.api.nvim_list_wins() ~= 1 then
         if not open then
-            vim.api.nvim_win_close(target_winid, false)
+            -- vim.api.nvim_win_close(target_winid, false)
+            if not pcall(vim.api.nvim_win_close, target_winid, false) then
+                M.TargetTerminal = nil
+                print("TargetTerminal exited, resetting state")
+            end
         end
         return
     end
@@ -44,7 +48,11 @@ M.ToggleTarget = function(open)
         split_dir = ""
     end
 
-    vim.cmd(split_dir .. "split #" .. M.TargetTerminal.buf_nr)
+    -- vim.cmd(split_dir .. "split #" .. M.TargetTerminal.buf_nr)
+    if not pcall(vim.cmd, split_dir .. "split #" .. M.TargetTerminal.buf_nr) then
+        M.TargetTerminal = nil
+        print("TargetTerminal exited, resetting state")
+    end
 end
 
 M.SendToTarget = function(payload, repeat_last)
@@ -52,16 +60,21 @@ M.SendToTarget = function(payload, repeat_last)
         if vim.fn.bufname(M.TargetTerminal.buf_nr) ~= "" then
             if repeat_last then
                 -- vim.cmd("call chansend(" .. M.TargetTerminal.job_id .. ', "\x1b\x5b\x41\\<cr>")')
-                if not pcall(vim.cmd, "call chansend(" .. M.TargetTerminal.job_id .. ', "\x1b\x5b\x41\\<cr>")') then
-                    M.TargetTerminal = nil
-                    print("TargetTerminal exited, resetting state")
+                if pcall(vim.cmd, "call chansend(" .. M.TargetTerminal.job_id .. ', "\x1b\x5b\x41\\<cr>")') then
+                    M.ToggleTarget(true)
                     return
                 end
             else
-                vim.api.nvim_chan_send(M.TargetTerminal.job_id, payload .. "\n")
+                -- vim.api.nvim_chan_send(M.TargetTerminal.job_id, payload .. "\n")
+                if pcall(vim.api.nvim_chan_send, M.TargetTerminal.job_id, payload .. "\n") then
+                    M.ToggleTarget(true)
+                    return
+                end
             end
 
-            M.ToggleTarget(true)
+            M.TargetTerminal = nil
+            print("TargetTerminal exited, resetting state")
+            return
         else
             M.TargetTerminal = nil
             print("TargetTerminal does not exist, resetting state")
