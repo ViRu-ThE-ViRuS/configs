@@ -63,9 +63,7 @@ M.SendToTarget = function(payload, repeat_last)
         print("TargetTerminal not set")
     end
 
-    if not repeat_last then
-        M.ToggleTarget(not repeat_last)
-    end
+    M.ToggleTarget(true)
 end
 
 M.SetTargetCommand = function()
@@ -98,7 +96,7 @@ end
 
 utils.map("n", "<leader>cA", '<cmd>lua require("terminal").RunTargetCommand()<cr>')
 utils.map("n", "<leader>ca", '<cmd>lua require("terminal").RunPreviousCommand()<cr>')
-utils.map("n", "<leader>cf", '<cmd>lua require("terminal").SetTarget()<cr>')
+utils.map("n", "<leader>cS", '<cmd>lua require("terminal").SetTarget()<cr>')
 utils.map("n", "<leader>cs", '<cmd>lua require("terminal").ToggleTarget(false)<cr>')
 
 return M
