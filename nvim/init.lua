@@ -11,6 +11,7 @@ require('statusline')           -- setup custom statusline
 require('terminal')             -- setup custom terminal behaviors
 
 -- plugin configs
+require('plug-config/fzf')
 require('plug-config/tree')
 require('plug-config/bufferline')
 
@@ -27,7 +28,6 @@ vim.defer_fn(function()
 
     require('plug-config/vista')
     require('plug-config/tabular')
-    require('plug-config/fzf')
     -- require('plug-config/telescope')
 end, 0)
 

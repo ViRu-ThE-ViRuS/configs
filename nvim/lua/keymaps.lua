@@ -79,13 +79,13 @@ utils.map('n', ':', ';')
 
 -- terminal setup
 if vim.fn.exists('fish') then
-    vim.o.shell = 'fish'
+    vim.opt.shell = 'fish'
     utils.map('n', '<leader>s', '<cmd>vsp term://fish<cr>')
 elseif vim.fn.exists('zsh') then
-    vim.o.shell = 'zsh'
+    vim.opt.shell = 'zsh'
     utils.map('n', '<leader>s', '<cmd>vsp term://zsh<cr>')
 else
-    vim.o.shell = 'bash'
+    vim.opt.shell = 'bash'
     utils.map('n', '<leader>s', '<cmd>vsp term://bash<cr>')
 end
 

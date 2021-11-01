@@ -23,7 +23,7 @@ M.SetTargetTerminal = function()
     end
 end
 
-M.ToggleTarget = function()
+M.ToggleTarget = function(open)
     if M.TargetTerminal == nil then
         print("TargetTerminal not set")
         return
@@ -32,7 +32,9 @@ M.ToggleTarget = function()
     -- if visible, close
     local target_winid = vim.fn.bufwinid(M.TargetTerminal.buf_nr)
     if target_winid ~= -1 and #vim.api.nvim_list_wins() ~= 1 then
-        vim.api.nvim_win_close(target_winid, false)
+        if not open then
+            vim.api.nvim_win_close(target_winid, false)
+        end
         return
     end
 
@@ -48,7 +50,7 @@ end
 M.SendToTarget = function(payload, repeat_last)
     if M.TargetTerminal ~= nil then
         if vim.fn.bufname(M.TargetTerminal.buf_nr) ~= "" then
-            if repeat_last ~= nil then
+            if repeat_last then
                 vim.cmd("call chansend(" .. M.TargetTerminal.job_id .. ', "\x1b\x5b\x41\\<cr>")')
             else
                 vim.api.nvim_chan_send(M.TargetTerminal.job_id, payload .. "\n")
@@ -61,7 +63,9 @@ M.SendToTarget = function(payload, repeat_last)
         print("TargetTerminal not set")
     end
 
-    M.ToggleTarget()
+    if not repeat_last then
+        M.ToggleTarget(not repeat_last)
+    end
 end
 
 M.SetTargetCommand = function()
@@ -74,7 +78,7 @@ end
 
 M.RunTargetCommand = function()
     if M.TargetCommand ~= "" then
-        M.SendToTarget(M.TargetCommand)
+        M.SendToTarget(M.TargetCommand, false)
     else
         print("TargetCommand not set")
     end
@@ -92,9 +96,9 @@ M.RunPreviousCommand = function()
     M.SendToTarget(nil, true)
 end
 
-utils.map("n", "<leader>caa", '<cmd>lua require("terminal").RunTargetCommand()<cr>')
+utils.map("n", "<leader>cA", '<cmd>lua require("terminal").RunTargetCommand()<cr>')
 utils.map("n", "<leader>ca", '<cmd>lua require("terminal").RunPreviousCommand()<cr>')
 utils.map("n", "<leader>cf", '<cmd>lua require("terminal").SetTarget()<cr>')
-utils.map("n", "<leader>cs", '<cmd>lua require("terminal").ToggleTarget()<cr>')
+utils.map("n", "<leader>cs", '<cmd>lua require("terminal").ToggleTarget(false)<cr>')
 
 return M

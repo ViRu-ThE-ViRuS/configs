@@ -33,7 +33,7 @@ vim.opt.background = "dark"
 
 -- can takeup a lot of startup time
 -- vim.defer_fn(function()
-    vim.cmd [[ colorscheme gruvbox-material ]]
+    vim.cmd [[ colorscheme vscode ]]
 -- end, 0)
 
 -- gruvbox deus everforest

@@ -47,6 +47,7 @@ return require('packer').startup(function()
     use 'Mofiqul/vscode.nvim'
     use 'EdenEast/nightfox.nvim'
 
-    use 'dstein64/vim-startuptime'
+    -- use 'dstein64/vim-startuptime'
+    use 'tweekmonster/startuptime.vim'
 end)
 

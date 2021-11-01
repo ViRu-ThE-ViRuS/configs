@@ -1,4 +1,4 @@
-local oslib = require('lib/oslib')
+local oslib = require("lib/oslib")
 
 -- disable unused providers
 vim.g.loaded_node_provider = 0
@@ -10,8 +10,8 @@ vim.g.loaded_python_provider = 0
 vim.g.python3_host_prog = oslib.get_python()
 
 -- global options
-vim.opt.shell = 'bash'
-vim.opt.mouse = 'a'
+vim.opt.shell = "bash"
+vim.opt.mouse = "a"
 vim.opt.modelines = 0
 vim.opt.history = 100
 vim.opt.hidden = true
@@ -39,7 +39,7 @@ vim.opt.omnifunc = "syntaxcomplete#Complete"
 vim.opt.display = "lastline,msgsep"
 vim.opt.title = true
 vim.opt.completeopt = "menu,noinsert,noselect,menuone"
-vim.opt.diffopt = 'internal,filler,vertical'
+vim.opt.diffopt = "internal,filler,vertical"
 vim.opt.updatetime = 1000
 vim.opt.pumblend = 10
 vim.opt.pumheight = 10
@@ -47,7 +47,7 @@ vim.opt.equalalways = true
 vim.opt.wildmode = "full"
 
 vim.opt.number = true
-vim.opt.signcolumn = 'yes'
+vim.opt.signcolumn = "yes"
 vim.opt.cursorline = true
 vim.opt.wrap = false
 vim.opt.colorcolumn = "+1"
@@ -67,10 +67,10 @@ vim.opt.expandtab = true
 vim.opt.autoindent = true
 vim.opt.smartindent = true
 
-vim.opt.undodir = oslib.get_homedir() .. '/.config/undodir/'
+vim.opt.undodir = oslib.get_homedir() .. "/.config/undodir/"
 
 -- cursor setup
-if os.getenv('TMUX') then
+if os.getenv("TMUX") then
     vim.cmd [[
         let &t_SI="\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
         let &t_SR="\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
@@ -83,4 +83,3 @@ else
         let &t_EI="\<Esc>]50;CursorShape=0\x7"
     ]]
 end
-
