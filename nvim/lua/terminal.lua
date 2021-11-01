@@ -51,10 +51,17 @@ M.SendToTarget = function(payload, repeat_last)
     if M.TargetTerminal ~= nil then
         if vim.fn.bufname(M.TargetTerminal.buf_nr) ~= "" then
             if repeat_last then
-                vim.cmd("call chansend(" .. M.TargetTerminal.job_id .. ', "\x1b\x5b\x41\\<cr>")')
+                -- vim.cmd("call chansend(" .. M.TargetTerminal.job_id .. ', "\x1b\x5b\x41\\<cr>")')
+                if not pcall(vim.cmd, "call chansend(" .. M.TargetTerminal.job_id .. ', "\x1b\x5b\x41\\<cr>")') then
+                    M.TargetTerminal = nil
+                    print("TargetTerminal exited, resetting state")
+                    return
+                end
             else
                 vim.api.nvim_chan_send(M.TargetTerminal.job_id, payload .. "\n")
             end
+
+            M.ToggleTarget(true)
         else
             M.TargetTerminal = nil
             print("TargetTerminal does not exist, resetting state")
@@ -62,8 +69,6 @@ M.SendToTarget = function(payload, repeat_last)
     else
         print("TargetTerminal not set")
     end
-
-    M.ToggleTarget(true)
 end
 
 M.SetTargetCommand = function()
