@@ -2,61 +2,47 @@
 ### Custom Configs FTW!!
 
 Here are the configurations I use for my dev setups.
-The Installation instructions are for *MacOS* as of yet.
 
-#### Kitty
-- I use Kitty as my primary terminal, its fast, hash
-  everything i was missing in alacritty, so its my primary candidate for
-  replacing iTerm2.
-The configuration folder is `kitty/`, to be placed in `~/.config/`
+### Setup
+- **TERMINAL**: Kitty [iterm2, alacritty] + TMUX
+- **EDITOR**: Neovim
+- **SHELL**: fish [zsh, bash]
+- **PKG**: brew
+- **MISC**: Tiles (MacOS), fzf, rg, batcat,
 
-#### iTerm2
-- I use iTerm2 as (backup) Terminal.app on MacOS doesn't support truecoloring as of yet
-- The profile configuration is `Virus.json`
+#### Neovim
+my `NeoVim` configuration is heavily customized, and designed to work with the other elements of my env.
+- custom statusline (with info from lsp, git, diagnostics, outline, and more, also handles truncation levels)
+- custom lsp handlers (like qfrename, custom hover rendering)
+- custom terminal setup (keymaps to send commands, toggle terminal, and other tricks)
+- lsp augroups (popups, hovers, signature help etc)
+- features like word-highlight, qf/loclist/diagnostic/outline navigation, buffer management, fzf-tools etc
+- colorscheme and neovim quirks solved
 
-#### Alacritty
-- I am experimenting with Alacritty as my primary terminal, because it is
-  significantly faster in my uses and doesn't have major sideeffects other than
-  the lack of tabs in it and font ligatures
-- `$ brew cask install alacritty`
-The configuration file is `alacritty.yml` located in `~/.config/alacritty/`
+##### LSP
+you will need to install lsp(s) manually
+- **lua**: sumneko (${HOME}/.local/lsp/lua-language-server/)
+- **python**: pyright, pylsp
+- **c/c++**: clangd (clang-format)
+- **general**: efm (luafmt, autopep8)
 
-#### NeoVim
-- I use NeoVim, because, well... I use a Mac
-- `$ brew install neovim`
+##### Project Setup
+- see colors: `so $VIMRUNTIME/syntax/hitest.vim`
+- **.nvimrc**: nvim setup like venv
+- **.rgignore**: ripgrep ignore
+- **.clang-format**: clang-format config
+- **.pep8**: autopep8 config
+- **pyrightconfig.json**: pyright config
 
-The configuration file is `init.vim` located in `~/.config/nvim/`
+### Reproduce
+- run `source update_config.sh` after creating desired config dirs
+- run `source update_repo.sh` after updating local config, and populating repository
 
-#### tmux
-- I use Tmux for window management
-- `$ brew install tmux`
-
-The configuration file is `.tmux.conf` located in `~/.config/tmux/`
-
-- setup terminfo profile using `tic -x ~/.config/tmux/terminfo` for colors and
-  fonts
-
-#### zsh
-- I use zsh as my secondary bash prompt...
-- It is installed by default on modern versions of *MacOS*
-
-The configuration file is `.zshrc` located in `~/.config/zsh/`
-The `.zshenv` file is located in `~/`
-
-#### fish
-- I use fish as my primary bash prompt...
-- `$ brew install fish`
-
-The configuration files are in `fish` located in `~/.config/fish/`
-
-### MISC
-- Brew list output in `brew_output.txt`
-- I use Fira Code font (Fira Code, Retina, 14pts)
-- I use Tiles window manager on MacOS
-- Periodically use `brew cleanup --prune 5; brew doctor`
-- Periodically glance over unnecessary packages `brew leaves`
-- Periodically update brew casks after checking `brew cask outdated`
-- Brew python pip is seperate from normal pip
-- A deprecated vim configuration is present... reference NeoVim configuration
-    for updates
-    - vim configuration file is `.vimrc`
+### Notes
+- setup terminfo profile using `tic -x ~/.config/tmux/terminfo` for colors and fonts
+- iTerm2 profile configuration is `iterm2/Virus.json`
+- brew list output in `brew_output.txt`
+- setup fonts according to `kitty/kitty.conf`
+- periodically use `brew cleanup --prune 5; brew doctor`
+- periodically glance over unnecessary packages `brew leaves`
+- periodically update brew casks after checking `brew update ; brew upgrade`

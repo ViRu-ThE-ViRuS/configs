@@ -1,5 +1,7 @@
 -- TODO(vir): setup autocommands via lua api
 vim.cmd [[
+    highlight! link FloatBorder Pmenu
+
     augroup Misc
         autocmd!
         autocmd TextYankPost * lua vim.highlight.on_yank {on_visual = false}
@@ -45,4 +47,3 @@ vim.cmd [[
       endif
     endfunction
 ]]
-
