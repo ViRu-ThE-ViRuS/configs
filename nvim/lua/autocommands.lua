@@ -1,11 +1,10 @@
--- TODO(vir): setup autocommands via lua api
 vim.cmd [[
     highlight! link FloatBorder Pmenu
 
     augroup Misc
         autocmd!
         autocmd TextYankPost * lua vim.highlight.on_yank {on_visual = false}
-        autocmd BufWritePre * lua require('utils').StripTrailingWhitespaces()
+        autocmd BufWritePre * lua require('utils').strip_trailing_whitespaces()
     augroup END
 
     augroup ConfigUpdate

@@ -13,7 +13,7 @@ return require('packer').startup(function()
     use 'tpope/vim-eunuch'
     use 'godlygeek/tabular'
     use 'liuchengxu/vista.vim'
-    use 'tpope/vim-fugitive'   -- TODO(vir): find alternative
+    use 'tpope/vim-fugitive'
 
     use 'aserowy/tmux.nvim'
     use 'b3nj5m1n/kommentary'
@@ -24,9 +24,11 @@ return require('packer').startup(function()
     use { 'lewis6991/gitsigns.nvim', requires = 'nvim-lua/plenary.nvim' }
 
     use 'neovim/nvim-lspconfig'
+    use 'L3MON4D3/LuaSnip'
     use 'hrsh7th/cmp-nvim-lsp'
     use 'hrsh7th/cmp-path'
     use 'hrsh7th/cmp-buffer'
+    use 'hrsh7th/cmp-cmdline'
     use 'hrsh7th/nvim-cmp'
 
     use 'onsails/lspkind-nvim'
@@ -46,6 +48,7 @@ return require('packer').startup(function()
     use 'sainnhe/everforest'
     use 'Mofiqul/vscode.nvim'
     use 'EdenEast/nightfox.nvim'
+    use 'https://gitlab.com/protesilaos/tempus-themes-vim.git'
 
     -- use 'dstein64/vim-startuptime'
     use 'tweekmonster/startuptime.vim'

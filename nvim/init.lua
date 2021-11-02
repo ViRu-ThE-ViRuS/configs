@@ -17,8 +17,8 @@ require('plug-config/bufferline')
 
 -- NOTE(vir): defer some configs to decrease startup time
 vim.defer_fn(function()
-    require('plug-config/tmux')
     require('plug-config/completion')
+    require('plug-config/tmux')
     require('plug-config/gitsigns')
     require('plug-config/kommentary')
     require('plug-config/treesitter')

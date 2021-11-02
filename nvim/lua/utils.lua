@@ -9,22 +9,38 @@ M.truncation_limit = 120
 M.truncation_limit_l = 160
 
 -- setup keymaps
-M.map = function (mode, lhs, rhs, opts, buffer_nr)
+M.map = function(mode, lhs, rhs, opts, buffer_nr)
     local options = { noremap = true }
     if opts then options = vim.tbl_extend('force', options, opts) end
     if buffer_nr then vim.api.nvim_buf_set_keymap(buffer_nr, mode, lhs, rhs, options)
     else vim.api.nvim_set_keymap(mode, lhs, rhs, options) end
 end
 
+-- set qflist and open
+M.qf_populate = function(lines, mode)
+    if mode == nil then
+        lines = core.foreach(lines, function(item) return { filename = item, lnum = 1, col = 1 } end)
+        mode = "r"
+    end
+
+    vim.fn.setqflist(lines, mode)
+    vim.cmd [[
+        copen
+        setlocal statusline=%!v:lua.StatusLine('QuickFix')
+        setlocal nobuflisted
+        wincmd p
+    ]]
+end
+
 -- randomize colorscheme
-M.RandomColors = function()
+M.random_colors = function()
     local colorscheme_paths = vim.fn.globpath(vim.o.rtp, 'colors/*.vim', true, true)
     local colorschemes = core.foreach(colorscheme_paths, core.strip_fname)
     vim.cmd(string.format('colorscheme %s\ncolorscheme', colorschemes[math.random(1, #colorschemes)]))
 end
 
 -- strip trailing whitespaces in file
-M.StripTrailingWhitespaces = function()
+M.strip_trailing_whitespaces = function()
     local cursor = vim.api.nvim_win_get_cursor(0)
     vim.api.nvim_command('%s/\\s\\+$//e')
     vim.api.nvim_win_set_cursor(0, cursor)
@@ -95,12 +111,19 @@ M.statusline_colors = {
 }
 
 -- current TagState [updated async]
+-- TODO(vir): converty everything to camel case
 M.TagState = {
     name = nil,
     detail = nil,
     kind = nil,
     icon = nil,
     iconhl = nil
+}
+
+-- current run_config [updated elsewhere]
+M.run_config = {
+    target_terminal = nil,
+    target_command = "",
 }
 
 return M
