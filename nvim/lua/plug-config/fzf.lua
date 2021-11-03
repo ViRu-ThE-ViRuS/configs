@@ -1,3 +1,4 @@
+StatusLine = require('statusline').StatusLine
 local utils = require("utils")
 local qf_populate = utils.qf_populate
 
@@ -19,5 +20,9 @@ utils.map("n", "<c-p>z", "<cmd>Rg TODO<cr>")
 vim.cmd [[
     let $FZF_DEFAULT_COMMAND = 'rg --files --follow --smart-case --hidden --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache}" 2> /dev/null'
     let $FZF_DEFAULT_OPTS = '--bind ctrl-a:select-all,ctrl-d:deselect-all'
-    autocmd! FileType fzf set laststatus=0 noruler | autocmd BufLeave <buffer> set laststatus=2 ruler
+
+    augroup FZF_UI
+        autocmd!
+        autocmd FileType fzf set laststatus=0 noruler | autocmd BufLeave <buffer> set laststatus=2 ruler
+    augroup end
 ]]

@@ -1,5 +1,4 @@
 local utils = require('utils')
-local StatusLine = require('statusline').StatusLine
 
 -- module export
 M = {}
@@ -61,7 +60,7 @@ M.ToggleDiagnosticsList = function()
         vim.opt_local.signcolumn = 'no'
         vim.opt_local.bufhidden = 'wipe'
         vim.opt_local.filetype = 'diagnostics'
-        vim.opt_local.statusline = StatusLine('Diagnostics')
+        vim.opt_local.statusline = require('statusline').StatusLine('Diagnostics')
 
         vim.cmd [[ wincmd p ]]
     else
@@ -71,7 +70,7 @@ M.ToggleDiagnosticsList = function()
 end
 
 -- print lsp diagnostics in CMD line
-M.CMDLineDiagnostics = function ()
+M.cmd_line_diagnostics = function ()
     local line_diagnostics = vim.lsp.diagnostic.get_line_diagnostics()
     local line_diagnostic = line_diagnostics[#line_diagnostics]
 
@@ -90,22 +89,22 @@ M.CMDLineDiagnostics = function ()
 end
 
 -- reset tag state
-local resetTagState = function()
-    utils.TagState.kind = nil
-    utils.TagState.name = nil
-    utils.TagState.detail = nil
-    utils.TagState.icon = nil
-    utils.TagState.iconhl = nil
+local reset_tag_state = function()
+    utils.tag_state.kind = nil
+    utils.tag_state.name = nil
+    utils.tag_state.detail = nil
+    utils.tag_state.icon = nil
+    utils.tag_state.iconhl = nil
 end
 
--- update TagState async
-M.RefreshTagState = function()
+-- update tag_state async
+M.refresh_tag_state = function()
     local hovered_line = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())[1]
 
     vim.lsp.buf_request(0, 'textDocument/documentSymbol', { textDocument = vim.lsp.util.make_text_document_params() },
         function(_, results, _, _)
             if results == nil or type(results) ~= 'table' then
-                resetTagState()
+                reset_tag_state()
                 return
             end
 
@@ -118,20 +117,20 @@ M.RefreshTagState = function()
                 if range['start']['line'] <= hovered_line and
                     hovered_line <= range['end']['line'] then
 
-                    utils.TagState.kind = lsp_kinds[result.kind]
-                    utils.TagState.name = result.name
-                    utils.TagState.detail = result.detail
-                    utils.TagState.icon = lsp_icons[utils.TagState.kind].icon
-                    utils.TagState.iconhl = lsp_icons[utils.TagState.kind].hl
+                    utils.tag_state.kind = lsp_kinds[result.kind]
+                    utils.tag_state.name = result.name
+                    utils.tag_state.detail = result.detail
+                    utils.tag_state.icon = lsp_icons[utils.tag_state.kind].icon
+                    utils.tag_state.iconhl = lsp_icons[utils.tag_state.kind].hl
                     break
                 end
             end
         end)
-    -- resetTagState()
+    -- reset_tag_state()
 end
 
 -- setup statusline icon highlights
-M.SetupLspIconHighlights = function()
+M.setup_lsp_icon_highlights = function()
     return
 end
 

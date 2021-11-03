@@ -33,12 +33,12 @@ end
 
 -- get current tag name
 local get_tagname = function()
-    if utils.TagState.name == nil or
-        utils.is_htruncated(utils.truncation_limit_s) or
-        #vim.lsp.buf_get_clients(0) == 0 then
+    if utils.tag_state.name == nil or
+       utils.is_htruncated(utils.truncation_limit_s) or
+       #vim.lsp.buf_get_clients(0) == 0 then
         return ''
     else
-        return string.format(" [ %s %s ] ", utils.TagState.icon, utils.TagState.name)
+        return string.format(" [ %s %s ] ", utils.tag_state.icon, utils.tag_state.name)
     end
 end
 
@@ -162,17 +162,14 @@ end
 M.StatusLineInactive = StatusLineInactive
 
 vim.cmd [[
-    " set statusline=%!v:lua.StatusLine()
     let statusline_blacklist = ['terminal', 'vista', 'diagnostics', 'qf']
 
     augroup StatusLine
         autocmd!
-        autocmd! FileType diagnostics
-
         autocmd WinEnter,BufEnter * if index(statusline_blacklist, &ft) < 0 | setlocal statusline=%!v:lua.StatusLine()
         autocmd WinLeave,BufLeave * if index(statusline_blacklist, &ft) < 0 | setlocal statusline=%!v:lua.StatusLineInactive()
-        autocmd TermOpen * setlocal statusline=%!v:lua.StatusLine('Terminal')
 
+        autocmd WinEnter,BufEnter,WinLeave,BufLeave,FileType terminal setlocal statusline=%!v:lua.StatusLine('Terminal')
         autocmd WinEnter,BufEnter,WinLeave,BufLeave,FileType NvimTree setlocal statusline=%!v:lua.StatusLine('Explorer')
         autocmd WinEnter,BufEnter,WinLeave,BufLeave,FileType vista setlocal statusline=%!v:lua.StatusLine('VISTA')
         autocmd WinEnter,BufEnter,WinLeave,BufLeave,FileType qf setlocal statusline=%!v:lua.StatusLine('QuickFix')

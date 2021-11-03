@@ -1,8 +1,4 @@
 local utils = require('utils')
-ToggleDiagnosticsList = require('lsp-setup/utils').ToggleDiagnosticsList
-CMDLineDiagnostics = require('lsp-setup/utils').CMDLineDiagnostics
-RefreshTagState = require('lsp-setup/utils').RefreshTagState
-SetupLspIconHighlights = require('lsp-setup/utils').SetupLspIconHighlights
 
 -- module export
 M = {}
@@ -17,7 +13,7 @@ M.setup_general_keymaps = function(_, buffer_nr)
 
     utils.map('n','[e', '<cmd>lua vim.lsp.diagnostic.goto_prev({ popup_opts = { border = "rounded", focusable = false } })<cr>', { silent = true }, buffer_nr)
     utils.map('n',']e', '<cmd>lua vim.lsp.diagnostic.goto_next({ popup_opts = { border = "rounded", focusable = false } })<cr>', { silent = true }, buffer_nr)
-    utils.map('n', '<leader>e', '<cmd>lua ToggleDiagnosticsList()<cr>', { silent = true }, buffer_nr)
+    utils.map('n', '<leader>e', '<cmd>lua require("lsp-setup/utils").ToggleDiagnosticsList()<cr>', { silent = true }, buffer_nr)
 end
 
 -- setup independent keymaps
@@ -44,7 +40,7 @@ M.setup_highlights = function()
         highlight! clear LspReferenceText
     ]]
 
-    SetupLspIconHighlights()
+    require('lsp-setup/utils').setup_lsp_icon_highlights()
 end
 
 -- setup buffer autocommands
@@ -65,8 +61,8 @@ M.setup_autocmds = function()
 
         augroup LspUpdateStates
             autocmd! * <buffer>
-            autocmd CursorMoved,CursorMovedI,BufEnter <buffer> lua RefreshTagState()
-            " autocmd CursorHoldI <buffer> lua CMDLineDiagnostics()
+            autocmd CursorMoved,CursorMovedI,BufEnter <buffer> lua require('lsp-setup/utils').refresh_tag_state()
+            " autocmd CursorHoldI <buffer> lua require('lsp-setup/utils').cmd_line_diagnostics()
             " autocmd CursorMovedI <buffer> echo ''
         augroup END
     ]]

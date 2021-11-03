@@ -110,9 +110,9 @@ M.statusline_colors = {
     filetype    = '%#PmenuSel#',
 }
 
--- current TagState [updated async]
+-- current tag_state [updated async]
 -- TODO(vir): converty everything to camel case
-M.TagState = {
+M.tag_state = {
     name = nil,
     detail = nil,
     kind = nil,
