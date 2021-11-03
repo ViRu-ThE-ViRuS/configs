@@ -5,7 +5,7 @@ local state = utils.run_config
 M = {}
 
 -- toggle target_terminal
-M.toggle_target = function(open)
+local toggle_target = function(open)
     if state.target_terminal == nil then
         print("target_terminal not set")
         return
@@ -36,21 +36,22 @@ M.toggle_target = function(open)
         print("target_terminal exited, resetting state")
     end
 end
+M.toggle_target = toggle_target
 
 -- send payload to target_terminal
-M.send_to_target = function(payload, repeat_last)
+local send_to_target = function(payload, repeat_last)
     if state.target_terminal ~= nil then
         if vim.fn.bufname(state.target_terminal.buf_nr) ~= "" then
             if repeat_last then
                 -- vim.cmd("call chansend(" .. state.target_terminal.job_id .. ', "\x1b\x5b\x41\\<cr>")')
                 if pcall(vim.cmd, "call chansend(" .. state.target_terminal.job_id .. ', "\x1b\x5b\x41\\<cr>")') then
-                    M.toggle_target(true)
+                    toggle_target(true)
                     return
                 end
             else
                 -- vim.api.nvim_chan_send(state.target_terminal.job_id, payload .. "\n")
                 if pcall(vim.api.nvim_chan_send, state.target_terminal.job_id, payload .. "\n") then
-                    M.toggle_target(true)
+                    toggle_target(true)
                     return
                 end
             end
@@ -66,9 +67,10 @@ M.send_to_target = function(payload, repeat_last)
         print("target_terminal not set")
     end
 end
+M.send_to_target = send_to_target
 
 -- set target_terminal to this one
-M.set_target_terminal = function()
+local set_target_terminal = function()
     if vim.b.terminal_job_id ~= nil then
         state.target_terminal = {
             ["job_id"] = vim.b.terminal_job_id,
@@ -86,30 +88,33 @@ M.set_target_terminal = function()
         print("target_terminal not set")
     end
 end
+M.set_target_terminal = set_target_terminal
 
 -- setup target_command
-M.set_target_command = function()
+local set_target_command = function()
     state.target_command = vim.fn.input("target_command: ", "")
 end
+M.set_target_command = set_target_command
 
 -- query the current state, utility
-M.query_state = function()
+local query_state = function()
     print(vim.inspect(state))
 end
+M.query_state = query_state
 
 -- set target_terminal/target_command
 M.set_target = function()
     if vim.b.terminal_job_id ~= nil then
-        M.set_target_terminal()
+        set_target_terminal()
     else
-        M.set_target_command()
+        set_target_command()
     end
 end
 
 -- run target_command
 M.run_target_command = function()
     if state.target_command ~= "" then
-        M.send_to_target(state.target_command, false)
+        send_to_target(state.target_command, false)
     else
         print("target_command not set")
     end
@@ -117,7 +122,7 @@ end
 
 -- run previous command in target_terminal
 M.run_previous_command = function()
-    M.send_to_target(nil, true)
+    send_to_target(nil, true)
 end
 
 return M
