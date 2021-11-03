@@ -111,7 +111,6 @@ M.statusline_colors = {
 }
 
 -- current tag_state [updated async]
--- TODO(vir): converty everything to camel case
 M.tag_state = {
     name = nil,
     detail = nil,
