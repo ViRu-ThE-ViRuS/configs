@@ -6,7 +6,7 @@ vim.g.nvim_tree_add_trailing = 1
 vim.g.nvim_tree_group_empty = 1
 
 vim.g.nvim_tree_window_picker_exclude = {
-    filetype = { 'packer', 'qf', 'fugitive', 'Outline', 'vista' },
+    filetype = { 'packer', 'qf', 'fugitive', 'Outline', 'vista', 'diagnostics'},
     buftype = { 'terminal' }
 }
 

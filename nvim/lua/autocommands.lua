@@ -9,8 +9,8 @@ vim.cmd [[
 
     augroup ConfigUpdate
         autocmd!
-        autocmd BufWritePost ~/.config/nvim/init.lua luafile $MYVIMRC
-        autocmd BufWritePost ~/.config/nvim/lua/*.lua luafile %
+        autocmd BufWritePost ~/.config/nvim/init.lua source <afile>
+        autocmd BufWritePost ~/.config/nvim/lua/*.lua source <afile>
     augroup END
 
     augroup UISetup

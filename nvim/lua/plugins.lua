@@ -36,6 +36,7 @@ return require('packer').startup(function()
     use 'ojroques/nvim-lspfuzzy'
     use { 'nvim-treesitter/nvim-treesitter', run = function() vim.cmd [[ TSUpdate ]] end }
 
+    use 'nathom/filetype.nvim'
     use { 'junegunn/fzf', run = function() vim.fn['fzf#install']() end }
     use 'junegunn/fzf.vim'
 
@@ -47,9 +48,9 @@ return require('packer').startup(function()
     use 'sainnhe/everforest'
     use 'Mofiqul/vscode.nvim'
     use 'EdenEast/nightfox.nvim'
+    use 'mrjones2014/lighthaus.nvim'
     use 'https://gitlab.com/protesilaos/tempus-themes-vim.git'
 
     -- use 'dstein64/vim-startuptime'
     use 'tweekmonster/startuptime.vim'
 end)
-

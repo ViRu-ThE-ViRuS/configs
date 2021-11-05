@@ -61,7 +61,7 @@ M.setup_autocmds = function()
 
         augroup LspUpdateStates
             autocmd! * <buffer>
-            autocmd CursorMoved,CursorMovedI,BufEnter <buffer> lua require('lsp-setup/utils').refresh_tag_state()
+            autocmd CursorMoved,InsertLeave,BufEnter <buffer> lua require('lsp-setup/utils').refresh_tag_state()
             " autocmd CursorHoldI <buffer> lua require('lsp-setup/utils').cmd_line_diagnostics()
             " autocmd CursorMovedI <buffer> echo ''
         augroup END

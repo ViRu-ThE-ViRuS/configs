@@ -16,7 +16,7 @@ vim.g.everforest_diagnostic_text_highlight = 1
 vim.g.everforest_better_performance = 1
 vim.g.everforest_enable_italic = 1
 
-local nightfox = require("nightfox") nightfox.setup({
+require('nightfox').setup({
     fox = "nightfox",
     styles = {comments = "italic", keywords = "bold", functions = "italic,bold"}
 })
@@ -33,7 +33,7 @@ vim.opt.background = "dark"
 
 -- can takeup a lot of startup time
 -- vim.defer_fn(function()
-    vim.cmd [[ colorscheme tempus_tempest ]]
+    vim.cmd [[ colorscheme default ]]
 -- end, 0)
 
 -- gruvbox deus everforest
@@ -51,3 +51,8 @@ vim.opt.background = "dark"
 --
 -- cake16 solarized8_light_high
 -- Tomorrow eclipse autumnleaf aurora White2
+--
+-- lighthaus tempus_tempest vscode nightfox moonfly everforest gruvbox-material
+-- base16-darkmoss
+
+
