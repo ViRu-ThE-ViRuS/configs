@@ -1,5 +1,4 @@
 # ViRu-ThE-ViRuS
-### Custom Configs FTW!!
 
 Here are the configurations I use for my dev setups.
 ![SS1.jpg](images/SS1.jpg)
