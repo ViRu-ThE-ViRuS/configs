@@ -52,7 +52,7 @@ M.toggle_diagnostics_list = function()
     local current_buf = vim.api.nvim_get_current_buf()
 
     if not diagnostics_set[current_buf] then
-        vim.lsp.diagnostic.set_loclist()
+        vim.diagnostic.setloclist()
         diagnostics_set[current_buf] = true
 
         vim.opt_local.buflisted = false
@@ -71,7 +71,8 @@ end
 
 -- print lsp diagnostics in CMD line
 M.cmd_line_diagnostics = function ()
-    local line_diagnostics = vim.lsp.diagnostic.get_line_diagnostics()
+    local line_number = vim.fn.line('.') - 1
+    local line_diagnostics = vim.diagnostic.get(0, {lnum = line_number})
     local line_diagnostic = line_diagnostics[#line_diagnostics]
 
     if line_diagnostic then

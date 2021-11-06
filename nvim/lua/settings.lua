@@ -88,7 +88,7 @@ else
     ]]
 end
 
--- disable builtin features
+-- disable some builtin plugins
 local disabled_plugins = {
     "2html_plugin",
     "getscript",
@@ -112,6 +112,6 @@ local disabled_plugins = {
     "zipPlugin"
 }
 
-for _, plugin in pairs(disabled_plugins) do
+for _, plugin in ipairs(disabled_plugins) do
     vim.g['loaded_' .. plugin] = 0
 end

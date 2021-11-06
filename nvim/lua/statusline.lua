@@ -75,16 +75,16 @@ local get_diagnostics = function()
     if #vim.lsp.buf_get_clients(0) == 0 then return '' end
 
     local status_parts = {}
-    local errors = vim.lsp.diagnostic.get_count(0, 'Error')
+    local errors = #vim.diagnostic.get(0, {severity = vim.diagnostic.severity.ERROR})
 
     if errors > 0 then
         table.insert(status_parts, symbol_config.indicator_error .. symbol_config.indicator_seperator .. errors)
     end
 
     if not utils.is_htruncated(truncation_limit) then
-        local warnings = vim.lsp.diagnostic.get_count(0, 'Warning')
-        local hints = vim.lsp.diagnostic.get_count(0, 'Hint')
-        local infos = vim.lsp.diagnostic.get_count(0, 'Info')
+        local warnings = #vim.diagnostic.get(0, {severity = vim.diagnostic.severity.WARN})
+        local hints = #vim.diagnostic.get(0, {severity = vim.diagnostic.severity.HINT})
+        local infos = #vim.diagnostic.get(0, {severity = vim.diagnostic.severity.INFO})
 
         if warnings > 0 then
             table.insert(status_parts, symbol_config.indicator_warning .. symbol_config.indicator_seperator .. warnings)

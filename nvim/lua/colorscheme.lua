@@ -25,6 +25,7 @@ vim.g.moonflyItalics = 1
 vim.g.moonflyNormalFloat = 1
 vim.g.moonflyTerminalColors = 1
 vim.g.moonflyUnderlineMatchParen = 1
+vim.g.moonflyVertSplits = 1
 
 vim.g.vscode_style = "dark"
 
@@ -33,7 +34,7 @@ vim.opt.background = "dark"
 
 -- can takeup a lot of startup time
 -- vim.defer_fn(function()
-    vim.cmd [[ colorscheme nightfly ]]
+    vim.cmd [[ colorscheme tempus_tempest ]]
 -- end, 0)
 
 -- gruvbox deus everforest

@@ -215,13 +215,20 @@ _G.packer_plugins = {
     url = "https://github.com/nvim-lua/plenary.nvim"
   },
   ["startuptime.vim"] = {
-    loaded = true,
-    path = "/Users/viraat-chandra/.local/share/nvim/site/pack/packer/start/startuptime.vim",
+    commands = { "StartupTime" },
+    loaded = false,
+    needs_bufread = false,
+    only_cond = false,
+    path = "/Users/viraat-chandra/.local/share/nvim/site/pack/packer/opt/startuptime.vim",
     url = "https://github.com/tweekmonster/startuptime.vim"
   },
   tabular = {
-    loaded = true,
-    path = "/Users/viraat-chandra/.local/share/nvim/site/pack/packer/start/tabular",
+    after_files = { "/Users/viraat-chandra/.local/share/nvim/site/pack/packer/opt/tabular/after/plugin/TabularMaps.vim" },
+    commands = { "Tab" },
+    loaded = false,
+    needs_bufread = false,
+    only_cond = false,
+    path = "/Users/viraat-chandra/.local/share/nvim/site/pack/packer/opt/tabular",
     url = "https://github.com/godlygeek/tabular"
   },
   ["tempus-themes-vim.git"] = {
@@ -235,13 +242,19 @@ _G.packer_plugins = {
     url = "https://github.com/aserowy/tmux.nvim"
   },
   ["vim-eunuch"] = {
-    loaded = true,
-    path = "/Users/viraat-chandra/.local/share/nvim/site/pack/packer/start/vim-eunuch",
+    commands = { "Delete" },
+    loaded = false,
+    needs_bufread = false,
+    only_cond = false,
+    path = "/Users/viraat-chandra/.local/share/nvim/site/pack/packer/opt/vim-eunuch",
     url = "https://github.com/tpope/vim-eunuch"
   },
   ["vim-fugitive"] = {
-    loaded = true,
-    path = "/Users/viraat-chandra/.local/share/nvim/site/pack/packer/start/vim-fugitive",
+    commands = { "G" },
+    loaded = false,
+    needs_bufread = true,
+    only_cond = false,
+    path = "/Users/viraat-chandra/.local/share/nvim/site/pack/packer/opt/vim-fugitive",
     url = "https://github.com/tpope/vim-fugitive"
   },
   ["vim-moonfly-colors"] = {
@@ -255,8 +268,11 @@ _G.packer_plugins = {
     url = "https://github.com/bluz71/vim-nightfly-guicolors"
   },
   ["vista.vim"] = {
-    loaded = true,
-    path = "/Users/viraat-chandra/.local/share/nvim/site/pack/packer/start/vista.vim",
+    commands = { "Vista" },
+    loaded = false,
+    needs_bufread = false,
+    only_cond = false,
+    path = "/Users/viraat-chandra/.local/share/nvim/site/pack/packer/opt/vista.vim",
     url = "https://github.com/liuchengxu/vista.vim"
   },
   ["vscode.nvim"] = {
@@ -267,6 +283,16 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
+
+-- Command lazy-loads
+time([[Defining lazy-load commands]], true)
+pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file G lua require("packer.load")({'vim-fugitive'}, { cmd = "G", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
+pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Delete lua require("packer.load")({'vim-eunuch'}, { cmd = "Delete", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
+pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file StartupTime lua require("packer.load")({'startuptime.vim'}, { cmd = "StartupTime", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
+pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Vista lua require("packer.load")({'vista.vim'}, { cmd = "Vista", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
+pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Tab lua require("packer.load")({'tabular'}, { cmd = "Tab", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
+time([[Defining lazy-load commands]], false)
+
 if should_profile then save_profiles() end
 
 end)

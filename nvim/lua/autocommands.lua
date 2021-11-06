@@ -1,5 +1,7 @@
 vim.cmd [[
-    highlight! link FloatBorder Pmenu
+    " some colorschemes be weird
+    " highlight! link FloatBorder Pmenu
+    " highlight! link LspFloatWinBorder LspFloatWinNormal
 
     augroup Misc
         autocmd!

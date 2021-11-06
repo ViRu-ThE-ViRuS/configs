@@ -19,8 +19,7 @@ require('plug-config/fzf')
 require('plug-config/tree')
 require('plug-config/bufferline')
 
--- NOTE(vir): defer some configs to decrease startup time
-vim.defer_fn(function()
+-- vim.defer_fn(function()
     require('plug-config/completion')
     require('plug-config/tmux')
     require('plug-config/gitsigns')
@@ -33,7 +32,7 @@ vim.defer_fn(function()
     require('plug-config/vista')
     require('plug-config/tabular')
     -- require('plug-config/telescope')
-end, 0)
+-- end, 0)
 
 -- notes --
 -- so $VIMRUNTIME/syntax/hitest.vim : see colors
