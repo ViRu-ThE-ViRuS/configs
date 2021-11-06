@@ -3,7 +3,7 @@ local setup_buffer = require("lsp-setup/buffer_setup")
 local oslib = require("lib/oslib")
 
 -- setup keymaps and autocommands
-OnAttach = function(client, buffer_nr)
+local on_attach = function(client, buffer_nr)
     print("[LSP] Active")
     -- print('[LSP] Active : ' .. oslib.get_cwd())
 
@@ -17,14 +17,14 @@ end
 -- pyright setup
 lsp["pyright"].setup {
     capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
-    on_attach = OnAttach,
+    on_attach = on_attach,
     flags = {debounce_text_changes = 150}
 }
 
 -- clangd setup
 lsp["clangd"].setup {
     capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
-    on_attach = OnAttach,
+    on_attach = on_attach,
     flags = {debounce_text_changes = 150}
 }
 
@@ -43,7 +43,7 @@ lsp["sumneko_lua"].setup {
             }
         }
     },
-    on_attach = OnAttach,
+    on_attach = on_attach,
     flags = {debounce_text_changes = 150}
 }
 

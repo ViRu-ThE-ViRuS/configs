@@ -1,4 +1,3 @@
-StatusLine = require('statusline').StatusLine
 local utils = require("utils")
 local qf_populate = utils.qf_populate
 

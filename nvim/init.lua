@@ -1,5 +1,9 @@
 -- hello my name is viraat chandra and i love to program
 
+-- load impatient first
+require('impatient')
+require('packer_compiled')
+
 -- setup
 require('colorscheme')          -- setup colorscheme
 require('settings')             -- general setup

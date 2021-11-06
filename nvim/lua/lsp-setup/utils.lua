@@ -40,7 +40,7 @@ local lsp_icons = {
     Operator      = {icon = "+",    hl = "TSOperator"},
     TypeParameter = {icon = "𝙏",    hl = "TSParameter"}
 }
-M.GetLSPIcon = function (key)
+M.get_lsp_icon = function (key)
     return lsp_icons[key].icon
 end
 
@@ -48,7 +48,7 @@ end
 local diagnostics_set = {}
 
 -- toggle diagnostics list
-M.ToggleDiagnosticsList = function()
+M.toggle_diagnostics_list = function()
     local current_buf = vim.api.nvim_get_current_buf()
 
     if not diagnostics_set[current_buf] then

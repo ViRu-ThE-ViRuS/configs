@@ -1,5 +1,5 @@
 local utils = require('utils')
-local GetLSPIcon = require('lsp-setup/utils').GetLSPIcon
+local get_lsp_icon = require('lsp-setup/utils').get_lsp_icon
 
 vim.g.vista_icon_indent = {"╰─▸ ", "├─▸ "}
 vim.g.vista_fold_toggle_icons = {">", "$"}
@@ -7,33 +7,33 @@ vim.g.vista_fzf_preview = {'right:50%'}
 vim.g.vista_disable_statusline = true
 
 vim.cmd('let g:vista#renderer#icons = ' ..
-        '{ "file": "' .. GetLSPIcon('File') ..
-        '", "module": "' ..  GetLSPIcon('Module') ..
-        '", "namespace": "' ..  GetLSPIcon('Namespace') ..
-        '", "package": "' ..  GetLSPIcon('Package') ..
-        '", "class": "' ..  GetLSPIcon('Class') ..
-        '", "method": "' ..  GetLSPIcon('Method') ..
-        '", "property": "' ..  GetLSPIcon('Property') ..
-        '", "field": "' ..  GetLSPIcon('Field') ..
-        '", "constructor": "' ..  GetLSPIcon('Constructor') ..
-        '", "enum": "' ..  GetLSPIcon('Enum') ..
-        '", "interface": "' ..  GetLSPIcon('Interface') ..
-        '", "function": "' ..  GetLSPIcon('Function') ..
-        '", "variable": "' ..  GetLSPIcon('Variable') ..
-        '", "constant": "' ..  GetLSPIcon('Constant') ..
-        '", "string": "' ..  GetLSPIcon('String') ..
-        '", "number": "' ..  GetLSPIcon('Number') ..
-        '", "boolean": "' ..  GetLSPIcon('Boolean') ..
-        '", "array": "' ..  GetLSPIcon('Array') ..
-        '", "object": "' ..  GetLSPIcon('Object') ..
-        '", "key": "' ..  GetLSPIcon('Key') ..
-        '", "null": "' ..  GetLSPIcon('Null') ..
-        '", "enumMember": "' ..  GetLSPIcon('EnumMember') ..
-        '", "struct": "' ..  GetLSPIcon('Struct') ..
-        '", "event": "' ..  GetLSPIcon('Event') ..
-        '", "operator": "' ..  GetLSPIcon('Operator') ..
-        '", "member": "' ..  GetLSPIcon('Method') ..
-        '", "typeParameter": "' ..  GetLSPIcon('TypeParameter') .. '" }')
+        '{ "file": "' .. get_lsp_icon('File') ..
+        '", "module": "' ..  get_lsp_icon('Module') ..
+        '", "namespace": "' ..  get_lsp_icon('Namespace') ..
+        '", "package": "' ..  get_lsp_icon('Package') ..
+        '", "class": "' ..  get_lsp_icon('Class') ..
+        '", "method": "' ..  get_lsp_icon('Method') ..
+        '", "property": "' ..  get_lsp_icon('Property') ..
+        '", "field": "' ..  get_lsp_icon('Field') ..
+        '", "constructor": "' ..  get_lsp_icon('Constructor') ..
+        '", "enum": "' ..  get_lsp_icon('Enum') ..
+        '", "interface": "' ..  get_lsp_icon('Interface') ..
+        '", "function": "' ..  get_lsp_icon('Function') ..
+        '", "variable": "' ..  get_lsp_icon('Variable') ..
+        '", "constant": "' ..  get_lsp_icon('Constant') ..
+        '", "string": "' ..  get_lsp_icon('String') ..
+        '", "number": "' ..  get_lsp_icon('Number') ..
+        '", "boolean": "' ..  get_lsp_icon('Boolean') ..
+        '", "array": "' ..  get_lsp_icon('Array') ..
+        '", "object": "' ..  get_lsp_icon('Object') ..
+        '", "key": "' ..  get_lsp_icon('Key') ..
+        '", "null": "' ..  get_lsp_icon('Null') ..
+        '", "enumMember": "' ..  get_lsp_icon('EnumMember') ..
+        '", "struct": "' ..  get_lsp_icon('Struct') ..
+        '", "event": "' ..  get_lsp_icon('Event') ..
+        '", "operator": "' ..  get_lsp_icon('Operator') ..
+        '", "member": "' ..  get_lsp_icon('Method') ..
+        '", "typeParameter": "' ..  get_lsp_icon('TypeParameter') .. '" }')
 
 vim.cmd [[
     augroup VistaCtags

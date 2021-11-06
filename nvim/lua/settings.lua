@@ -55,6 +55,7 @@ vim.opt.cursorline = true
 vim.opt.wrap = false
 vim.opt.colorcolumn = "+1"
 vim.opt.foldmethod = "marker" -- {{{ }}}
+vim.opt.foldmarker = "{{{,}}}"
 
 -- buffer local options
 vim.opt.formatoptions = "cqnjlr"
@@ -85,4 +86,32 @@ else
         let &t_SR="\<Esc>]50;CursorShape=2\x7"
         let &t_EI="\<Esc>]50;CursorShape=0\x7"
     ]]
+end
+
+-- disable builtin features
+local disabled_plugins = {
+    "2html_plugin",
+    "getscript",
+    "getscriptPlugin",
+    "gzip",
+    "logipat",
+    "netrw",
+    "netrwPlugin",
+    "netrwSettings",
+    "netrwFileHandlers",
+    "matchit",
+    "matchparen",
+    "spec",
+    "tar",
+    "tarPlugin",
+    "rrhelper",
+    "spellfile_plugin",
+    "vimball",
+    "vimballPlugin",
+    "zip",
+    "zipPlugin"
+}
+
+for _, plugin in pairs(disabled_plugins) do
+    vim.g['loaded_' .. plugin] = 0
 end

@@ -6,8 +6,7 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 end
 
 vim.cmd [[ command! Ps PackerSync ]]
-
-return require('packer').startup(function()
+return require('packer').startup({function()
     use 'wbthomason/packer.nvim'
 
     use 'tpope/vim-eunuch'
@@ -36,6 +35,7 @@ return require('packer').startup(function()
     use 'ojroques/nvim-lspfuzzy'
     use { 'nvim-treesitter/nvim-treesitter', run = function() vim.cmd [[ TSUpdate ]] end }
 
+    use 'lewis6991/impatient.nvim'
     use 'nathom/filetype.nvim'
     use { 'junegunn/fzf', run = function() vim.fn['fzf#install']() end }
     use 'junegunn/fzf.vim'
@@ -53,4 +53,4 @@ return require('packer').startup(function()
 
     -- use 'dstein64/vim-startuptime'
     use 'tweekmonster/startuptime.vim'
-end)
+end, config = { compile_path = vim.fn.stdpath('config')..'/lua/packer_compiled.lua' }})
