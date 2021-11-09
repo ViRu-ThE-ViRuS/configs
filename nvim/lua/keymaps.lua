@@ -74,7 +74,7 @@ utils.map("n", "<leader>3", "<cmd>if AutoHighlightToggle()<bar>set hlsearch<bar>
 -- utility maps
 utils.map("n", ";", ":")
 utils.map("n", ":", ";")
--- utils.map('n', 'Y', 'yy')
+utils.map('n', 'Y', 'yy')
 
 -- cursor, tab behaviour with completions
 vim.cmd [[

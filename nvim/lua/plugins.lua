@@ -39,7 +39,7 @@ return require('packer').startup({function()
     use { 'liuchengxu/vista.vim', cmd = 'Vista' }
     use { 'tpope/vim-eunuch', cmd = {'Delete', 'Rename'} }
     use { 'godlygeek/tabular', cmd = 'Tab' }
-    use { 'tpope/vim-fugitive', cmd = 'G' }
+    use { 'tpope/vim-fugitive', cmd = {'G', 'Gread'} }
 
     use 'bluz71/vim-nightfly-guicolors'
     use 'bluz71/vim-moonfly-colors'

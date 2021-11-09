@@ -5,6 +5,7 @@ vim.g.loaded_node_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_python_provider = 0
+vim.g.python_host_skip_check = 1
 
 -- use filetype.nvim
 vim.g.did_load_filetypes = 1
