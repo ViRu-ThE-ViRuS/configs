@@ -12,33 +12,40 @@ return require('packer').startup({function()
     use 'nathom/filetype.nvim'
     use 'lewis6991/impatient.nvim'
 
-    use { 'nvim-treesitter/nvim-treesitter', run = function() vim.cmd [[ TSUpdate ]] end }
+    use { 'nvim-treesitter/nvim-treesitter',
+        run = ':TSUpdate',
+        event = 'BufRead',
+        config = "require('plug-config/treesitter')"}
+
     use 'kyazdani42/nvim-web-devicons'
     use 'kyazdani42/nvim-tree.lua'
     use 'akinsho/nvim-bufferline.lua'
 
+    use 'steelsojka/pears.nvim'
     use 'lewis6991/gitsigns.nvim'
     use 'aserowy/tmux.nvim'
     use 'b3nj5m1n/kommentary'
-    use 'steelsojka/pears.nvim'
 
     use 'ibhagwan/fzf-lua'
     use 'vijaymarupudi/nvim-fzf'
 
     use 'neovim/nvim-lspconfig'
-    use 'onsails/lspkind-nvim'
     use 'ray-x/lsp_signature.nvim'
+    use { 'hrsh7th/nvim-cmp',
+        requires = {
+            { 'onsails/lspkind-nvim', event = 'InsertEnter' },
+            { 'L3MON4D3/LuaSnip', event = 'InsertEnter' },
+            { 'hrsh7th/cmp-nvim-lsp', after = 'nvim-cmp' },
+            { 'hrsh7th/cmp-path', after = 'nvim-cmp' },
+            { 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
+            { 'hrsh7th/cmp-cmdline', after = 'nvim-cmp' }
+        },
+        config = "require('plug-config/completion')",
+        after = { 'LuaSnip', 'lspkind-nvim' } }
 
-    use 'L3MON4D3/LuaSnip'
-    use 'hrsh7th/cmp-nvim-lsp'
-    use 'hrsh7th/cmp-path'
-    use 'hrsh7th/cmp-buffer'
-    use 'hrsh7th/cmp-cmdline'
-    use 'hrsh7th/nvim-cmp'
-
+    use { 'godlygeek/tabular', cmd = 'Tab' }
     use { 'liuchengxu/vista.vim', cmd = 'Vista' }
     use { 'tpope/vim-eunuch', cmd = {'Delete', 'Rename'} }
-    use { 'godlygeek/tabular', cmd = 'Tab' }
     use { 'tpope/vim-fugitive', cmd = {'G', 'Gread'} }
 
     use 'bluz71/vim-nightfly-guicolors'
@@ -54,3 +61,4 @@ return require('packer').startup({function()
 
     use { 'tweekmonster/startuptime.vim', cmd = 'StartupTime' }
 end, config = { compile_path = vim.fn.stdpath('config')..'/lua/packer_compiled.lua' }})
+

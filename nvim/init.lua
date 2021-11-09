@@ -4,15 +4,12 @@
 require('impatient')
 require('packer_compiled')
 
--- setup
+-- general setup setup
+require('settings')             -- setup preferences
 require('colorscheme')          -- setup colorscheme
-require('settings')             -- general setup
 require('plugins')              -- setup plugins
 require('lsp')                  -- setup lsp
-require('statusline')           -- setup custom statusline
-require('autocommands')         -- setup autocommands
-require('keymaps')              -- setup general keymaps
-require('terminal')             -- setup custom terminal behaviors
+require('statusline')           -- setup statusline
 
 -- plugin configs
 require('plug-config/bufferline')
@@ -21,18 +18,19 @@ require('plug-config/signature')
 
 local async
 async = vim.loop.new_async(vim.schedule_wrap(function()
+    require('keymaps')              -- setup general keymaps
+    require('autocommands')         -- setup autocommands
+    require('terminal')             -- setup custom terminal behaviors
+
     require('plug-config/fzf')
     require('plug-config/tree')
-    require('plug-config/completion')
 
-    require('plug-config/tmux')
     require('plug-config/gitsigns')
+    require('plug-config/tmux')
     require('plug-config/kommentary')
-    require('plug-config/treesitter')
 
-    require('plug-config/vista')
     require('plug-config/tabular')
-    -- require('plug-config/telescope')
+    require('plug-config/vista')
 
     async:close()
 end))
