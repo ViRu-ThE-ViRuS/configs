@@ -18,16 +18,21 @@ end
 
 -- set qflist and open
 M.qf_populate = function(lines, mode)
-    if mode == nil then
+    if mode == nil or type(mode) == 'table' then
         lines = core.foreach(lines, function(item) return { filename = item, lnum = 1, col = 1 } end)
         mode = "r"
     end
 
     vim.fn.setqflist(lines, mode)
+
+    -- vim.opt_local.statusline = require('statusline').StatusLine('QuickFix')
+    vim.opt_local.buflisted = false
+    vim.opt_local.number = true
+    vim.opt_local.signcolumn = 'no'
+    vim.opt_local.bufhidden = 'wipe'
+
     vim.cmd [[
         copen
-        setlocal statusline=%!v:lua.StatusLine('QuickFix')
-        setlocal nobuflisted
         wincmd p
     ]]
 end
@@ -52,7 +57,7 @@ M.is_htruncated = function(width)
   return current_width < width
 end
 
--- is buffer verticall truncated
+-- is buffer vertical truncated
 M.is_vtruncated = function(height)
   local current_height = vim.api.nvim_win_get_height(0)
   return current_height < height

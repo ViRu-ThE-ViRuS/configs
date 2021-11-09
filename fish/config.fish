@@ -10,7 +10,7 @@ set FZF_CTRL_T_COMMAND      $FZF_DEFAULT_COMMAND
 set FZF_DEFAULT_OPTS        '--reverse --height 50%'
 
 # pyenv config
-pyenv init - | source
+# pyenv init - | source
 
 # macos
 set fish_user_paths         $fish_user_paths "/usr/local/opt/llvm/bin"

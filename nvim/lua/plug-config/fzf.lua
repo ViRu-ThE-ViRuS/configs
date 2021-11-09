@@ -1,27 +1,59 @@
 local utils = require("utils")
-local qf_populate = utils.qf_populate
+local actions = require("fzf-lua").actions
 
-vim.g.fzf_preview_window = "right:50%:+{2}-/2"
-vim.g.fzf_buffers_jump = 1
-vim.g.fzf_layout = {["down"] = "40%"}
+require("fzf-lua").setup({
+    winopts = {
+        split = 'belowright new',
+        fullscreen = false,
+        preview = {
+            default = 'bat_native',
+            horizontal = 'right:50%',
+            vertical = 'down:50%',
+            layout = 'horizontal'
+        },
+        on_create = function()
+            vim.opt_local.buflisted = false
+            vim.opt_local.bufhidden = 'wipe'
+            vim.opt_local.statusline = require('statusline').StatusLine('FZF')
+        end
+    },
+    keymap = {
+        fzf = {
+            ['ctrl-a'] = 'select-all',
+            ['ctrl-d'] = 'deselect-all'
+        }
+    },
+    fzf_opts = { ['--layout'] = 'default' },
+    files = {
+        cmd = 'rg --files --follow --smart-case --hidden --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache}" 2> /dev/null',
+        actions = {
+            ['default'] = actions.file_edit,
+            ['ctrl-x'] = actions.file_split,
+            ['ctrl-v'] = actions.file_vsplit,
+            ['ctrl-q'] = require('utils').qf_populate
+        }
+    },
+    buffers = {
+        actions = {
+            ['default'] = actions.buf_edit,
+            ['ctrl-x'] = actions.buf_split,
+            ['ctrl-v'] = actions.buf_vsplit
+        }
+    },
+    grep = {
+        rg_opts = "--hidden --column --line-number --no-heading --color=always --smart-case -g '!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache}'",
+        experimental = false,
+        actions = {
+            ['default'] = actions.file_edit,
+            ['ctrl-x'] = actions.file_split,
+            ['ctrl-v'] = actions.file_vsplit,
+            ['ctrl-q'] = require('lib/misc').fzf_to_qf
+        }
+    }
+})
 
-vim.g.fzf_action = {
-    ["ctrl-q"] = qf_populate,
-    ["ctrl-x"] = "split",
-    ["ctrl-v"] = "vsplit"
-}
+utils.map("n", "<c-p>p", "<cmd>lua require('fzf-lua').files()<cr>")
+utils.map("n", "<c-p>b", "<cmd>lua require('fzf-lua').buffers()<cr>")
+utils.map("n", "<c-p>f", "<cmd>lua require('fzf-lua').grep({search=''})<cr>")
+utils.map("n", "<c-p>z", "<cmd>lua require('fzf-lua').grep({search='TODO'})<cr>")
 
-utils.map("n", "<c-p>p", "<cmd>Files<cr>")
-utils.map("n", "<c-p>b", "<cmd>Buffers<cr>")
-utils.map("n", "<c-p>f", "<cmd>Rg<cr>")
-utils.map("n", "<c-p>z", "<cmd>Rg TODO<cr>")
-
-vim.cmd [[
-    let $FZF_DEFAULT_COMMAND = 'rg --files --follow --smart-case --hidden --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache}" 2> /dev/null'
-    let $FZF_DEFAULT_OPTS = '--bind ctrl-a:select-all,ctrl-d:deselect-all'
-
-    augroup FZF_UI
-        autocmd!
-        autocmd FileType fzf set laststatus=0 noruler | autocmd BufLeave <buffer> set laststatus=2 ruler
-    augroup end
-]]

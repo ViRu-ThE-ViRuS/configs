@@ -1,5 +1,3 @@
-local qf_populate = require('utils').qf_populate
-
 -- custom diagnostics display
 vim.lsp.handlers["textDocument/publishDiagnostics"] =
     vim.lsp.with(
@@ -89,7 +87,7 @@ local qf_rename = function()
             end
 
             if num_files > 1 then
-                qf_populate(entries, "r")
+                require("utils").qf_populate(entries, "r")
             end
 
             print(string.format("Updated %d instance(s) in %d file(s)", num_updates, num_files))

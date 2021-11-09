@@ -91,7 +91,6 @@ pcre
 pcre2
 pixman
 pkg-config
-pyenv
 python@3.9
 readline
 ripgrep

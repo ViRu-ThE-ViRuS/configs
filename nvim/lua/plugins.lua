@@ -22,8 +22,12 @@ return require('packer').startup({function()
     use 'b3nj5m1n/kommentary'
     use 'steelsojka/pears.nvim'
 
+    -- TODO(vir): remove these
     use { 'junegunn/fzf', run = function() vim.fn['fzf#install']() end }
-    use 'junegunn/fzf.vim'
+    -- use 'junegunn/fzf.vim'
+
+    use 'ibhagwan/fzf-lua'
+    use 'vijaymarupudi/nvim-fzf'
 
     use 'neovim/nvim-lspconfig'
     use 'onsails/lspkind-nvim'
@@ -38,7 +42,7 @@ return require('packer').startup({function()
     use 'hrsh7th/nvim-cmp'
 
     use { 'liuchengxu/vista.vim', cmd = 'Vista' }
-    use { 'tpope/vim-eunuch', cmd = 'Delete' }
+    use { 'tpope/vim-eunuch', cmd = {'Delete', 'Rename'} }
     use { 'godlygeek/tabular', cmd = 'Tab' }
     use { 'tpope/vim-fugitive', cmd = 'G' }
 
