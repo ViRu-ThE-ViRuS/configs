@@ -11,9 +11,7 @@ require('bufferline').setup {
 
         offsets = {
             {filetype = "NvimTree", text = "Explorer", text_align = "center"},
-            {filetype = "tagbar", text = 'Tagbar', text_align = 'center'},
-            {filetype = "Outline", text = 'Outline', text_align = 'center'},
-            {filetype = "vista", text = 'Vista', text_align = 'center'},
+            {filetype = "vista", text = 'Vista', text_align = 'center'}
         },
 
         show_tab_indicators = true,

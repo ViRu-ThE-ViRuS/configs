@@ -71,7 +71,7 @@ end
 
 -- print lsp diagnostics in CMD line
 M.cmd_line_diagnostics = function ()
-    local line_number = vim.fn.line('.') - 1
+    local line_number = vim.api.nvim_win_get_cursor(0)[1] - 1
     local line_diagnostics = vim.diagnostic.get(0, {lnum = line_number})
     local line_diagnostic = line_diagnostics[#line_diagnostics]
 

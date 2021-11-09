@@ -41,7 +41,6 @@ vim.g.nvim_tree_icons = {
     }
 }
 
-utils.map('n', '<leader>j', '<cmd>NvimTreeToggle<cr>')
 require('nvim-tree').setup({
     update_focused_file = { enable = true, update_cwd = false },
     diagnostics = { enable = false },
@@ -70,3 +69,5 @@ require('nvim-tree').setup({
         }
     }
 })
+
+utils.map('n', '<leader>j', '<cmd>NvimTreeToggle<cr>')
