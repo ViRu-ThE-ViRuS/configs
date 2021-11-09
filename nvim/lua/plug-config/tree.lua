@@ -6,7 +6,7 @@ vim.g.nvim_tree_add_trailing = 1
 vim.g.nvim_tree_group_empty = 1
 
 vim.g.nvim_tree_window_picker_exclude = {
-    filetype = { 'packer', 'qf', 'fugitive', 'Outline', 'vista', 'diagnostics'},
+    filetype = { 'packer', 'qf', 'fugitive', 'vista', 'diagnostics', 'fzf'},
     buftype = { 'terminal' }
 }
 
@@ -45,7 +45,7 @@ require('nvim-tree').setup({
     update_focused_file = { enable = true, update_cwd = false },
     diagnostics = { enable = false },
     filters = {
-        custom = { '*.pyc', '.DS_Store', 'node_modules', '__pycache__', 'venv', '.git' }
+        custom = { '*.pyc', '.DS_Store', 'node_modules', '__pycache__', 'venv', '.git', '.ccls-cache', '.clangd', '.cache' }
     },
     view = {
         mappings = {
