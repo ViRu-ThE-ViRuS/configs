@@ -26,13 +26,17 @@ M.qf_populate = function(lines, mode)
     vim.fn.setqflist(lines, mode)
 
     -- vim.opt_local.statusline = require('statusline').StatusLine('QuickFix')
-    vim.opt_local.buflisted = false
-    vim.opt_local.number = true
-    vim.opt_local.signcolumn = 'no'
-    vim.opt_local.bufhidden = 'wipe'
+    -- vim.opt_local.buflisted = false
+    -- vim.opt_local.number = true
+    -- vim.opt_local.signcolumn = 'no'
+    -- vim.opt_local.bufhidden = 'wipe'
 
     vim.cmd [[
         copen
+        setlocal nobuflisted
+        setlocal number
+        setlocal signcolumn=no
+        setlocal bufhidden=wipe
         wincmd p
     ]]
 end

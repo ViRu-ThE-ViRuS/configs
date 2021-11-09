@@ -22,17 +22,12 @@ return require('packer').startup({function()
     use 'b3nj5m1n/kommentary'
     use 'steelsojka/pears.nvim'
 
-    -- TODO(vir): remove these
-    use { 'junegunn/fzf', run = function() vim.fn['fzf#install']() end }
-    -- use 'junegunn/fzf.vim'
-
     use 'ibhagwan/fzf-lua'
     use 'vijaymarupudi/nvim-fzf'
 
     use 'neovim/nvim-lspconfig'
     use 'onsails/lspkind-nvim'
     use 'ray-x/lsp_signature.nvim'
-    use 'ojroques/nvim-lspfuzzy'
 
     use 'L3MON4D3/LuaSnip'
     use 'hrsh7th/cmp-nvim-lsp'

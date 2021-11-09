@@ -49,6 +49,14 @@ require("fzf-lua").setup({
             ['ctrl-v'] = actions.file_vsplit,
             ['ctrl-q'] = require('lib/misc').fzf_to_qf
         }
+    },
+    lsp = {
+        actions = {
+            ['default'] = actions.file_edit,
+            ['ctrl-x'] = actions.file_split,
+            ['ctrl-v'] = actions.file_vsplit,
+            ['ctrl-q'] = require('lib/misc').fzf_to_qf
+        }
     }
 })
 
@@ -56,4 +64,7 @@ utils.map("n", "<c-p>p", "<cmd>lua require('fzf-lua').files()<cr>")
 utils.map("n", "<c-p>b", "<cmd>lua require('fzf-lua').buffers()<cr>")
 utils.map("n", "<c-p>f", "<cmd>lua require('fzf-lua').grep({search=''})<cr>")
 utils.map("n", "<c-p>z", "<cmd>lua require('fzf-lua').grep({search='TODO'})<cr>")
+
+utils.map("n", "<leader>u", "<cmd>lua require('fzf-lua').lsp_references()<cr>")
+utils.map("n", "<leader>d", "<cmd>lua require('fzf-lua').lsp_definitions({sync = true, jump_to_single_result = true})<cr>")
 
