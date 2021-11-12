@@ -5,7 +5,8 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] =
     {
         signs = true,
         virtual_text = {spacing = 4},
-        update_in_insert = true
+        update_in_insert = true,
+        underline = false
     }
 )
 

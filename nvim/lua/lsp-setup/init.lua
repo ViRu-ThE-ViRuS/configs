@@ -50,6 +50,7 @@ local efm_prettier = {formatCommand = "prettier --stdin-filepath ${INPUT}", form
 lsp["efm"].setup {
     capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities()),
     init_options = {documentFormatting = true},
+    root_dir = require("lspconfig").util.root_pattern {".git/", "."},
     filetypes = {
         "css",
         "html",
@@ -77,3 +78,4 @@ lsp["efm"].setup {
         setup_buffer.setup_independent_keymaps(client, buffer_nr)
     end
 }
+
