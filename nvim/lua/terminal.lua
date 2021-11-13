@@ -26,7 +26,7 @@ local toggle_target = function(open)
 
     -- else split
     local split_dir = "v"
-    if utils.is_htruncated(utils.truncation_limit_s) then
+    if utils.is_htruncated(utils.truncation_limit_s_terminal) then
         split_dir = ""
     end
 

@@ -4,6 +4,7 @@ local core = require('lib/core')
 M = {}
 
 -- setup truncation limits
+M.truncation_limit_s_terminal = 110
 M.truncation_limit_s = 80
 M.truncation_limit = 120
 M.truncation_limit_l = 160

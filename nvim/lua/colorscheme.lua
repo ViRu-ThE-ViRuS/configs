@@ -34,7 +34,7 @@ vim.opt.background = "dark"
 
 -- can takeup a lot of startup time
 -- vim.defer_fn(function()
-    vim.cmd [[ colorscheme base16-gruvbox-dark-hard ]]
+    vim.cmd [[ colorscheme tempus_tempest ]]
 -- end, 0)
 
 -- gruvbox deus everforest
@@ -49,11 +49,11 @@ vim.opt.background = "dark"
 -- moonlight nightfly moonfly codedark everforest
 -- zephyr vscode base16-darktooth base16-apprentice
 -- base16-gruvbox-light-hard base16-outrun-dark
+-- base16-gruvbox-dark-hard
 --
 -- cake16 solarized8_light_high
 -- Tomorrow eclipse autumnleaf aurora White2
 --
 -- lighthaus tempus_tempest vscode nightfox moonfly everforest gruvbox-material
 -- base16-darkmoss
-
 
