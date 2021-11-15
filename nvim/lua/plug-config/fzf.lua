@@ -14,7 +14,8 @@ require("fzf-lua").setup({
         on_create = function()
             vim.opt_local.buflisted = false
             vim.opt_local.bufhidden = 'wipe'
-            vim.opt_local.statusline = require('statusline').StatusLine('FZF')
+            vim.opt_local.signcolumn = 'no'
+            -- vim.opt_local.statusline = require('statusline').StatusLine('FZF')
         end
     },
     keymap = {
@@ -62,8 +63,12 @@ require("fzf-lua").setup({
 
 utils.map("n", "<c-p>p", "<cmd>lua require('fzf-lua').files()<cr>")
 utils.map("n", "<c-p>b", "<cmd>lua require('fzf-lua').buffers()<cr>")
-utils.map("n", "<c-p>f", "<cmd>lua require('fzf-lua').grep({search=''})<cr>")
-utils.map("n", "<c-p>z", "<cmd>lua require('fzf-lua').grep({search='TODO'})<cr>")
+
+utils.map("n", "<c-p>f", "<cmd>lua require('fzf-lua').live_grep_native()<cr>")
+utils.map("n", "<c-p>z", "<cmd>lua require('fzf-lua').live_grep_native({search='TODO'})<cr>")
+
+-- utils.map("n", "<c-p>f", "<cmd>lua require('fzf-lua').grep({search=''})<cr>")
+-- utils.map("n", "<c-p>z", "<cmd>lua require('fzf-lua').grep({search='TODO'})<cr>")
 
 utils.map("n", "<leader>u", "<cmd>lua require('fzf-lua').lsp_references()<cr>")
 utils.map("n", "<leader>d", "<cmd>lua require('fzf-lua').lsp_definitions({sync = true, jump_to_single_result = true})<cr>")

@@ -60,6 +60,7 @@ M.toggle_diagnostics_list = function()
         vim.opt_local.signcolumn = 'no'
         vim.opt_local.bufhidden = 'wipe'
         vim.opt_local.filetype = 'diagnostics'
+        vim.opt_local.syntax = 'qf'
         vim.opt_local.statusline = require('statusline').StatusLine('Diagnostics')
 
         vim.cmd [[ wincmd p ]]

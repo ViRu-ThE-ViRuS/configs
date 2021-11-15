@@ -66,6 +66,10 @@ function tmux --description 'Tmux multiplexer'
     command tmux -f ~/.config/tmux/.tmux.conf $argv
 end
 
+function vmux --description 'Tmux launch/attach session vir'
+    command tmux -f ~/.config/tmux/.tmux.conf attach -t vir $argv || tmux -f ~/.config/tmux/.tmux.conf new -s vir $argv
+end
+
 function tree --description 'Tree'
     command tree -C -I 'venv|.git|__pycache__' $argv
 end

@@ -73,21 +73,7 @@ vim.opt.autoindent = true
 vim.opt.smartindent = true
 
 vim.opt.undodir = oslib.get_homedir() .. "/.config/undodir/"
-
--- cursor setup
-if os.getenv("TMUX") then
-    vim.cmd [[
-        let &t_SI="\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-        let &t_SR="\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=2\x7\<Esc>\\"
-        let &t_EI="\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-    ]]
-else
-    vim.cmd [[
-        let &t_SI="\<Esc>]50;CursorShape=1\x7"
-        let &t_SR="\<Esc>]50;CursorShape=2\x7"
-        let &t_EI="\<Esc>]50;CursorShape=0\x7"
-    ]]
-end
+vim.opt.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20'
 
 -- disable some builtin plugins
 local disabled_plugins = {
