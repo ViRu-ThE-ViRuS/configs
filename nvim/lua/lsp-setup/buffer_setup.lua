@@ -5,7 +5,7 @@ M = {}
 
 -- setup general keymaps
 M.setup_general_keymaps = function(_, buffer_nr)
-    -- using fzf-lua
+    -- NOTE(vir): now using fzf-lua
     -- utils.map('n','<leader>d', '<cmd>lua vim.lsp.buf.definition()<cr>', { silent = true }, buffer_nr)
     -- utils.map('n','<leader>u', '<cmd>lua vim.lsp.buf.references()<cr>', { silent = true }, buffer_nr)
 

@@ -57,6 +57,12 @@ require("fzf-lua").setup({
             ['ctrl-x'] = actions.file_split,
             ['ctrl-v'] = actions.file_vsplit,
             ['ctrl-q'] = require('lib/misc').fzf_to_qf
+        },
+        icons = {
+            ['Error'] = { icon = utils.symbol_config.indicator_error, color = 'red' },
+            ['Warning'] = { icon = utils.symbol_config.indicator_warning, color = 'yellow' },
+            ['Information'] = { icon = utils.symbol_config.indicator_info, color = 'blue' },
+            ['Hint'] = { icon = utils.symbol_config.indicator_hint, color = 'magenta' }
         }
     }
 })

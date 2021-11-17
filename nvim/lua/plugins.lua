@@ -21,17 +21,18 @@ return require('packer').startup({function()
     use 'kyazdani42/nvim-tree.lua'
     use 'akinsho/nvim-bufferline.lua'
 
-    use 'steelsojka/pears.nvim'
     use 'lewis6991/gitsigns.nvim'
     use 'aserowy/tmux.nvim'
     use 'b3nj5m1n/kommentary'
+    use { 'steelsojka/pears.nvim',
+        event = 'BufEnter',
+        config = "require('plug-config/pears')" }
 
     use 'ibhagwan/fzf-lua'
     use 'vijaymarupudi/nvim-fzf'
 
     use 'neovim/nvim-lspconfig'
     use 'ray-x/lsp_signature.nvim'
-
     use { 'hrsh7th/nvim-cmp',
         requires = {
             { 'onsails/lspkind-nvim', event = 'InsertEnter' },

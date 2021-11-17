@@ -4,8 +4,8 @@ local oslib = require("lib/oslib")
 
 -- setup keymaps and autocommands
 local on_attach = function(client, buffer_nr)
-    print("[LSP] Active")
-    -- print('[LSP] Active : ' .. oslib.get_cwd())
+    -- print("[LSP] Active")
+    print('[LSP] Active : ' .. oslib.get_cwd())
 
     setup_buffer.setup_general_keymaps(client, buffer_nr)
     setup_buffer.setup_independent_keymaps(client, buffer_nr)

@@ -11,11 +11,10 @@ require('plugins')              -- setup plugins
 require('lsp')                  -- setup lsp
 require('statusline')           -- setup statusline
 
--- plugin configs
 require('plug-config/bufferline')
-require('plug-config/pears')
 require('plug-config/signature')
 
+-- plugin configs
 local async
 async = vim.loop.new_async(vim.schedule_wrap(function()
     require('keymaps')              -- setup general keymaps
