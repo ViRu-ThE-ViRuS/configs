@@ -14,7 +14,7 @@ cmp.setup({
         end
     },
     mapping = {
-        ["<cr>"] = cmp.mapping.confirm({behavior = cmp.ConfirmBehavior.Replace, select = true}),
+        ["<cr>"] = cmp.mapping.confirm({behavior = cmp.ConfirmBehavior.Replace, select = false}),
         ["<c-space>"] = cmp.mapping.complete(),
         ["<c-e>"] = cmp.mapping.close(),
         ["<c-n>"] = cmp.mapping(cmp.mapping.select_next_item(), {"i"}),
@@ -75,3 +75,4 @@ cmp.setup({
 
 cmp.setup.cmdline("/", {sources = {{name = "buffer"}}})
 cmp.setup.cmdline(":", {sources = cmp.config.sources({{name = "path"}}, {{name = "cmdline", keyword_length = 3}})})
+

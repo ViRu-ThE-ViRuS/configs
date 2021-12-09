@@ -19,12 +19,14 @@ gd
 gdbm
 gdk-pixbuf
 gettext
+giflib
 git-lfs
 glib
 glib-networking
 gmp
 gnutls
 gobject-introspection
+google-benchmark
 graphite2
 graphviz
 gsettings-desktop-schemas
@@ -55,7 +57,6 @@ libtiff
 libtool
 libunistring
 libuv
-libvterm
 libx11
 libxau
 libxcb

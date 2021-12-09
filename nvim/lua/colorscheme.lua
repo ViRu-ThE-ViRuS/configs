@@ -32,10 +32,7 @@ vim.g.vscode_style = "dark"
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
--- can takeup a lot of startup time
--- vim.defer_fn(function()
-    vim.cmd [[ colorscheme vscode ]]
--- end, 0)
+vim.cmd [[ colorscheme catppuccin ]]
 
 -- gruvbox deus everforest
 -- nord OceanicNext quantum neodark moonlight
@@ -49,7 +46,7 @@ vim.opt.background = "dark"
 -- moonlight nightfly moonfly codedark everforest
 -- zephyr vscode base16-darktooth base16-apprentice
 -- base16-gruvbox-light-hard base16-outrun-dark
--- base16-gruvbox-dark-hard
+-- base16-gruvbox-dark-hard catppuccin
 --
 -- cake16 solarized8_light_high
 -- Tomorrow eclipse autumnleaf aurora White2

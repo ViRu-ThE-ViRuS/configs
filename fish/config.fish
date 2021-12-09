@@ -1,5 +1,6 @@
 alias vim='nvim'
 alias rmd='rm -rf'
+alias cat='bat'
 
 set -xg EDITOR                  nvim
 set -xg LANG                    en_US.UTF-8

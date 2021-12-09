@@ -1,5 +1,7 @@
 local oslib = require("lib/oslib")
 
+vim.cmd [[ syntax off ]]
+
 -- disable unused providers
 vim.g.loaded_node_provider = 0
 vim.g.loaded_ruby_provider = 0
@@ -100,6 +102,6 @@ local disabled_plugins = {
 }
 
 for _, plugin in ipairs(disabled_plugins) do
-    vim.g['loaded_' .. plugin] = 0
+    vim.g['loaded_' .. plugin] = 1
 end
 

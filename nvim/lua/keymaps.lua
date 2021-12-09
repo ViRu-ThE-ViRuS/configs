@@ -74,7 +74,11 @@ utils.map("n", "<leader>3", "<cmd>if AutoHighlightToggle()<bar>set hlsearch<bar>
 -- utility maps
 utils.map("n", ";", ":")
 utils.map("n", ":", ";")
--- utils.map('n', 'Y', 'yy')
+utils.map('n', 'Y', 'yy')
+
+-- disable command history buffer, and EX mode
+utils.map('n', 'q:', '<nop>')
+utils.map('n', 'Q', '<nop>')
 
 -- cursor, tab behaviour with completions
 vim.cmd [[
@@ -104,3 +108,4 @@ utils.map("i", ",", ",<c-g>u")
 utils.map("i", ".", ".<c-g>u")
 utils.map("i", "!", "!<c-g>u")
 utils.map("i", "?", "?<c-g>u")
+

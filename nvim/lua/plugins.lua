@@ -15,7 +15,9 @@ return require('packer').startup({function()
     use { 'nvim-treesitter/nvim-treesitter',
         run = ':TSUpdate',
         event = 'BufRead',
-        config = "require('plug-config/treesitter')"}
+        config = "require('plug-config/treesitter')" }
+    use { 'nvim-treesitter/nvim-treesitter-textobjects',
+        after = 'nvim-treesitter' }
 
     use 'kyazdani42/nvim-web-devicons'
     use 'kyazdani42/nvim-tree.lua'
@@ -50,11 +52,14 @@ return require('packer').startup({function()
     use { 'tpope/vim-eunuch', cmd = {'Delete', 'Rename'} }
     use { 'tpope/vim-fugitive', cmd = {'G', 'Gread'} }
 
+    use { 'untitled-ai/jupyter_ascending.vim', ft='python' }
+
     use 'bluz71/vim-nightfly-guicolors'
     use 'bluz71/vim-moonfly-colors'
     use 'shaunsingh/moonlight.nvim'
     use 'sainnhe/gruvbox-material'
     use 'RRethy/nvim-base16'
+    use 'catppuccin/nvim'
     use 'sainnhe/everforest'
     use 'Mofiqul/vscode.nvim'
     use 'EdenEast/nightfox.nvim'
