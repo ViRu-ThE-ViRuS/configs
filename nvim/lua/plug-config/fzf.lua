@@ -67,9 +67,11 @@ require("fzf-lua").setup({
     }
 })
 
+utils.map("n", "<c-p>P", "<cmd>lua require('fzf-lua').git_files()<cr>")
 utils.map("n", "<c-p>p", "<cmd>lua require('fzf-lua').files()<cr>")
 utils.map("n", "<c-p>b", "<cmd>lua require('fzf-lua').buffers()<cr>")
 
+utils.map("n", "<c-p>F", "<cmd>lua require('fzf-lua').grep({search=''})<cr>")
 utils.map("n", "<c-p>f", "<cmd>lua require('fzf-lua').live_grep_native()<cr>")
 utils.map("n", "<c-p>z", "<cmd>lua require('fzf-lua').live_grep_native({search='TODO'})<cr>")
 
@@ -78,4 +80,6 @@ utils.map("n", "<c-p>z", "<cmd>lua require('fzf-lua').live_grep_native({search='
 
 utils.map("n", "<leader>u", "<cmd>lua require('fzf-lua').lsp_references()<cr>")
 utils.map("n", "<leader>d", "<cmd>lua require('fzf-lua').lsp_definitions({sync = true, jump_to_single_result = true})<cr>")
+utils.map("n", "<a-cr>", "<cmd>lua require('fzf-lua').lsp_code_actions()<cr>")
 
+vim.cmd [[ command! Colors lua require('fzf-lua').colorschemes() ]]
