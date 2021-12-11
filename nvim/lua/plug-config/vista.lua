@@ -38,6 +38,7 @@ vim.cmd('let g:vista#renderer#icons = ' ..
 vim.cmd [[
     augroup VistaCtags
         autocmd! BufEnter *
+        autocmd BufEnter,FileType vista syntax on
     augroup end
 ]]
 

@@ -52,7 +52,7 @@ return require('packer').startup({function()
     use { 'tpope/vim-eunuch', cmd = {'Delete', 'Rename'} }
     use { 'tpope/vim-fugitive', cmd = {'G', 'Gread'} }
 
-    use { 'untitled-ai/jupyter_ascending.vim', ft='python' }
+    -- use { 'untitled-ai/jupyter_ascending.vim', ft='python' }
 
     use 'bluz71/vim-nightfly-guicolors'
     use 'bluz71/vim-moonfly-colors'

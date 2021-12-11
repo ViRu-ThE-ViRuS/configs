@@ -34,7 +34,7 @@ vim.cmd [[
         autocmd! auto_highlight
         augroup! auto_highlight
         setl updatetime=5000
-        echo 'Highlight current word: off'
+        echo 'highlight current word: off'
         set nohlsearch
         return 0
       else
@@ -43,7 +43,7 @@ vim.cmd [[
           autocmd CursorHold * let @/ = '\V\<'.escape(expand('<cword>'), '\').'\>'
         augroup end
         setl updatetime=500
-        echo 'Highlight current word: ON'
+        echo 'highlight current word: on'
         return 1
       endif
     endfunction
