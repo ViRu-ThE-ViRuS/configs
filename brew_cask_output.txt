@@ -1,9 +1,9 @@
-cyberduck
+appcleaner
+discord
+google-drive
 kitty
-logitech-options
-microsoft-teams
-obsidian
-transmission
-unity-hub
-vlc
-vmware-fusion
+macs-fan-control
+nordvpn
+slack
+spotify
+tiles

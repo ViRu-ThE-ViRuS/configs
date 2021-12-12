@@ -35,11 +35,4 @@ vim.cmd('let g:vista#renderer#icons = ' ..
         '", "member": "' ..  get_lsp_icon('Method') ..
         '", "typeParameter": "' ..  get_lsp_icon('TypeParameter') .. '" }')
 
-vim.cmd [[
-    augroup VistaCtags
-        autocmd! BufEnter *
-        autocmd BufEnter,FileType vista syntax on
-    augroup end
-]]
-
 utils.map('n', '<leader>k', '<cmd>Vista!!<cr>')

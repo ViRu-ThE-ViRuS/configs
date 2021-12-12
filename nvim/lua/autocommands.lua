@@ -9,6 +9,12 @@ vim.cmd [[
         autocmd BufWritePre * lua require('utils').strip_trailing_whitespaces()
     augroup END
 
+    augroup OtherSyntax
+        autocmd! BufEnter *
+        autocmd FileType vista,fugitive syntax on
+        autocmd FileType vista,fugitive setlocal nonumber
+    augroup end
+
     augroup ConfigUpdate
         autocmd!
         autocmd BufWritePost ~/.config/nvim/init.lua source <afile>

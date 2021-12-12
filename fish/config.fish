@@ -14,7 +14,8 @@ set FZF_DEFAULT_OPTS        '--reverse --height 50%'
 # pyenv init - | source
 
 # macos
-set fish_user_paths         $fish_user_paths "/usr/local/opt/llvm/bin"
+set fish_user_paths         $fish_user_paths "/opt/homebrew/bin/"
+set fish_user_paths         $fish_user_paths "/opt/homebrew/opt/llvm/bin"
 set fish_user_paths         $fish_user_paths "/Users/viraat-chandra/Library/Python/3.8/bin"
 set FZF_CTRL_T_OPTS         '--preview "bat --style=numbers --color=always --line-range :500 {}"'
 

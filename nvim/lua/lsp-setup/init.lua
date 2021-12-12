@@ -46,7 +46,6 @@ lsp["sumneko_lua"].setup {
 }
 
 -- efm setup
-local efm_prettier = {formatCommand = "prettier --stdin-filepath ${INPUT}", formatStdin = true}
 lsp["efm"].setup {
     capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities()),
     init_options = {documentFormatting = true},
@@ -64,13 +63,7 @@ lsp["efm"].setup {
     settings = {
         rootMarkers = {".git/"},
         languages = {
-            css = {efm_prettier},
-            html = {efm_prettier},
-            javascript = {efm_prettier},
-            javascriptreact = {efm_prettier},
-            json = {efm_prettier},
-            lua = {{formatCommand = "luafmt --stdin", formatStdin = true}},
-            markdown = {efm_prettier},
+            lua = {{formatCommand = 'lua-format -i', formatStdin = true}},
             python = {{formatCommand = "autopep8 -", formatStdin = true}}
         }
     },
