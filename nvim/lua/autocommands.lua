@@ -7,11 +7,8 @@ vim.cmd [[
         autocmd!
         autocmd TextYankPost * lua vim.highlight.on_yank {on_visual = false}
         autocmd BufWritePre * lua require('utils').strip_trailing_whitespaces()
-    augroup END
 
-    augroup OtherSyntax
-        autocmd! BufEnter *
-        autocmd FileType vista,fugitive syntax on
+        autocmd FileType vista,fugitive,qf,help syntax on
         autocmd FileType vista,fugitive setlocal nonumber
     augroup end
 
@@ -19,14 +16,14 @@ vim.cmd [[
         autocmd!
         autocmd BufWritePost ~/.config/nvim/init.lua source <afile>
         autocmd BufWritePost ~/.config/nvim/lua/*.lua source <afile>
-    augroup END
+    augroup end
 
     augroup UISetup
         autocmd!
         autocmd BufEnter,ColorScheme * highlight Comment cterm=bold,italic gui=bold,italic
         autocmd BufEnter,ColorScheme * highlight LineNr ctermbg=NONE guibg=NONE
         autocmd BufEnter,ColorScheme * highlight SignColumn ctermbg=NONE guibg=NONE
-    augroup END
+    augroup end
 
     augroup TerminalSetup
         autocmd!

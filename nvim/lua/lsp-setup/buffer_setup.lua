@@ -52,21 +52,21 @@ M.setup_autocmds = function()
             autocmd! * <buffer>
             autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
             autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-        augroup END
+        augroup end
 
         augroup LspPopupHelp
             autocmd! * <buffer>
             autocmd CursorHold <buffer> lua vim.diagnostic.open_float(0, { border = 'rounded', focusable = false, scope = 'line' })
             " autocmd CursorHold <buffer> lua vim.lsp.buf.hover()
             " autocmd CursorHoldI <buffer> lua vim.lsp.buf.signature_help()
-        augroup END
+        augroup end
 
         augroup LspUpdateStates
             autocmd! * <buffer>
             autocmd CursorMoved,InsertLeave,BufEnter <buffer> lua require('lsp-setup/utils').refresh_tag_state()
             " autocmd CursorHoldI <buffer> lua require('lsp-setup/utils').cmd_line_diagnostics()
             " autocmd CursorMovedI <buffer> echo ''
-        augroup END
+        augroup end
     ]]
 end
 

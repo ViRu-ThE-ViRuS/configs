@@ -16,10 +16,10 @@ vim.g.everforest_diagnostic_text_highlight = 1
 vim.g.everforest_better_performance = 1
 vim.g.everforest_enable_italic = 1
 
-require('nightfox').setup({
-    fox = "nightfox",
-    styles = {comments = "italic", keywords = "bold", functions = "italic,bold"}
-})
+-- require('nightfox').setup({
+--     fox = "nightfox",
+--     styles = {comments = "italic", keywords = "bold", functions = "italic,bold"}
+-- })
 
 vim.g.moonflyItalics = 1
 vim.g.moonflyNormalFloat = 1
@@ -27,12 +27,13 @@ vim.g.moonflyTerminalColors = 1
 vim.g.moonflyUnderlineMatchParen = 1
 vim.g.moonflyVertSplits = 1
 
+vim.g.moonlight_borders = true
 vim.g.vscode_style = "dark"
 
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme catppuccin ]]
+vim.cmd [[ colorscheme moonlight ]]
 
 -- gruvbox deus everforest
 -- nord OceanicNext quantum neodark moonlight

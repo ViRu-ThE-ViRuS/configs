@@ -3,7 +3,11 @@ discord
 google-drive
 kitty
 macs-fan-control
+microsoft-auto-update
+microsoft-office
 nordvpn
 slack
 spotify
 tiles
+transmission
+vlc

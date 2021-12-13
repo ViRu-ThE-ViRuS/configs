@@ -1,4 +1,6 @@
 bat
+brotli
+c-ares
 ca-certificates
 cmake
 efm-langserver
@@ -7,9 +9,14 @@ fzf
 gdbm
 gettext
 htop
+icu4c
 jansson
 libevent
+libidn2
+libnghttp2
 libtermkey
+libtool
+libunistring
 libuv
 libyaml
 llvm
@@ -23,6 +30,7 @@ msgpack
 ncurses
 neovim
 ninja
+node
 openssl@1.1
 pcre2
 pkg-config
@@ -30,9 +38,11 @@ readline
 ripgrep
 sqlite
 tmux
+transmission-cli
 tree
 tree-sitter
 unibilium
 universal-ctags
 utf8proc
+wget
 xz

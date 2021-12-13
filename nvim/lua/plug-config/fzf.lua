@@ -26,6 +26,7 @@ require("fzf-lua").setup({
     },
     fzf_opts = { ['--layout'] = 'default' },
     files = {
+        multiprocess=false,
         cmd = 'rg --files --follow --smart-case --hidden --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache}" 2> /dev/null',
         actions = {
             ['default'] = actions.file_edit,
@@ -44,6 +45,7 @@ require("fzf-lua").setup({
     grep = {
         rg_opts = "--hidden --column --line-number --no-heading --color=always --smart-case -g '!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache}'",
         experimental = false,
+        multiprocess=false,
         actions = {
             ['default'] = actions.file_edit,
             ['ctrl-x'] = actions.file_split,
@@ -67,16 +69,18 @@ require("fzf-lua").setup({
     }
 })
 
-utils.map("n", "<c-p>P", "<cmd>lua require('fzf-lua').git_files()<cr>")
-utils.map("n", "<c-p>p", "<cmd>lua require('fzf-lua').files()<cr>")
-utils.map("n", "<c-p>b", "<cmd>lua require('fzf-lua').buffers()<cr>")
+if vim.fn.isdirectory('.git') ~= 0 then
+    utils.map("n", "<c-p>p", "<cmd>lua require('fzf-lua').git_files()<cr>")
+    utils.map("n", "<c-p>P", "<cmd>lua require('fzf-lua').files()<cr>")
+else
+    utils.map("n", "<c-p>p", "<cmd>lua require('fzf-lua').files()<cr>")
+    utils.map("n", "<c-p>P", "<cmd>lua require('fzf-lua').files()<cr>")
+end
 
+utils.map("n", "<c-p>b", "<cmd>lua require('fzf-lua').buffers()<cr>")
+utils.map("n", "<c-p>z", "<cmd>lua require('fzf-lua').grep({search='TODO'})<cr>")
 utils.map("n", "<c-p>F", "<cmd>lua require('fzf-lua').grep({search=''})<cr>")
 utils.map("n", "<c-p>f", "<cmd>lua require('fzf-lua').live_grep_native()<cr>")
-utils.map("n", "<c-p>z", "<cmd>lua require('fzf-lua').live_grep_native({search='TODO'})<cr>")
-
--- utils.map("n", "<c-p>f", "<cmd>lua require('fzf-lua').grep({search=''})<cr>")
--- utils.map("n", "<c-p>z", "<cmd>lua require('fzf-lua').grep({search='TODO'})<cr>")
 
 utils.map("n", "<leader>u", "<cmd>lua require('fzf-lua').lsp_references()<cr>")
 utils.map("n", "<leader>d", "<cmd>lua require('fzf-lua').lsp_definitions({sync = true, jump_to_single_result = true})<cr>")
