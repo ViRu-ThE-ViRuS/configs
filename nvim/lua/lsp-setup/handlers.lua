@@ -57,10 +57,7 @@ local qf_rename = function()
     local position_params = vim.lsp.util.make_position_params()
     position_params.newName = vim.fn.input("Rename To> ", vim.fn.expand("<cword>"))
 
-    vim.lsp.buf_request(
-        0,
-        "textDocument/rename",
-        position_params,
+    vim.lsp.buf_request(0, "textDocument/rename", position_params,
         function(err, result, ...)
             if not result.changes then
                 return
@@ -80,10 +77,7 @@ local qf_rename = function()
                     local line = vim.api.nvim_buf_get_lines(bufnr, start_line - 1, start_line, false)[1]
 
                     num_updates = num_updates + 1
-                    table.insert(
-                        entries,
-                        {bufnr = bufnr, lnum = start_line, col = edit.range.start.character + 1, text = line}
-                    )
+                    table.insert( entries, {bufnr = bufnr, lnum = start_line, col = edit.range.start.character + 1, text = line})
                 end
             end
 

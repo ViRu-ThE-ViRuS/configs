@@ -1,7 +1,5 @@
 local oslib = require("lib/oslib")
 
-vim.cmd [[ syntax off ]]
-
 -- disable unused providers
 vim.g.loaded_node_provider = 0
 vim.g.loaded_ruby_provider = 0

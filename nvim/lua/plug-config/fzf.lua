@@ -26,7 +26,7 @@ require("fzf-lua").setup({
     },
     fzf_opts = { ['--layout'] = 'default' },
     files = {
-        multiprocess=false,
+        multiprocess=true,
         cmd = 'rg --files --follow --smart-case --hidden --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache}" 2> /dev/null',
         actions = {
             ['default'] = actions.file_edit,
@@ -45,7 +45,7 @@ require("fzf-lua").setup({
     grep = {
         rg_opts = "--hidden --column --line-number --no-heading --color=always --smart-case -g '!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache}'",
         experimental = false,
-        multiprocess=false,
+        multiprocess=true,
         actions = {
             ['default'] = actions.file_edit,
             ['ctrl-x'] = actions.file_split,

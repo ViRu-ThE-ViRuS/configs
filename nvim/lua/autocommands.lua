@@ -8,8 +8,8 @@ vim.cmd [[
         autocmd TextYankPost * lua vim.highlight.on_yank {on_visual = false}
         autocmd BufWritePre * lua require('utils').strip_trailing_whitespaces()
 
-        autocmd FileType vista,fugitive,qf,help syntax on
-        autocmd FileType vista,fugitive setlocal nonumber
+        " autocmd FileType vista,fugitive,gitcommit,qf,help syntax on
+        " autocmd FileType vista,fugitive,gitcommit setlocal nonumber
     augroup end
 
     augroup ConfigUpdate

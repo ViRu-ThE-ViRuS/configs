@@ -33,7 +33,7 @@ vim.g.vscode_style = "dark"
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme moonlight ]]
+vim.cmd [[ colorscheme moonfly ]]
 
 -- gruvbox deus everforest
 -- nord OceanicNext quantum neodark moonlight

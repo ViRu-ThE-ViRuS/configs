@@ -53,7 +53,8 @@ return require('packer').startup({function()
     use { 'tpope/vim-fugitive', cmd = {'G', 'Gread'} }
 
     use { 'untitled-ai/jupyter_ascending.vim',
-        ft='python', config="require('plug-config/ascending')" }
+        ft='python',
+        config="require('plug-config/ascending')" }
 
     use 'bluz71/vim-nightfly-guicolors'
     use 'bluz71/vim-moonfly-colors'

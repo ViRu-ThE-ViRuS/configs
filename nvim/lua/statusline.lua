@@ -162,7 +162,7 @@ end
 M.StatusLineInactive = StatusLineInactive
 
 vim.cmd [[
-    let statusline_blacklist = ['terminal', 'fugitive', 'vista', 'diagnostics', 'qf', 'fzf']
+    let statusline_blacklist = ['terminal', 'fugitive', 'vista', 'diagnostics', 'qf', 'fzf', 'gitcommit']
 
     augroup StatusLine
         autocmd!
@@ -173,6 +173,7 @@ vim.cmd [[
         autocmd FileType vista setlocal statusline=%!v:lua.StatusLine('VISTA')
         autocmd FileType fzf setlocal statusline=%!v:lua.StatusLine('FZF')
         autocmd FileType fugitive setlocal statusline=%!v:lua.StatusLine('Git')
+        autocmd FileType gitcommit setlocal statusline=%!v:lua.StatusLine('GitCommit')
         autocmd WinLeave,BufEnter NvimTree setlocal statusline=%!v:lua.StatusLine('Explorer')
         autocmd BufWinEnter quickfix setlocal statusline=%!v:lua.StatusLine('QuickFix')
         " autocmd BufWinEnter diagnostics setlocal statusline=%!v:lua.StatusLine('Diagnostics')
