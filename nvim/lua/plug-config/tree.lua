@@ -67,7 +67,8 @@ require('nvim-tree').setup({
                 { key = "q"             , cb = tree_callback("close") },
             }
         }
-    }
+    },
+    git = { ignore = false }
 })
 
 utils.map('n', '<leader>j', '<cmd>NvimTreeToggle<cr>')

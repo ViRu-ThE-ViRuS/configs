@@ -2,6 +2,7 @@ appcleaner
 discord
 google-drive
 kitty
+logitech-options
 macs-fan-control
 microsoft-auto-update
 microsoft-office

@@ -67,7 +67,8 @@ utils.map("i", "<left>", "<nop>")
 utils.map("i", "<right>", "<nop>")
 
 -- utility functions
-utils.map("n", "<leader>1", "<c-w>o")
+-- utils.map("n", "<leader>1", "<c-w>o")
+utils.map("n", "<leader>1", "<cmd>lua require('window').toggle_window()<cr>")
 utils.map("n", "<leader>2", '<cmd>lua require("utils").random_colors()<cr>', {silent = false})
 utils.map("n", "<leader>3", "<cmd>if AutoHighlightToggle()<bar>set hlsearch<bar>endif<cr>")
 

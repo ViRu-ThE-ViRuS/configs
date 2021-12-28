@@ -67,7 +67,6 @@ local send_to_target = function(payload, repeat_last)
         print("target_terminal not set")
     end
 end
-M.send_to_target = send_to_target
 
 -- set target_terminal to this one
 local set_target_terminal = function()
@@ -88,19 +87,14 @@ local set_target_terminal = function()
         print("target_terminal not set")
     end
 end
-M.set_target_terminal = set_target_terminal
 
 -- setup target_command
 local set_target_command = function()
     state.target_command = vim.fn.input("target_command: ", "")
 end
-M.set_target_command = set_target_command
 
 -- query the current state, utility
-local query_state = function()
-    print(vim.inspect(state))
-end
-M.query_state = query_state
+M.query_state = function() print(vim.inspect(state)) end
 
 -- set target_terminal/target_command
 M.set_target = function()
@@ -121,8 +115,6 @@ M.run_target_command = function()
 end
 
 -- run previous command in target_terminal
-M.run_previous_command = function()
-    send_to_target(nil, true)
-end
+M.run_previous_command = function() send_to_target(nil, true) end
 
 return M

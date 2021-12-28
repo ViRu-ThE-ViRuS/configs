@@ -16,8 +16,7 @@ return require('packer').startup({function()
         run = ':TSUpdate',
         event = 'BufRead',
         config = "require('plug-config/treesitter')" }
-    use { 'nvim-treesitter/nvim-treesitter-textobjects',
-        after = 'nvim-treesitter' }
+    use { 'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter' }
 
     use 'kyazdani42/nvim-web-devicons'
     use 'kyazdani42/nvim-tree.lua'
@@ -35,6 +34,7 @@ return require('packer').startup({function()
 
     use 'neovim/nvim-lspconfig'
     use 'ray-x/lsp_signature.nvim'
+    use 'jose-elias-alvarez/null-ls.nvim'
     use { 'hrsh7th/nvim-cmp',
         requires = {
             { 'onsails/lspkind-nvim', event = 'InsertEnter' },

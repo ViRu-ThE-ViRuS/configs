@@ -5,11 +5,11 @@ require('impatient')
 require('packer_compiled')
 
 -- general setup setup
-require('settings')             -- setup preferences
-require('colorscheme')          -- setup colorscheme
-require('plugins')              -- setup plugins
-require('lsp')                  -- setup lsp
-require('statusline')           -- setup statusline
+require('settings')    -- setup preferences
+require('colorscheme') -- setup colorscheme
+require('plugins')     -- setup plugins
+require('lsp')         -- setup lsp
+require('statusline')  -- setup statusline
 
 require('plug-config/bufferline')
 require('plug-config/signature')
@@ -17,9 +17,8 @@ require('plug-config/signature')
 -- plugin configs
 local async
 async = vim.loop.new_async(vim.schedule_wrap(function()
-    require('keymaps')              -- setup general keymaps
-    require('autocommands')         -- setup autocommands
-    require('terminal')             -- setup custom terminal behaviors
+    require('keymaps')
+    require('autocommands')
 
     require('plug-config/fzf')
     require('plug-config/tree')
@@ -42,6 +41,7 @@ async:send()
 --  .nvimrc             : nvim setup like venv
 --  .rgignore           : ripgrep ignore
 --  .clang-format       : clang-format config
+--  .clang-tidy         : clang-tidy config
 --  .pep8               : autopep8 config
 --  pyrightconfig.json  : pyright config
 
