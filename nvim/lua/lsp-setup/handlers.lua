@@ -7,24 +7,14 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] =
         underline = false
     })
 
--- bordered markdown hover
-vim.lsp.handlers["textDocument/hover"] = function(err, result)
-    if err or not (result and result.contents) then return end
-
-    local lines = result.contents.value
-    local kind = result.contents.kind
-
-    if kind == "markdown" then
-        lines = vim.lsp.util.convert_input_to_markdown_lines(lines)
-    end
-
-    vim.lsp.util.open_floating_preview(lines, kind, {
-        border = "rounded",
+-- bordered hover
+vim.lsp.handlers['textDocument/hover'] =
+    vim.lsp.with(vim.lsp.handlers.hover, {
+        border = 'rounded',
         focusable = false
     })
-end
 
--- qf_rename
+-- populate qf list with changes (if multiple files modified)
 local qf_rename = function()
     local position_params = vim.lsp.util.make_position_params()
     position_params.newName = vim.fn.input("Rename To> ", vim.fn.expand("<cword>"))

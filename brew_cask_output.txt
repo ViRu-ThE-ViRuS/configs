@@ -12,3 +12,4 @@ spotify
 tiles
 transmission
 vlc
+zoom

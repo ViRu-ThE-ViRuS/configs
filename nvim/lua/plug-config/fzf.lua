@@ -26,7 +26,7 @@ require("fzf-lua").setup({
     },
     fzf_opts = { ['--layout'] = 'default' },
     files = {
-        multiprocess=true,
+        multiprocess = true,
         cmd = 'rg --files --follow --smart-case --hidden --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache}" 2> /dev/null',
         actions = {
             ['default'] = actions.file_edit,
@@ -35,17 +35,29 @@ require("fzf-lua").setup({
             ['ctrl-q'] = require('utils').qf_populate
         }
     },
+    git = {
+        files = {
+            multiprocess = true,
+            actions = {
+                ['default'] = actions.file_edit,
+                ['ctrl-x'] = actions.file_split,
+                ['ctrl-v'] = actions.file_vsplit,
+                ['ctrl-q'] = require('utils').qf_populate
+            }
+        }
+    },
     buffers = {
         actions = {
             ['default'] = actions.buf_edit,
             ['ctrl-x'] = actions.buf_split,
-            ['ctrl-v'] = actions.buf_vsplit
+            ['ctrl-v'] = actions.buf_vsplit,
+            ['ctrl-q'] = { actions.buf_del, actions.resume }
         }
     },
     grep = {
         rg_opts = "--hidden --column --line-number --no-heading --color=always --smart-case -g '!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache}'",
         experimental = false,
-        multiprocess=true,
+        multiprocess = true,
         actions = {
             ['default'] = actions.file_edit,
             ['ctrl-x'] = actions.file_split,

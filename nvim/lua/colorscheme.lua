@@ -33,7 +33,7 @@ vim.g.vscode_style = "dark"
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme tempus_tempest ]]
+vim.cmd [[ colorscheme vscode ]]
 
 -- gruvbox deus everforest
 -- nord OceanicNext quantum neodark moonlight

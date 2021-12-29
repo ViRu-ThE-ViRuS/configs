@@ -15,6 +15,7 @@ require('plug-config/bufferline')
 require('plug-config/signature')
 
 -- plugin configs
+-- async: editor feels more responsive (defered execution)
 local async
 async = vim.loop.new_async(vim.schedule_wrap(function()
     require('keymaps')
