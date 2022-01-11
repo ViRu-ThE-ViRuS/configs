@@ -7,6 +7,7 @@ cp -r ~/.config/kitty/* kitty/ 2&> /dev/null
 cp ~/.config/emacs/*.el emacs/ 2&> /dev/null
 cp ~/.config/zsh/.zshrc zsh/ 2&> /dev/null
 cp ~/.zshenv zsh/ 2&> /dev/null
+cp ~/.gitconfig .gitconfig 2&> /dev/null
 
 switch (uname)
     case Darwin
