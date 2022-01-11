@@ -5,7 +5,6 @@ ca-certificates
 cmake
 fish
 fzf
-gdbm
 gettext
 htop
 icu4c
@@ -18,10 +17,8 @@ libtermkey
 libunistring
 libuv
 libyaml
-llvm
 luajit-openresty
 luv
-mpdecimal
 msgpack
 ncurses
 neovim
@@ -32,13 +29,10 @@ pcre2
 postgresql
 readline
 ripgrep
-sqlite
 tmux
-transmission-cli
 tree
 tree-sitter
 unibilium
 universal-ctags
 utf8proc
 wget
-xz
