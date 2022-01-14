@@ -1,11 +1,8 @@
--- module export
-M = {}
-
 -- state, keep track of window ids
 local state = {}
 
 -- toggle current window (maximum <-> original)
-M.toggle_window = function()
+local function toggle_window()
     if vim.fn.winnr('$') > 1 then
         local original = vim.fn.win_getid()
         vim.cmd('tab sp')
@@ -22,4 +19,4 @@ M.toggle_window = function()
     end
 end
 
-return M
+return {toggle_window = toggle_window}

@@ -1,11 +1,8 @@
 local utils = require("utils")
 local state = utils.run_config
 
--- module export
-M = {}
-
 -- toggle target_terminal
-local toggle_target = function(open)
+local function toggle_target(open)
     if state.target_terminal == nil then
         print("target_terminal not set")
         return
@@ -36,10 +33,9 @@ local toggle_target = function(open)
         print("target_terminal exited, resetting state")
     end
 end
-M.toggle_target = toggle_target
 
 -- send payload to target_terminal
-local send_to_target = function(payload, repeat_last)
+local function send_to_target(payload, repeat_last)
     if state.target_terminal ~= nil then
         if vim.fn.bufname(state.target_terminal.buf_nr) ~= "" then
             if repeat_last then
@@ -69,7 +65,7 @@ local send_to_target = function(payload, repeat_last)
 end
 
 -- set target_terminal to this one
-local set_target_terminal = function()
+local function set_target_terminal()
     if vim.b.terminal_job_id ~= nil then
         state.target_terminal = {
             ["job_id"] = vim.b.terminal_job_id,
@@ -89,15 +85,15 @@ local set_target_terminal = function()
 end
 
 -- setup target_command
-local set_target_command = function()
+local function set_target_command()
     state.target_command = vim.fn.input("target_command: ", "")
 end
 
 -- query the current state, utility
-M.query_state = function() print(vim.inspect(state)) end
+local function query_state() print(vim.inspect(state)) end
 
 -- set target_terminal/target_command
-M.set_target = function()
+local function set_target()
     if vim.b.terminal_job_id ~= nil then
         set_target_terminal()
     else
@@ -106,7 +102,7 @@ M.set_target = function()
 end
 
 -- run target_command
-M.run_target_command = function()
+local function run_target_command()
     if state.target_command ~= "" then
         send_to_target(state.target_command, false)
     else
@@ -115,6 +111,14 @@ M.run_target_command = function()
 end
 
 -- run previous command in target_terminal
-M.run_previous_command = function() send_to_target(nil, true) end
+local function run_previous_command()
+    send_to_target(nil, true)
+end
 
-return M
+return {
+    toggle_target = toggle_target,
+    query_state = query_state,
+    set_target = set_target,
+    run_target_command = run_target_command,
+    run_previous_command = run_previous_command
+}

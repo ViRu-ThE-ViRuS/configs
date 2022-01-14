@@ -1,16 +1,7 @@
 local core = require('lib/core')
 
--- module export
-M = {}
-
--- setup truncation limits
-M.truncation_limit_s_terminal = 110
-M.truncation_limit_s = 80
-M.truncation_limit = 120
-M.truncation_limit_l = 160
-
 -- setup keymaps
-M.map = function(mode, lhs, rhs, opts, buffer_nr)
+local function map(mode, lhs, rhs, opts, buffer_nr)
     local options = { noremap = true }
     if opts then options = vim.tbl_extend('force', options, opts) end
     if buffer_nr then vim.api.nvim_buf_set_keymap(buffer_nr, mode, lhs, rhs, options)
@@ -18,19 +9,13 @@ M.map = function(mode, lhs, rhs, opts, buffer_nr)
 end
 
 -- set qflist and open
-M.qf_populate = function(lines, mode)
+local function qf_populate(lines, mode)
     if mode == nil or type(mode) == 'table' then
         lines = core.foreach(lines, function(item) return { filename = item, lnum = 1, col = 1 } end)
         mode = "r"
     end
 
     vim.fn.setqflist(lines, mode)
-
-    -- vim.opt_local.statusline = require('statusline').StatusLine('QuickFix')
-    -- vim.opt_local.buflisted = false
-    -- vim.opt_local.number = true
-    -- vim.opt_local.signcolumn = 'no'
-    -- vim.opt_local.bufhidden = 'wipe'
 
     vim.cmd [[
         copen
@@ -43,33 +28,33 @@ M.qf_populate = function(lines, mode)
 end
 
 -- randomize colorscheme
-M.random_colors = function()
+local function random_colors()
     local colorscheme_paths = vim.fn.globpath(vim.o.rtp, 'colors/*.vim', true, true)
     local colorschemes = core.foreach(colorscheme_paths, core.strip_fname)
     vim.cmd(string.format('colorscheme %s\ncolorscheme', colorschemes[math.random(1, #colorschemes)]))
 end
 
 -- strip trailing whitespaces in file
-M.strip_trailing_whitespaces = function()
+local function strip_trailing_whitespaces()
     local cursor = vim.api.nvim_win_get_cursor(0)
     vim.api.nvim_command('%s/\\s\\+$//e')
     vim.api.nvim_win_set_cursor(0, cursor)
 end
 
 -- is buffer horizontally truncated
-M.is_htruncated = function(width)
+local function is_htruncated(width)
   local current_width = vim.api.nvim_win_get_width(0)
   return current_width < width
 end
 
 -- is buffer vertical truncated
-M.is_vtruncated = function(height)
+local function is_vtruncated(height)
   local current_height = vim.api.nvim_win_get_height(0)
   return current_height < height
 end
 
 -- diagnostics symbol config
-M.symbol_config = {
+local symbol_config = {
     indicator_seperator = '',
     indicator_hint      = '[@]',
     indicator_info      = '[i]',
@@ -83,7 +68,7 @@ M.symbol_config = {
 }
 
 -- mode display name table
-M.modes = {
+local modes = {
     ['n']  = 'Normal',
     ['no'] = 'N-Pending',
     ['v']  = 'Visual',
@@ -107,7 +92,7 @@ M.modes = {
 }
 
 -- statusline colors
-M.statusline_colors = {
+local statusline_colors = {
     active      = '%#StatusLine#',
     inactive    = '%#StatusLineNC#',
     mode        = '%#PmenuSel#',
@@ -121,7 +106,7 @@ M.statusline_colors = {
 }
 
 -- current tag_state [updated async]
-M.tag_state = {
+local tag_state = {
     name = nil,
     detail = nil,
     kind = nil,
@@ -130,9 +115,27 @@ M.tag_state = {
 }
 
 -- current run_config [updated elsewhere]
-M.run_config = {
+local run_config = {
     target_terminal = nil,
     target_command = "",
 }
 
-return M
+return {
+    truncation_limit_s_terminal = 110,
+    truncation_limit_s = 80,
+    truncation_limit = 120,
+    truncation_limit_l = 160,
+
+    map = map,
+    qf_populate = qf_populate,
+    random_colors = random_colors,
+    strip_trailing_whitespaces = strip_trailing_whitespaces,
+    is_htruncated = is_htruncated,
+    is_vtruncated = is_vtruncated,
+
+    symbol_config = symbol_config,
+    modes = modes,
+    statusline_colors = statusline_colors,
+    tag_state = tag_state,
+    run_config = run_config
+}

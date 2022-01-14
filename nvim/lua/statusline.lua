@@ -4,14 +4,14 @@ local truncation_limit = utils.truncation_limit
 local colors = utils.statusline_colors
 
 -- get the display name for current mode
-local get_current_mode = function()
+local function get_current_mode()
     local current_mode = vim.api.nvim_get_mode().mode
     return string.format(' %s ', utils.modes[current_mode]):upper()
 end
 
 -- NOTE(vir): release gitsigns dependencies?
 -- get git information of current file
-local get_git_status = function()
+local function get_git_status()
     local meta = {}
     local gitsigns_summary = vim.b.gitsigns_status_dict
 
@@ -32,10 +32,10 @@ local get_git_status = function()
 end
 
 -- get current tag name
-local get_tagname = function()
+local function get_tagname()
     if utils.tag_state.name == nil or
        utils.is_htruncated(utils.truncation_limit_s) or
-       #vim.lsp.buf_get_clients(0) == 0 then
+       vim.lsp.buf_get_clients(0) == {} then
         return ''
     else
         return string.format(" [ %s %s ] ", utils.tag_state.icon, utils.tag_state.name)
@@ -43,7 +43,7 @@ local get_tagname = function()
 end
 
 -- get current file name
-local get_filename = function()
+local function get_filename()
     if utils.is_htruncated(truncation_limit) then
         return ' %t '
     end
@@ -52,12 +52,12 @@ local get_filename = function()
 end
 
 -- get current line/col
-local get_line_col = function()
+local function get_line_col()
     return ' %l:%c '
 end
 
 -- get current percentage through file
-local get_percentage = function()
+local function get_percentage()
     if utils.is_htruncated(truncation_limit) then
         return ''
     else
@@ -66,12 +66,12 @@ local get_percentage = function()
 end
 
 -- get current file type
-local get_filetype = function()
+local function get_filetype()
     return ' %y '
 end
 
 -- get current file diagnostics
-local get_diagnostics = function()
+local function get_diagnostics()
     if #vim.lsp.buf_get_clients(0) == 0 then return '' end
 
     local status_parts = {}
@@ -105,12 +105,12 @@ local get_diagnostics = function()
 end
 
 -- special statusline
-local statusline_special = function(mode)
+local function statusline_special(mode)
     return colors.active .. ' ' .. mode .. ' ' .. colors.inactive
 end
 
 -- inactive statusline
-local statusline_inactive = function()
+local function statusline_inactive()
     local filename = colors.file .. get_filename()
     local line_col = colors.line_col .. get_line_col()
     local percentage = colors.percentage .. get_percentage()
@@ -124,7 +124,7 @@ local statusline_inactive = function()
 end
 
 -- active statusline
-local statusline_normal = function()
+local function statusline_normal()
     local mode = colors.mode .. get_current_mode()
     local git = colors.git .. get_git_status()
     local diagnostics = colors.diagnostics .. get_diagnostics()
@@ -142,24 +142,19 @@ local statusline_normal = function()
     })
 end
 
--- module
-M = {}
-
 -- generate statusline
 StatusLine = function(mode)
     if mode then
         return statusline_special(mode)
-    else
-        return statusline_normal()
     end
+
+    return statusline_normal()
 end
-M.StatusLine = StatusLine
 
 -- generate inactive statusline
 StatusLineInactive = function()
     return statusline_inactive()
 end
-M.StatusLineInactive = StatusLineInactive
 
 vim.cmd [[
     let statusline_blacklist = ['terminal', 'fugitive', 'vista', 'diagnostics', 'qf', 'fzf', 'gitcommit']
@@ -180,5 +175,8 @@ vim.cmd [[
     augroup end
 ]]
 
-return M
+return {
+    StatusLine = StatusLine,
+    StatusLineInactive = StatusLineInactive
+}
 

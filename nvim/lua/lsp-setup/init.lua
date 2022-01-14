@@ -9,9 +9,9 @@ local on_attach = function(client, buffer_nr)
 
     setup_buffer.setup_general_keymaps(client, buffer_nr)
     setup_buffer.setup_independent_keymaps(client, buffer_nr)
-    setup_buffer.setup_options(buffer_nr)
+    setup_buffer.setup_options(client, buffer_nr)
+    setup_buffer.setup_autocmds(client, buffer_nr)
     setup_buffer.setup_highlights()
-    setup_buffer.setup_autocmds()
 end
 
 -- pyright setup
@@ -42,6 +42,13 @@ lsp["sumneko_lua"].setup {
             workspace = { library = {[vim.fn.expand("$VIMRUNTIME/lua")] = true, [vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true} }
         }
     },
+    on_attach = on_attach,
+    flags = {debounce_text_changes = 150}
+}
+
+-- cmake setup
+lsp['cmake'].setup {
+    capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities()),
     on_attach = on_attach,
     flags = {debounce_text_changes = 150}
 }

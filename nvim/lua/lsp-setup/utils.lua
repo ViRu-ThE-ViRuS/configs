@@ -1,7 +1,7 @@
+local proto = require('vim.lsp.protocol')
 local utils = require('utils')
-
--- module export
-M = {}
+local core = require('lib/core')
+local misc = require('lib/misc')
 
 -- lsp int(kind) -> str(kind) map
 local lsp_kinds = {
@@ -40,15 +40,17 @@ local lsp_icons = {
     Operator      = {icon = "+",    hl = "TSOperator"},
     TypeParameter = {icon = "𝙏",    hl = "TSParameter"}
 }
-M.get_lsp_icon = function (key)
-    return lsp_icons[key].icon
+
+-- get lsp icon for kind
+local function get_lsp_icon(kind)
+    return lsp_icons[kind].icon
 end
 
 -- lsp diagnostic list visible?
 local diagnostics_set = {}
 
 -- toggle diagnostics list
-M.toggle_diagnostics_list = function()
+local function toggle_diagnostics_list()
     local current_buf = vim.api.nvim_get_current_buf()
 
     if not diagnostics_set[current_buf] then
@@ -71,7 +73,7 @@ M.toggle_diagnostics_list = function()
 end
 
 -- print lsp diagnostics in CMD line
-M.cmd_line_diagnostics = function ()
+local function cmd_line_diagnostics()
     local line_number = vim.api.nvim_win_get_cursor(0)[1] - 1
     local line_diagnostics = vim.diagnostic.get(0, {lnum = line_number})
     local line_diagnostic = line_diagnostics[#line_diagnostics]
@@ -90,6 +92,51 @@ M.cmd_line_diagnostics = function ()
     end
 end
 
+-- tag states for statusline
+local tag_state_filter = {
+    Class     = true,
+    Function  = true,
+    Method    = true,
+    Struct    = true,
+    Enum      = true,
+    Interface = true,
+    Namespace = true,
+    Module    = true,
+}
+
+-- extract symbols from lsp results
+local function extract_symbols(items, _result)
+    local result = _result or {}
+    if items == nil then return result end
+
+    for _, item in ipairs(items) do
+        local kind = proto.SymbolKind[item.kind] or 'Unknown'
+        local symbol_range = item.range
+
+        if not symbol_range then
+            symbol_range = item.location.range
+        end
+
+        if symbol_range then
+            symbol_range['start'].line = symbol_range['start'].line + 1
+            symbol_range['end'].line = symbol_range['end'].line + 1
+        end
+
+        table.insert(result, {
+            filename = item.location and vim.uri_to_fname(item.location.uri) or nil,
+            range = symbol_range,
+            kind = kind,
+            name = item.name,
+            detail = item.detail,
+            raw = item
+        })
+
+        extract_symbols(item.children, result)
+    end
+
+    return result
+end
+
 -- reset tag state
 local reset_tag_state = function()
     utils.tag_state.kind = nil
@@ -100,9 +147,7 @@ local reset_tag_state = function()
 end
 
 -- update tag_state async
-M.refresh_tag_state = function()
-    local hovered_line = vim.api.nvim_win_get_cursor(vim.api.nvim_get_current_win())[1]
-
+local function refresh_tag_state()
     vim.lsp.buf_request(0, 'textDocument/documentSymbol', { textDocument = vim.lsp.util.make_text_document_params() },
         function(_, results, _, _)
             if results == nil or type(results) ~= 'table' then
@@ -110,31 +155,41 @@ M.refresh_tag_state = function()
                 return
             end
 
-            for _, result in pairs(results) do
-                local range = result.range
-                if result.range == nil then
-                    range = result.location.range
-                end
+            local extracted = extract_symbols(results)
+            local symbols = core.filter(extracted, function(_, value) return tag_state_filter[value.kind] end)
 
-                if range['start']['line'] <= hovered_line and
-                    hovered_line <= range['end']['line'] then
+            if not symbols or #symbols == 0 then
+                reset_tag_state()
+                return
+            end
 
-                    utils.tag_state.kind = lsp_kinds[result.kind]
-                    utils.tag_state.name = result.name
-                    utils.tag_state.detail = result.detail
+            local hovered_line = vim.api.nvim_win_get_cursor(0)
+            for position = #symbols, 1, -1 do
+                local current = symbols[position]
+
+                if current.range and misc.in_range(hovered_line, current.range) then
+                    utils.tag_state.kind = current.kind
+                    utils.tag_state.name = current.name
+                    utils.tag_state.detail = current.detail
                     utils.tag_state.icon = lsp_icons[utils.tag_state.kind].icon
                     utils.tag_state.iconhl = lsp_icons[utils.tag_state.kind].hl
-                    break
+
+                    return
                 end
             end
         end)
-    -- reset_tag_state()
 end
 
 -- setup statusline icon highlights
-M.setup_lsp_icon_highlights = function()
-    return
+local function setup_lsp_icon_highlights()
 end
 
-return M
+return {
+    get_lsp_icon = get_lsp_icon,
+    toggle_diagnostics_list = toggle_diagnostics_list,
+    cmd_line_diagnostics = cmd_line_diagnostics,
+    reset_tag_state = reset_tag_state,
+    refresh_tag_state = refresh_tag_state,
+    setup_lsp_icon_highlights = setup_lsp_icon_highlights
+}
 

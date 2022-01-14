@@ -33,7 +33,7 @@ vim.g.vscode_style = "dark"
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme catppuccin ]]
+vim.cmd [[ colorscheme base16-black-metal-dark-funeral ]]
 
 -- gruvbox deus everforest
 -- nord OceanicNext quantum neodark moonlight

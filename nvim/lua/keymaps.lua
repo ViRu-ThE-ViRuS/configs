@@ -87,9 +87,6 @@ vim.cmd [[
     cnoreabbrev <expr> Q ((getcmdtype() is# ':' && getcmdline() is# 'Q')?('q'):('Q'))
     cnoreabbrev <expr> WQ ((getcmdtype() is# ':' && getcmdline() is# 'WQ')?('wq'):('WQ'))
     cnoreabbrev <expr> Wq ((getcmdtype() is# ':' && getcmdline() is# 'Wq')?('wq'):('Wq'))
-
-    " inoremap <expr> <tab>   pumvisible() ? "\<c-n>" : "\<tab>"
-    " inoremap <expr> <s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
 ]]
 
 -- terminal setup
