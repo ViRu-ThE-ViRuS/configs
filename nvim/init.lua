@@ -21,6 +21,7 @@ async = vim.loop.new_async(vim.schedule_wrap(function()
     require('keymaps')
     require('autocommands')
 
+    require('plug-config/diffview')
     require('plug-config/fzf')
     require('plug-config/tree')
 

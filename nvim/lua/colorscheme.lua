@@ -16,11 +16,6 @@ vim.g.everforest_diagnostic_text_highlight = 1
 vim.g.everforest_better_performance = 1
 vim.g.everforest_enable_italic = 1
 
--- require('nightfox').setup({
---     fox = "nightfox",
---     styles = {comments = "italic", keywords = "bold", functions = "italic,bold"}
--- })
-
 vim.g.moonflyItalics = 1
 vim.g.moonflyNormalFloat = 1
 vim.g.moonflyTerminalColors = 1
@@ -33,25 +28,22 @@ vim.g.vscode_style = "dark"
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme base16-black-metal-dark-funeral ]]
+vim.cmd [[ colorscheme tempus_night ]]
 
--- gruvbox deus everforest
--- nord OceanicNext quantum neodark moonlight
--- bluewery Tomorrow-Night-Blue tokyonight rigel adventurous
--- Tomorrow-Night-Eighties apprentice luna CandyPaper jellybeans
--- materialbox solarized8_dark_high moonlight nightfly
--- antares codedark desertink default moonfly
--- aquamarine oceanblack ir_black
---
--- base16-black-metal-bathory gruvbox-material
--- moonlight nightfly moonfly codedark everforest
--- zephyr vscode base16-darktooth base16-apprentice
--- base16-gruvbox-light-hard base16-outrun-dark
--- base16-gruvbox-dark-hard catppuccin
---
--- cake16 solarized8_light_high
--- Tomorrow eclipse autumnleaf aurora White2
---
--- lighthaus tempus_tempest vscode nightfox moonfly everforest gruvbox-material
--- base16-darkmoss
-
+return {
+    preferred = {
+        "nightfly",
+        "moonfly",
+        "moonlight",
+        "gruvbox-material",
+        "catppuccin",
+        "everforest",
+        "vscode",
+        "lighthaus",
+        "rose-pine",
+        "tempus_tempest",
+        "tempus_night",
+        "base16-darkmoss",
+        "base16-gruvbox-dark-hard",
+    }
+}

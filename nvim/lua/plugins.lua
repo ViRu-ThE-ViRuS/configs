@@ -21,10 +21,11 @@ return require('packer').startup({function()
     use 'kyazdani42/nvim-web-devicons'
     use 'kyazdani42/nvim-tree.lua'
     use 'akinsho/nvim-bufferline.lua'
+    use 'sindrets/diffview.nvim'
 
-    use 'lewis6991/gitsigns.nvim'
     use 'aserowy/tmux.nvim'
     use 'b3nj5m1n/kommentary'
+    use 'lewis6991/gitsigns.nvim'
     use { 'steelsojka/pears.nvim',
         event = 'BufEnter',
         config = "require('plug-config/pears')" }
@@ -56,16 +57,16 @@ return require('packer').startup({function()
         ft='python',
         config="require('plug-config/ascending')" }
 
+    use 'RRethy/nvim-base16'
     use 'bluz71/vim-nightfly-guicolors'
     use 'bluz71/vim-moonfly-colors'
     use 'shaunsingh/moonlight.nvim'
     use 'sainnhe/gruvbox-material'
-    use 'RRethy/nvim-base16'
     use 'catppuccin/nvim'
     use 'sainnhe/everforest'
     use 'Mofiqul/vscode.nvim'
-    use 'EdenEast/nightfox.nvim'
     use 'mrjones2014/lighthaus.nvim'
+    use 'rose-pine/neovim'
     use 'https://gitlab.com/protesilaos/tempus-themes-vim.git'
 
     use { 'tweekmonster/startuptime.vim', cmd = 'StartupTime' }

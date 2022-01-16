@@ -157,7 +157,7 @@ StatusLineInactive = function()
 end
 
 vim.cmd [[
-    let statusline_blacklist = ['terminal', 'fugitive', 'vista', 'diagnostics', 'qf', 'fzf', 'gitcommit']
+    let statusline_blacklist = ['terminal', 'fugitive', 'vista', 'diagnostics', 'qf', 'fzf', 'gitcommit', 'DiffviewFiles', 'DiffviewFileHistory']
 
     augroup StatusLine
         autocmd!
@@ -165,13 +165,16 @@ vim.cmd [[
         autocmd WinLeave,BufLeave * if index(statusline_blacklist, &ft) < 0 | setlocal statusline=%!v:lua.StatusLineInactive()
 
         autocmd FileType terminal setlocal statusline=%!v:lua.StatusLine('Terminal')
-        autocmd FileType vista setlocal statusline=%!v:lua.StatusLine('VISTA')
-        autocmd FileType fzf setlocal statusline=%!v:lua.StatusLine('FZF')
-        autocmd FileType fugitive setlocal statusline=%!v:lua.StatusLine('Git')
-        autocmd FileType gitcommit setlocal statusline=%!v:lua.StatusLine('GitCommit')
-        autocmd WinLeave,BufEnter NvimTree setlocal statusline=%!v:lua.StatusLine('Explorer')
         autocmd BufWinEnter quickfix setlocal statusline=%!v:lua.StatusLine('QuickFix')
         " autocmd BufWinEnter diagnostics setlocal statusline=%!v:lua.StatusLine('Diagnostics')
+
+        autocmd WinLeave,BufEnter NvimTree setlocal statusline=%!v:lua.StatusLine('Explorer')
+        autocmd FileType fzf setlocal statusline=%!v:lua.StatusLine('FZF')
+        autocmd FileType vista setlocal statusline=%!v:lua.StatusLine('VISTA')
+        autocmd FileType fugitive setlocal statusline=%!v:lua.StatusLine('Git')
+        autocmd FileType gitcommit setlocal statusline=%!v:lua.StatusLine('GitCommit')
+        autocmd FileType DiffviewFiles set statusline=%!v:lua.StatusLine('DiffViewFiles')
+        autocmd FileType DiffviewFileHistory set statusline=%!v:lua.StatusLine('DiffViewFileHistory')
     augroup end
 ]]
 

@@ -122,6 +122,16 @@ colorscheme OceanicNext " gruvbox deus
                  " cake16 solarized8_light_high
                  " Tomorrow eclipse autumnleaf aurora White2
 
+" from neovim
+" -- gruvbox deus everforest
+" -- nord OceanicNext quantum neodark moonlight
+" -- bluewery Tomorrow-Night-Blue tokyonight rigel adventurous
+" -- Tomorrow-Night-Eighties apprentice luna CandyPaper jellybeans
+" -- materialbox solarized8_dark_high moonlight nightfly
+" -- antares codedark desertink default moonfly
+" -- aquamarine oceanblack ir_black
+
+
 let g:loaded_node_provider=0
 let g:loaded_python_provider=0
 let g:python3_host_prog='/usr/bin/python3'

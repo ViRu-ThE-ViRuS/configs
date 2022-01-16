@@ -3,15 +3,16 @@ local utils = require('utils')
 -- setup general keymaps
 local function setup_general_keymaps(_, buffer_nr)
     -- NOTE(vir): now using fzf-lua
-    -- utils.map('n','<leader>d', '<cmd>lua vim.lsp.buf.definition()<cr>', { silent = true }, buffer_nr)
-    -- utils.map('n','<leader>u', '<cmd>lua vim.lsp.buf.references()<cr>', { silent = true }, buffer_nr)
-    -- utils.map('n','<a-cr>', '<cmd>lua vim.lsp.buf.code_action()<cr>', { silent = true }, buffer_nr)
+    -- utils.map('n', '<leader>d', '<cmd>lua vim.lsp.buf.definition()<cr>', { silent = true }, buffer_nr)
+    -- utils.map('n', '<leader>u', '<cmd>lua vim.lsp.buf.references()<cr>', { silent = true }, buffer_nr)
+    -- utils.map('n', '<leader>U', '<cmd>lua vim.lsp.buf.document_symbols()<cr>', { silent = true }, buffer_nr)
+    -- utils.map('n', '<a-cr>', '<cmd>lua vim.lsp.buf.code_action()<cr>', { silent = true }, buffer_nr)
 
-    utils.map('n','<leader>r','<cmd>lua vim.lsp.buf.rename()<cr>', { silent = true }, buffer_nr)
-    utils.map('n','K', '<cmd>lua vim.lsp.buf.hover()<cr>', { silent = true }, buffer_nr)
+    utils.map('n', '<leader>r','<cmd>lua vim.lsp.buf.rename()<cr>', { silent = true }, buffer_nr)
+    utils.map('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', { silent = true }, buffer_nr)
 
-    utils.map('n','[e', '<cmd>lua vim.diagnostic.goto_prev({ float = { border = "rounded", focusable = false } })<cr>', { silent = true }, buffer_nr)
-    utils.map('n',']e', '<cmd>lua vim.diagnostic.goto_next({ float = { border = "rounded", focusable = false } })<cr>', { silent = true }, buffer_nr)
+    utils.map('n', '[e', '<cmd>lua vim.diagnostic.goto_prev({ float = { border = "rounded", focusable = false } })<cr>', { silent = true }, buffer_nr)
+    utils.map('n', ']e', '<cmd>lua vim.diagnostic.goto_next({ float = { border = "rounded", focusable = false } })<cr>', { silent = true }, buffer_nr)
     utils.map('n', '<leader>e', '<cmd>lua require("lsp-setup/utils").toggle_diagnostics_list()<cr>', { silent = true }, buffer_nr)
 end
 

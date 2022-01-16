@@ -6,6 +6,7 @@ class Test:
 
 # hello world
 a = 15
+a = 10
 print(a)
 
 table = {}

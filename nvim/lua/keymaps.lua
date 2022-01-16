@@ -22,7 +22,7 @@ utils.map("n", "]q", "<cmd>cnext<cr>")
 utils.map("n", "<space>", "za")
 
 -- buffer navigation
-utils.map("n", "<c-w><c-l>", ":cclose<cr> :pclose<cr> :lclose<cr>")
+utils.map("n", "<c-w><c-l>", ":cclose<cr> :pclose<cr> :lclose<cr> :tabclose<cr>")
 utils.map("n", "<leader>t", "<cmd>bn<cr>")
 utils.map("n", "<leader>o", "<c-^>", {noremap = false})
 utils.map("n", "<leader>q", "<cmd>bd!<cr>")
