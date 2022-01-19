@@ -11,7 +11,14 @@ end
 -- set qflist and open
 local function qf_populate(lines, mode)
     if mode == nil or type(mode) == 'table' then
-        lines = core.foreach(lines, function(item) return { filename = item, lnum = 1, col = 1 } end)
+        lines = core.foreach(lines, function(item)
+            return {
+                filename = item,
+                lnum = 1,
+                col = 1,
+                text = item
+            }
+        end)
         mode = "r"
     end
 
@@ -33,7 +40,13 @@ local function random_colors()
     -- local colorschemes = core.foreach(colorscheme_paths, core.strip_fname)
 
     local colorschemes = require('colorscheme').preferred
-    vim.cmd(string.format('colorscheme %s\ncolorscheme', colorschemes[math.random(1, #colorschemes)]))
+    local target = colorschemes[math.random(1, #colorschemes)]
+
+    if type(target) == 'function' then
+        target()
+    else
+        vim.cmd(string.format('colorscheme %s\ncolorscheme', target))
+    end
 end
 
 -- strip trailing whitespaces in file

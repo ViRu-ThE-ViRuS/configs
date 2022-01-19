@@ -7,6 +7,9 @@ vim.cmd [[
         autocmd!
         autocmd TextYankPost * lua vim.highlight.on_yank {on_visual = false}
         autocmd BufWritePre * lua require('utils').strip_trailing_whitespaces()
+
+        autocmd FileType qf nnoremap <buffer> <c-v> <c-w><cr><c-w>L
+        autocmd FileType qf nnoremap <buffer> <c-x> <c-w><cr><c-w>H
     augroup end
 
     augroup ConfigUpdate

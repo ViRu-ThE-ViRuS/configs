@@ -113,8 +113,13 @@ _G.packer_plugins = {
     url = "https://github.com/hrsh7th/cmp-path"
   },
   ["diffview.nvim"] = {
-    loaded = true,
-    path = "/Users/viraat-chandra/.local/share/nvim/site/pack/packer/start/diffview.nvim",
+    config = { "require('plug-config/diffview')" },
+    load_after = {
+      ["vim-fugitive"] = true
+    },
+    loaded = false,
+    needs_bufread = false,
+    path = "/Users/viraat-chandra/.local/share/nvim/site/pack/packer/opt/diffview.nvim",
     url = "https://github.com/sindrets/diffview.nvim"
   },
   everforest = {
@@ -188,10 +193,20 @@ _G.packer_plugins = {
     path = "/Users/viraat-chandra/.local/share/nvim/site/pack/packer/start/neovim",
     url = "https://github.com/rose-pine/neovim"
   },
+  ["nimda.vim"] = {
+    loaded = true,
+    path = "/Users/viraat-chandra/.local/share/nvim/site/pack/packer/start/nimda.vim",
+    url = "https://github.com/ozkanonur/nimda.vim"
+  },
   ["null-ls.nvim"] = {
     loaded = true,
     path = "/Users/viraat-chandra/.local/share/nvim/site/pack/packer/start/null-ls.nvim",
     url = "https://github.com/jose-elias-alvarez/null-ls.nvim"
+  },
+  ["nv-themes"] = {
+    loaded = true,
+    path = "/Users/viraat-chandra/.local/share/nvim/site/pack/packer/start/nv-themes",
+    url = "https://github.com/fedepujol/nv-themes"
   },
   nvim = {
     loaded = true,
@@ -209,7 +224,7 @@ _G.packer_plugins = {
     url = "https://github.com/akinsho/nvim-bufferline.lua"
   },
   ["nvim-cmp"] = {
-    after = { "cmp-path", "cmp-cmdline", "cmp-buffer" },
+    after = { "cmp-cmdline", "cmp-path", "cmp-buffer" },
     config = { "require('plug-config/completion')" },
     load_after = {
       LuaSnip = true,
@@ -258,6 +273,11 @@ _G.packer_plugins = {
     path = "/Users/viraat-chandra/.local/share/nvim/site/pack/packer/start/nvim-web-devicons",
     url = "https://github.com/kyazdani42/nvim-web-devicons"
   },
+  ["omni.vim"] = {
+    loaded = true,
+    path = "/Users/viraat-chandra/.local/share/nvim/site/pack/packer/start/omni.vim",
+    url = "https://github.com/yonlu/omni.vim"
+  },
   ["packer.nvim"] = {
     loaded = true,
     path = "/Users/viraat-chandra/.local/share/nvim/site/pack/packer/start/packer.nvim",
@@ -303,6 +323,11 @@ _G.packer_plugins = {
     path = "/Users/viraat-chandra/.local/share/nvim/site/pack/packer/start/tmux.nvim",
     url = "https://github.com/aserowy/tmux.nvim"
   },
+  ["vim-bruin"] = {
+    loaded = true,
+    path = "/Users/viraat-chandra/.local/share/nvim/site/pack/packer/start/vim-bruin",
+    url = "https://git.sr.ht/~romainl/vim-bruin"
+  },
   ["vim-eunuch"] = {
     commands = { "Delete", "Rename" },
     loaded = false,
@@ -312,6 +337,7 @@ _G.packer_plugins = {
     url = "https://github.com/tpope/vim-eunuch"
   },
   ["vim-fugitive"] = {
+    after = { "diffview.nvim" },
     commands = { "G", "Gread" },
     loaded = false,
     needs_bufread = true,
@@ -348,13 +374,13 @@ time([[Defining packer_plugins]], false)
 
 -- Command lazy-loads
 time([[Defining lazy-load commands]], true)
-pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file G lua require("packer.load")({'vim-fugitive'}, { cmd = "G", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
-pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Gread lua require("packer.load")({'vim-fugitive'}, { cmd = "Gread", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
-pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Rename lua require("packer.load")({'vim-eunuch'}, { cmd = "Rename", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Tab lua require("packer.load")({'tabular'}, { cmd = "Tab", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file StartupTime lua require("packer.load")({'startuptime.vim'}, { cmd = "StartupTime", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
-pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Delete lua require("packer.load")({'vim-eunuch'}, { cmd = "Delete", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
+pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Rename lua require("packer.load")({'vim-eunuch'}, { cmd = "Rename", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Vista lua require("packer.load")({'vista.vim'}, { cmd = "Vista", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
+pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Delete lua require("packer.load")({'vim-eunuch'}, { cmd = "Delete", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
+pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file Gread lua require("packer.load")({'vim-fugitive'}, { cmd = "Gread", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
+pcall(vim.cmd, [[command -nargs=* -range -bang -complete=file G lua require("packer.load")({'vim-fugitive'}, { cmd = "G", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args>, mods = "<mods>" }, _G.packer_plugins)]])
 time([[Defining lazy-load commands]], false)
 
 vim.cmd [[augroup packer_load_aucmds]]
@@ -365,8 +391,8 @@ vim.cmd [[au FileType python ++once lua require("packer.load")({'jupyter_ascendi
 time([[Defining lazy-load filetype autocommands]], false)
   -- Event lazy-loads
 time([[Defining lazy-load event autocommands]], true)
-vim.cmd [[au InsertEnter * ++once lua require("packer.load")({'LuaSnip', 'lspkind-nvim'}, { event = "InsertEnter *" }, _G.packer_plugins)]]
 vim.cmd [[au BufEnter * ++once lua require("packer.load")({'pears.nvim'}, { event = "BufEnter *" }, _G.packer_plugins)]]
+vim.cmd [[au InsertEnter * ++once lua require("packer.load")({'lspkind-nvim', 'LuaSnip'}, { event = "InsertEnter *" }, _G.packer_plugins)]]
 vim.cmd [[au BufRead * ++once lua require("packer.load")({'nvim-treesitter'}, { event = "BufRead *" }, _G.packer_plugins)]]
 time([[Defining lazy-load event autocommands]], false)
 vim.cmd("augroup END")

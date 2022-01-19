@@ -21,7 +21,9 @@ return require('packer').startup({function()
     use 'kyazdani42/nvim-web-devicons'
     use 'kyazdani42/nvim-tree.lua'
     use 'akinsho/nvim-bufferline.lua'
-    use 'sindrets/diffview.nvim'
+    use { 'sindrets/diffview.nvim',
+        after = 'vim-fugitive',
+        config = "require('plug-config/diffview')" }
 
     use 'aserowy/tmux.nvim'
     use 'b3nj5m1n/kommentary'
@@ -67,6 +69,10 @@ return require('packer').startup({function()
     use 'Mofiqul/vscode.nvim'
     use 'mrjones2014/lighthaus.nvim'
     use 'rose-pine/neovim'
+    use 'fedepujol/nv-themes'
+    use 'ozkanonur/nimda.vim'
+    use 'yonlu/omni.vim'
+    use 'https://git.sr.ht/~romainl/vim-bruin'
     use 'https://gitlab.com/protesilaos/tempus-themes-vim.git'
 
     use { 'tweekmonster/startuptime.vim', cmd = 'StartupTime' }

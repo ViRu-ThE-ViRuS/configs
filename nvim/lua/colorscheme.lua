@@ -28,10 +28,33 @@ vim.g.vscode_style = "dark"
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme tempus_night ]]
+vim.cmd [[ colorscheme omni ]]
+
+local function set_default_colorscheme()
+    vim.cmd [[
+        colorscheme default
+        highlight VertSplit NONE
+        highlight SignColumn NONE
+        highlight DiffAdd NONE
+        highlight DiffChange NONE
+        highlight DiffDelete NONE
+        highlight ColorColumn guibg=#747578
+        highlight Pmenu gui=italic guifg=#FAFAFA guibg=#19191E
+
+        highlight Identifier gui=bolditalic
+
+        highlight DiagnosticError gui=bolditalic
+        highlight DiagnosticWarn gui=bolditalic
+        highlight DiagnosticInfo gui=bolditalic
+        highlight DiagnosticHint gui=bolditalic
+
+        echo 'my_default'
+    ]]
+end
 
 return {
     preferred = {
+        set_default_colorscheme,
         "nightfly",
         "moonfly",
         "moonlight",
@@ -39,11 +62,13 @@ return {
         "catppuccin",
         "everforest",
         "vscode",
-        "lighthaus",
+        "lighthaus", "lighthaus_dark",
         "rose-pine",
-        "tempus_tempest",
-        "tempus_night",
-        "base16-darkmoss",
-        "base16-gruvbox-dark-hard",
+        "nv-vcdark", "nv-solzdark", "nv-tokyonight",
+        "nimda",
+        "omni",
+        "bruin",
+        "tempus_tempest", "tempus_night",
+        "base16-darkmoss", "base16-gruvbox-dark-hard",
     }
 }

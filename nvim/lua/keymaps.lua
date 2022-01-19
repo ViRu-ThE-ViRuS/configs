@@ -15,16 +15,18 @@ utils.map("n", "-", '"0p')
 utils.map("n", "_", '"0P')
 
 -- quickfix list
-utils.map("n", "[q", "<cmd>cprevious<cr>")
-utils.map("n", "]q", "<cmd>cnext<cr>")
+-- utils.map("n", "[q", "<cmd>cprevious<cr>")
+-- utils.map("n", "]q", "<cmd>cnext<cr>")
+utils.map("n", "[q", "<cmd>try | cprev | catch | clast | catch | endtry<cr>", {silent=true})
+utils.map("n", "]q", "<cmd>try | cnext | catch | cfirst | catch | endtry<cr>", {silent=true})
 
 -- folds
 utils.map("n", "<space>", "za")
 
 -- buffer navigation
-utils.map("n", "<c-w><c-l>", ":cclose<cr> :pclose<cr> :lclose<cr> :tabclose<cr>")
-utils.map("n", "<leader>t", "<cmd>bn<cr>")
+utils.map("n", "<c-w><c-l>", "<cmd>cclose<cr> <cmd>pclose<cr> <cmd>lclose<cr> <cmd>tabclose<cr>", {silent=true})
 utils.map("n", "<leader>o", "<c-^>", {noremap = false})
+utils.map("n", "<leader>t", "<cmd>bn<cr>")
 utils.map("n", "<leader>q", "<cmd>bd!<cr>")
 
 -- buffer resizing
@@ -67,7 +69,6 @@ utils.map("i", "<left>", "<nop>")
 utils.map("i", "<right>", "<nop>")
 
 -- utility functions
--- utils.map("n", "<leader>1", "<c-w>o")
 utils.map("n", "<leader>1", "<cmd>lua require('window').toggle_window()<cr>")
 utils.map("n", "<leader>2", '<cmd>lua require("utils").random_colors()<cr>', {silent = false})
 utils.map("n", "<leader>3", "<cmd>if AutoHighlightToggle()<bar>set hlsearch<bar>endif<cr>")
