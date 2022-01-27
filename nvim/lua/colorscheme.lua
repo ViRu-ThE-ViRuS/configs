@@ -28,7 +28,7 @@ vim.g.vscode_style = "dark"
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme omni ]]
+vim.cmd [[ colorscheme nv-tokyonight ]]
 
 local function set_default_colorscheme()
     vim.cmd [[
@@ -65,10 +65,11 @@ return {
         "lighthaus", "lighthaus_dark",
         "rose-pine",
         "nv-vcdark", "nv-solzdark", "nv-tokyonight",
-        "nimda",
-        "omni",
-        "bruin",
+        "meh",
+        "pencil",
+        "gotham",
+        "jellybeans",
         "tempus_tempest", "tempus_night",
-        "base16-darkmoss", "base16-gruvbox-dark-hard",
+        "base16-darkmoss", "base16-gruvbox-dark-hard", "base16-chalk",
     }
 }

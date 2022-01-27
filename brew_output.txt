@@ -35,4 +35,5 @@ tree-sitter
 unibilium
 universal-ctags
 utf8proc
+watch
 wget

@@ -11,6 +11,7 @@ require('plugins')     -- setup plugins
 require('lsp')         -- setup lsp
 require('statusline')  -- setup statusline
 
+-- NOTE(vir): cannot lazy load these
 require('plug-config/bufferline')
 require('plug-config/signature')
 
@@ -21,13 +22,13 @@ async = vim.loop.new_async(vim.schedule_wrap(function()
     require('keymaps')
     require('autocommands')
 
+    -- instant load
     require('plug-config/fzf')
     require('plug-config/tree')
-
     require('plug-config/gitsigns')
     require('plug-config/tmux')
-    require('plug-config/kommentary')
 
+    -- viml plugins
     require('plug-config/tabular')
     require('plug-config/vista')
 

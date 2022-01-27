@@ -26,8 +26,10 @@ return require('packer').startup({function()
         config = "require('plug-config/diffview')" }
 
     use 'aserowy/tmux.nvim'
-    use 'b3nj5m1n/kommentary'
     use 'lewis6991/gitsigns.nvim'
+    use { 'b3nj5m1n/kommentary',
+        event='BufEnter',
+        config='require("plug-config/kommentary")'}
     use { 'steelsojka/pears.nvim',
         event = 'BufEnter',
         config = "require('plug-config/pears')" }
@@ -70,9 +72,10 @@ return require('packer').startup({function()
     use 'mrjones2014/lighthaus.nvim'
     use 'rose-pine/neovim'
     use 'fedepujol/nv-themes'
-    use 'ozkanonur/nimda.vim'
-    use 'yonlu/omni.vim'
-    use 'https://git.sr.ht/~romainl/vim-bruin'
+    use 'davidosomething/vim-colors-meh'
+    use 'preservim/vim-colors-pencil'
+    use 'whatyouhide/vim-gotham'
+    use 'nanotech/jellybeans.vim'
     use 'https://gitlab.com/protesilaos/tempus-themes-vim.git'
 
     use { 'tweekmonster/startuptime.vim', cmd = 'StartupTime' }

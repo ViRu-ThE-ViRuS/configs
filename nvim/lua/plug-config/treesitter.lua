@@ -13,10 +13,12 @@ require('nvim-treesitter.configs').setup {
             enable = true,
             lookahead = true,
             keymaps = {
+                ['ab'] = '@class.outer',
+                ['ib'] = '@class.inner',
                 ['af'] = '@function.outer',
                 ['if'] = '@function.inner',
-                ['ac'] = '@class.outer',
-                ['ic'] = '@class.inner',
+                ['ac'] = '@conditional.outer',
+                ['ic'] = '@conditional.inner'
             }
         }
     }
