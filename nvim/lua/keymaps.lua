@@ -14,6 +14,12 @@ utils.map("n", "U", "<c-r>")
 utils.map("n", "-", '"0p')
 utils.map("n", "_", '"0P')
 
+-- delete without yanking
+utils.map("n", "x", '"_d', {noremap=false})
+utils.map("n", "X", '"_dd', {noremap=false})
+utils.map("v", "x", '"_d', {noremap=false})
+utils.map("v", "X", '"_dd', {noremap=false})
+
 -- quickfix list
 -- utils.map("n", "[q", "<cmd>cprevious<cr>")
 -- utils.map("n", "]q", "<cmd>cnext<cr>")
@@ -24,10 +30,11 @@ utils.map("n", "]q", "<cmd>try | cnext | catch | cfirst | catch | endtry<cr>", {
 utils.map("n", "<space>", "za")
 
 -- buffer navigation
-utils.map("n", "<c-w><c-l>", "<cmd>cclose<cr> <cmd>pclose<cr> <cmd>lclose<cr> <cmd>tabclose<cr>", {silent=true})
-utils.map("n", "<leader>o", "<c-^>", {noremap = false})
+-- utils.map("n", "<leader>o", "<c-^>", {noremap=false})
+utils.map("n", "<bs>", '<c-^>zz')
 utils.map("n", "<leader>t", "<cmd>bn<cr>")
 utils.map("n", "<leader>q", "<cmd>bd!<cr>")
+utils.map("n", "<c-w><c-l>", "<cmd>cclose<cr> <cmd>pclose<cr> <cmd>lclose<cr> <cmd>tabclose<cr>", {silent=true})
 
 -- buffer resizing
 utils.map("n", "<m-j>", "<cmd>resize +2<cr>")

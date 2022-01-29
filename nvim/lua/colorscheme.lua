@@ -28,7 +28,7 @@ vim.g.vscode_style = "dark"
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme nv-tokyonight ]]
+vim.cmd [[ colorscheme jellybeans ]]
 
 local function set_default_colorscheme()
     vim.cmd [[
@@ -58,8 +58,7 @@ return {
         "nightfly",
         "moonfly",
         "moonlight",
-        "gruvbox-material",
-        "catppuccin",
+        "gruvbox-material", "catppuccin",
         "everforest",
         "vscode",
         "lighthaus", "lighthaus_dark",
@@ -68,6 +67,7 @@ return {
         "meh",
         "pencil",
         "gotham",
+        "pink-moon",
         "jellybeans",
         "tempus_tempest", "tempus_night",
         "base16-darkmoss", "base16-gruvbox-dark-hard", "base16-chalk",

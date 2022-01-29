@@ -1,8 +1,10 @@
 import requests
 
+
 class Test:
     def __init__(self):
-        pass
+        return
+
 
 # hello world
 a = 15
@@ -12,3 +14,4 @@ print(a)
 table = {}
 print(table)
 
+print(requests.get)

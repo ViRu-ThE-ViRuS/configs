@@ -25,6 +25,13 @@ require("fzf-lua").setup({
         }
     },
     fzf_opts = { ['--layout'] = 'default' },
+    previewers = {
+        bat = {
+            cmd = "bat",
+            args = "--style=numbers,changes --color always",
+            theme = 'Coldark-Dark',
+        }
+    },
     files = {
         multiprocess = true,
         cmd = 'rg --files --follow --smart-case --hidden --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache}" 2> /dev/null',

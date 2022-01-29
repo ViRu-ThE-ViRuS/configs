@@ -1,6 +1,7 @@
 alias vim='nvim'
 alias rmd='rm -rf'
-alias cat='bat'
+alias cat='bat --theme=Coldark-Dark'
+alias python='ipython'
 
 set -xg EDITOR                  nvim
 set -xg LANG                    en_US.UTF-8
@@ -46,21 +47,27 @@ function fish_prompt
     set -l target_color 10c891
     set -l ssh_color    1075c8
 
-    echo -sn ' '
+    if not set -q VIRTUAL_ENV
+        echo -sn ' '
+    end
 
     if set -q SSH_TTY
-        echo -sn (set_color -o $ssh_color) '$ '
+        echo -sn (set_color -o $ssh_color) '$'
     else
-        echo -sn (set_color -o $target_color) '$ '
+        echo -sn (set_color -o $target_color) '$'
     end
-    set_color normal
 
     set -l CWD (basename $PWD)
     if [ $CWD != 'viraat-chandra' ]
-        echo -sn (set_color normal) (basename $PWD) ' '
+        echo -sn ' ' (set_color normal) (basename $PWD)
     end
 
-    echo -ns (set_color -o $target_color) '-> '
+    set -l GIT (fish_git_prompt)
+    if [ $GIT ]
+        echo -sn (set_color normal) (fish_git_prompt)
+    end
+
+    echo -ns (set_color -o $target_color) ' -> '
     set_color normal
 end
 
@@ -73,18 +80,18 @@ function vmux --description 'Tmux launch/attach session vir'
 end
 
 function tree --description 'Tree'
-    command tree -C -I 'venv|.git|__pycache__' $argv
+    command tree -C -I 'node_modules|venv|.git|__pycache__' $argv
 end
 
-function vm_ubuntu_start --description 'Start Ubuntu VM (VMWare)'
-    command vmrun -T fusion start "Virtual Machines.localized/Ubuntu 64-bit.vmwarevm/Ubuntu 64-bit.vmx" nogui $argv
-end
-
-function vm_ubuntu_stop --description 'Stop Ubuntu VM (VMWare)'
-    command vmrun -T fusion stop "Virtual Machines.localized/Ubuntu 64-bit.vmwarevm/Ubuntu 64-bit.vmx" soft $argv
-end
-
-function vm_list_running --description 'List Running VMs (VMWare)'
-    command vmrun -T ws list $argv
-end
+# function vm_ubuntu_start --description 'Start Ubuntu VM (VMWare)'
+#     command vmrun -T fusion start "Virtual Machines.localized/Ubuntu 64-bit.vmwarevm/Ubuntu 64-bit.vmx" nogui $argv
+# end
+#
+# function vm_ubuntu_stop --description 'Stop Ubuntu VM (VMWare)'
+#     command vmrun -T fusion stop "Virtual Machines.localized/Ubuntu 64-bit.vmwarevm/Ubuntu 64-bit.vmx" soft $argv
+# end
+#
+# function vm_list_running --description 'List Running VMs (VMWare)'
+#     command vmrun -T ws list $argv
+# end
 

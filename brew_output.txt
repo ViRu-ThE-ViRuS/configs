@@ -6,6 +6,7 @@ cmake
 fish
 fzf
 gettext
+git-delta
 htop
 icu4c
 jansson

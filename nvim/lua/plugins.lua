@@ -75,6 +75,7 @@ return require('packer').startup({function()
     use 'davidosomething/vim-colors-meh'
     use 'preservim/vim-colors-pencil'
     use 'whatyouhide/vim-gotham'
+    use 'sts10/vim-pink-moon'
     use 'nanotech/jellybeans.vim'
     use 'https://gitlab.com/protesilaos/tempus-themes-vim.git'
 
