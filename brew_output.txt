@@ -10,7 +10,6 @@ git-delta
 htop
 icu4c
 jansson
-krb5
 libevent
 libidn2
 libnghttp2
@@ -27,10 +26,10 @@ ninja
 node
 openssl@1.1
 pcre2
-postgresql
-readline
 ripgrep
+rustup-init
 tmux
+transmission-cli
 tree
 tree-sitter
 unibilium

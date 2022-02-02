@@ -20,15 +20,10 @@ set fish_user_paths         $fish_user_paths "/opt/homebrew/opt/llvm/bin"
 set fish_user_paths         $fish_user_paths "/Users/viraat-chandra/Library/Python/3.8/bin"
 set FZF_CTRL_T_OPTS         '--preview "bat --style=numbers --color=always --line-range :500 {}"'
 
-# vm-ubuntu
-# set fish_user_paths          $fish_user_paths /usr/bin
-# set fish_user_paths          $fish_user_paths /usr/local/bin
-# set fish_user_paths          $fish_user_paths ~/.local/bin
-# set FZF_CTRL_T_OPTS          '--preview "batcat --style=numbers --color=always --line-range :500 {}"'
-
-# beast ubuntu
-# set FZF_CTRL_T_OPTS          '--preview "batcat --style=numbers --color=always --line-range :500 {}"'
-# set fish_user_paths          $fish_user_paths ~/.local/bin
+# rust setup
+set -xg CARGO_HOME          ~/.rust/cargo/
+set -xg RUSTUP_HOME         ~/.rust/rustup/
+set fish_user_paths         $fish_user_paths "/Users/viraat-chandra/.rust/cargo/bin/"
 
 function setup_fish_colors
     # set -U fish_greeting   Stars\x20\x3a\x29
@@ -82,16 +77,4 @@ end
 function tree --description 'Tree'
     command tree -C -I 'node_modules|venv|.git|__pycache__' $argv
 end
-
-# function vm_ubuntu_start --description 'Start Ubuntu VM (VMWare)'
-#     command vmrun -T fusion start "Virtual Machines.localized/Ubuntu 64-bit.vmwarevm/Ubuntu 64-bit.vmx" nogui $argv
-# end
-#
-# function vm_ubuntu_stop --description 'Stop Ubuntu VM (VMWare)'
-#     command vmrun -T fusion stop "Virtual Machines.localized/Ubuntu 64-bit.vmwarevm/Ubuntu 64-bit.vmx" soft $argv
-# end
-#
-# function vm_list_running --description 'List Running VMs (VMWare)'
-#     command vmrun -T ws list $argv
-# end
 

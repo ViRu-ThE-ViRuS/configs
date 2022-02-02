@@ -1,5 +1,4 @@
 appcleaner
-cyberduck
 discord
 google-drive
 kitty

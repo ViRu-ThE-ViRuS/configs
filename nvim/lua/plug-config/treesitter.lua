@@ -1,13 +1,10 @@
 require('nvim-treesitter.configs').setup {
-    ensure_installed = {'lua', 'python', 'c', 'cpp', 'java', 'go', 'bash', 'fish', 'cmake', 'make', 'cuda', 'markdown'},
-    highlight = {
-        enable = true,
-        additional_vim_regex_highlighting = false
+    ensure_installed = {
+        'lua', 'python', 'c', 'cpp', 'java', 'go', 'bash', 'fish', 'cmake',
+        'make', 'cuda', 'markdown', 'rust'
     },
-    rainbow = {
-        enable = true,
-        extended_mode = true
-    },
+    highlight = {enable = true, additional_vim_regex_highlighting = false},
+    rainbow = {enable = true, extended_mode = true},
     textobjects = {
         select = {
             enable = true,
