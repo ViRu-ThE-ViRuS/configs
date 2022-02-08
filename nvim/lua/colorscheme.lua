@@ -28,7 +28,7 @@ vim.g.vscode_style = "dark"
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme pink-moon ]]
+vim.cmd [[ colorscheme rose-pine ]]
 
 local function set_default_colorscheme()
     vim.cmd [[
