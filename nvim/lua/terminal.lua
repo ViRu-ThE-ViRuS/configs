@@ -68,8 +68,8 @@ end
 local function set_target_terminal()
     if vim.b.terminal_job_id ~= nil then
         state.target_terminal = {
-            ["job_id"] = vim.b.terminal_job_id,
-            ["buf_nr"] = vim.api.nvim_win_get_buf(0)
+            job_id = vim.b.terminal_job_id,
+            buf_nr = vim.api.nvim_win_get_buf(0)
         }
 
         print(

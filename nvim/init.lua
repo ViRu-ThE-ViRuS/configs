@@ -32,6 +32,9 @@ async = vim.loop.new_async(vim.schedule_wrap(function()
     require('plug-config/tabular')
     require('plug-config/vista')
 
+    -- debugging
+    require('plug-config/dap')
+
     async:close()
 end))
 async:send()

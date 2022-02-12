@@ -157,7 +157,9 @@ StatusLineInactive = function()
 end
 
 vim.cmd [[
-    let statusline_blacklist = ['terminal', 'fugitive', 'vista', 'diagnostics', 'qf', 'fzf', 'gitcommit', 'DiffviewFiles', 'DiffviewFileHistory']
+    let statusline_blacklist = ['terminal', 'fugitive', 'vista', 'diagnostics', 'qf', 'fzf', 'gitcommit',
+                                \ 'DiffviewFiles', 'DiffviewFileHistory',
+                                \ 'dapui_watches', 'dapui_stacks', 'dapui_scopes', 'dapui_breakpoints', 'dap-repl']
 
     augroup StatusLine
         autocmd!
@@ -173,8 +175,16 @@ vim.cmd [[
         autocmd FileType vista setlocal statusline=%!v:lua.StatusLine('VISTA')
         autocmd FileType fugitive setlocal statusline=%!v:lua.StatusLine('Git')
         autocmd FileType gitcommit setlocal statusline=%!v:lua.StatusLine('GitCommit')
+
         autocmd FileType DiffviewFiles set statusline=%!v:lua.StatusLine('DiffViewFiles')
         autocmd FileType DiffviewFileHistory set statusline=%!v:lua.StatusLine('DiffViewFileHistory')
+
+        autocmd FileType dapui_watches setlocal statusline=%!v:lua.StatusLine('Watches')
+        autocmd FileType dapui_stacks setlocal statusline=%!v:lua.StatusLine('Stacks')
+        autocmd FileType dapui_scopes setlocal statusline=%!v:lua.StatusLine('Scopes')
+        autocmd FileType dapui_breakpoints setlocal statusline=%!v:lua.StatusLine('Breaks')
+        autocmd FileType dap-repl setlocal statusline=%!v:lua.StatusLine('Repl')
+
     augroup end
 ]]
 

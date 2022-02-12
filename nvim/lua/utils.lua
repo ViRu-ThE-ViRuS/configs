@@ -8,6 +8,12 @@ local function map(mode, lhs, rhs, opts, buffer_nr)
     else vim.api.nvim_set_keymap(mode, lhs, rhs, options) end
 end
 
+-- remove keymaps
+local function unmap(mode, lhs, buffer_nr)
+   if buffer_nr then vim.api.nvim_buf_del_keymap(buffer_nr, mode, lhs)
+   else vim.api.nvim_del_keymap(mode, lhs) end
+end
+
 -- set qflist and open
 local function qf_populate(lines, mode)
     if mode == nil or type(mode) == 'table' then
@@ -142,6 +148,7 @@ return {
     truncation_limit_l = 160,
 
     map = map,
+    unmap = unmap,
     qf_populate = qf_populate,
     random_colors = random_colors,
     strip_trailing_whitespaces = strip_trailing_whitespaces,

@@ -103,7 +103,7 @@ utils.map("n", "<c-p>f", "<cmd>lua require('fzf-lua').live_grep_native()<cr>")
 
 utils.map("n", "<leader>u", "<cmd>lua require('fzf-lua').lsp_references()<cr>")
 utils.map("n", "<leader>U", "<cmd>lua require('fzf-lua').lsp_document_symbols()<cr>")
-utils.map("n", "<leader>d", "<cmd>lua require('fzf-lua').lsp_definitions({sync = true, jump_to_single_result = true})<cr>")
+utils.map("n", "<leader>d", "<cmd>lua require('fzf-lua').lsp_definitions({sync=true, jump_to_single_result=true})<cr>")
 utils.map("n", "<a-cr>", "<cmd>lua require('fzf-lua').lsp_code_actions()<cr>")
 
 vim.cmd [[ command! Colors lua require('fzf-lua').colorschemes() ]]

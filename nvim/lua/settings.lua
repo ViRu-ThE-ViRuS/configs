@@ -66,9 +66,9 @@ vim.opt.textwidth = 79
 vim.opt.swapfile = false
 vim.opt.undofile = true
 
-vim.opt.tabstop = 4
-vim.opt.softtabstop = 4
-vim.opt.shiftwidth = 4
+vim.opt.tabstop = 2
+vim.opt.softtabstop = 2
+vim.opt.shiftwidth = 2
 vim.opt.expandtab = true
 vim.opt.autoindent = true
 vim.opt.smartindent = true
@@ -103,3 +103,4 @@ local disabled_plugins = {
 for _, plugin in ipairs(disabled_plugins) do
     vim.g['loaded_' .. plugin] = 1
 end
+

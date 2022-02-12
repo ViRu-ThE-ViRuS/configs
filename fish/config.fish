@@ -78,3 +78,7 @@ function tree --description 'Tree'
     command tree -C -I 'node_modules|venv|.git|__pycache__' $argv
 end
 
+function codelldb --description 'launch codelldb with custom config'
+    while sleep 1; ~/.local/codelldb/adapter/codelldb --port 13000; end
+end
+

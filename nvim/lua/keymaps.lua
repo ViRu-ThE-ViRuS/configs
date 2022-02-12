@@ -109,9 +109,9 @@ else
     utils.map("n", "<leader>s", "<cmd>vsp term://bash<cr>")
 end
 
--- coconut oil remaps
-utils.map("i", ",", ",<c-g>u")
-utils.map("i", ".", ".<c-g>u")
-utils.map("i", "!", "!<c-g>u")
-utils.map("i", "?", "?<c-g>u")
+-- coconut oil remaps, messes with my . usage habits
+-- utils.map("i", ",", ",<c-g>u")
+-- utils.map("i", ".", ".<c-g>u")
+-- utils.map("i", "!", "!<c-g>u")
+-- utils.map("i", "?", "?<c-g>u")
 

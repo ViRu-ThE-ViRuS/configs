@@ -57,6 +57,8 @@ return require('packer').startup({function()
     use { 'tpope/vim-eunuch', cmd = {'Delete', 'Rename'} }
     use { 'tpope/vim-fugitive', cmd = {'G', 'Gread'} }
 
+    use 'mfussenegger/nvim-dap'
+    use 'rcarriga/nvim-dap-ui'
     -- use { 'untitled-ai/jupyter_ascending.vim',
     --     ft='python',
     --     config="require('plug-config/ascending')" }
