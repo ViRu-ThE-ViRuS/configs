@@ -69,6 +69,7 @@ return {
         "gotham",
         "pink-moon",
         "jellybeans",
+        "embark",
         "tempus_tempest", "tempus_night",
         "base16-darkmoss", "base16-gruvbox-dark-hard", "base16-chalk",
     }

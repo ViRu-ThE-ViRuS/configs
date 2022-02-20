@@ -10,6 +10,9 @@ require("fzf-lua").setup({
             horizontal = 'right:50%',
             vertical = 'down:50%',
             layout = 'horizontal'
+
+            -- layout = 'flex',
+            -- flip_columns=utils.truncation_limit_s_terminal
         },
         on_create = function()
             vim.opt_local.buflisted = false
@@ -21,7 +24,9 @@ require("fzf-lua").setup({
     keymap = {
         fzf = {
             ['ctrl-a'] = 'select-all',
-            ['ctrl-d'] = 'deselect-all'
+            ['ctrl-d'] = 'deselect-all',
+            ['ctrl-f'] = 'half-page-down',
+            ['ctrl-b'] = 'half-page-up'
         }
     },
     fzf_opts = { ['--layout'] = 'default' },

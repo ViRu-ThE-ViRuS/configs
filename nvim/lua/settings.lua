@@ -7,10 +7,6 @@ vim.g.loaded_perl_provider = 0
 vim.g.loaded_python_provider = 0
 vim.g.python_host_skip_check = 1
 
--- use filetype.nvim
-vim.g.did_load_filetypes = 0
-vim.g.do_filetype_lua = 1
-
 -- setup python path
 vim.g.python3_host_prog = oslib.get_python()
 

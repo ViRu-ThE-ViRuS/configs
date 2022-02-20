@@ -49,7 +49,8 @@ cmp.setup({
         {name = "treesitter"},
         {name = "luasnip"},
         {name = "path"},
-        {name = "buffer", keyword_length = 3}
+        {name = 'rg', keyword_length = 4},
+        -- {name = "buffer", keyword_length = 5}
     },
     experimental = {
         native_menu = false,
@@ -63,16 +64,17 @@ cmp.setup({
         format = require("lspkind").cmp_format({
             with_text = true,
             menu = {
-                nvim_lsp = "[lsp]",
-                treesitter = "[ts]",
-                luasnip = "[snip]",
-                buffer = "[buf]",
-                path = "[path]"
+              nvim_lsp                = "[lsp]",
+              treesitter              = "[ts]",
+              luasnip                 = "[snip]",
+              path                    = "[path]",
+              rg                      = "[rg]",
+              buffer                  = "[buf]"
             }
         })
     }
 })
 
-cmp.setup.cmdline("/", {sources = {{name = "buffer"}}})
-cmp.setup.cmdline(":", {sources = cmp.config.sources({{name = "path"}}, {{name = "cmdline", keyword_length = 3}})})
+cmp.setup.cmdline("/", {sources = cmp.config.sources({{name="buffer"}})})
+cmp.setup.cmdline(":", {sources = cmp.config.sources({{name="path"}}, {{name="cmdline", keyword_length=2}})})
 

@@ -1,39 +1,27 @@
 -- hello my name is viraat chandra and i love to program
 
--- load impatient first
+-- impatient.nvim
 require('impatient')
 require('packer_compiled')
 
--- general setup setup
-require('settings')    -- setup preferences
-require('colorscheme') -- setup colorscheme
-require('plugins')     -- setup plugins
-require('lsp')         -- setup lsp
-require('statusline')  -- setup statusline
+require('settings')
+require('colorscheme')
+require('lsp')
+require('statusline')
 
--- NOTE(vir): cannot lazy load these
-require('plug-config/bufferline')
-require('plug-config/signature')
-
--- plugin configs
--- async: editor feels more responsive (defered execution)
 local async
 async = vim.loop.new_async(vim.schedule_wrap(function()
+    -- plugin configs async: editor feels more responsive (defered execution)
     require('keymaps')
     require('autocommands')
+    require('plugins')
 
-    -- instant load
-    require('plug-config/fzf')
-    require('plug-config/tree')
-    require('plug-config/gitsigns')
+    -- cannot lazy load these cause of "reasons"
+    -- more like i didnt have time to look into why
+    -- this wont work out of the box
     require('plug-config/tmux')
-
-    -- viml plugins
     require('plug-config/tabular')
     require('plug-config/vista')
-
-    -- debugging
-    require('plug-config/dap')
 
     async:close()
 end))

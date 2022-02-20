@@ -13,5 +13,5 @@ print(a)
 
 table = {}
 print(table)
-
 print(requests.get)
+

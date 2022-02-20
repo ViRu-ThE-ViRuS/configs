@@ -184,7 +184,6 @@ vim.cmd [[
         autocmd FileType dapui_scopes setlocal statusline=%!v:lua.StatusLine('Scopes')
         autocmd FileType dapui_breakpoints setlocal statusline=%!v:lua.StatusLine('Breaks')
         autocmd FileType dap-repl setlocal statusline=%!v:lua.StatusLine('Repl')
-
     augroup end
 ]]
 

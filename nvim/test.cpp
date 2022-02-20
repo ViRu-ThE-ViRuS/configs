@@ -5,6 +5,10 @@
 #include <iterator>
 #include <utility>
 #include <vector>
+#include <thread>
+
+void test2(int a, int b, float c) {
+}
 
 int main() {
   std::atomic<int> test;
@@ -13,3 +17,4 @@ int main() {
 
   return 0;
 }
+
