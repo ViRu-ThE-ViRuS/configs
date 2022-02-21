@@ -18,7 +18,7 @@ return require('packer').startup({
         use { 'liuchengxu/vista.vim', cmd = 'Vista' }
         use { 'tpope/vim-eunuch', cmd = {'Delete', 'Rename'} }
         use { 'tpope/vim-fugitive', cmd = {'G', 'Gread'} }
-        use { 'tpope/vim-surround', event = 'InsertEnter' }
+        use { 'machakann/vim-sandwich', event = 'BufRead' }
         use { 'andymass/vim-matchup', after = 'nvim-treesitter' }
 
         use {
@@ -36,18 +36,20 @@ return require('packer').startup({
             config = 'require("plug-config/tree")'
         }
 
+        use { 'sindrets/diffview.nvim', after = 'vim-fugitive', config = 'require("plug-config/diffview")' }
+        use { 'windwp/nvim-autopairs', after = 'nvim-cmp', config = 'require("plug-config/autopairs")' }
         use { 'karb94/neoscroll.nvim', event = 'WinScrolled', config = 'require("plug-config/neoscroll")' }
         use { 'akinsho/nvim-bufferline.lua', event = 'VimEnter', config = 'require("plug-config/bufferline")' }
+        use { 'famiu/bufdelete.nvim', event = 'VimEnter' }
         use { 'b3nj5m1n/kommentary', event = 'BufRead', config = 'require("plug-config/kommentary")' }
-        use { 'windwp/nvim-autopairs', event = 'BufRead', config = 'require("plug-config/autopairs")' }
         use { 'lewis6991/gitsigns.nvim', event = 'BufRead', config = 'require("plug-config/gitsigns")' }
-        use { 'sindrets/diffview.nvim', after = 'vim-fugitive', config = 'require("plug-config/diffview")' }
 
         use {
             'hrsh7th/nvim-cmp',
             requires = {
-                'L3MON4D3/LuaSnip', 'onsails/lspkind-nvim',
-                'hrsh7th/cmp-nvim-lsp',
+                {'L3MON4D3/LuaSnip', before = 'nvim-cmp'},
+                {'onsails/lspkind-nvim', before = 'nvim-cmp'},
+                {'hrsh7th/cmp-nvim-lsp', before = 'nvim-cmp'},
                 {'hrsh7th/cmp-cmdline', after = 'nvim-cmp'},
                 {'lukas-reineke/cmp-rg', after = 'nvim-cmp'},
                 {'hrsh7th/cmp-path', after = 'nvim-cmp'},
@@ -59,7 +61,7 @@ return require('packer').startup({
 
         use {
             'ibhagwan/fzf-lua',
-            requires = { 'vijaymarupudi/nvim-fzf', 'kyazdani42/nvim-web-devicons' },
+            requires = 'kyazdani42/nvim-web-devicons',
             event = 'VimEnter',
             config = 'require("plug-config/fzf")'
         }
@@ -79,21 +81,24 @@ return require('packer').startup({
         use 'bluz71/vim-moonfly-colors'
         use 'shaunsingh/moonlight.nvim'
         use 'sainnhe/gruvbox-material'
+        use 'luisiacc/gruvbox-baby'
         use 'catppuccin/nvim'
         use 'sainnhe/everforest'
         use 'Mofiqul/vscode.nvim'
-        use 'mrjones2014/lighthaus.nvim'
         use 'rose-pine/neovim'
         use 'fedepujol/nv-themes'
         use 'davidosomething/vim-colors-meh'
-        use 'preservim/vim-colors-pencil'
-        use 'whatyouhide/vim-gotham'
         use 'sts10/vim-pink-moon'
         use 'nanotech/jellybeans.vim'
         use 'embark-theme/vim'
+        use 'thepogsupreme/mountain.nvim'
+        use 'heraldofsolace/nisha-vim'
+        use 'ozkanonur/nimda.vim'
+        use 'FrenzyExists/aquarium-vim'
         use 'https://gitlab.com/protesilaos/tempus-themes-vim.git'
 
         use {'tweekmonster/startuptime.vim', cmd = 'StartupTime'}
     end,
     config = { compile_path = vim.fn.stdpath('config') .. '/lua/packer_compiled.lua' }
 })
+

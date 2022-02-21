@@ -1,5 +1,7 @@
 require('nvim-autopairs').setup {
-    fast_wrap = {map = '<m-e>', end_key='L'}
+    check_ts = true,
+    ts_config = {lua = {'string', 'source'}},
+    fast_wrap = {map = '<m-e>', end_key = 'L'}
 }
 
 require('cmp').event:on('confirm_done',

@@ -22,8 +22,10 @@ vim.g.moonflyTerminalColors = 1
 vim.g.moonflyUnderlineMatchParen = 1
 vim.g.moonflyVertSplits = 1
 
+vim.g.gruvbox_baby_background_color = 'dark'
 vim.g.moonlight_borders = true
 vim.g.vscode_style = "dark"
+vim.g.aqua_transparency = 0
 
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
@@ -58,19 +60,24 @@ return {
         "nightfly",
         "moonfly",
         "moonlight",
-        "gruvbox-material", "catppuccin",
+        "gruvbox-material",
+        "gruvbox-baby",
+        "catppuccin",
         "everforest",
         "vscode",
-        "lighthaus", "lighthaus_dark",
         "rose-pine",
         "nv-vcdark", "nv-solzdark", "nv-tokyonight",
         "meh",
-        "pencil",
-        "gotham",
         "pink-moon",
         "jellybeans",
         "embark",
+        "mountain",
+        "nisha",
+        "nimda",
+        "aquarium",
         "tempus_tempest", "tempus_night",
-        "base16-darkmoss", "base16-gruvbox-dark-hard", "base16-chalk",
+        "base16-darkmoss", "base16-chalk",
+        "base16-apprentice", "base16-ashes",
     }
 }
+

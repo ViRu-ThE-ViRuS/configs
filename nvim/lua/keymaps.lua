@@ -31,9 +31,10 @@ utils.map("n", "<space>", "za")
 
 -- buffer navigation
 -- utils.map("n", "<leader>o", "<c-^>", {noremap=false})
+-- utils.map("n", "<leader>q", "<cmd>bd!<cr>")
 utils.map("n", "<bs>", '<c-^>zz')
 utils.map("n", "<leader>t", "<cmd>bn<cr>")
-utils.map("n", "<leader>q", "<cmd>bd!<cr>")
+utils.map("n", "<leader>q", "<cmd>lua require('bufdelete').bufdelete(0, true)<cr>")
 utils.map("n", "<c-w><c-l>", "<cmd>cclose<cr> <cmd>pclose<cr> <cmd>lclose<cr> <cmd>tabclose<cr>", {silent=true})
 
 -- buffer resizing
