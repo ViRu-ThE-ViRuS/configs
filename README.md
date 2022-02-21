@@ -30,7 +30,7 @@ you will need to install lsp(s) manually
 - **cmake**: cmake-language-server
 - **python**: pyright
 - **c/c++**: clangd, clang-format, clang-tidy
-- **general**: null-ls (lua_format, autopep8, prettier, flake8)
+- **general**: null-ls (lua_format, autopep8, prettier, flake8), universal-ctags
 
 ##### DAP
 for my dap setup to work, you will need to install adapters manually
