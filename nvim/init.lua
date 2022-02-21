@@ -1,5 +1,4 @@
 -- hello my name is viraat chandra and i love to program
-
 -- impatient.nvim
 require('impatient')
 require('packer_compiled')
@@ -16,11 +15,7 @@ async = vim.loop.new_async(vim.schedule_wrap(function()
     require('autocommands')
     require('plugins')
 
-    -- cannot lazy load these cause of "reasons"
-    -- more like i didnt have time to look into why
-    -- this wont work out of the box
-    require('plug-config/tmux')
-    require('plug-config/tabular')
+    -- NOTE(vir): load this here, to keep plugins.lua clean
     require('plug-config/vista')
 
     async:close()

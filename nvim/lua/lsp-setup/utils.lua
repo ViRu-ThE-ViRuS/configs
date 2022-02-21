@@ -41,11 +41,6 @@ local lsp_icons = {
     TypeParameter = {icon = "𝙏",    hl = "TSParameter"}
 }
 
--- get lsp icon for kind
-local function get_lsp_icon(kind)
-    return lsp_icons[kind].icon
-end
-
 -- lsp diagnostic list visible?
 local diagnostics_set = {}
 
@@ -185,7 +180,7 @@ local function setup_lsp_icon_highlights()
 end
 
 return {
-    get_lsp_icon = get_lsp_icon,
+    lsp_icons = lsp_icons,
     toggle_diagnostics_list = toggle_diagnostics_list,
     cmd_line_diagnostics = cmd_line_diagnostics,
     reset_tag_state = reset_tag_state,

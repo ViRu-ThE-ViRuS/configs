@@ -1,38 +1,40 @@
 local utils = require('utils')
-local get_lsp_icon = require('lsp-setup/utils').get_lsp_icon
+local lsp_icons = require('lsp-setup/utils').lsp_icons
 
+local table = {
+    file          = lsp_icons['File'].icon,
+    module        = lsp_icons['Module'].icon,
+    namespace     = lsp_icons['Namespace'].icon,
+    package       = lsp_icons['Package'].icon,
+    class         = lsp_icons['Class'].icon,
+    method        = lsp_icons['Method'].icon,
+    property      = lsp_icons['Property'].icon,
+    field         = lsp_icons['Field'].icon,
+    constructor   = lsp_icons['Constructor'].icon,
+    enum          = lsp_icons['Enum'].icon,
+    interface     = lsp_icons['Interface'].icon,
+    ['function']  = lsp_icons['Function'].icon,
+    variable      = lsp_icons['Variable'].icon,
+    constant      = lsp_icons['Constant'].icon,
+    string        = lsp_icons['String'].icon,
+    number        = lsp_icons['Number'].icon,
+    boolean       = lsp_icons['Boolean'].icon,
+    array         = lsp_icons['Array'].icon,
+    object        = lsp_icons['Object'].icon,
+    key           = lsp_icons['Key'].icon,
+    null          = lsp_icons['Null'].icon,
+    enumMember    = lsp_icons['EnumMember'].icon,
+    struct        = lsp_icons['Struct'].icon,
+    event         = lsp_icons['Event'].icon,
+    operator      = lsp_icons['Operator'].icon,
+    member        = lsp_icons['Method'].icon,
+    typeParameter = lsp_icons['TypeParameter'].icon,
+}
+
+vim.g['vista#renderer#icons '] = table
 vim.g.vista_icon_indent = {"╰─▸ ", "├─▸ "}
 vim.g.vista_fold_toggle_icons = {">", "$"}
 vim.g.vista_fzf_preview = {'right:50%'}
 vim.g.vista_disable_statusline = true
-
-vim.cmd('let g:vista#renderer#icons = ' ..
-        '{ "file": "' .. get_lsp_icon('File') ..
-        '", "module": "' ..  get_lsp_icon('Module') ..
-        '", "namespace": "' ..  get_lsp_icon('Namespace') ..
-        '", "package": "' ..  get_lsp_icon('Package') ..
-        '", "class": "' ..  get_lsp_icon('Class') ..
-        '", "method": "' ..  get_lsp_icon('Method') ..
-        '", "property": "' ..  get_lsp_icon('Property') ..
-        '", "field": "' ..  get_lsp_icon('Field') ..
-        '", "constructor": "' ..  get_lsp_icon('Constructor') ..
-        '", "enum": "' ..  get_lsp_icon('Enum') ..
-        '", "interface": "' ..  get_lsp_icon('Interface') ..
-        '", "function": "' ..  get_lsp_icon('Function') ..
-        '", "variable": "' ..  get_lsp_icon('Variable') ..
-        '", "constant": "' ..  get_lsp_icon('Constant') ..
-        '", "string": "' ..  get_lsp_icon('String') ..
-        '", "number": "' ..  get_lsp_icon('Number') ..
-        '", "boolean": "' ..  get_lsp_icon('Boolean') ..
-        '", "array": "' ..  get_lsp_icon('Array') ..
-        '", "object": "' ..  get_lsp_icon('Object') ..
-        '", "key": "' ..  get_lsp_icon('Key') ..
-        '", "null": "' ..  get_lsp_icon('Null') ..
-        '", "enumMember": "' ..  get_lsp_icon('EnumMember') ..
-        '", "struct": "' ..  get_lsp_icon('Struct') ..
-        '", "event": "' ..  get_lsp_icon('Event') ..
-        '", "operator": "' ..  get_lsp_icon('Operator') ..
-        '", "member": "' ..  get_lsp_icon('Method') ..
-        '", "typeParameter": "' ..  get_lsp_icon('TypeParameter') .. '" }')
 
 utils.map('n', '<leader>k', '<cmd>Vista!!<cr>')

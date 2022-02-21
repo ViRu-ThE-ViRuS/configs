@@ -29,6 +29,9 @@ utils.map("n", "]q", "<cmd>try | cnext | catch | cfirst | catch | endtry<cr>", {
 -- folds
 utils.map("n", "<space>", "za")
 
+-- tabular
+utils.map('v', '<leader>=', ':Tab /')
+
 -- buffer navigation
 -- utils.map("n", "<leader>o", "<c-^>", {noremap=false})
 -- utils.map("n", "<leader>q", "<cmd>bd!<cr>")
@@ -61,10 +64,11 @@ utils.map("n", "<leader>cS", '<cmd>lua require("terminal").set_target()<cr>')
 utils.map("n", "<leader>cs", '<cmd>lua require("terminal").toggle_target(false)<cr>')
 
 -- split navigation
-utils.map("n", "<c-k>", "<cmd>wincmd k<cr>")
-utils.map("n", "<c-j>", "<cmd>wincmd j<cr>")
-utils.map("n", "<c-h>", "<cmd>wincmd h<cr>")
-utils.map("n", "<c-l>", "<cmd>wincmd l<cr>")
+-- now using tmux.nvim
+-- utils.map("n", "<c-k>", "<cmd>wincmd k<cr>")
+-- utils.map("n", "<c-j>", "<cmd>wincmd j<cr>")
+-- utils.map("n", "<c-h>", "<cmd>wincmd h<cr>")
+-- utils.map("n", "<c-l>", "<cmd>wincmd l<cr>")
 
 -- hardcore mode
 utils.map("n", "<up>", "<nop>")

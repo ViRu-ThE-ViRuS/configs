@@ -12,7 +12,6 @@ return require('packer').startup({
         use 'nvim-lua/plenary.nvim'
         use 'nathom/filetype.nvim'
         use 'lewis6991/impatient.nvim'
-        use 'aserowy/tmux.nvim'
 
         use { 'godlygeek/tabular', cmd = 'Tab' }
         use { 'liuchengxu/vista.vim', cmd = 'Vista' }
@@ -21,13 +20,13 @@ return require('packer').startup({
         use { 'machakann/vim-sandwich', event = 'BufRead' }
         use { 'andymass/vim-matchup', after = 'nvim-treesitter' }
 
+        use { 'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter' }
         use {
             'nvim-treesitter/nvim-treesitter',
             run = ':TSUpdate',
             event = 'BufRead',
             config = 'require("plug-config/treesitter")'
         }
-        use { 'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter' }
 
         use {
             'kyazdani42/nvim-tree.lua',
@@ -36,13 +35,14 @@ return require('packer').startup({
             config = 'require("plug-config/tree")'
         }
 
-        use { 'sindrets/diffview.nvim', after = 'vim-fugitive', config = 'require("plug-config/diffview")' }
-        use { 'windwp/nvim-autopairs', after = 'nvim-cmp', config = 'require("plug-config/autopairs")' }
-        use { 'karb94/neoscroll.nvim', event = 'WinScrolled', config = 'require("plug-config/neoscroll")' }
-        use { 'akinsho/nvim-bufferline.lua', event = 'VimEnter', config = 'require("plug-config/bufferline")' }
-        use { 'famiu/bufdelete.nvim', event = 'VimEnter' }
+        use { 'famiu/bufdelete.nvim', event = 'BufRead' }
         use { 'b3nj5m1n/kommentary', event = 'BufRead', config = 'require("plug-config/kommentary")' }
         use { 'lewis6991/gitsigns.nvim', event = 'BufRead', config = 'require("plug-config/gitsigns")' }
+        use { 'akinsho/nvim-bufferline.lua', event = 'BufRead', config = 'require("plug-config/bufferline")' }
+        use { 'aserowy/tmux.nvim', event = 'VimEnter', config = 'require("plug-config/tmux")' }
+        use { 'karb94/neoscroll.nvim', event = 'VimEnter', config = 'require("plug-config/neoscroll")' }
+        use { 'sindrets/diffview.nvim', after = 'vim-fugitive', config = 'require("plug-config/diffview")' }
+        use { 'windwp/nvim-autopairs', after = 'nvim-cmp', config = 'require("plug-config/autopairs")' }
 
         use {
             'hrsh7th/nvim-cmp',
@@ -60,22 +60,33 @@ return require('packer').startup({
         }
 
         use {
+            'mfussenegger/nvim-dap',
+            requires = 'rcarriga/nvim-dap-ui',
+            ft = {'c', 'cpp', 'py'},
+            event = 'BufRead',
+            config = 'require("plug-config/dap")'
+        }
+
+        use {
             'ibhagwan/fzf-lua',
             requires = 'kyazdani42/nvim-web-devicons',
             event = 'VimEnter',
             config = 'require("plug-config/fzf")'
         }
 
-        use { 'neovim/nvim-lspconfig', requires = 'jose-elias-alvarez/null-ls.nvim' }
-        use { 'ray-x/lsp_signature.nvim', event = 'BufRead', config = 'require("plug-config/signature")' }
-        -- use { 'untitled-ai/jupyter_ascending.vim', ft='python', config="require('plug-config/ascending')" }
         use {
-            'mfussenegger/nvim-dap',
-            requires = 'rcarriga/nvim-dap-ui',
-            filetypes = {'c', 'cpp', 'py'},
-            event = 'BufRead',
-            config = 'require("plug-config/dap")'
+            'neovim/nvim-lspconfig',
+            requires = {
+                'jose-elias-alvarez/null-ls.nvim',
+                'ray-x/lsp_signature.nvim'
+            }
         }
+
+        -- use {
+        --     'untitled-ai/jupyter_ascending.vim',
+        --     ft='python',
+        --     config="require('plug-config/ascending')"
+        -- }
 
         use 'RRethy/nvim-base16'
         use 'bluz71/vim-nightfly-guicolors'
