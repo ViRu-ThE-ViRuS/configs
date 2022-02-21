@@ -30,7 +30,7 @@ vim.g.aqua_transparency = 0
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme mountain ]]
+vim.cmd [[ colorscheme catppuccin ]]
 
 local function set_default_colorscheme()
     vim.cmd [[
