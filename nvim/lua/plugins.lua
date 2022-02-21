@@ -72,6 +72,7 @@ return require('packer').startup({
         use {
             'mfussenegger/nvim-dap',
             requires = 'rcarriga/nvim-dap-ui',
+            filetypes = {'c', 'cpp', 'py'},
             event = 'BufRead',
             config = 'require("plug-config/dap")'
         }
