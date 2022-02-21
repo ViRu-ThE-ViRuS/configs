@@ -31,10 +31,8 @@ async:send()
 -- so $VIMRUNTIME/syntax/hitest.vim : see colors
 --
 -- project setup:
---  .nvimrc             : nvim setup like venv
---  .rgignore           : ripgrep ignore
 --  .clang-format       : clang-format config
 --  .clang-tidy         : clang-tidy config
---  .pep8               : autopep8 config
+--  .flake8               : autopep8 config
 --  pyrightconfig.json  : pyright config
 

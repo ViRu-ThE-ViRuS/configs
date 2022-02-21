@@ -1,48 +1,55 @@
 # ViRu-ThE-ViRuS
 
-Here are the configurations I use for my dev setups.
-![SS1.jpg](images/SS1.jpg)
+my dev setup :)
+![SS2.jpg](images/SS2.jpg)
 
 ### Setup
-- **TERMINAL**: Kitty [iterm2, alacritty] + TMUX
-- **EDITOR**: Neovim
-- **SHELL**: fish [zsh, bash]
-- **PKG**: brew
-- **MISC**: Tiles (MacOS), fzf, rg, batcat,
+- **TERMINAL**: kitty [ + TMUX ]
+- **EDITOR**: neovim
+- **SHELL**: fish
+- **PKGs**: brew
+- **DE**: tiles (MacOS)
 
 #### Neovim
-my `NeoVim` configuration is heavily customized, and designed to work with the other elements of my env.
-- custom statusline (with info from lsp, git, diagnostics, outline, and more, also handles truncation levels)
-- custom lsp handlers (like qfrename, custom hover rendering)
-- custom terminal setup (keymaps to send commands, toggle terminal, and other tricks)
-- lsp augroups (popups, hovers, signature help etc)
-- features like word-highlight, qf/loclist/diagnostic/outline navigation, buffer management, fzf-tools etc
-- colorscheme and neovim quirks solved
+my config utilises a lot of plugins, and also has custom behaviours i developed
+over the course of using neovim as my primary dev tool. this configuration
+interacts with other elements of my overall dev setup to expose additional
+functionality:
+- custom statusline (with lsp, git, diagnostics, outline, resizing integration)
+- custom lsp handlers (with qf, hover, highlight, navigation handling)
+- custom built in terminal setup (send commands, toggle terminal, run last, etc)
+- utilities like highlight current word, switch bw preferred colorschemes,
+  collect all TODOs, toggle maximise buffer, etc
+
+the config utilises a lot of the new neovim features, so i recommend using
+`neovim HEAD` (or atleast 0.6+)
 
 ##### LSP
 you will need to install lsp(s) manually
 - **lua**: sumneko (${HOME}/.local/lsp/lua-language-server/)
-- **python**: pyright, pylsp
-- **c/c++**: clangd (clang-format)
-- **general**: efm (luafmt, autopep8)
+- **cmake**: cmake-language-server
+- **python**: pyright
+- **c/c++**: clangd, clang-format, clang-tidy
+- **general**: null-ls (lua_format, autopep8, prettier, flake8)
+
+##### DAP
+for my dap setup to work, you will need to install adapters manually
+- **python**: debugpy
+- **c/c++/rust**: codelldb (${HOME}/.local/codelldb/)
 
 ##### Project Setup
 - see colors: `so $VIMRUNTIME/syntax/hitest.vim`
-- **.nvimrc**: nvim setup like venv
-- **.rgignore**: ripgrep ignore
 - **.clang-format**: clang-format config
-- **.pep8**: autopep8 config
+- **.clang-tidy**: clang-tidy config
+- **.flake8**: autopep8/flake8 config
 - **pyrightconfig.json**: pyright config
 
 ### Reproduce
-- run `source update_config.sh` after creating desired config dirs
-- run `source update_repo.sh` after updating local config, and populating repository
+- run `source update_config.sh` to update local config
+- run `source update_repo.sh` to update the repo with latest local config
 
 ### Notes
-- setup terminfo profile using `tic -x ~/.config/tmux/terminfo` for colors and fonts
-- iTerm2 profile configuration is `iterm2/Virus.json`
-- brew list output in `brew_output.txt`
-- setup fonts according to `kitty/kitty.conf`
-- periodically use `brew cleanup --prune 5; brew doctor`
-- periodically glance over unnecessary packages `brew leaves`
-- periodically update brew casks after checking `brew update ; brew upgrade`
+- tmux: setup terminfo profile using `tic -x ~/.config/tmux/terminfo`
+- brew: packages in `brew_output.txt` & `brew_cask_output.txt`
+- kitty: setup fonts according to `kitty/kitty.conf`
+- periodically use `brew cleanup --prune 5; brew autoremove; brew doctor`

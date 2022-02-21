@@ -30,7 +30,7 @@ vim.g.aqua_transparency = 0
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme catppuccin ]]
+vim.cmd [[ colorscheme mountain ]]
 
 local function set_default_colorscheme()
     vim.cmd [[
@@ -66,7 +66,7 @@ return {
         "everforest",
         "vscode",
         "rose-pine",
-        "nv-vcdark", "nv-solzdark", "nv-tokyonight",
+        "nv-vcdark", "nv-solzdark",
         "meh",
         "pink-moon",
         "jellybeans",
@@ -76,7 +76,6 @@ return {
         "nimda",
         "aquarium",
         "tempus_tempest", "tempus_night",
-        "base16-darkmoss", "base16-chalk",
         "base16-apprentice", "base16-ashes",
     }
 }
