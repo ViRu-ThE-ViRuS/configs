@@ -12,7 +12,9 @@ return require('packer').startup({
         use 'nvim-lua/plenary.nvim'
         use 'nathom/filetype.nvim'
         use 'lewis6991/impatient.nvim'
+
         use 'rcarriga/nvim-notify'
+        use 'kyazdani42/nvim-web-devicons'
 
         use { 'godlygeek/tabular', cmd = 'Tab' }
         use { 'liuchengxu/vista.vim', cmd = 'Vista' }
@@ -31,7 +33,6 @@ return require('packer').startup({
 
         use {
             'kyazdani42/nvim-tree.lua',
-            requires = 'kyazdani42/nvim-web-devicons',
             event = 'VimEnter',
             config = 'require("plug-config/tree")'
         }
@@ -70,7 +71,6 @@ return require('packer').startup({
 
         use {
             'ibhagwan/fzf-lua',
-            requires = 'kyazdani42/nvim-web-devicons',
             event = 'VimEnter',
             config = 'require("plug-config/fzf")'
         }
