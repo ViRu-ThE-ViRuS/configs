@@ -30,7 +30,7 @@ vim.g.aqua_transparency = 0
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme catppuccin ]]
+vim.cmd [[ colorscheme meh ]]
 
 return {
     preferred = {
@@ -50,7 +50,6 @@ return {
         "embark",
         "mountain",
         "nisha",
-        "nimda",
         "aquarium",
         "tempus_tempest", "tempus_night",
         "base16-apprentice", "base16-ashes",

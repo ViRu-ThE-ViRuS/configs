@@ -64,12 +64,12 @@ cmp.setup({
         format = require("lspkind").cmp_format({
             with_text = true,
             menu = {
-              nvim_lsp                = "[lsp]",
-              treesitter              = "[ts]",
-              luasnip                 = "[snip]",
-              path                    = "[path]",
-              rg                      = "[rg]",
-              buffer                  = "[buf]"
+              nvim_lsp   = "[lsp]",
+              treesitter = "[ts]",
+              luasnip    = "[snip]",
+              path       = "[path]",
+              rg         = "[rg]",
+              buffer     = "[buf]"
             }
         })
     }

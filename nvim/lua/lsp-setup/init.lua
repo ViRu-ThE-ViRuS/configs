@@ -7,7 +7,7 @@ local on_attach = function(client, buffer_nr)
     -- NOTE(vir): now using nvim-notify
     -- print("[LSP] Active")
     require("notify")(string.format('[LSP] %s\n[CWD] %s', client.name, oslib.get_cwd()), 'info',
-                      {title = '[LSP] Active', timeout = 500})
+                      {title = '[LSP] Active', timeout = 250})
 
     setup_buffer.setup_general_keymaps(client, buffer_nr)
     setup_buffer.setup_independent_keymaps(client, buffer_nr)
@@ -71,7 +71,7 @@ require('null-ls').setup({
     capabilities = capabilities,
     on_attach = function(client, buffer_nr)
         require("notify")(string.format('[LSP] %s\n[CWD] %s', client.name, oslib.get_cwd()), 'info',
-                          {title = '[LSP] Active', timeout = 500})
+                          {title = '[LSP] Active', timeout = 250})
         setup_buffer.setup_independent_keymaps(client, buffer_nr)
     end
 })

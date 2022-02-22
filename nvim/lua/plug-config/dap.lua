@@ -34,6 +34,14 @@ dap.configurations.c = {
 dap.configurations.cpp = dap.configurations.c
 dap.configurations.rust = dap.configurations.cpp
 
+dap.repl.commands = vim.tbl_extend('force', dap.repl.commands, {
+    exit = { 'q', 'exit' },
+    custom_commands = {
+      ['.run_to_cursor'] = dap.run_to_cursor,
+      ['.restart'] = dap.run_last,
+    }
+})
+
 dapui.setup({
     icons = {expanded = "-", collapsed = "$"},
     mappings = {
@@ -56,27 +64,27 @@ dapui.setup({
 })
 
 local function setup_maps()
-    utils.map('n', '<m-d>B', '<cmd>lua require("dap").set_breakpoint(vim.fn.input("breakpoint condition: ")<cr>')
-    utils.map('n', '<m-d><m-1>', '<cmd>lua require("dap").step_over()<cr>')
-    utils.map('n', '<m-d><m-2>', '<cmd>lua require("dap").step_into()<cr>')
-    utils.map('n', '<m-d><m-3>', '<cmd>lua require("dap").step_out()<cr>')
+    utils.map('n', '<m-d>B', '<cmd>lua require("dap").set_breakpoint(vim.fn.input("breakpoint condition: "))<cr>', {}, 0)
+    utils.map('n', '<m-d><m-1>', '<cmd>lua require("dap").step_over()<cr>', {}, 0)
+    utils.map('n', '<m-d><m-2>', '<cmd>lua require("dap").step_into()<cr>', {}, 0)
+    utils.map('n', '<m-d><m-3>', '<cmd>lua require("dap").step_out()<cr>', {}, 0)
     utils.map('n', '<m-d><m-q>', '<cmd>lua require("dap").close()<cr> ' ..
                                  '<cmd>lua require("dap").repl.close()<cr>' ..
                                  '<cmd>lua require("dapui").close()<cr>' ..
-                                 '<cmd>lua require("plug-config/dap").remove_maps()<cr>')
+                                 '<cmd>lua require("plug-config/dap").remove_maps()<cr>', {}, 0)
 
-    utils.map('n', '<m-d>k', '<cmd>lua require("dapui").eval()<cr>')
-    utils.map('n', '<f4>', '<cmd>lua require("dapui").toggle()<cr>')
+    utils.map('n', '<m-d>k', '<cmd>lua require("dapui").eval()<cr>', {}, 0)
+    utils.map('n', '<f4>', '<cmd>lua require("dapui").toggle()<cr>', {}, 0)
 end
 
 local function remove_maps()
-    utils.unmap('n', '<m-d>B')
-    utils.unmap('n', '<m-d><m-1>')
-    utils.unmap('n', '<m-d><m-2>')
-    utils.unmap('n', '<m-d><m-3>')
-    utils.unmap('n', '<m-d><m-q>')
-    utils.unmap('n', '<m-d>k')
-    utils.unmap('n', '<f4>')
+    utils.unmap('n', '<m-d>B', 0)
+    utils.unmap('n', '<m-d><m-1>', 0)
+    utils.unmap('n', '<m-d><m-2>', 0)
+    utils.unmap('n', '<m-d><m-3>', 0)
+    utils.unmap('n', '<m-d><m-q>', 0)
+    utils.unmap('n', '<m-d>k', 0)
+    utils.unmap('n', '<f4>', 0)
 end
 
 local function start_session()
@@ -100,10 +108,14 @@ dap.listeners.after.event_initialized["dapui"] = start_session
 dap.listeners.before.event_terminated["dapui"] = terminate_session
 -- dap.listeners.before.event_exited["dapui"] = terminate_session
 
-vim.fn.sign_define("DapBreakpoint", { text='<>', texthl='LspWarningVirtual' })
+vim.fn.sign_define("DapStopped", { text='=>', texthl='DiagnosticWarn' })
+vim.fn.sign_define("DapBreakpoint", { text='<>', texthl='DiagnosticInfo' })
+vim.fn.sign_define("DapBreakpointRejected", { text='!>', texthl='DiagnosticError' })
+vim.fn.sign_define("DapBreakpointCondition", { text='?>', texthl='DiagnosticInfo' })
+vim.fn.sign_define("DapLogPoint", { text='.>', texthl='DiagnosticInfo' })
 
-utils.map('n', '<m-d>b', '<cmd>lua require("dap").toggle_breakpoint()<cr>')
-utils.map('n', '<f5>', '<cmd>lua require("dap").continue()<cr>')
+utils.map('n', '<m-d>b', '<cmd>lua require("dap").toggle_breakpoint()<cr>', {}, 0)
+utils.map('n', '<f5>', '<cmd>lua require("dap").continue()<cr>', {}, 0)
 
 return { remove_maps = remove_maps, setup_maps = setup_maps }
 

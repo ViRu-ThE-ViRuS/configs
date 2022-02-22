@@ -25,7 +25,7 @@ local function qf_rename()
         if not result or not result.changes then
             require('notify')(string.format('could not perform rename'), 'error', {
                 title = string.format('[lsp] rename: %s -> %s', position_params.oldName, position_params.newName),
-                timeout = 2500
+                timeout = 500
             })
 
             return

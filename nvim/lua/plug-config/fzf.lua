@@ -106,6 +106,7 @@ utils.map("n", "<c-p>z", "<cmd>lua require('fzf-lua').grep({search='TODO'})<cr>"
 utils.map("n", "<c-p>F", "<cmd>lua require('fzf-lua').grep({search=''})<cr>")
 utils.map("n", "<c-p>f", "<cmd>lua require('fzf-lua').live_grep_native()<cr>")
 
+-- NOTE(vir): present even in non-lsp files, consider moving to lsp setup code
 utils.map("n", "<leader>u", "<cmd>lua require('fzf-lua').lsp_references()<cr>")
 utils.map("n", "<leader>U", "<cmd>lua require('fzf-lua').lsp_document_symbols()<cr>")
 utils.map("n", "<leader>d", "<cmd>lua require('fzf-lua').lsp_definitions({sync=true, jump_to_single_result=true})<cr>")

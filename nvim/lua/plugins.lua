@@ -18,7 +18,7 @@ return require('packer').startup({
         use { 'liuchengxu/vista.vim', cmd = 'Vista' }
         use { 'tpope/vim-eunuch', cmd = {'Delete', 'Rename'} }
         use { 'tpope/vim-fugitive', cmd = {'G', 'Gread'} }
-        use { 'machakann/vim-sandwich', event = 'BufRead' }
+        use { 'machakann/vim-sandwich', event = 'BufReadPost' }
         use { 'andymass/vim-matchup', after = 'nvim-treesitter' }
 
         use { 'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter' }
@@ -36,35 +36,35 @@ return require('packer').startup({
             config = 'require("plug-config/tree")'
         }
 
-        use { 'famiu/bufdelete.nvim', event = 'BufRead' }
-        use { 'b3nj5m1n/kommentary', event = 'BufRead', config = 'require("plug-config/kommentary")' }
-        use { 'lewis6991/gitsigns.nvim', event = 'BufRead', config = 'require("plug-config/gitsigns")' }
-        use { 'akinsho/nvim-bufferline.lua', event = 'BufRead', config = 'require("plug-config/bufferline")' }
+        use { 'famiu/bufdelete.nvim', event = 'BufReadPost' }
+        use { 'b3nj5m1n/kommentary', event = 'BufReadPost', config = 'require("plug-config/kommentary")' }
+        use { 'lewis6991/gitsigns.nvim', event = 'BufReadPost', config = 'require("plug-config/gitsigns")' }
+        use { 'akinsho/nvim-bufferline.lua', event = 'BufReadPost', config = 'require("plug-config/bufferline")' }
         use { 'aserowy/tmux.nvim', event = 'VimEnter', config = 'require("plug-config/tmux")' }
-        use { 'karb94/neoscroll.nvim', event = 'VimEnter', config = 'require("plug-config/neoscroll")' }
+        -- use { 'karb94/neoscroll.nvim', event = 'VimEnter', config = 'require("plug-config/neoscroll")' }
         use { 'sindrets/diffview.nvim', after = 'vim-fugitive', config = 'require("plug-config/diffview")' }
         use { 'windwp/nvim-autopairs', after = 'nvim-cmp', config = 'require("plug-config/autopairs")' }
 
         use {
             'hrsh7th/nvim-cmp',
             requires = {
-                {'hrsh7th/cmp-nvim-lsp', before = 'nvim-cmp'},
-                {'onsails/lspkind-nvim', before = 'nvim-cmp'},
+                {'hrsh7th/cmp-nvim-lsp', event = 'BufRead'},
+                {'onsails/lspkind-nvim', event = 'BufRead'},
                 {'L3MON4D3/LuaSnip', after = 'nvim-cmp'},
                 {'hrsh7th/cmp-cmdline', after = 'nvim-cmp'},
                 {'lukas-reineke/cmp-rg', after = 'nvim-cmp'},
                 {'hrsh7th/cmp-path', after = 'nvim-cmp'},
                 {'hrsh7th/cmp-buffer', after = 'nvim-cmp'}
             },
+            after = {'cmp-nvim-lsp', 'lspkind-nvim'},
             event = 'BufRead',
             config = "require('plug-config/completion')"
         }
 
         use {
             'mfussenegger/nvim-dap',
-            requires = 'rcarriga/nvim-dap-ui',
-            ft = {'c', 'cpp', 'py'},
-            event = 'BufRead',
+            requires = {{'rcarriga/nvim-dap-ui', ft = {'c', 'cpp', 'python'}}},
+            ft = {'c', 'cpp', 'python'},
             config = 'require("plug-config/dap")'
         }
 
@@ -77,7 +77,11 @@ return require('packer').startup({
 
         use {
             'neovim/nvim-lspconfig',
-            requires = { 'jose-elias-alvarez/null-ls.nvim', 'ray-x/lsp_signature.nvim' },
+            requires = {
+                {'jose-elias-alvarez/null-ls.nvim', event = 'BufRead'},
+                {'ray-x/lsp_signature.nvim', event = 'BufRead'}
+            },
+            after = {'null-ls.nvim', 'lsp_signature.nvim'},
             event = 'BufRead',
             config = 'require("lsp")'
         }
@@ -105,11 +109,10 @@ return require('packer').startup({
         use 'embark-theme/vim'
         use 'thepogsupreme/mountain.nvim'
         use 'heraldofsolace/nisha-vim'
-        use 'ozkanonur/nimda.vim'
         use 'FrenzyExists/aquarium-vim'
         use 'https://gitlab.com/protesilaos/tempus-themes-vim.git'
 
-        use {'tweekmonster/startuptime.vim', cmd = 'StartupTime'}
+        use { 'tweekmonster/startuptime.vim', cmd = 'StartupTime' }
     end,
     config = { compile_path = vim.fn.stdpath('config') .. '/lua/packer_compiled.lua' }
 })
