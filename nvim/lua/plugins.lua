@@ -12,6 +12,7 @@ return require('packer').startup({
         use 'nvim-lua/plenary.nvim'
         use 'nathom/filetype.nvim'
         use 'lewis6991/impatient.nvim'
+        use 'rcarriga/nvim-notify'
 
         use { 'godlygeek/tabular', cmd = 'Tab' }
         use { 'liuchengxu/vista.vim', cmd = 'Vista' }
@@ -47,9 +48,9 @@ return require('packer').startup({
         use {
             'hrsh7th/nvim-cmp',
             requires = {
-                {'L3MON4D3/LuaSnip', before = 'nvim-cmp'},
-                {'onsails/lspkind-nvim', before = 'nvim-cmp'},
                 {'hrsh7th/cmp-nvim-lsp', before = 'nvim-cmp'},
+                {'onsails/lspkind-nvim', before = 'nvim-cmp'},
+                {'L3MON4D3/LuaSnip', after = 'nvim-cmp'},
                 {'hrsh7th/cmp-cmdline', after = 'nvim-cmp'},
                 {'lukas-reineke/cmp-rg', after = 'nvim-cmp'},
                 {'hrsh7th/cmp-path', after = 'nvim-cmp'},
@@ -76,10 +77,9 @@ return require('packer').startup({
 
         use {
             'neovim/nvim-lspconfig',
-            requires = {
-                'jose-elias-alvarez/null-ls.nvim',
-                'ray-x/lsp_signature.nvim'
-            }
+            requires = { 'jose-elias-alvarez/null-ls.nvim', 'ray-x/lsp_signature.nvim' },
+            event = 'BufRead',
+            config = 'require("lsp")'
         }
 
         -- use {

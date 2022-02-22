@@ -3,8 +3,22 @@ local dapui = require('dapui')
 local utils = require('utils')
 local oslib = require('lib/oslib')
 
-dap.adapters.codelldb = {type = 'server', host = '127.0.0.1', port = 13000}
+-- NOTE(vir): now using nvim-notify
+require("notify")('[DAP] Loaded', 'info', {render = 'minimal', timeout = 500})
+
 dap.adapters.python = {type='executable', command='python3', args={'-m', 'debugpy.adapter'}}
+dap.adapters.codelldb = {type = 'server', host = '127.0.0.1', port = 13000}
+
+dap.configurations.python = {
+    {
+        type = 'python',
+        request = 'launch',
+        program = '${file}',
+        terminal = 'integrated',
+        console = 'integratedTerminal',
+        pythonPath = oslib.get_python(),
+    }
+}
 
 dap.configurations.c = {
     {
@@ -19,17 +33,6 @@ dap.configurations.c = {
 
 dap.configurations.cpp = dap.configurations.c
 dap.configurations.rust = dap.configurations.cpp
-
-dap.configurations.python = {
-    {
-        type = 'python',
-        request = 'launch',
-        program = '${file}',
-        terminal = 'integrated',
-        console = 'integratedTerminal',
-        pythonPath = oslib.get_python(),
-    }
-}
 
 dapui.setup({
     icons = {expanded = "-", collapsed = "$"},
@@ -79,12 +82,18 @@ end
 local function start_session()
     setup_maps()
     dapui.open()
+
+    local info_string = string.format( '[prog] %s', dap.session().config.program)
+    require("notify")(info_string, 'debug', {title = '[DAP] Session Started', timeout = 500})
 end
 
 local function terminate_session()
     remove_maps()
     dapui.close()
     dap.repl.close()
+
+    local info_string = string.format( '[prog] %s', dap.session().config.program)
+    require("notify")(info_string, 'debug', {title = '[DAP] Session Terminated', timeout = 500})
 end
 
 dap.listeners.after.event_initialized["dapui"] = start_session
@@ -97,3 +106,4 @@ utils.map('n', '<m-d>b', '<cmd>lua require("dap").toggle_breakpoint()<cr>')
 utils.map('n', '<f5>', '<cmd>lua require("dap").continue()<cr>')
 
 return { remove_maps = remove_maps, setup_maps = setup_maps }
+

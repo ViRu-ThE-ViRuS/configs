@@ -7,8 +7,10 @@ vim.g.loaded_perl_provider = 0
 vim.g.loaded_python_provider = 0
 vim.g.python_host_skip_check = 1
 
--- setup python path
-vim.g.python3_host_prog = oslib.get_python()
+-- -- setup python path
+vim.defer_fn(function()
+    vim.g.python3_host_prog = oslib.get_python()
+end, 0)
 
 -- global options
 vim.opt.shell = "bash"

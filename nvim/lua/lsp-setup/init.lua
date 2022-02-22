@@ -4,8 +4,10 @@ local oslib = require("lib/oslib")
 
 -- setup keymaps and autocommands
 local on_attach = function(client, buffer_nr)
-    print("[LSP] Active")
-    -- print('[LSP] Active : ' .. oslib.get_cwd())
+    -- NOTE(vir): now using nvim-notify
+    -- print("[LSP] Active")
+    require("notify")(string.format('[LSP] %s\n[CWD] %s', client.name, oslib.get_cwd()), 'info',
+                      {title = '[LSP] Active', timeout = 500})
 
     setup_buffer.setup_general_keymaps(client, buffer_nr)
     setup_buffer.setup_independent_keymaps(client, buffer_nr)
@@ -14,8 +16,8 @@ local on_attach = function(client, buffer_nr)
     setup_buffer.setup_highlights()
 end
 
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-capabilities.offsetEncoding = { 'utf-16' }
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp .protocol .make_client_capabilities())
+capabilities.offsetEncoding = {'utf-16'}
 
 -- pyright setup
 lsp["pyright"].setup {
@@ -42,7 +44,12 @@ lsp["sumneko_lua"].setup {
         Lua = {
             runtime = {version = "LuaJIT", path = vim.split(package.path, ";")},
             diagnostics = {globals = {"vim", "use"}},
-            workspace = { library = {[vim.fn.expand("$VIMRUNTIME/lua")] = true, [vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true} }
+            workspace = {
+                library = {
+                    [vim.fn.expand("$VIMRUNTIME/lua")] = true,
+                    [vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true
+                }
+            }
         }
     },
     on_attach = on_attach,
@@ -60,9 +67,11 @@ lsp['cmake'].setup {
 local formatting = require('null-ls').builtins.formatting
 local diagnostics = require('null-ls').builtins.diagnostics
 require('null-ls').setup({
-    sources = { formatting.lua_format, formatting.autopep8, formatting.prettier,
-                diagnostics.flake8  },
+    sources = { formatting.lua_format, formatting.autopep8, formatting.prettier, diagnostics.flake8 },
     capabilities = capabilities,
-    on_attach = function(client, buffer_nr) setup_buffer.setup_independent_keymaps(client, buffer_nr) end
+    on_attach = function(client, buffer_nr)
+        require("notify")(string.format('[LSP] %s\n[CWD] %s', client.name, oslib.get_cwd()), 'info',
+                          {title = '[LSP] Active', timeout = 500})
+        setup_buffer.setup_independent_keymaps(client, buffer_nr)
+    end
 })
-

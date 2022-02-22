@@ -15,17 +15,26 @@ vim.lsp.handlers['textDocument/hover'] =
     })
 
 -- populate qf list with changes (if multiple files modified)
+-- NOTE(vir): now using nvim-notify
 local function qf_rename()
     local position_params = vim.lsp.util.make_position_params()
-    position_params.newName = vim.fn.input("Rename To> ", vim.fn.expand("<cword>"))
+    position_params.oldName = vim.fn.expand("<cword>")
+    position_params.newName = vim.fn.input("Rename To> ", position_params.oldName)
 
     vim.lsp.buf_request(0, "textDocument/rename", position_params, function(err, result, ...)
-        if not result.changes then return end
+        if not result or not result.changes then
+            require('notify')(string.format('could not perform rename'), 'error', {
+                title = string.format('[lsp] rename: %s -> %s', position_params.oldName, position_params.newName),
+                timeout = 2500
+            })
+
+            return
+        end
+
         vim.lsp.handlers["textDocument/rename"](err, result, ...)
 
-        local entries = {}
-        local num_files = 0
-        local num_updates = 0
+        local notification, entries = '', {}
+        local num_files, num_updates = 0, 0
         for uri, edits in pairs(result.changes) do
             num_files = num_files + 1
             local bufnr = vim.uri_to_bufnr(uri)
@@ -42,10 +51,18 @@ local function qf_rename()
                     text = line
                 })
             end
+
+            local short_uri = string.sub(vim.uri_to_fname(uri), #vim.fn.getcwd() + 2)
+            notification = notification .. string.format('made %d change(s) in %s', #edits, short_uri)
         end
 
+        -- print(string.format("updated %d instance(s) in %d file(s)", num_updates, num_files))
+        require("notify")(notification, 'info', {
+            title = string.format('[lsp] rename: %s -> %s', position_params.oldName, position_params.newName),
+            timeout = 2500
+        })
+
         if num_files > 1 then require("utils").qf_populate(entries, "r") end
-        print(string.format("Updated %d instance(s) in %d file(s)", num_updates, num_files))
     end)
 end
 vim.lsp.buf.rename = qf_rename

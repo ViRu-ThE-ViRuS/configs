@@ -5,12 +5,11 @@ require('packer_compiled')
 
 require('settings')
 require('colorscheme')
-require('lsp')
 require('statusline')
 
 local async
 async = vim.loop.new_async(vim.schedule_wrap(function()
-    -- plugin configs async: editor feels more responsive (defered execution)
+    -- deferred execution makes the editor feel more responsive
     require('keymaps')
     require('autocommands')
     require('plugins')

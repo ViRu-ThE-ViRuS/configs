@@ -1,7 +1,6 @@
 alias vim='nvim'
 alias rmd='rm -rf'
 alias cat='bat --theme=Coldark-Dark'
-alias python='ipython'
 
 set -xg EDITOR                  nvim
 set -xg LANG                    en_US.UTF-8
@@ -66,19 +65,27 @@ function fish_prompt
     set_color normal
 end
 
-function tmux --description 'Tmux multiplexer'
+function tmux --description 'tmux multiplexer'
     command tmux -f ~/.config/tmux/.tmux.conf $argv
 end
 
-function vmux --description 'Tmux launch/attach session vir'
+function vmux --description 'tmux launch/attach session vir'
     command tmux -f ~/.config/tmux/.tmux.conf attach -t vir $argv || tmux -f ~/.config/tmux/.tmux.conf new -s vir $argv
 end
 
-function tree --description 'Tree'
+function tree --description 'tree'
     command tree -C -I 'node_modules|venv|.git|__pycache__' $argv
 end
 
 function codelldb --description 'launch codelldb with custom config'
     while sleep 1; ~/.local/codelldb/adapter/codelldb --port 13000; end
+end
+
+function python --description 'launch python'
+    if command -sq 'ipython'
+        command ipython $argv
+    else
+        command python3 $argv
+    end
 end
 

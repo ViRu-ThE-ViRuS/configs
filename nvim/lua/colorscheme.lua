@@ -32,31 +32,8 @@ vim.opt.background = "dark"
 
 vim.cmd [[ colorscheme catppuccin ]]
 
-local function set_default_colorscheme()
-    vim.cmd [[
-        colorscheme default
-        highlight VertSplit NONE
-        highlight SignColumn NONE
-        highlight DiffAdd NONE
-        highlight DiffChange NONE
-        highlight DiffDelete NONE
-        highlight ColorColumn guibg=#747578
-        highlight Pmenu gui=italic guifg=#FAFAFA guibg=#19191E
-
-        highlight Identifier gui=bolditalic
-
-        highlight DiagnosticError gui=bolditalic
-        highlight DiagnosticWarn gui=bolditalic
-        highlight DiagnosticInfo gui=bolditalic
-        highlight DiagnosticHint gui=bolditalic
-
-        echo 'my_default'
-    ]]
-end
-
 return {
     preferred = {
-        set_default_colorscheme,
         "nightfly",
         "moonfly",
         "moonlight",

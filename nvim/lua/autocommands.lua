@@ -31,14 +31,17 @@ vim.cmd [[
         autocmd TermOpen * setlocal nonumber
     augroup end
 
+    " NOTE(vir): now using nvim-notify
     function! AutoHighlightToggle()
       let @/ = ''
       if exists('#auto_highlight')
         autocmd! auto_highlight
         augroup! auto_highlight
         setl updatetime=5000
-        echo 'highlight current word: off'
-        set nohlsearch
+
+        " echo 'highlight current word: off'
+        lua require('notify')('highlight current word: OFF', 'info', { timeout = 250, render = 'minimal' })
+
         return 0
       else
         augroup auto_highlight
@@ -46,7 +49,10 @@ vim.cmd [[
           autocmd CursorHold * let @/ = '\V\<'.escape(expand('<cword>'), '\').'\>'
         augroup end
         setl updatetime=500
-        echo 'highlight current word: on'
+
+        " echo 'highlight current word: on'
+        lua require('notify')('highlight current word: ON', 'info', { timeout = 250, render = 'minimal' })
+
         return 1
       endif
     endfunction
