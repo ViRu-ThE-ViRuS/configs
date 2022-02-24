@@ -28,6 +28,6 @@ async:send()
 -- project setup:
 --  .clang-format       : clang-format config
 --  .clang-tidy         : clang-tidy config
---  .flake8               : autopep8 config
+--  .flake8             : autopep8 config
 --  pyrightconfig.json  : pyright config
 
