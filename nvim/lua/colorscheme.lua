@@ -30,7 +30,7 @@ vim.g.aqua_transparency = 0
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme tempus_tempest ]]
+vim.cmd [[ colorscheme base16-monokai ]]
 
 return {
     preferred = {
@@ -51,8 +51,10 @@ return {
         "mountain",
         "nisha",
         "aquarium",
+        "saturnite",
         "tempus_tempest", "tempus_night",
         "base16-apprentice", "base16-ashes",
+        "base16-monokai"
     }
 }
 

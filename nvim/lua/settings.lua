@@ -48,6 +48,7 @@ vim.opt.pumblend = 10
 vim.opt.pumheight = 10
 vim.opt.equalalways = true
 vim.opt.wildmode = "full"
+vim.opt.visualbell = false
 
 vim.opt.number = true
 vim.opt.signcolumn = "yes"

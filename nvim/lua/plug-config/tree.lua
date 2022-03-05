@@ -3,17 +3,7 @@ local utils = require('utils')
 vim.g.nvim_tree_indent_markers = 1
 vim.g.nvim_tree_add_trailing = 1
 vim.g.nvim_tree_group_empty = 1
-
-vim.g.nvim_tree_window_picker_exclude = {
-    filetype = { 'packer', 'qf', 'fugitive', 'Outline', 'vista', 'diagnostics'},
-    buftype = { 'terminal' }
-}
-
-vim.g.nvim_tree_show_icons = {
-    git = 1,
-    folders = 1,
-    files = 0
-}
+vim.g.nvim_tree_show_icons = {git = 1, folders = 1, files = 0}
 
 vim.g.nvim_tree_icons = {
     -- folder = {
@@ -23,13 +13,13 @@ vim.g.nvim_tree_icons = {
     -- },
     default = '',
     git = {
-        unstaged  = '~',
-        staged    = '+',
-        unmerged  = '=',
+        unstaged = '~',
+        staged = '+',
+        unmerged = '=',
 
         untracked = '*',
-        deleted   = 'x',
-        ignored   = '-',
+        deleted = 'x',
+        ignored = '-'
         -- renamed   = '->'
     },
     lsp = {
@@ -41,35 +31,44 @@ vim.g.nvim_tree_icons = {
 }
 
 require('nvim-tree').setup({
-    update_focused_file = { enable = true, update_cwd = false },
-    diagnostics = { enable = false },
+    update_focused_file = {enable = true, update_cwd = false},
+    diagnostics = {enable = false},
     filters = {
-        custom = { '*.pyc', '.DS_Store', 'node_modules', '__pycache__', 'venv', '.git' }
+        custom = {
+            '*.pyc', '.DS_Store', 'node_modules', '__pycache__', 'venv', '.git'
+        }
     },
     view = {
         mappings = {
             list = {
-                { key = "<cr>"          , action = "edit" },
-                { key = "o"             , action = "edit" },
-                { key = "<2-leftmouse>" , action = "edit" },
-                { key = "C"             , action = "cd" },
-                { key = "<c-v>"         , action = "vsplit" },
-                { key = "<c-x>"         , action = "split" },
-                { key = "<bs>"          , action = "close_node" },
-                { key = "I"             , action = "toggle_dotfiles" },
-                { key = "R"             , action = "refresh" },
-                { key = "<leader>n"     , action = "create" },
-                { key = "<leader>d"     , action = "remove" },
-                { key = "<leader>r"     , action = "full_rename" },
-                { key = "[c"            , action = "prev_git_item" },
-                { key = "]c"            , action = "next_git_item" },
-                { key = "q"             , action = "close" },
-                { key = "Y"             , action = "copy_absolute_path" }
+                {key = "<cr>", action = "edit"}, {key = "o", action = "edit"},
+                {key = "<2-leftmouse>", action = "edit"},
+                {key = "C", action = "cd"}, {key = "<c-v>", action = "vsplit"},
+                {key = "<c-x>", action = "split"},
+                {key = "<bs>", action = "close_node"},
+                {key = "I", action = "toggle_dotfiles"},
+                {key = "R", action = "refresh"},
+                {key = "<leader>n", action = "create"},
+                {key = "<leader>d", action = "remove"},
+                {key = "<leader>r", action = "full_rename"},
+                {key = "[c", action = "prev_git_item"},
+                {key = "]c", action = "next_git_item"},
+                {key = "q", action = "close"},
+                {key = "Y", action = "copy_absolute_path"}
             }
         }
     },
-    git = { ignore = false }
+    git = {ignore = false},
+    actions = {
+        open_file = {
+            window_pciker = {
+                exclude = {
+                    filetype = {'packer', 'qf', 'fugitive', 'Outline', 'vista', 'diagnostics'},
+                    buftype = {'terminal', 'nofile', 'help'}
+                }
+            }
+        }
+    }
 })
 
 utils.map('n', '<leader>j', '<cmd>NvimTreeToggle<cr>')
-

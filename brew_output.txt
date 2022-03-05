@@ -3,6 +3,7 @@ bdw-gc
 brotli
 c-ares
 ca-certificates
+clang-format
 cmake
 fish
 fzf

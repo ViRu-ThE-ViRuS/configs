@@ -1,34 +1,36 @@
+local utils = require('utils')
+
+vim.api.nvim_create_augroup('Misc', { clear = true })
+vim.api.nvim_create_autocmd('TextYankPost', { group = 'Misc', pattern = '*', callback = function() vim.highlight.on_yank({on_visual=true}) end })
+vim.api.nvim_create_autocmd('BufWritePre', { group = 'Misc', pattern = '*', callback = function() require('utils').strip_trailing_whitespaces() end})
+vim.api.nvim_create_autocmd('FileType', { group = 'Misc', pattern = 'qf', callback = function()
+  utils.map('n', '<c-v>', '<c-w><cr><c-w>L', {}, 0)
+  utils.map('n', '<c-x>', '<c-w><cr><c-w>H', {}, 0)
+end })
+
+vim.api.nvim_create_augroup('UISetup', { clear = true })
+vim.api.nvim_create_autocmd('BufEnter,ColorScheme', { group = 'UISetup', pattern = '*', callback = function()
+  vim.highlight.create('Comment', {cterm='bold,italic', gui='bold,italic'}, false)
+  vim.highlight.create('LineNr', {cterm='NONE', gui='NONE'}, false)
+  -- vim.highlight.create('SignColumn', {cterm='NONE', gui='NONE'}, false)
+end })
+
+-- NOTE(vir): causes stutter
+-- vim.api.nvim_create_autocmd('VimResized', { group = 'UISetup', pattern = '*', command = 'wincmd =' })
+
+vim.api.nvim_create_augroup('TerminalSetup', { clear = true })
+vim.api.nvim_create_autocmd('TermOpen', { group = 'TerminalSetup', pattern = '*', callback = function()
+  vim.opt_local.filetype = 'terminal'
+  vim.opt_local.number = false
+  vim.opt_local.signcolumn = 'no'
+end})
+
 vim.cmd [[
-    " some colorschemes be weird
-    " highlight! link FloatBorder Pmenu
-    " highlight! link LspFloatWinBorder LspFloatWinNormal
-
-    augroup Misc
-        autocmd!
-        autocmd TextYankPost * lua vim.highlight.on_yank {on_visual = false}
-        autocmd BufWritePre * lua require('utils').strip_trailing_whitespaces()
-
-        autocmd FileType qf nnoremap <buffer> <c-v> <c-w><cr><c-w>L
-        autocmd FileType qf nnoremap <buffer> <c-x> <c-w><cr><c-w>H
-    augroup end
-
+    " TODO(vir): do this in lua
     augroup ConfigUpdate
         autocmd!
         autocmd BufWritePost ~/.config/nvim/init.lua source <afile>
         autocmd BufWritePost ~/.config/nvim/lua/*.lua source <afile>
-    augroup end
-
-    augroup UISetup
-        autocmd!
-        autocmd BufEnter,ColorScheme * highlight Comment cterm=bold,italic gui=bold,italic
-        autocmd BufEnter,ColorScheme * highlight LineNr ctermbg=NONE guibg=NONE
-        autocmd BufEnter,ColorScheme * highlight SignColumn ctermbg=NONE guibg=NONE
-    augroup end
-
-    augroup TerminalSetup
-        autocmd!
-        autocmd TermOpen * setlocal filetype=terminal
-        autocmd TermOpen * setlocal nonumber
     augroup end
 
     " NOTE(vir): now using nvim-notify

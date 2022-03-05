@@ -1,6 +1,5 @@
 local utils = require('utils')
 local symbol_config = utils.symbol_config
-local truncation_limit = utils.truncation_limit
 local colors = utils.statusline_colors
 
 -- get the display name for current mode
@@ -14,89 +13,65 @@ end
 local function get_git_status()
     local meta = {}
     local gitsigns_summary = vim.b.gitsigns_status_dict
-
-    if not gitsigns_summary then
-        return ''
-    end
+    if not gitsigns_summary then return '' end
 
     meta['branch'] = gitsigns_summary['head']
     meta['added'] = gitsigns_summary['added']
     meta['modified'] = gitsigns_summary['changed']
     meta['removed'] = gitsigns_summary['removed']
 
-    if utils.is_htruncated(truncation_limit) then
+    if utils.is_htruncated(utils.truncation_limit) then
         return string.format(' %s ', meta['branch'])
-    else
-        return string.format(' %s | +%s ~%s -%s ', meta['branch'], meta['added'], meta['modified'], meta['removed'])
     end
+
+    return string.format(' %s | +%s ~%s -%s ', meta['branch'], meta['added'], meta['modified'], meta['removed'])
 end
 
 -- get current tag name
 local function get_tagname()
     if utils.tag_state.name == nil or
-       utils.is_htruncated(utils.truncation_limit_s) or
-       vim.lsp.buf_get_clients(0) == {} then
-        return ''
-    else
-        return string.format(" [ %s %s ] ", utils.tag_state.icon, utils.tag_state.name)
-    end
+        utils.is_htruncated(utils.truncation_limit_s) or
+        vim.lsp.buf_get_clients(0) == {} then return '' end
+    return string.format(" [ %s %s ] ", utils.tag_state.icon, utils.tag_state.name)
 end
 
 -- get current file name
 local function get_filename()
-    if utils.is_htruncated(truncation_limit) then
-        return ' %t '
-    end
-
+    if utils.is_htruncated(utils.truncation_limit_s) then return ' %t ' end
     return ' %f '
 end
 
 -- get current line/col
-local function get_line_col()
-    return ' %l:%c '
-end
+local function get_line_col() return ' %l:%c ' end
 
 -- get current percentage through file
 local function get_percentage()
-    if utils.is_htruncated(truncation_limit) then
-        return ''
-    else
-        return ' %p%% '
-    end
+    if utils.is_htruncated(utils.truncation_limit) then return '' end
+    return ' %p%% '
 end
 
 -- get current file type
-local function get_filetype()
-    return ' %y '
-end
+local function get_filetype() return ' %y ' end
 
 -- get current file diagnostics
 local function get_diagnostics()
     if #vim.lsp.buf_get_clients(0) == 0 then return '' end
 
     local status_parts = {}
-    local errors = #vim.diagnostic.get(0, {severity = vim.diagnostic.severity.ERROR})
+    local errors = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
 
     if errors > 0 then
         table.insert(status_parts, symbol_config.indicator_error .. symbol_config.indicator_seperator .. errors)
     end
 
-    if not utils.is_htruncated(truncation_limit) then
-        local warnings = #vim.diagnostic.get(0, {severity = vim.diagnostic.severity.WARN})
-        local hints = #vim.diagnostic.get(0, {severity = vim.diagnostic.severity.HINT})
-        local infos = #vim.diagnostic.get(0, {severity = vim.diagnostic.severity.INFO})
+    if not utils.is_htruncated(utils.truncation_limit) then
+        local warnings = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })
+        local hints = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.HINT })
+        local infos = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.INFO })
 
-        if warnings > 0 then
-            table.insert(status_parts, symbol_config.indicator_warning .. symbol_config.indicator_seperator .. warnings)
-        end
-
-        if infos > 0 then
-            table.insert(status_parts, symbol_config.indicator_info .. symbol_config.indicator_seperator .. infos)
-        end
-
-        if hints > 0 then
-            table.insert(status_parts, symbol_config.indicator_hint .. symbol_config.indicator_seperator .. hints)
-        end
+        if warnings > 0 then table.insert(status_parts, symbol_config.indicator_warning .. symbol_config.indicator_seperator .. warnings) end
+        if infos > 0 then table.insert(status_parts, symbol_config.indicator_info .. symbol_config.indicator_seperator .. infos) end
+        if hints > 0 then table.insert(status_parts, symbol_config.indicator_hint .. symbol_config.indicator_seperator .. hints) end
     end
 
     local status_diagnostics = vim.trim(table.concat(status_parts, ' '))
@@ -136,26 +111,22 @@ local function statusline_normal()
     local filetype = colors.filetype .. get_filetype()
 
     return table.concat({
-        colors.active, mode, git, diagnostics, truncator, filename, colors.inactive,
-        '%=% ',
-        tagname, line_col, percentage,  filetype, colors.inactive
+        colors.active, mode, git, diagnostics, truncator, filename,
+        colors.inactive, '%=% ', tagname, line_col, percentage, filetype,
+        colors.inactive
     })
 end
 
 -- generate statusline
 StatusLine = function(mode)
-    if mode then
-        return statusline_special(mode)
-    end
-
+    if mode then return statusline_special(mode) end
     return statusline_normal()
 end
 
 -- generate inactive statusline
-StatusLineInactive = function()
-    return statusline_inactive()
-end
+StatusLineInactive = function() return statusline_inactive() end
 
+-- NOTE(vir): consider moving to lua
 vim.cmd [[
     let statusline_blacklist = ['terminal', 'fugitive', 'vista', 'diagnostics', 'qf', 'fzf', 'gitcommit',
                                 \ 'DiffviewFiles', 'DiffviewFileHistory',
@@ -187,8 +158,4 @@ vim.cmd [[
     augroup end
 ]]
 
-return {
-    StatusLine = StatusLine,
-    StatusLineInactive = StatusLineInactive
-}
-
+return {StatusLine = StatusLine, StatusLineInactive = StatusLineInactive}

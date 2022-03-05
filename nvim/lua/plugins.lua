@@ -13,13 +13,14 @@ return require('packer').startup({
         use 'nathom/filetype.nvim'
         use 'lewis6991/impatient.nvim'
 
-        use 'rcarriga/nvim-notify'
         use 'kyazdani42/nvim-web-devicons'
+        use { 'rcarriga/nvim-notify', event = 'VimEnter', config = 'require("plug-config/notifications")'}
+        -- use { 'karb94/neoscroll.nvim', event = 'VimEnter', config = 'require("plug-config/neoscroll")' }
 
         use { 'godlygeek/tabular', cmd = 'Tab' }
         use { 'liuchengxu/vista.vim', cmd = 'Vista' }
         use { 'tpope/vim-eunuch', cmd = {'Delete', 'Rename'} }
-        use { 'tpope/vim-fugitive', cmd = {'G', 'Gread'} }
+        use { 'tpope/vim-fugitive', cmd = {'G', 'Gread', 'GcLog'} }
         use { 'machakann/vim-sandwich', event = 'BufReadPost' }
         use { 'andymass/vim-matchup', after = 'nvim-treesitter' }
 
@@ -42,7 +43,6 @@ return require('packer').startup({
         use { 'lewis6991/gitsigns.nvim', event = 'BufReadPost', config = 'require("plug-config/gitsigns")' }
         use { 'akinsho/nvim-bufferline.lua', event = 'BufReadPost', config = 'require("plug-config/bufferline")' }
         use { 'aserowy/tmux.nvim', event = 'VimEnter', config = 'require("plug-config/tmux")' }
-        -- use { 'karb94/neoscroll.nvim', event = 'VimEnter', config = 'require("plug-config/neoscroll")' }
         use { 'sindrets/diffview.nvim', after = 'vim-fugitive', config = 'require("plug-config/diffview")' }
         use { 'windwp/nvim-autopairs', after = 'nvim-cmp', config = 'require("plug-config/autopairs")' }
 
@@ -110,6 +110,7 @@ return require('packer').startup({
         use 'thepogsupreme/mountain.nvim'
         use 'heraldofsolace/nisha-vim'
         use 'FrenzyExists/aquarium-vim'
+        use 'habamax/vim-saturnite'
         use 'https://gitlab.com/protesilaos/tempus-themes-vim.git'
 
         use { 'tweekmonster/startuptime.vim', cmd = 'StartupTime' }

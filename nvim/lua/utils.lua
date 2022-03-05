@@ -4,26 +4,29 @@ local core = require('lib/core')
 local function map(mode, lhs, rhs, opts, buffer_nr)
     local options = { noremap = true }
     if opts then options = vim.tbl_extend('force', options, opts) end
-    if buffer_nr then vim.api.nvim_buf_set_keymap(buffer_nr, mode, lhs, rhs, options)
-    else vim.api.nvim_set_keymap(mode, lhs, rhs, options) end
+    if buffer_nr then options['buffer'] = buffer_nr end
+
+    -- if buffer_nr then vim.api.nvim_buf_set_keymap(buffer_nr, mode, lhs, rhs, options)
+    -- else vim.api.nvim_set_keymap(mode, lhs, rhs, options) end
+
+    vim.keymap.set(mode, lhs, rhs, options)
 end
 
 -- remove keymaps
 local function unmap(mode, lhs, buffer_nr)
-   if buffer_nr then vim.api.nvim_buf_del_keymap(buffer_nr, mode, lhs)
-   else vim.api.nvim_del_keymap(mode, lhs) end
+    -- if buffer_nr then vim.api.nvim_buf_del_keymap(buffer_nr, mode, lhs)
+    -- else vim.api.nvim_del_keymap(mode, lhs) end
+
+    local options = {}
+    if buffer_nr then options['buffer'] = buffer_nr end
+    vim.keymap.del(mode, lhs, options)
 end
 
 -- set qflist and open
 local function qf_populate(lines, mode)
     if mode == nil or type(mode) == 'table' then
         lines = core.foreach(lines, function(item)
-            return {
-                filename = item,
-                lnum = 1,
-                col = 1,
-                text = item
-            }
+            return { filename = item, lnum = 1, col = 1, text = item }
         end)
         mode = "r"
     end
@@ -34,7 +37,7 @@ local function qf_populate(lines, mode)
         copen
         setlocal nobuflisted
         setlocal number
-        setlocal signcolumn=no
+        setlocal signcolumn=yes
         setlocal bufhidden=wipe
         wincmd p
     ]]
@@ -62,16 +65,26 @@ local function strip_trailing_whitespaces()
     vim.api.nvim_win_set_cursor(0, cursor)
 end
 
+-- flash cursorline
+-- NOTE(vir): this gets "stuck" in new color
+local function flash_cursorline()
+    local current = vim.api.nvim_get_hl_by_name("CursorLine", true)
+    local target = vim.api.nvim_get_hl_by_name("IncSearch", true)
+
+    vim.api.nvim_set_hl(0, "CursorLine", target)
+    vim.defer_fn(function() vim.api.nvim_set_hl(0, "CursorLine", current) end, 200)
+end
+
 -- is buffer horizontally truncated
 local function is_htruncated(width)
-  local current_width = vim.api.nvim_win_get_width(0)
-  return current_width < width
+    local current_width = vim.api.nvim_win_get_width(0)
+    return current_width < width
 end
 
 -- is buffer vertical truncated
 local function is_vtruncated(height)
-  local current_height = vim.api.nvim_win_get_height(0)
-  return current_height < height
+    local current_height = vim.api.nvim_win_get_height(0)
+    return current_height < height
 end
 
 -- diagnostics symbol config
@@ -152,6 +165,7 @@ return {
     qf_populate = qf_populate,
     random_colors = random_colors,
     strip_trailing_whitespaces = strip_trailing_whitespaces,
+    flash_cursorline = flash_cursorline,
     is_htruncated = is_htruncated,
     is_vtruncated = is_vtruncated,
 
@@ -161,3 +175,4 @@ return {
     tag_state = tag_state,
     run_config = run_config
 }
+

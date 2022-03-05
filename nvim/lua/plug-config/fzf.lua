@@ -6,13 +6,13 @@ require("fzf-lua").setup({
         split = 'belowright new',
         fullscreen = false,
         preview = {
-            default = 'bat_native',
+            default = 'bat',
             horizontal = 'right:50%',
-            vertical = 'down:50%',
-            layout = 'horizontal'
+            vertical = 'up:50%',
+            -- layout = 'horizontal',
 
-            -- layout = 'flex',
-            -- flip_columns=utils.truncation_limit_s_terminal
+            layout = 'flex',
+            flip_columns=utils.truncation_limit_s_terminal
         },
         on_create = function()
             vim.opt_local.buflisted = false
@@ -21,6 +21,7 @@ require("fzf-lua").setup({
             -- vim.opt_local.statusline = require('statusline').StatusLine('FZF')
         end
     },
+    fzf_opts = { ['--layout'] = 'default' },
     keymap = {
         fzf = {
             ['ctrl-a'] = 'select-all',
@@ -29,7 +30,19 @@ require("fzf-lua").setup({
             ['ctrl-b'] = 'half-page-up'
         }
     },
-    fzf_opts = { ['--layout'] = 'default' },
+    actions = {
+        files = {
+            ['default'] = actions.file_edit,
+            ['ctrl-x'] = actions.file_split,
+            ['ctrl-v'] = actions.file_vsplit,
+            ['ctrl-q'] = require('utils').qf_populate
+        },
+    buffers = {
+            ['default'] = actions.buf_edit,
+            ['ctrl-x'] = actions.buf_split,
+            ['ctrl-v'] = actions.buf_vsplit,
+        }
+    },
     previewers = {
         bat = {
             cmd = "bat",
@@ -38,25 +51,7 @@ require("fzf-lua").setup({
         }
     },
     files = {
-        multiprocess = true,
         cmd = 'rg --files --follow --smart-case --hidden --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache}" 2> /dev/null',
-        actions = {
-            ['default'] = actions.file_edit,
-            ['ctrl-x'] = actions.file_split,
-            ['ctrl-v'] = actions.file_vsplit,
-            ['ctrl-q'] = require('utils').qf_populate
-        }
-    },
-    git = {
-        files = {
-            multiprocess = true,
-            actions = {
-                ['default'] = actions.file_edit,
-                ['ctrl-x'] = actions.file_split,
-                ['ctrl-v'] = actions.file_vsplit,
-                ['ctrl-q'] = require('utils').qf_populate
-            }
-        }
     },
     buffers = {
         actions = {
@@ -68,22 +63,10 @@ require("fzf-lua").setup({
     },
     grep = {
         rg_opts = "--hidden --column --line-number --no-heading --color=always --smart-case -g '!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache}'",
-        experimental = false,
-        multiprocess = true,
-        actions = {
-            ['default'] = actions.file_edit,
-            ['ctrl-x'] = actions.file_split,
-            ['ctrl-v'] = actions.file_vsplit,
-            ['ctrl-q'] = require('lib/misc').fzf_to_qf
-        }
+        actions = { ['ctrl-q'] = require('lib/misc').fzf_to_qf }
     },
     lsp = {
-        actions = {
-            ['default'] = actions.file_edit,
-            ['ctrl-x'] = actions.file_split,
-            ['ctrl-v'] = actions.file_vsplit,
-            ['ctrl-q'] = require('lib/misc').fzf_to_qf
-        },
+        actions = { ['ctrl-q'] = require('lib/misc').fzf_to_qf },
         icons = {
             ['Error'] = { icon = utils.symbol_config.indicator_error, color = 'red' },
             ['Warning'] = { icon = utils.symbol_config.indicator_warning, color = 'yellow' },

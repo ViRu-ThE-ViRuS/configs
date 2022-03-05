@@ -29,9 +29,6 @@ utils.map("n", "]q", "<cmd>try | cnext | catch | cfirst | catch | endtry<cr>", {
 -- folds
 utils.map("n", "<space>", "za")
 
--- tabular
-utils.map('v', '<leader>=', ':Tab /')
-
 -- buffer navigation
 -- utils.map("n", "<leader>o", "<c-^>", {noremap=false})
 -- utils.map("n", "<leader>q", "<cmd>bd!<cr>")
@@ -114,10 +111,20 @@ else
     utils.map("n", "<leader>s", "<cmd>vsp term://bash<cr>")
 end
 
+-- tabular
+utils.map('v', '<leader>=', ':Tab /')
+
+-- fugitive
+utils.map('n', '<leader>gd', '<cmd>G difftool<cr>')
+
 -- coconut oil remaps
 -- messes with my . usage habits
 -- utils.map("i", ",", ",<c-g>u")
 -- utils.map("i", ".", ".<c-g>u")
 -- utils.map("i", "!", "!<c-g>u")
 -- utils.map("i", "?", "?<c-g>u")
+
+-- flash cursorline
+-- utils.map('n', '<c-o>', '<c-o>zv<cmd>lua require("utils").flash_cursorline()<cr>', { silent = true })
+-- utils.map('n', '<c-i>', '<c-i>zv<cmd>lua require("utils").flash_cursorline()<cr>', { silent = true })
 

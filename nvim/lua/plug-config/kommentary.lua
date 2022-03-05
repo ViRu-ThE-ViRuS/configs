@@ -1,7 +1,13 @@
 local utils = require('utils')
+local kommentary = require('kommentary.config')
 
-require('kommentary.config').configure_language("default", {
+kommentary.configure_language("default", {
     prefer_single_line_comments = true,
+})
+
+kommentary.configure_language("asm", {
+    single_line_comment_string = ';',
+    multi_line_comment_strings = false
 })
 
 vim.g.kommentary_create_default_mappings = false
