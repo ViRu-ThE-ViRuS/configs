@@ -22,7 +22,7 @@ vim.g.moonflyTerminalColors = 1
 vim.g.moonflyUnderlineMatchParen = 1
 vim.g.moonflyVertSplits = 1
 
-vim.g.gruvbox_baby_background_color = 'dark'
+vim.g.gruvbox_baby_background_color = 'medium'
 vim.g.moonlight_borders = true
 vim.g.vscode_style = "dark"
 vim.g.aqua_transparency = 0
@@ -30,7 +30,7 @@ vim.g.aqua_transparency = 0
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme base16-monokai ]]
+vim.cmd [[ colorscheme vscode ]]
 
 return {
     preferred = {

@@ -72,6 +72,9 @@ vim.opt.expandtab = true
 vim.opt.autoindent = true
 vim.opt.smartindent = true
 
+-- vim.opt.exrc = true
+-- vim.opt.secure = true
+
 vim.opt.undodir = oslib.get_homedir() .. "/.config/undodir/"
 vim.opt.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20'
 
