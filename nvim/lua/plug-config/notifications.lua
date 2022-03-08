@@ -1,7 +1,7 @@
 local symbol_config = require('utils').symbol_config
 require('notify').setup({
     stages = 'fade',
-    timeout = 500,
+    timeout = 250,
     icons = {
         ERROR = symbol_config.indicator_error,
         WARN  = symbol_config.indicator_warning,

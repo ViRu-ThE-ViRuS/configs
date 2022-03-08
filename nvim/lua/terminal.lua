@@ -7,7 +7,7 @@ local state = utils.run_config
 local function toggle_target(open)
     if state.target_terminal == nil then
         -- print("target_terminal not set")
-        require('notify')('target_terminal not set', 'warn', { timeout = 250, render = 'minimal' })
+        require('notify')('target_terminal not set', 'warn', { render = 'minimal' })
         return
     end
 
@@ -17,7 +17,7 @@ local function toggle_target(open)
         if not open then
             if not pcall(vim.api.nvim_win_close, target_winid, false) then
                 -- print("target_terminal exited, resetting state")
-                require('notify')('target_terminal exited, resetting state', 'debug', { timeout = 250, render = 'minimal' })
+                require('notify')('target_terminal exited, resetting state', 'debug', { render = 'minimal' })
                 state.target_terminal = nil
             end
         end
@@ -32,7 +32,7 @@ local function toggle_target(open)
 
     if not pcall(vim.cmd, split_dir .. "split #" .. state.target_terminal.buf_nr) then
         -- print("target_terminal exited, resetting state")
-        require('notify')('target_terminal exited, resetting state', 'debug', { timeout = 250, render = 'minimal' })
+        require('notify')('target_terminal exited, resetting state', 'debug', { render = 'minimal' })
         state.target_terminal = nil
     end
 end
@@ -54,18 +54,18 @@ local function send_to_target(payload, repeat_last)
             end
 
             -- print("target_terminal exited, resetting state")
-            require('notify')('target_terminal exited, resetting state', 'debug', { timeout = 250, render = 'minimal' })
+            require('notify')('target_terminal exited, resetting state', 'debug', { render = 'minimal' })
             state.target_terminal = nil
 
             return
         else
             -- print("target_terminal does not exist, resetting state")
-            require('notify')('target_terminal does not exist, resetting state', 'debug', { timeout = 250, render = 'minimal' })
+            require('notify')('target_terminal does not exist, resetting state', 'debug', { render = 'minimal' })
             state.target_terminal = nil
         end
     else
         -- print("target_terminal not set")
-        require('notify')('target_terminal not set', 'warn', { timeout = 250, render = 'minimal' })
+        require('notify')('target_terminal not set', 'warn', { render = 'minimal' })
     end
 end
 
@@ -79,10 +79,10 @@ local function set_target_terminal()
 
         -- print(string.format("target_terminal set to: { job_id: %s, buf_nr: %s }", state.target_terminal.job_id, state.target_terminal.buf_nr))
         require('notify')(string.format("target_terminal set to: { job_id: %s, buf_nr: %s }", state.target_terminal.job_id, state.target_terminal.buf_nr),
-                          'info', { timeout = 250, render = 'minimal' })
+                          'info', { render = 'minimal' })
     else
         -- print("target_terminal not set")
-        require('notify')('target_terminal not set', 'warn', { timeout = 250, render = 'minimal' })
+        require('notify')('target_terminal not set', 'warn', { render = 'minimal' })
     end
 end
 
@@ -109,7 +109,7 @@ local function run_target_command()
         send_to_target(state.target_command, false)
     else
         -- print("target_command not set")
-        require('notify')('target_terminal not set', 'warn', { timeout = 250, render = 'minimal' })
+        require('notify')('target_terminal not set', 'warn', { render = 'minimal' })
     end
 end
 

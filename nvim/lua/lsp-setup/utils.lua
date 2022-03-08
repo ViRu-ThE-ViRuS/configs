@@ -48,7 +48,7 @@ local function toggle_diagnostics_list()
     local current_buf = vim.api.nvim_get_current_buf()
 
     if not diagnostics_set[current_buf] then
-        vim.diagnostic.setloclist()
+        vim.diagnostic.setqflist()
         diagnostics_set[current_buf] = true
 
         vim.opt_local.buflisted = false
@@ -62,7 +62,7 @@ local function toggle_diagnostics_list()
         vim.cmd [[ wincmd p ]]
     else
         diagnostics_set[current_buf] = false
-        vim.cmd [[ lclose ]]
+        vim.cmd [[ cclose ]]
     end
 end
 

@@ -11,8 +11,8 @@ local function setup_general_keymaps(_, buffer_nr)
     utils.map('n', '<leader>r', '<cmd>lua vim.lsp.buf.rename()<cr>', {silent = true}, buffer_nr)
     utils.map('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', {silent = true}, buffer_nr)
 
-    utils.map('n', '[e', '<cmd>lua vim.diagnostic.goto_prev({ float = { border = "rounded", focusable = false } })<cr>', {silent = true}, buffer_nr)
-    utils.map('n', ']e', '<cmd>lua vim.diagnostic.goto_next({ float = { border = "rounded", focusable = false } })<cr>', {silent = true}, buffer_nr)
+    utils.map('n', '[e', '<cmd>lua vim.diagnostic.goto_prev({ float = true })<cr>', {silent = true}, buffer_nr)
+    utils.map('n', ']e', '<cmd>lua vim.diagnostic.goto_next({ float = true })<cr>', {silent = true}, buffer_nr)
     utils.map('n', '<leader>e', '<cmd>lua require("lsp-setup/utils").toggle_diagnostics_list()<cr>', {silent = true}, buffer_nr)
 end
 
@@ -47,9 +47,7 @@ local function setup_autocmds(client, _)
     end
 
     vim.api.nvim_create_augroup('LspPopups', { clear = true })
-    vim.api.nvim_create_autocmd('CursorHold', { group = 'LspPopups', pattern = '<buffer>', callback = function()
-      vim.diagnostic.open_float(0, { border = 'rounded', focusable = false, scope = 'line' })
-    end})
+    vim.api.nvim_create_autocmd('CursorHold', { group = 'LspPopups', pattern = '<buffer>', callback = function() vim.diagnostic.open_float(0) end })
 end
 
 -- setup highlights

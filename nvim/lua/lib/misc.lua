@@ -13,7 +13,7 @@ end
 
 -- populate qflist with fzf items
 local fzf_to_qf = function(lines)
-    local items = vim.lsp.util.locations_to_items(core.foreach(lines, fzf_to_locations))
+    local items = vim.lsp.util.locations_to_items(core.foreach(lines, fzf_to_locations), 'utf-8')
     require("utils").qf_populate(items, "r")
 end
 
@@ -38,7 +38,7 @@ local function open_repo_on_github(remote)
     if get_git_root() == nil then
         -- print("not in a git repository")
         require("notify")('not in a git repository', 'error',
-                          {title = 'could not open on github', timeout = 250})
+                          {title = 'could not open on github'})
         return
     end
 
@@ -48,7 +48,7 @@ local function open_repo_on_github(remote)
     if rc ~= 0 then
         -- print(string.format('found invalid remote url: [%s] -> %s', remote, url))
         require("notify")(string.format('found invalid remote url: [%s] -> %s', remote, url),
-                          'error', {title = 'could not open on github', timeout = 250})
+                          'error', {title = 'could not open on github'})
         return
     end
 
@@ -59,8 +59,30 @@ local function open_repo_on_github(remote)
 
     -- print(string.format("opening remote in browser: [%s] -> %s", remote, url))
     require("notify")(string.format("[%s] -> %s", remote, url), 'info',
-                      {title = 'opening remote in browser ', timeout = 250})
+                      {title = 'opening remote in browser '})
 end
+
+-- toggle state, keep track of window ids
+local state = {}
+
+-- toggle current window (maximum <-> original)
+local function toggle_window()
+    if vim.fn.winnr('$') > 1 then
+        local original = vim.fn.win_getid()
+        vim.cmd('tab sp')
+        state[vim.fn.win_getid()] = original
+    else
+        local maximized = vim.fn.win_getid()
+        local original = state[maximized]
+
+        if original ~= nil then
+            vim.cmd('tabclose')
+            vim.fn.win_gotoid(original)
+            state[maximized] = nil
+        end
+    end
+end
+
 
 return {
     fzf_to_locations = fzf_to_locations,
@@ -68,5 +90,6 @@ return {
     strip_fname = strip_fname,
     get_cwd = get_cwd,
     get_git_root = get_git_root,
-    open_repo_on_github = open_repo_on_github
+    open_repo_on_github = open_repo_on_github,
+    toggle_window = toggle_window
 }

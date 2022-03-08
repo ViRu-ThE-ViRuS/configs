@@ -40,7 +40,7 @@ vim.cmd [[
         setl updatetime=5000
 
         " echo 'highlight current word: off'
-        lua require('notify')('highlight current word: OFF', 'info', { timeout = 250, render = 'minimal' })
+        lua require('notify')('highlight current word: OFF', 'info', { render = 'minimal' })
 
         return 0
       else
@@ -51,7 +51,7 @@ vim.cmd [[
         setl updatetime=500
 
         " echo 'highlight current word: on'
-        lua require('notify')('highlight current word: ON', 'info', { timeout = 250, render = 'minimal' })
+        lua require('notify')('highlight current word: ON', 'info', { render = 'minimal' })
 
         return 1
       endif

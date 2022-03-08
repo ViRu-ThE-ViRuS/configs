@@ -8,7 +8,7 @@ local on_attach = function(client, buffer_nr)
     -- NOTE(vir): now using nvim-notify
     -- print("[LSP] Active")
     require("notify")(string.format('[LSP] %s\n[CWD] %s', client.name, misc.get_cwd()), 'info',
-                      {title = '[LSP] Active', timeout = 250})
+                      {title = '[LSP] Active'})
 
     setup_buffer.setup_general_keymaps(client, buffer_nr)
     setup_buffer.setup_independent_keymaps(client, buffer_nr)
@@ -30,7 +30,14 @@ lsp["pyright"].setup {
 -- clangd setup
 lsp["clangd"].setup {
     capabilities = capabilities,
-    cmd = { "clangd", "--background-index", "--clang-tidy", "--completion-style=bundled", "--header-insertion=iwyu" },
+    cmd = {
+      "clangd",
+      "--background-index",
+      "--suggest-missing-includes",
+      "--clang-tidy",
+      "--completion-style=bundled",
+      "--header-insertion=iwyu"
+    },
     on_attach = on_attach,
     flags = {debounce_text_changes = 150}
 }
@@ -72,7 +79,7 @@ require('null-ls').setup({
     capabilities = capabilities,
     on_attach = function(client, buffer_nr)
         require("notify")(string.format('[LSP] %s\n[CWD] %s', client.name, misc.get_cwd()), 'info',
-                          {title = '[LSP] Active', timeout = 250})
+                          {title = '[LSP] Active'})
         setup_buffer.setup_independent_keymaps(client, buffer_nr)
     end
 })
