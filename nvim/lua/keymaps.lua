@@ -115,7 +115,7 @@ end
 utils.map('v', '<leader>=', ':Tab /')
 
 -- fugitive
-utils.map('n', '<leader>gd', '<cmd>G difftool<cr>')
+utils.map('n', '<leader>gD', '<cmd>G! difftool<cr>')
 
 -- coconut oil remaps
 -- messes with my . usage habits

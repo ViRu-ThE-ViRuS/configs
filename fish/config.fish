@@ -6,7 +6,7 @@ set -xg EDITOR                  nvim
 set -xg LANG                    en_US.UTF-8
 set -xg LC_CTYPE                en_US.UTF-8
 
-set FZF_DEFAULT_COMMAND     'rg --files --follow --smart-case --hidden --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build}" 2> /dev/null'
+set FZF_DEFAULT_COMMAND     'rg --files --follow --smart-case --hidden --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build,*.dSYM}" 2> /dev/null'
 set FZF_CTRL_T_COMMAND      $FZF_DEFAULT_COMMAND
 set FZF_DEFAULT_OPTS        '--reverse --height 50%'
 

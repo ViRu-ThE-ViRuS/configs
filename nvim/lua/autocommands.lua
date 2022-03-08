@@ -1,28 +1,26 @@
 local utils = require('utils')
+local misc = require('lib/misc')
 
 vim.api.nvim_create_augroup('Misc', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', { group = 'Misc', pattern = '*', callback = function() vim.highlight.on_yank({on_visual=true}) end })
 vim.api.nvim_create_autocmd('BufWritePre', { group = 'Misc', pattern = '*', callback = function() require('utils').strip_trailing_whitespaces() end})
 vim.api.nvim_create_autocmd('FileType', { group = 'Misc', pattern = 'qf', callback = function()
-  utils.map('n', '<c-v>', '<c-w><cr><c-w>L', {}, 0)
-  utils.map('n', '<c-x>', '<c-w><cr><c-w>H', {}, 0)
+    utils.map('n', '<c-v>', '<c-w><cr><c-w>L', {}, 0)
+    utils.map('n', '<c-x>', '<c-w><cr><c-w>H', {}, 0)
 end })
 
 vim.api.nvim_create_augroup('UISetup', { clear = true })
 vim.api.nvim_create_autocmd('BufEnter,ColorScheme', { group = 'UISetup', pattern = '*', callback = function()
-  vim.highlight.create('Comment', {cterm='bold,italic', gui='bold,italic'}, false)
-  vim.highlight.create('LineNr', {cterm='NONE', gui='NONE'}, false)
-  -- vim.highlight.create('SignColumn', {cterm='NONE', gui='NONE'}, false)
+    vim.highlight.create('Comment', {cterm='bold,italic', gui='bold,italic'}, false)
+    vim.highlight.create('LineNr', {cterm='NONE', gui='NONE'}, false)
+    vim.highlight.create('SignColumn', {cterm='NONE', gui='NONE'}, false)
 end })
-
--- NOTE(vir): causes stutter
--- vim.api.nvim_create_autocmd('VimResized', { group = 'UISetup', pattern = '*', command = 'wincmd =' })
 
 vim.api.nvim_create_augroup('TerminalSetup', { clear = true })
 vim.api.nvim_create_autocmd('TermOpen', { group = 'TerminalSetup', pattern = '*', callback = function()
-  vim.opt_local.filetype = 'terminal'
-  vim.opt_local.number = false
-  vim.opt_local.signcolumn = 'no'
+    vim.opt_local.filetype = 'terminal'
+    vim.opt_local.number = false
+    vim.opt_local.signcolumn = 'no'
 end})
 
 vim.cmd [[
@@ -60,3 +58,7 @@ vim.cmd [[
     endfunction
 ]]
 
+-- TODO(vir): do this in lua
+if misc.get_git_root() ~= nil then
+  vim.cmd [[ command! OpenInGithub lua vim.ui.input({prompt = 'remote> ', default = 'origin'}, require("lib/misc").open_repo_on_github)<cr> ]]
+end

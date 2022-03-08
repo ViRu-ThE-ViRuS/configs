@@ -1,3 +1,7 @@
+-- optimization
+-- from: https://stackoverflow.com/questions/1252539/most-efficient-way-to-determine-if-a-lua-table-is-empty-contains-no-entries
+local next = next
+
 -- apply f to all elements in table
 local function foreach(tbl, f)
     local t = {}
@@ -31,8 +35,8 @@ local in_range = function(pos, range)
     return true
 end
 
--- NOTE(vir): from https://github.com/ibhagwan/fzf-lua/blob/main/lua/fzf-lua/utils.lua
 -- run shell command and get output lines as lua table
+-- from: https://github.com/ibhagwan/fzf-lua/blob/main/lua/fzf-lua/utils.lua
 local function lua_systemlist(cmd)
     local stdout, rc = {}, 0
     local handle = io.popen(cmd .. ' 2>&1 ; echo $?', 'r')
@@ -50,11 +54,12 @@ end
 -- run shell command and get str output
 local function lua_system(cmd)
     local stdout, rc = lua_systemlist(cmd)
+    if next(stdout) == nil then return nil, rc end
     return table.concat(stdout, '\n'), rc
 end
 
--- NOTE(vir): assuming python3 exists on all systems
 -- get which python3 in current env
+-- NOTE(vir): assuming python3 exists on all systems
 local function get_python()
     local python, _ = lua_system('which python3')
     return python

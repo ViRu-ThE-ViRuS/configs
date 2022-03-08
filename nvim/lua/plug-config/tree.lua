@@ -1,4 +1,7 @@
 local utils = require('utils')
+local core = require('lib/core')
+
+local function open_in_finder(handle) core.lua_system("open -R " .. handle.absolute_path) end
 
 vim.g.nvim_tree_indent_markers = 1
 vim.g.nvim_tree_add_trailing = 1
@@ -42,9 +45,10 @@ require('nvim-tree').setup({
     view = {
         mappings = {
             list = {
-                {key = "<cr>", action = "edit"}, {key = "o", action = "edit"},
+                {key = "<cr>", action = "edit"},
                 {key = "<2-leftmouse>", action = "edit"},
-                {key = "C", action = "cd"}, {key = "<c-v>", action = "vsplit"},
+                {key = "C", action = "cd"},
+                {key = "<c-v>", action = "vsplit"},
                 {key = "<c-x>", action = "split"},
                 {key = "<bs>", action = "close_node"},
                 {key = "I", action = "toggle_dotfiles"},
@@ -55,7 +59,9 @@ require('nvim-tree').setup({
                 {key = "[c", action = "prev_git_item"},
                 {key = "]c", action = "next_git_item"},
                 {key = "q", action = "close"},
-                {key = "Y", action = "copy_absolute_path"}
+                {key = "Y", action = "copy_absolute_path"},
+                {key = ".", action = ""},
+                {key = "OO", action = "open_in_finder", action_cb = open_in_finder},
             }
         }
     },

@@ -8,8 +8,8 @@ local function get_current_mode()
     return string.format(' %s ', utils.modes[current_mode]):upper()
 end
 
--- NOTE(vir): release gitsigns dependencies?
 -- get git information of current file
+-- NOTE(vir): release gitsigns dependencies?
 local function get_git_status()
     local meta = {}
     local gitsigns_summary = vim.b.gitsigns_status_dict

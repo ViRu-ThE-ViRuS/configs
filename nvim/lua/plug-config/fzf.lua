@@ -2,6 +2,7 @@ local utils = require("utils")
 local misc = require('lib/misc')
 local actions = require("fzf-lua").actions
 
+-- TODO(vir): move rg args into command, which reads from env var $FZF_DEFAULT_COMMAND
 require("fzf-lua").setup({
     winopts = {
         split = 'belowright new',
@@ -52,7 +53,7 @@ require("fzf-lua").setup({
         }
     },
     files = {
-        cmd = 'rg --files --follow --smart-case --hidden --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build}" 2> /dev/null',
+        cmd = 'rg --files --follow --smart-case --hidden --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build,*.dSYM}" 2> /dev/null',
     },
     buffers = {
         actions = {
@@ -63,7 +64,7 @@ require("fzf-lua").setup({
         }
     },
     grep = {
-        rg_opts = "--hidden --column --line-number --no-heading --color=always --smart-case -g '!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build}'",
+        rg_opts = "--hidden --column --line-number --no-heading --color=always --smart-case -g '!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build,*.dSYM}'",
         actions = { ['ctrl-q'] = require('lib/misc').fzf_to_qf }
     },
     lsp = {
