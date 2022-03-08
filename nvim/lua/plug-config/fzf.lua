@@ -10,18 +10,15 @@ require("fzf-lua").setup({
             default = 'bat',
             horizontal = 'right:50%',
             vertical = 'up:50%',
-            -- layout = 'horizontal',
-
-            layout = 'flex',
-            flip_columns=utils.truncation_limit_s_terminal
         },
         on_create = function()
             vim.opt_local.buflisted = false
             vim.opt_local.bufhidden = 'wipe'
             vim.opt_local.signcolumn = 'no'
             -- vim.opt_local.statusline = require('statusline').StatusLine('FZF')
-        end
+        end,
     },
+    winopts_fn = function() return {preview = {layout = vim.api.nvim_win_get_width(0) < utils.truncation_limit_s_terminal and 'vertical' or 'horizontal'}} end,
     fzf_opts = { ['--layout'] = 'default' },
     keymap = {
         fzf = {
