@@ -26,6 +26,8 @@ some things i decided to implement on my own:
 - statusline (with lsp, git, diagnostics, outline, truncation, +more)
 - lsp handlers (quickfix list, notifications, +more)
 - terminal setup (send commands, toggle, run last, notifications, +more)
+- functionality to open file in `Finder`, repository in `GitHub`
+- lua utilities library with things like map, filter, shell commands, +more
 - small utilities like highlight current word, switch bw preferred colorschemes,
   collect all TODOs, toggle maximise buffer, etc
 
