@@ -2,7 +2,6 @@ local utils = require("utils")
 local misc = require('lib/misc')
 local actions = require("fzf-lua").actions
 
--- TODO(vir): move rg args into command, which reads from env var $FZF_DEFAULT_COMMAND
 require("fzf-lua").setup({
     winopts = {
         split = 'belowright new',

@@ -7,8 +7,9 @@ set -xg LANG                    en_US.UTF-8
 set -xg LC_CTYPE                en_US.UTF-8
 
 set FZF_DEFAULT_COMMAND     'rg --files --follow --smart-case --hidden --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build,*.dSYM}" 2> /dev/null'
-set FZF_CTRL_T_COMMAND      $FZF_DEFAULT_COMMAND
 set FZF_DEFAULT_OPTS        '--reverse --height 50%'
+set FZF_CTRL_T_COMMAND      $FZF_DEFAULT_COMMAND
+set FZF_CTRL_T_OPTS         '--preview "bat --style=numbers,changes --color always --theme Coldark-Dark --line-range :500 {}"'
 
 # pyenv config
 # pyenv init - | source
@@ -17,7 +18,6 @@ set FZF_DEFAULT_OPTS        '--reverse --height 50%'
 set fish_user_paths         $fish_user_paths "/opt/homebrew/bin/"
 set fish_user_paths         $fish_user_paths "/opt/homebrew/opt/llvm/bin"
 set fish_user_paths         $fish_user_paths "/Users/viraat-chandra/Library/Python/3.8/bin"
-set FZF_CTRL_T_OPTS         '--preview "bat --style=numbers --color=always --line-range :500 {}"'
 
 # rust setup
 set -xg CARGO_HOME          ~/.rust/cargo/
