@@ -6,19 +6,14 @@ local function map(mode, lhs, rhs, opts, buffer_nr)
     if opts then options = vim.tbl_extend('force', options, opts) end
     if buffer_nr then options['buffer'] = buffer_nr end
 
-    -- if buffer_nr then vim.api.nvim_buf_set_keymap(buffer_nr, mode, lhs, rhs, options)
-    -- else vim.api.nvim_set_keymap(mode, lhs, rhs, options) end
-
     vim.keymap.set(mode, lhs, rhs, options)
 end
 
 -- remove keymaps
 local function unmap(mode, lhs, buffer_nr)
-    -- if buffer_nr then vim.api.nvim_buf_del_keymap(buffer_nr, mode, lhs)
-    -- else vim.api.nvim_del_keymap(mode, lhs) end
-
     local options = {}
     if buffer_nr then options['buffer'] = buffer_nr end
+
     vim.keymap.del(mode, lhs, options)
 end
 

@@ -21,8 +21,6 @@ utils.map("v", "x", '"_d', {noremap=false})
 utils.map("v", "X", '"_dd', {noremap=false})
 
 -- quickfix list
--- utils.map("n", "[q", "<cmd>cprevious<cr>")
--- utils.map("n", "]q", "<cmd>cnext<cr>")
 utils.map("n", "[q", "<cmd>try | cprev | catch | clast | catch | endtry<cr>", {silent=true})
 utils.map("n", "]q", "<cmd>try | cnext | catch | cfirst | catch | endtry<cr>", {silent=true})
 
@@ -30,8 +28,6 @@ utils.map("n", "]q", "<cmd>try | cnext | catch | cfirst | catch | endtry<cr>", {
 utils.map("n", "<space>", "za")
 
 -- buffer navigation
--- utils.map("n", "<leader>o", "<c-^>", {noremap=false})
--- utils.map("n", "<leader>q", "<cmd>bd!<cr>")
 utils.map("n", "<bs>", '<c-^>zz')
 utils.map("n", "<leader>t", "<cmd>bn<cr>")
 utils.map("n", "<leader>q", "<cmd>lua require('bufdelete').bufdelete(0, true)<cr>")
@@ -59,13 +55,6 @@ utils.map("n", "<leader>cA", '<cmd>lua require("terminal").run_target_command()<
 utils.map("n", "<leader>ca", '<cmd>lua require("terminal").run_previous_command()<cr>')
 utils.map("n", "<leader>cS", '<cmd>lua require("terminal").set_target()<cr>')
 utils.map("n", "<leader>cs", '<cmd>lua require("terminal").toggle_target(false)<cr>')
-
--- split navigation
--- now using tmux.nvim
--- utils.map("n", "<c-k>", "<cmd>wincmd k<cr>")
--- utils.map("n", "<c-j>", "<cmd>wincmd j<cr>")
--- utils.map("n", "<c-h>", "<cmd>wincmd h<cr>")
--- utils.map("n", "<c-l>", "<cmd>wincmd l<cr>")
 
 -- hardcore mode
 utils.map("n", "<up>", "<nop>")
@@ -102,14 +91,12 @@ vim.cmd [[
 -- terminal setup
 if vim.fn.exists("fish") then
     vim.opt.shell = "fish"
-    utils.map("n", "<leader>s", "<cmd>vsp term://fish<cr>")
 elseif vim.fn.exists("zsh") then
     vim.opt.shell = "zsh"
-    utils.map("n", "<leader>s", "<cmd>vsp term://zsh<cr>")
 else
     vim.opt.shell = "bash"
-    utils.map("n", "<leader>s", "<cmd>vsp term://bash<cr>")
 end
+utils.map('n', '<leader>s', '<cmd>vsp term://' .. vim.o.shell .. '<cr>')
 
 -- tabular
 utils.map('v', '<leader>=', ':Tab /')
@@ -117,8 +104,7 @@ utils.map('v', '<leader>=', ':Tab /')
 -- fugitive
 utils.map('n', '<leader>gD', '<cmd>G! difftool<cr>')
 
--- coconut oil remaps
--- messes with my . usage habits
+-- coconut oil remaps: messes with my . usage habits
 -- utils.map("i", ",", ",<c-g>u")
 -- utils.map("i", ".", ".<c-g>u")
 -- utils.map("i", "!", "!<c-g>u")
