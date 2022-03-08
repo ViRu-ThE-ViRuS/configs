@@ -143,7 +143,7 @@ vim.cmd [[
 
         autocmd WinLeave,BufEnter NvimTree setlocal statusline=%!v:lua.StatusLine('Explorer')
         autocmd FileType fzf setlocal statusline=%!v:lua.StatusLine('FZF')
-        autocmd FileType vista setlocal statusline=%!v:lua.StatusLine('VISTA')
+        autocmd FileType vista setlocal statusline=%!v:lua.StatusLine('Tags')
         autocmd FileType fugitive setlocal statusline=%!v:lua.StatusLine('Git')
         autocmd FileType gitcommit setlocal statusline=%!v:lua.StatusLine('GitCommit')
 
