@@ -1,7 +1,6 @@
 local proto = require('vim.lsp.protocol')
 local utils = require('utils')
 local core = require('lib/core')
-local misc = require('lib/misc')
 
 -- lsp int(kind) -> str(kind) map
 local lsp_kinds = {
@@ -162,7 +161,7 @@ local function refresh_tag_state()
             for position = #symbols, 1, -1 do
                 local current = symbols[position]
 
-                if current.range and misc.in_range(hovered_line, current.range) then
+                if current.range and core.in_range(hovered_line, current.range) then
                     utils.tag_state.kind = current.kind
                     utils.tag_state.name = current.name
                     utils.tag_state.detail = current.detail

@@ -35,7 +35,8 @@ require('nvim-tree').setup({
     diagnostics = {enable = false},
     filters = {
         custom = {
-            '*.pyc', '.DS_Store', 'node_modules', '__pycache__', 'venv', '.git'
+            '*.pyc', '.DS_Store', 'node_modules', '__pycache__', 'venv', '.git',
+            '*.dSYM'
         }
     },
     view = {

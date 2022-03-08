@@ -52,10 +52,11 @@ return require('packer').startup({
                 {'hrsh7th/cmp-nvim-lsp', event = 'BufRead'},
                 {'onsails/lspkind-nvim', event = 'BufRead'},
                 {'L3MON4D3/LuaSnip', after = 'nvim-cmp'},
-                {'hrsh7th/cmp-cmdline', after = 'nvim-cmp'},
                 {'lukas-reineke/cmp-rg', after = 'nvim-cmp'},
+                {'hrsh7th/cmp-buffer', after = 'nvim-cmp'},
                 {'hrsh7th/cmp-path', after = 'nvim-cmp'},
-                {'hrsh7th/cmp-buffer', after = 'nvim-cmp'}
+                {'hrsh7th/cmp-cmdline', after = 'nvim-cmp'},
+                {'hrsh7th/cmp-nvim-lsp-document-symbol', after = 'nvim-cmp'}
             },
             after = {'cmp-nvim-lsp', 'lspkind-nvim'},
             event = 'BufRead',
@@ -102,6 +103,7 @@ return require('packer').startup({
         use 'sainnhe/everforest'
         use 'Mofiqul/vscode.nvim'
         use 'rose-pine/neovim'
+        use 'tanvirtin/monokai.nvim'
         use 'fedepujol/nv-themes'
         use 'davidosomething/vim-colors-meh'
         use 'sts10/vim-pink-moon'

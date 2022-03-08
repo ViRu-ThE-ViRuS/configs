@@ -1,7 +1,7 @@
 local dap = require('dap')
 local dapui = require('dapui')
 local utils = require('utils')
-local oslib = require('lib/oslib')
+local core = require('lib/core')
 
 -- NOTE(vir): now using nvim-notify
 require("notify")('[DAP] Loaded', 'info', {render = 'minimal', timeout = 500})
@@ -16,7 +16,7 @@ dap.configurations.python = {
         program = '${file}',
         terminal = 'integrated',
         console = 'integratedTerminal',
-        pythonPath = oslib.get_python(),
+        pythonPath = core.get_python(),
     }
 }
 

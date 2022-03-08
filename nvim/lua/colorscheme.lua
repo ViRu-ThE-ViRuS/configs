@@ -30,7 +30,7 @@ vim.g.aqua_transparency = 0
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme vscode ]]
+vim.cmd [[ colorscheme monokai_pro ]]
 
 return {
     preferred = {
@@ -43,6 +43,7 @@ return {
         "everforest",
         "vscode",
         "rose-pine",
+        "monokai", "monokai_pro",
         "nv-vcdark", "nv-solzdark",
         "meh",
         "pink-moon",

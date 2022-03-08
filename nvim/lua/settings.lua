@@ -1,4 +1,4 @@
-local oslib = require("lib/oslib")
+local core = require("lib/core")
 
 -- disable unused providers
 vim.g.loaded_node_provider = 0
@@ -8,9 +8,7 @@ vim.g.loaded_python_provider = 0
 vim.g.python_host_skip_check = 1
 
 -- -- setup python path
-vim.defer_fn(function()
-    vim.g.python3_host_prog = oslib.get_python()
-end, 0)
+vim.defer_fn(function() vim.g.python3_host_prog = core.get_python() end, 0)
 
 -- global options
 vim.opt.shell = "bash"
@@ -75,7 +73,7 @@ vim.opt.smartindent = true
 -- vim.opt.exrc = true
 -- vim.opt.secure = true
 
-vim.opt.undodir = oslib.get_homedir() .. "/.config/undodir/"
+vim.opt.undodir = core.get_homedir() .. "/.config/undodir/"
 vim.opt.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20'
 
 -- disable some builtin plugins

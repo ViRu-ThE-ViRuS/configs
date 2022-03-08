@@ -1,4 +1,5 @@
 local utils = require("utils")
+local misc = require('lib/misc')
 local actions = require("fzf-lua").actions
 
 require("fzf-lua").setup({
@@ -51,7 +52,7 @@ require("fzf-lua").setup({
         }
     },
     files = {
-        cmd = 'rg --files --follow --smart-case --hidden --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache}" 2> /dev/null',
+        cmd = 'rg --files --follow --smart-case --hidden --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build}" 2> /dev/null',
     },
     buffers = {
         actions = {
@@ -62,7 +63,7 @@ require("fzf-lua").setup({
         }
     },
     grep = {
-        rg_opts = "--hidden --column --line-number --no-heading --color=always --smart-case -g '!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache}'",
+        rg_opts = "--hidden --column --line-number --no-heading --color=always --smart-case -g '!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build}'",
         actions = { ['ctrl-q'] = require('lib/misc').fzf_to_qf }
     },
     lsp = {
@@ -76,7 +77,7 @@ require("fzf-lua").setup({
     }
 })
 
-if vim.fn.isdirectory('.git') ~= 0 then
+if misc.get_git_root() ~= nil then
     utils.map("n", "<c-p>p", "<cmd>lua require('fzf-lua').git_files()<cr>")
     utils.map("n", "<c-p>P", "<cmd>lua require('fzf-lua').files()<cr>")
 else
