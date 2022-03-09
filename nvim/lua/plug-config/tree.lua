@@ -44,6 +44,7 @@ require('nvim-tree').setup({
     },
     view = {
         mappings = {
+            custom_only = true,
             list = {
                 {key = "<cr>", action = "edit"},
                 {key = "<2-leftmouse>", action = "edit"},
@@ -60,7 +61,6 @@ require('nvim-tree').setup({
                 {key = "]c", action = "next_git_item"},
                 {key = "q", action = "close"},
                 {key = "Y", action = "copy_absolute_path"},
-                {key = ".", action = ""},
                 {key = "OO", action = "open_in_finder", action_cb = open_in_finder},
             }
         }
