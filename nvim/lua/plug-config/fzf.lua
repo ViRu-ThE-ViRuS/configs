@@ -96,9 +96,8 @@ utils.map("n", "<c-p>F", "<cmd>lua require('fzf-lua').grep({search=''})<cr>")
 utils.map("n", "<c-p>z", "<cmd>lua require('fzf-lua').grep({search='TODO'})<cr>")
 
 utils.map("n", "<c-p>sg", "<cmd>lua require('fzf-lua').live_grep_glob()<cr>")
-utils.map("n", "<c-p>sS", "<cmd>lua require('fzf-lua').grep_cword()<cr>")
-utils.map("n", "<c-p>ss", "<cmd>lua require('fzf-lua').tags_grep_cword()<cr>")
-utils.map("n", "<c-p>sP", "<cmd>lua require('fzf-lua').tags_live_grep()<cr>")
+utils.map("n", "<c-p>ss", "<cmd>lua require('fzf-lua').grep_cword()<cr>")
+utils.map("n", "<c-p>sP", "<cmd>lua require('fzf-lua').tags_grep_cword()<cr>")
 utils.map("n", "<c-p>sp", "<cmd>lua require('fzf-lua').tags()<cr>")
 utils.map("n", "<f10>", "<cmd>!ctags -R<cr>")
 

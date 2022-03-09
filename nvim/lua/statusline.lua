@@ -128,20 +128,20 @@ StatusLineInactive = function() return statusline_inactive() end
 
 -- NOTE(vir): consider moving to lua
 vim.cmd [[
-    let statusline_blacklist = ['terminal', 'fugitive', 'vista', 'diagnostics', 'qf', 'fzf', 'gitcommit',
+    let statusline_blacklist = ['terminal', 'fugitive', 'vista', 'diagnostics', 'qf', 'fzf', 'gitcommit', 'NvimTree',
                                 \ 'DiffviewFiles', 'DiffviewFileHistory',
                                 \ 'dapui_watches', 'dapui_stacks', 'dapui_scopes', 'dapui_breakpoints', 'dap-repl']
 
     augroup StatusLine
         autocmd!
-        autocmd WinEnter,BufEnter * if index(statusline_blacklist, &ft) < 0 | setlocal statusline=%!v:lua.StatusLine()
-        autocmd WinLeave,BufLeave * if index(statusline_blacklist, &ft) < 0 | setlocal statusline=%!v:lua.StatusLineInactive()
+        autocmd WinEnter,BufEnter * if index(statusline_blacklist, &ft) < 0 | setlocal statusline=%!v:lua.StatusLine() | endif
+        autocmd WinLeave,BufLeave * if index(statusline_blacklist, &ft) < 0 | setlocal statusline=%!v:lua.StatusLineInactive() | endif
 
         autocmd FileType terminal setlocal statusline=%!v:lua.StatusLine('Terminal')
         autocmd BufWinEnter quickfix setlocal statusline=%!v:lua.StatusLine('QuickFix')
         " autocmd BufWinEnter diagnostics setlocal statusline=%!v:lua.StatusLine('Diagnostics')
 
-        autocmd WinLeave,BufEnter NvimTree setlocal statusline=%!v:lua.StatusLine('Explorer')
+        autocmd BufWinEnter NvimTree_1 setlocal statusline=%!v:lua.StatusLine('Explorer')
         autocmd FileType fzf setlocal statusline=%!v:lua.StatusLine('FZF')
         autocmd FileType vista setlocal statusline=%!v:lua.StatusLine('Tags')
         autocmd FileType fugitive setlocal statusline=%!v:lua.StatusLine('Git')

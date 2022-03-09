@@ -33,21 +33,21 @@ local function setup_options(_, buffer_nr)
 end
 
 -- setup buffer autocommands
-local function setup_autocmds(client, _)
+local function setup_autocmds(client, buffer_nr)
     if client.resolved_capabilities.document_highlight then
-        vim.api.nvim_create_augroup('LspHighlights', { clear = true })
-        vim.api.nvim_create_autocmd('CursorHold', { group = 'LspHighlights', pattern = '<buffer>', callback = vim.lsp.buf.document_highlight })
-        vim.api.nvim_create_autocmd('CursorMoved', { group = 'LspHighlights', pattern = '<buffer>', callback = vim.lsp.buf.clear_references })
+        vim.api.nvim_create_augroup('LspHighlights', { clear = false })
+        vim.api.nvim_create_autocmd('CursorHold', { group = 'LspHighlights', callback = vim.lsp.buf.document_highlight, buffer = buffer_nr })
+        vim.api.nvim_create_autocmd('CursorMoved', { group = 'LspHighlights', callback = vim.lsp.buf.clear_references, buffer = buffer_nr })
     end
 
     if client.resolved_capabilities.document_symbol then
-        vim.api.nvim_create_augroup('LspStates', { clear = true })
-        vim.api.nvim_create_autocmd('CursorMoved,InsertLeave,BufEnter', { group = 'LspStates', pattern = '<buffer>', callback = require('lsp-setup/utils').refresh_tag_state })
-        vim.api.nvim_create_autocmd('BufLeave', { group = 'LspStates', pattern = '<buffer>', callback = require('lsp-setup/utils').reset_tag_state })
+        vim.api.nvim_create_augroup('LspStates', { clear = false })
+        vim.api.nvim_create_autocmd('CursorMoved,InsertLeave,BufEnter', { group = 'LspStates', callback = require('lsp-setup/utils').refresh_tag_state, buffer = buffer_nr })
+        vim.api.nvim_create_autocmd('BufLeave', { group = 'LspStates', callback = require('lsp-setup/utils').reset_tag_state, buffer = buffer_nr })
     end
 
-    vim.api.nvim_create_augroup('LspPopups', { clear = true })
-    vim.api.nvim_create_autocmd('CursorHold', { group = 'LspPopups', pattern = '<buffer>', callback = function() vim.diagnostic.open_float(0) end })
+    vim.api.nvim_create_augroup('LspPopups', { clear = false })
+    vim.api.nvim_create_autocmd('CursorHold', { group = 'LspPopups', callback = function() vim.diagnostic.open_float(0) end, buffer = buffer_nr })
 end
 
 -- setup highlights
