@@ -24,7 +24,7 @@ some things i decided to implement on my own:
 
 - notifications (for lsp, dap, +more)
 - statusline (with lsp, git, diagnostics, outline, truncation, +more)
-- lsp handlers (quickfix list, notifications, +more)
+- lsp handlers (quickfix list, notifications, multi-file rename, +more)
 - terminal setup (send commands, toggle, run last, notifications, +more)
 - functionality to open file in `Finder`, repository in `GitHub`
 - lua utilities library with things like map, filter, shell commands, +more

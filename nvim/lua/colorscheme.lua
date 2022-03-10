@@ -30,7 +30,7 @@ vim.g.aqua_transparency = 0
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme monokai_pro ]]
+vim.cmd [[ colorscheme catppuccin ]]
 
 return {
     preferred = {

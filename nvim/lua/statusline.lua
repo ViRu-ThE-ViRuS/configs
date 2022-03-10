@@ -128,7 +128,7 @@ StatusLineInactive = function() return statusline_inactive() end
 
 -- NOTE(vir): consider moving to lua
 vim.cmd [[
-    let statusline_blacklist = ['terminal', 'fugitive', 'vista', 'diagnostics', 'qf', 'fzf', 'gitcommit', 'NvimTree',
+    let statusline_blacklist = ['terminal', 'vista_kind', 'fugitive', 'diagnostics', 'qf', 'fzf', 'gitcommit', 'NvimTree',
                                 \ 'DiffviewFiles', 'DiffviewFileHistory',
                                 \ 'dapui_watches', 'dapui_stacks', 'dapui_scopes', 'dapui_breakpoints', 'dap-repl']
 
@@ -143,7 +143,7 @@ vim.cmd [[
 
         autocmd BufWinEnter NvimTree_1 setlocal statusline=%!v:lua.StatusLine('Explorer')
         autocmd FileType fzf setlocal statusline=%!v:lua.StatusLine('FZF')
-        autocmd FileType vista setlocal statusline=%!v:lua.StatusLine('Tags')
+        autocmd FileType vista_kind setlocal statusline=%!v:lua.StatusLine('Tags')
         autocmd FileType fugitive setlocal statusline=%!v:lua.StatusLine('Git')
         autocmd FileType gitcommit setlocal statusline=%!v:lua.StatusLine('GitCommit')
 

@@ -41,7 +41,7 @@ require("fzf-lua").setup({
             ['default'] = actions.file_edit,
             ['ctrl-x'] = actions.file_split,
             ['ctrl-v'] = actions.file_vsplit,
-            ['ctrl-q'] = require('utils').qf_populate
+            ['ctrl-q'] = utils.qf_populate
         },
         buffers = {
             ['default'] = actions.buf_edit,
@@ -57,22 +57,28 @@ require("fzf-lua").setup({
         }
     },
     buffers = {
-        actions = {
-            ['default'] = actions.buf_edit,
-            ['ctrl-x'] = actions.buf_split,
-            ['ctrl-v'] = actions.buf_vsplit,
-            ['ctrl-q'] = { actions.buf_del, actions.resume }
-        }
+        actions = { ['ctrl-q'] = { actions.buf_del, actions.resume } }
     },
     files = {
         rg_opts = '--files' .. default_rg_options,
     },
     grep = {
-        rg_opts = "--column --color=always" .. default_rg_options,
-        actions = { ['ctrl-q'] = require('lib/misc').fzf_to_qf }
+        -- rg_opts = "--column --color=always" .. default_rg_options,
+        actions = {
+          ['ctrl-q'] = misc.fzf_to_qf,
+          ['ctrl-g'] = actions.grep_lgrep,
+          ['ctrl-l'] = false
+        }
+    },
+    tags = {
+        actions = {
+          ['ctrl-q'] = utils.qf_populate,
+          ['ctrl-g'] = actions.grep_lgrep,
+          ['ctrl-l'] = false
+        }
     },
     lsp = {
-        actions = { ['ctrl-q'] = require('lib/misc').fzf_to_qf },
+        actions = { ['ctrl-q'] = misc.fzf_to_qf },
         icons = {
             ['Error'] = { icon = utils.symbol_config.indicator_error, color = 'red' },
             ['Warning'] = { icon = utils.symbol_config.indicator_warning, color = 'yellow' },
@@ -92,13 +98,12 @@ end
 
 utils.map("n", "<c-p>b", "<cmd>lua require('fzf-lua').buffers()<cr>")
 utils.map("n", "<c-p>f", "<cmd>lua require('fzf-lua').live_grep_native()<cr>")
-utils.map("n", "<c-p>F", "<cmd>lua require('fzf-lua').grep({search=''})<cr>")
 utils.map("n", "<c-p>z", "<cmd>lua require('fzf-lua').grep({search='TODO'})<cr>")
 
 utils.map("n", "<c-p>sg", "<cmd>lua require('fzf-lua').live_grep_glob()<cr>")
 utils.map("n", "<c-p>ss", "<cmd>lua require('fzf-lua').grep_cword()<cr>")
-utils.map("n", "<c-p>sP", "<cmd>lua require('fzf-lua').tags_grep_cword()<cr>")
-utils.map("n", "<c-p>sp", "<cmd>lua require('fzf-lua').tags()<cr>")
+utils.map("n", "<c-p>sP", "<cmd>lua require('fzf-lua').tags_grep_cword({previewer='bat'})<cr>")
+utils.map("n", "<c-p>sp", "<cmd>lua require('fzf-lua').tags({previewer='bat'})<cr>")
 utils.map("n", "<f10>", "<cmd>!ctags -R<cr>")
 
 -- NOTE(vir): present even in non-lsp files, consider moving to lsp setup code

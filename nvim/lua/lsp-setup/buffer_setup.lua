@@ -25,6 +25,10 @@ local function setup_independent_keymaps(client, buffer_nr)
     if client.resolved_capabilities.document_range_formatting then
         utils.map('v', '<c-f>', '<cmd>lua vim.lsp.buf.range_formatting()<cr>', {silent = true}, buffer_nr)
     end
+
+    if client.name == 'clangd' then
+        utils.map('n', '<f11>', '<cmd>ClangdSwitchSourceHeader<cr>', {}, buffer_nr)
+    end
 end
 
 -- setup buffer options
@@ -47,7 +51,7 @@ local function setup_autocmds(client, buffer_nr)
     end
 
     vim.api.nvim_create_augroup('LspPopups', { clear = false })
-    vim.api.nvim_create_autocmd('CursorHold', { group = 'LspPopups', callback = function() vim.diagnostic.open_float(0) end, buffer = buffer_nr })
+    vim.api.nvim_create_autocmd('CursorHold', { group = 'LspPopups', callback = function() vim.diagnostic.open_float() end, buffer = buffer_nr })
 end
 
 -- setup highlights

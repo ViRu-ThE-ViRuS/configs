@@ -30,10 +30,6 @@ local function qf_populate(lines, mode)
 
     vim.cmd [[
         copen
-        setlocal nobuflisted
-        setlocal number
-        setlocal signcolumn=yes
-        setlocal bufhidden=wipe
         wincmd p
     ]]
 end

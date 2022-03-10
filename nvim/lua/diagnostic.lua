@@ -7,7 +7,8 @@ vim.diagnostic.config({
         prefix = '',
         header = '',
         source = 'always',
-        border = 'rounded'
+        border = 'rounded',
+        focusable = false
     }
 })
 
