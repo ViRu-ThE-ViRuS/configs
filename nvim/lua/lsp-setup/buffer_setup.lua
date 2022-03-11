@@ -27,7 +27,7 @@ local function setup_independent_keymaps(client, buffer_nr)
     end
 
     if client.name == 'clangd' then
-        utils.map('n', '<f11>', '<cmd>ClangdSwitchSourceHeader<cr>', {}, buffer_nr)
+        utils.map('n', '<f9>', '<cmd>ClangdSwitchSourceHeader<cr>', {}, buffer_nr)
     end
 end
 

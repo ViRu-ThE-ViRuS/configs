@@ -16,6 +16,8 @@ require("fzf-lua").setup({
         on_create = function()
             vim.opt_local.buflisted = false
             vim.opt_local.bufhidden = 'wipe'
+            -- vim.opt_local.signcolumn = 'no'
+            -- vim.opt_local.statusline = require('statusline').StatusLine('FZF')
 
             utils.map('n', '<c-d>', '<cmd>quit<cr>', {}, 0)
             utils.map('t', '<c-k>', '<up>', {}, 0)
@@ -101,6 +103,8 @@ utils.map("n", "<c-p>z", "<cmd>lua require('fzf-lua').grep({search='TODO'})<cr>"
 
 utils.map("n", "<c-p>sg", "<cmd>lua require('fzf-lua').live_grep_glob()<cr>")
 utils.map("n", "<c-p>ss", "<cmd>lua require('fzf-lua').grep_cword()<cr>")
+-- utils.map("n", "<c-p>sp", "<cmd>lua require('fzf-lua').lsp_live_workspace_symbols()<cr>")
+
 utils.map("n", "<c-p>sP", "<cmd>lua require('fzf-lua').tags_grep_cword({previewer='bat'})<cr>")
 utils.map("n", "<c-p>sp", "<cmd>lua require('fzf-lua').tags({previewer='bat'})<cr>")
 utils.map("n", "<f10>", "<cmd>!ctags -R<cr>")

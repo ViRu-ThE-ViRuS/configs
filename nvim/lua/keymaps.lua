@@ -40,8 +40,19 @@ utils.map("n", "<m-h>", "<cmd>vertical resize -2<cr>")
 utils.map("n", "<m-l>", "<cmd>vertical resize +2<cr>")
 
 -- smoother scrolling
-utils.map("n", "<ScrollWheelUp>", "<c-Y>")
-utils.map("n", "<ScrollWheelDown>", "<c-E>")
+utils.map("n", "<ScrollWheelUp>", "<c-y>")
+utils.map("n", "<ScrollWheelDown>", "<c-e>")
+
+-- sane speed scrolling
+--
+-- NOTE(vir): best fuccing remap ever, im so fuccing happy as this doesnt
+-- require a plugin, nor does it behave unpredictably, nor does it pollute tf
+-- out of the jump list, nor does it need me to install a fuccing plugin just
+-- for this. im happy rn cause ive wanted to solve this problem for so long,
+-- but i never really got to it and just add 2 lines to my already crazy vim
+-- setup
+utils.map("n", "{", "<cmd>-5<cr>")
+utils.map("n", "}", "<cmd>+5<cr>")
 
 -- terminal navigation
 utils.map("t", "<esc>", "<c-\\><c-n>")
