@@ -1,6 +1,7 @@
 require('gitsigns').setup {
     numhl = false,
     linehl = false,
+    preview_config = { border = 'rounded' },
     keymaps = {
         noremap = true,
         buffer = true,

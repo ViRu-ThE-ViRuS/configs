@@ -10,7 +10,6 @@ return require('packer').startup({
     function()
         use 'wbthomason/packer.nvim'
         use 'nvim-lua/plenary.nvim'
-        use 'nathom/filetype.nvim'
         use 'lewis6991/impatient.nvim'
 
         use 'kyazdani42/nvim-web-devicons'

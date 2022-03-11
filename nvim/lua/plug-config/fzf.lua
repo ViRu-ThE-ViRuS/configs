@@ -16,8 +16,6 @@ require("fzf-lua").setup({
         on_create = function()
             vim.opt_local.buflisted = false
             vim.opt_local.bufhidden = 'wipe'
-            vim.opt_local.signcolumn = 'no'
-            -- vim.opt_local.statusline = require('statusline').StatusLine('FZF')
 
             utils.map('n', '<c-d>', '<cmd>quit<cr>', {}, 0)
             utils.map('t', '<c-k>', '<up>', {}, 0)
@@ -57,6 +55,7 @@ require("fzf-lua").setup({
         }
     },
     buffers = {
+        previewer = 'builtin',
         actions = { ['ctrl-q'] = { actions.buf_del, actions.resume } }
     },
     files = {

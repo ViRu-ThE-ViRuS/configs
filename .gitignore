@@ -7,3 +7,5 @@ nvim/.netrwhist
 nvim/nvim.appimage
 nvim/test*
 nvim/lua/packer_compiled.lua
+nvim/tags
+
