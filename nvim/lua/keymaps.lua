@@ -1,4 +1,5 @@
 local utils = require("utils")
+local terminal = require('terminal')
 
 -- text navigation
 utils.map("v", "<", "<gv")
@@ -30,7 +31,7 @@ utils.map("n", "<space>", "za")
 -- buffer navigation
 utils.map("n", "<bs>", '<c-^>zz')
 utils.map("n", "<leader>t", "<cmd>bn<cr>")
-utils.map("n", "<leader>q", "<cmd>lua require('bufdelete').bufdelete(0, true)<cr>")
+utils.map("n", "<leader>q", function() require('bufdelete').bufdelete(0, true) end)
 utils.map("n", "<c-w><c-l>", "<cmd>cclose<cr> <cmd>pclose<cr> <cmd>lclose<cr> <cmd>tabclose<cr>", {silent=true})
 
 -- buffer resizing
@@ -49,10 +50,11 @@ utils.map("n", "<ScrollWheelDown>", "<c-e>")
 -- require a plugin, nor does it behave unpredictably, nor does it pollute tf
 -- out of the jump list, nor does it need me to install a fuccing plugin just
 -- for this. im happy rn cause ive wanted to solve this problem for so long,
--- but i never really got to it and just add 2 lines to my already crazy vim
--- setup
-utils.map("n", "{", "<cmd>-5<cr>")
-utils.map("n", "}", "<cmd>+5<cr>")
+-- but i never really got to it and just add 2 lines to my already crazy neovim
+utils.map("n", "{", "4k")
+utils.map("n", "}", "4j")
+-- utils.map("n", "<c-u>", "19k")
+-- utils.map("n", "<c-d>", "19j")
 
 -- terminal navigation
 utils.map("t", "<esc>", "<c-\\><c-n>")
@@ -62,10 +64,10 @@ utils.map("t", "<c-k>", "<c-\\><c-w>k")
 utils.map("t", "<c-l>", "<c-\\><c-w>l")
 
 -- terminal run config maps
-utils.map("n", "<leader>cA", '<cmd>lua require("terminal").run_target_command()<cr>')
-utils.map("n", "<leader>ca", '<cmd>lua require("terminal").run_previous_command()<cr>')
-utils.map("n", "<leader>cS", '<cmd>lua require("terminal").set_target()<cr>')
-utils.map("n", "<leader>cs", '<cmd>lua require("terminal").toggle_target(false)<cr>')
+utils.map("n", "<leader>cA", terminal.run_target_command)
+utils.map("n", "<leader>ca", terminal.run_previous_command)
+utils.map("n", "<leader>cS", terminal.set_target)
+utils.map("n", "<leader>cs", function() terminal.toggle_target(false) end)
 
 -- hardcore mode
 utils.map("n", "<up>", "<nop>")
@@ -78,8 +80,8 @@ utils.map("i", "<left>", "<nop>")
 utils.map("i", "<right>", "<nop>")
 
 -- utility functions
-utils.map("n", "<leader>1", "<cmd>lua require('lib/misc').toggle_window()<cr>")
-utils.map("n", "<leader>2", '<cmd>lua require("utils").random_colors()<cr>', {silent = false})
+utils.map("n", "<leader>1", require('lib/misc').toggle_window)
+utils.map("n", "<leader>2", utils.random_colors, {silent = false})
 utils.map("n", "<leader>3", "<cmd>if AutoHighlightToggle()<bar>set hlsearch<bar>endif<cr>")
 
 -- utility maps
@@ -91,7 +93,7 @@ utils.map('n', 'Y', 'yy')
 utils.map('n', 'q:', '<nop>')
 utils.map('n', 'Q', '<nop>')
 
--- cursor, tab behaviour with completions
+-- fixing that stupid typo
 vim.cmd [[
     cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
     cnoreabbrev <expr> Q ((getcmdtype() is# ':' && getcmdline() is# 'Q')?('q'):('Q'))

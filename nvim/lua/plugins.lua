@@ -5,7 +5,8 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
     vim.cmd [[ packadd packer.nvim ]]
 end
 
-vim.cmd [[ command! Ps PackerSync ]]
+vim.api.nvim_add_user_command('Ps', 'PackerSync', { bang = true, nargs = 0, desc = 'Packer Sync' })
+
 return require('packer').startup({
     function()
         use 'wbthomason/packer.nvim'
@@ -23,13 +24,13 @@ return require('packer').startup({
         use { 'machakann/vim-sandwich', event = 'BufReadPost' }
         use { 'andymass/vim-matchup', after = 'nvim-treesitter' }
 
-        use { 'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter' }
         use {
             'nvim-treesitter/nvim-treesitter',
             run = ':TSUpdate',
             event = 'BufRead',
             config = 'require("plug-config/treesitter")'
         }
+        use { 'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter' }
 
         use {
             'kyazdani42/nvim-tree.lua',

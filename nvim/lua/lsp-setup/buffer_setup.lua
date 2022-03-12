@@ -8,22 +8,22 @@ local function setup_general_keymaps(_, buffer_nr)
     -- utils.map('n', '<leader>U', '<cmd>lua vim.lsp.buf.document_symbols()<cr>', { silent = true }, buffer_nr)
     -- utils.map('n', '<a-cr>', '<cmd>lua vim.lsp.buf.code_action()<cr>', { silent = true }, buffer_nr)
 
-    utils.map('n', '<leader>r', '<cmd>lua vim.lsp.buf.rename()<cr>', {silent = true}, buffer_nr)
-    utils.map('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', {silent = true}, buffer_nr)
+    utils.map('n', '<leader>r', vim.lsp.buf.rename, {silent = true}, buffer_nr)
+    utils.map('n', 'K', vim.lsp.buf.hover, {silent = true}, buffer_nr)
 
-    utils.map('n', '[e', '<cmd>lua vim.diagnostic.goto_prev({ float = true })<cr>', {silent = true}, buffer_nr)
-    utils.map('n', ']e', '<cmd>lua vim.diagnostic.goto_next({ float = true })<cr>', {silent = true}, buffer_nr)
-    utils.map('n', '<leader>e', '<cmd>lua require("lsp-setup/utils").toggle_diagnostics_list()<cr>', {silent = true}, buffer_nr)
+    utils.map('n', '[e', function() vim.diagnostic.goto_prev({ float = true }) end, {silent = true}, buffer_nr)
+    utils.map('n', ']e', function() vim.diagnostic.goto_next({ float = true }) end, {silent = true}, buffer_nr)
+    utils.map('n', '<leader>e', require("lsp-setup/utils").toggle_diagnostics_list, {silent = true}, buffer_nr)
 end
 
 -- setup independent keymaps
 local function setup_independent_keymaps(client, buffer_nr)
     if client.resolved_capabilities.document_formatting then
-        utils.map('n', '<c-f>', '<cmd>lua vim.lsp.buf.formatting()<cr>', {silent = true}, buffer_nr)
+        utils.map('n', '<c-f>', vim.lsp.buf.formatting, {silent = true}, buffer_nr)
     end
 
     if client.resolved_capabilities.document_range_formatting then
-        utils.map('v', '<c-f>', '<cmd>lua vim.lsp.buf.range_formatting()<cr>', {silent = true}, buffer_nr)
+        utils.map('v', '<c-f>', vim.lsp.buf.range_formatting, {silent = true}, buffer_nr)
     end
 
     if client.name == 'clangd' then

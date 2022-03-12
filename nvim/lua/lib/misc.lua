@@ -62,6 +62,16 @@ local function open_repo_on_github(remote)
                       {title = 'opening remote in browser '})
 end
 
+-- get git remote names
+local function get_git_remotes()
+    local table, rc = core.lua_systemlist('git remote -v | cut -f 1 | uniq')
+    if rc ~= 0 then
+        return {}
+    end
+
+    return table
+end
+
 -- toggle state, keep track of window ids
 local state = {}
 
@@ -91,5 +101,6 @@ return {
     get_cwd = get_cwd,
     get_git_root = get_git_root,
     open_repo_on_github = open_repo_on_github,
+    get_git_remotes = get_git_remotes,
     toggle_window = toggle_window
 }
