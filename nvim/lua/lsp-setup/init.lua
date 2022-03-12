@@ -7,8 +7,7 @@ local core = require("lib/core")
 local on_attach = function(client, buffer_nr)
     -- NOTE(vir): now using nvim-notify
     -- print("[LSP] Active")
-    require("notify")(string.format('[LSP] %s\n[CWD] %s', client.name, misc.get_cwd()), 'info',
-                      {title = '[LSP] Active'})
+    require("notify")(string.format('[LSP] %s\n[CWD] %s', client.name, misc.get_cwd()), 'info', {title = '[LSP] Active'})
 
     setup_buffer.setup_general_keymaps(client, buffer_nr)
     setup_buffer.setup_independent_keymaps(client, buffer_nr)
@@ -17,7 +16,7 @@ local on_attach = function(client, buffer_nr)
     setup_buffer.setup_highlights()
 end
 
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp .protocol .make_client_capabilities())
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 capabilities.offsetEncoding = {'utf-16'}
 
 -- pyright setup
@@ -81,5 +80,6 @@ require('null-ls').setup({
         require("notify")(string.format('[LSP] %s\n[CWD] %s', client.name, misc.get_cwd()), 'info',
                           {title = '[LSP] Active'})
         setup_buffer.setup_independent_keymaps(client, buffer_nr)
-    end
+    end,
+    flags = {debounce_text_changes = 150}
 })

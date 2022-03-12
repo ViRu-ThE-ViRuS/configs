@@ -13,7 +13,7 @@ end
 
 -- populate qflist with fzf items
 local fzf_to_qf = function(lines)
-    local items = vim.lsp.util.locations_to_items(core.foreach(lines, fzf_to_locations), 'utf-8')
+    local items = vim.lsp.util.locations_to_items(core.foreach(lines, fzf_to_locations), 'utf-16')
     require("utils").qf_populate(items, "r")
 end
 

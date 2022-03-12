@@ -51,14 +51,7 @@ local function toggle_diagnostics_list()
         vim.diagnostic.setqflist()
         diagnostics_set[current_buf] = true
 
-        -- vim.opt_local.buflisted = false
-        -- vim.opt_local.number = true
-        -- vim.opt_local.signcolumn = 'no'
-        -- vim.opt_local.bufhidden = 'wipe'
-        -- vim.opt_local.filetype = 'diagnostics'
-        -- vim.opt_local.syntax = 'qf'
         vim.opt_local.statusline = require('statusline').StatusLine('Diagnostics')
-
         vim.cmd [[ wincmd p ]]
     else
         diagnostics_set[current_buf] = false

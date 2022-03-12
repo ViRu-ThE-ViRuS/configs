@@ -56,7 +56,7 @@ require('nvim-tree').setup({
                 {key = "R", action = "refresh"},
                 {key = "<leader>n", action = "create"},
                 {key = "<leader>d", action = "remove"},
-                {key = "<leader>r", action = "full_rename"},
+                {key = "<leader>r", action = "rename"},
                 {key = "[c", action = "prev_git_item"},
                 {key = "]c", action = "next_git_item"},
                 {key = "q", action = "close"},
