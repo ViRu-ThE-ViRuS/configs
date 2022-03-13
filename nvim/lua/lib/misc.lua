@@ -1,10 +1,16 @@
 local core = require("lib/core")
+local notify = require('notify')
 
 -- convert fzf items to locations
-local fzf_to_locations = function(entry)
+local fzf_to_location = function(entry)
     local split = vim.split(entry, ":")
-    local position = { line = tonumber(split[2]) - 1, character = tonumber(split[3]) - 1 }
+    local _, line = pcall(tonumber, split[2])
+    local _, character = pcall(tonumber, split[3])
 
+    line = line and line - 1
+    character = character or 0
+
+    local position = { line = line, character = character }
     return {
         uri = vim.uri_from_fname(vim.fn.fnamemodify(split[1], ":p")),
         range = {start = position, ["end"] = position}
@@ -13,12 +19,19 @@ end
 
 -- populate qflist with fzf items
 local fzf_to_qf = function(lines)
-    local items = vim.lsp.util.locations_to_items(core.foreach(lines, fzf_to_locations), 'utf-16')
+    local items = vim.lsp.util.locations_to_items(core.foreach(lines, fzf_to_location), 'utf-16')
     require("utils").qf_populate(items, "r")
 end
 
 -- strip filename from full path
 local function strip_fname(path) return vim.fn.fnamemodify(path, ':t:r') end
+
+-- strip trailing whitespaces in file
+local function strip_trailing_whitespaces()
+    local cursor = vim.api.nvim_win_get_cursor(0)
+    vim.api.nvim_command('%s/\\s\\+$//e')
+    vim.api.nvim_win_set_cursor(0, cursor)
+end
 
 -- get vim cwd
 local function get_cwd() return vim.fn['getcwd']() end
@@ -32,36 +45,6 @@ local function get_git_root()
     return nil
 end
 
--- open repository on github
--- NOTE(vir): using nvim-notify
-local function open_repo_on_github(remote)
-    if get_git_root() == nil then
-        -- print("not in a git repository")
-        require("notify")('not in a git repository', 'error',
-                          {title = 'could not open on github'})
-        return
-    end
-
-    remote = remote or 'origin'
-
-    local url, rc = core.lua_system('git config remote.' .. remote .. '.url')
-    if rc ~= 0 then
-        -- print(string.format('found invalid remote url: [%s] -> %s', remote, url))
-        require("notify")(string.format('found invalid remote url: [%s] -> %s', remote, url),
-                          'error', {title = 'could not open on github'})
-        return
-    end
-
-    url = url:gsub('git:', 'https://')
-    url = url:gsub('git@', 'https://')
-    url = url:gsub('com:', 'com/')
-    core.lua_system('open -u ' .. url)
-
-    -- print(string.format("opening remote in browser: [%s] -> %s", remote, url))
-    require("notify")(string.format("[%s] -> %s", remote, url), 'info',
-                      {title = 'opening remote in browser '})
-end
-
 -- get git remote names
 local function get_git_remotes()
     local table, rc = core.lua_systemlist('git remote -v | cut -f 1 | uniq')
@@ -72,10 +55,37 @@ local function get_git_remotes()
     return table
 end
 
--- toggle state, keep track of window ids
+-- open repository on github
+-- NOTE(vir): using nvim-notify
+local function open_repo_on_github(remote)
+    if get_git_root() == nil then
+        notify('not in a git repository', 'error',
+               {title = 'could not open on github'})
+        return
+    end
+
+    remote = remote or 'origin'
+
+    local url, rc = core.lua_system('git config remote.' .. remote .. '.url')
+    if rc ~= 0 then
+        notify(string.format('found invalid remote url: [%s] -> %s', remote, url),
+              'error', {title = 'could not open on github'})
+        return
+    end
+
+    url = url:gsub('git:', 'https://')
+    url = url:gsub('git@', 'https://')
+    url = url:gsub('com:', 'com/')
+    core.lua_system('open -u ' .. url)
+
+    notify(string.format("[%s] -> %s", remote, url), 'info',
+          {title = 'opening remote in browser'})
+end
+
+-- window: toggle state, keep track of window ids
 local state = {}
 
--- toggle current window (maximum <-> original)
+-- window: toggle current window (maximum <-> original)
 local function toggle_window()
     if vim.fn.winnr('$') > 1 then
         local original = vim.fn.win_getid()
@@ -93,14 +103,13 @@ local function toggle_window()
     end
 end
 
-
 return {
-    fzf_to_locations = fzf_to_locations,
     fzf_to_qf = fzf_to_qf,
     strip_fname = strip_fname,
+    strip_trailing_whitespaces = strip_trailing_whitespaces,
     get_cwd = get_cwd,
     get_git_root = get_git_root,
-    open_repo_on_github = open_repo_on_github,
     get_git_remotes = get_git_remotes,
+    open_repo_on_github = open_repo_on_github,
     toggle_window = toggle_window
 }

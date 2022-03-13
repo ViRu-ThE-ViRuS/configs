@@ -49,23 +49,6 @@ local function random_colors()
     end
 end
 
--- strip trailing whitespaces in file
-local function strip_trailing_whitespaces()
-    local cursor = vim.api.nvim_win_get_cursor(0)
-    vim.api.nvim_command('%s/\\s\\+$//e')
-    vim.api.nvim_win_set_cursor(0, cursor)
-end
-
--- flash cursorline
--- NOTE(vir): this gets "stuck" in new color
-local function flash_cursorline()
-    local current = vim.api.nvim_get_hl_by_name("CursorLine", true)
-    local target = vim.api.nvim_get_hl_by_name("IncSearch", true)
-
-    vim.api.nvim_set_hl(0, "CursorLine", target)
-    vim.defer_fn(function() vim.api.nvim_set_hl(0, "CursorLine", current) end, 200)
-end
-
 -- is buffer horizontally truncated
 local function is_htruncated(width)
     local current_width = vim.api.nvim_win_get_width(0)
@@ -155,8 +138,6 @@ return {
     unmap = unmap,
     qf_populate = qf_populate,
     random_colors = random_colors,
-    strip_trailing_whitespaces = strip_trailing_whitespaces,
-    flash_cursorline = flash_cursorline,
     is_htruncated = is_htruncated,
     is_vtruncated = is_vtruncated,
 
