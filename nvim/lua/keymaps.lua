@@ -1,38 +1,32 @@
 local utils = require("utils")
 local terminal = require('terminal')
 
--- text navigation
+-- line navigation and movements
 utils.map("v", "<", "<gv")
 utils.map("v", ">", ">gv")
-utils.map("n", "H", "^")
-utils.map("n", "L", "$")
-utils.map("v", "H", "^")
-utils.map("v", "L", "$")
+utils.map({"n", "v"}, "H", "^")
+utils.map({"n", "v"}, "L", "$")
+
+-- utility maps
 utils.map("i", "jj", "<esc>")
 utils.map("n", "U", "<c-r>")
-
--- paste yanked
-utils.map("n", "-", '"0p')
-utils.map("n", "_", '"0P')
-
--- delete without yanking
-utils.map("n", "x", '"_d', {noremap=false})
-utils.map("n", "X", '"_dd', {noremap=false})
-utils.map("v", "x", '"_d', {noremap=false})
-utils.map("v", "X", '"_dd', {noremap=false})
-
--- quickfix list
-utils.map("n", "[q", "<cmd>try | cprev | catch | clast | catch | endtry<cr>", {silent=true})
-utils.map("n", "]q", "<cmd>try | cnext | catch | cfirst | catch | endtry<cr>", {silent=true})
+utils.map("n", ";", ":")
+utils.map("n", ":", ";")
+utils.map('n', 'Y', 'yy')
+utils.map("n", "<leader>1", require('lib/misc').toggle_window)
+utils.map("n", "<leader>2", utils.random_colors, {silent = false})
+utils.map("n", "<leader>3", "<cmd>if AutoHighlightToggle()<bar>set hlsearch<bar>endif<cr>")
 
 -- folds
 utils.map("n", "<space>", "za")
 
--- buffer navigation
-utils.map("n", "<bs>", '<c-^>zz')
-utils.map("n", "<leader>t", "<cmd>bn<cr>")
-utils.map("n", "<leader>q", function() require('bufdelete').bufdelete(0, true) end)
-utils.map("n", "<c-w><c-l>", "<cmd>cclose<cr> <cmd>pclose<cr> <cmd>lclose<cr> <cmd>tabclose<cr>", {silent=true})
+-- delete without yank
+utils.map({"n", "v"}, "x", '"_d', {noremap=false})
+utils.map({"n", "v"}, "X", '"_d$', {noremap=false})
+
+-- paste yanked
+utils.map("n", "-", '"0p')
+utils.map("n", "_", '"0P')
 
 -- buffer resizing
 utils.map("n", "<m-j>", "<cmd>resize +2<cr>")
@@ -40,21 +34,25 @@ utils.map("n", "<m-k>", "<cmd>resize -2<cr>")
 utils.map("n", "<m-h>", "<cmd>vertical resize -2<cr>")
 utils.map("n", "<m-l>", "<cmd>vertical resize +2<cr>")
 
--- smoother scrolling
+-- sane speed scrolling
+utils.map({"n", "v"}, "{", "4k")
+utils.map({"n", "v"}, "}", "4j")
+utils.map({"n", "v"}, "<c-u>", "20kzz")
+utils.map({"n", "v"}, "<c-d>", "20jzz")
+
+-- mouse scrolling
 utils.map("n", "<ScrollWheelUp>", "<c-y>")
 utils.map("n", "<ScrollWheelDown>", "<c-e>")
 
--- sane speed scrolling
---
--- NOTE(vir): best fuccing remap ever, im so fuccing happy as this doesnt
--- require a plugin, nor does it behave unpredictably, nor does it pollute tf
--- out of the jump list, nor does it need me to install a fuccing plugin just
--- for this. im happy rn cause ive wanted to solve this problem for so long,
--- but i never really got to it and just add 2 lines to my already crazy neovim
-utils.map("n", "{", "4k")
-utils.map("n", "}", "4j")
--- utils.map("n", "<c-u>", "19k")
--- utils.map("n", "<c-d>", "19j")
+-- qf navigation
+utils.map("n", "[q", "<cmd>try | cprev | catch | clast | catch | endtry<cr>", {silent=true})
+utils.map("n", "]q", "<cmd>try | cnext | catch | cfirst | catch | endtry<cr>", {silent=true})
+
+-- buffer navigation
+utils.map("n", "<bs>", '<c-^>zz')
+utils.map("n", "<leader>t", "<cmd>bn<cr>")
+utils.map("n", "<leader>q", function() require('bufdelete').bufdelete(0, true) end)
+utils.map("n", "<c-w><c-l>", "<cmd>cclose<cr> <cmd>pclose<cr> <cmd>lclose<cr> <cmd>tabclose<cr>", {silent=true})
 
 -- terminal navigation
 utils.map("t", "<esc>", "<c-\\><c-n>")
@@ -70,35 +68,26 @@ utils.map("n", "<leader>cS", terminal.set_target)
 utils.map("n", "<leader>cs", function() terminal.toggle_target(false) end)
 
 -- hardcore mode
-utils.map("n", "<up>", "<nop>")
-utils.map("n", "<down>", "<nop>")
-utils.map("n", "<left>", "<nop>")
-utils.map("n", "<right>", "<nop>")
-utils.map("i", "<up>", "<nop>")
-utils.map("i", "<down>", "<nop>")
-utils.map("i", "<left>", "<nop>")
-utils.map("i", "<right>", "<nop>")
+utils.map({"n", "i"}, "<up>", "<nop>")
+utils.map({"n", "i"}, "<down>", "<nop>")
+utils.map({"n", "i"}, "<left>", "<nop>")
+utils.map({"n", "i"}, "<right>", "<nop>")
 
--- utility functions
-utils.map("n", "<leader>1", require('lib/misc').toggle_window)
-utils.map("n", "<leader>2", utils.random_colors, {silent = false})
-utils.map("n", "<leader>3", "<cmd>if AutoHighlightToggle()<bar>set hlsearch<bar>endif<cr>")
+-- disable command history, EX mode
+utils.map({'n', 'v'}, 'q:', '<nop>')
+utils.map({'n', 'v'}, 'Q', '<cmd>normal %<cr>')
 
--- utility maps
-utils.map("n", ";", ":")
-utils.map("n", ":", ";")
-utils.map('n', 'Y', 'yy')
+-- hmmm?
+utils.map('n', '/', 'ms/')
+utils.map('n', '?', 'ms?')
 
--- disable command history buffer, and EX mode
-utils.map('n', 'q:', '<nop>')
-utils.map('n', 'Q', '<nop>')
-
--- fixing that stupid typo
+-- fixing that stupid typo when trying to [save]exit
 vim.cmd [[
     cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
     cnoreabbrev <expr> Q ((getcmdtype() is# ':' && getcmdline() is# 'Q')?('q'):('Q'))
     cnoreabbrev <expr> WQ ((getcmdtype() is# ':' && getcmdline() is# 'WQ')?('wq'):('WQ'))
     cnoreabbrev <expr> Wq ((getcmdtype() is# ':' && getcmdline() is# 'Wq')?('wq'):('Wq'))
+    cnoreabbrev <expr> w;  ((getcmdtype() is# ':' && getcmdline() is# 'w;')?('w'):('w;'))
 ]]
 
 -- terminal setup
@@ -116,14 +105,4 @@ utils.map('v', '<leader>=', ':Tab /')
 
 -- fugitive
 utils.map('n', '<leader>gD', '<cmd>G! difftool<cr>')
-
--- coconut oil remaps: messes with my . usage habits
--- utils.map("i", ",", ",<c-g>u")
--- utils.map("i", ".", ".<c-g>u")
--- utils.map("i", "!", "!<c-g>u")
--- utils.map("i", "?", "?<c-g>u")
-
--- flash cursorline
--- utils.map('n', '<c-o>', '<c-o>zv<cmd>lua require("utils").flash_cursorline()<cr>', { silent = true })
--- utils.map('n', '<c-i>', '<c-i>zv<cmd>lua require("utils").flash_cursorline()<cr>', { silent = true })
 

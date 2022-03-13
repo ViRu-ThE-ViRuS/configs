@@ -14,7 +14,5 @@ require('neoscroll.config').set_mappings({
 })
 
 local utils = require("utils")
-utils.map('n', '<m-[>', '{')
-utils.map('n', '<m-]>', '}')
-utils.map('v', '<m-[>', '{')
-utils.map('v', '<m-]>', '}')
+utils.map({'n', 'v'}, '<m-[>', '{')
+utils.map({'n', 'v'}, '<m-]>', '}')

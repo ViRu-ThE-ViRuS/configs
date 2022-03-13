@@ -69,3 +69,11 @@ if misc.get_git_root() ~= nil then
         desc = 'Open chosen remote on GitHub, in the Browser'
     })
 end
+
+vim.api.nvim_add_user_command('SudoWrite', function()
+    vim.cmd [[
+        write !sudo -A tee > /dev/null %
+        edit
+    ]]
+end, { bang = true, nargs = 0, desc = 'Sudo Write'})
+
