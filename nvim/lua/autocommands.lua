@@ -58,11 +58,16 @@ vim.cmd [[
     endfunction
 ]]
 
--- TODO(vir): do this in lua
+-- setup OpenInGithub command, with vim.ui currently using fzf-lua
 if misc.get_git_root() ~= nil then
     vim.api.nvim_add_user_command('OpenInGithub', function(_)
-        vim.ui.select(misc.get_git_remotes(), { prompt = 'remote> ' },
-                      function(remote) misc.open_repo_on_github(remote) end)
+        local remotes = misc.get_git_remotes()
+
+        if #remotes > 1 then
+            vim.ui.select(remotes, { prompt = 'remote> ' },
+                          function(remote) misc.open_repo_on_github(remote) end)
+        else misc.open_repo_on_github(remotes[1]) end
+
     end, {
         bang = true,
         nargs = 0,
