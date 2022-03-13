@@ -6,7 +6,6 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 end
 
 vim.api.nvim_add_user_command('Ps', 'PackerSync', { bang = true, nargs = 0, desc = 'Packer Sync' })
-
 return require('packer').startup({
     function()
         use 'wbthomason/packer.nvim'
@@ -14,7 +13,7 @@ return require('packer').startup({
         use 'lewis6991/impatient.nvim'
 
         use 'kyazdani42/nvim-web-devicons'
-        use { 'rcarriga/nvim-notify', event = 'VimEnter', config = 'require("plug-config/notifications")'}
+        use { 'rcarriga/nvim-notify', event = 'VimEnter', config = 'require("plug-config/notifications")' }
         -- use { 'karb94/neoscroll.nvim', event = 'VimEnter', config = 'require("plug-config/neoscroll")' }
 
         use { 'godlygeek/tabular', cmd = 'Tab' }

@@ -4,8 +4,8 @@ local terminal = require('terminal')
 -- line navigation and movements
 utils.map("v", "<", "<gv")
 utils.map("v", ">", ">gv")
-utils.map({"n", "v"}, "H", "^")
-utils.map({"n", "v"}, "L", "$")
+utils.map({"n", "v", "o"}, "H", "^")
+utils.map({"n", "v", "o"}, "L", "$")
 
 -- utility maps
 utils.map("i", "jj", "<esc>")
@@ -50,7 +50,7 @@ utils.map("n", "]q", "<cmd>try | cnext | catch | cfirst | catch | endtry<cr>", {
 
 -- buffer navigation
 utils.map("n", "<bs>", '<c-^>zz')
-utils.map("n", "<leader>t", "<cmd>bn<cr>")
+utils.map("n", "<leader>bn", "<cmd>bn<cr>")
 utils.map("n", "<leader>q", function() require('bufdelete').bufdelete(0, true) end)
 utils.map("n", "<c-w><c-l>", "<cmd>cclose<cr> <cmd>pclose<cr> <cmd>lclose<cr> <cmd>tabclose<cr>", {silent=true})
 

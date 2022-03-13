@@ -30,7 +30,7 @@ vim.g.aqua_transparency = 0
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme base16-ashes ]]
+vim.cmd [[ colorscheme gruvbox-baby ]]
 
 return {
     preferred = {

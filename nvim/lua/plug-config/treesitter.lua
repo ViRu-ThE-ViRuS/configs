@@ -6,21 +6,28 @@ require('nvim-treesitter.configs').setup {
     highlight = {enable = true, additional_vim_regex_highlighting = false},
     indent = {enable = false},
     matchup = {enable = true, disable_virtual_text = true},
-    -- rainbow = { enable = true, extended_mode = true },
     textobjects = {
         select = {
             enable = true,
             lookahead = true,
             keymaps = {
-                ['ab'] = '@class.outer',
-                ['ib'] = '@class.inner',
                 ['af'] = '@function.outer',
                 ['if'] = '@function.inner',
                 ['ac'] = '@conditional.outer',
                 ['ic'] = '@conditional.inner'
             }
         }
-    }
+    },
+
+    -- rainbow = { enable = true, extended_mode = true },
+    -- incremental_selection = {
+    --     enable = true,
+    --     keymaps = {
+    --         init_selection = 'gm=',
+    --         node_incremental = 'gm=',
+    --         node_decremental = 'gm-'
+    --     }
+    -- },
 }
 
 -- vim-matchup
