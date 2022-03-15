@@ -19,16 +19,27 @@ require('nvim-treesitter.configs').setup {
         }
     },
 
-    -- rainbow = { enable = true, extended_mode = true },
-    -- incremental_selection = {
-    --     enable = true,
-    --     keymaps = {
-    --         init_selection = 'gm=',
-    --         node_incremental = 'gm=',
-    --         node_decremental = 'gm-'
-    --     }
-    -- },
+    -- rainbow = {enable = true, extended_mode = true},
+    incremental_selection = {
+        enable = true,
+        keymaps = {
+            init_selection = 'ge=',
+            node_incremental = 'ge=',
+            node_decremental = 'ge-',
+            scope_incremental = 'ge+'
+        }
+    }
 }
 
+-- NOTE(vir): related plugin setup
+
 -- vim-matchup
-vim.g.matchup_matchparen_offscreen = { method = 'popup' }
+vim.g.matchup_matchparen_offscreen = {method = 'popup'}
+
+-- vim-sandwich
+vim.g['sandwich#recipes'] = require('lib/core').list_concat(
+                                vim.g['sandwich#default_recipes'], {
+        {buns = {'( ', ' )'}, nesting = 1, match_syntax = 1, input = {')'}},
+        {buns = {'[ ', ' ]'}, nesting = 1, match_syntax = 1, input = {']'}},
+        {buns = {'{ ', ' }'}, nesting = 1, match_syntax = 1, input = {'}'}},
+    })

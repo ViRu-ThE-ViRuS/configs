@@ -102,6 +102,7 @@ return require('packer').startup({
         use 'sainnhe/everforest'
         use 'Mofiqul/vscode.nvim'
         use 'rose-pine/neovim'
+        use 'kvrohit/substrata.nvim'
         use 'tanvirtin/monokai.nvim'
         use 'fedepujol/nv-themes'
         use 'davidosomething/vim-colors-meh'

@@ -21,6 +21,21 @@ local function filter(tbl, f)
     return t
 end
 
+-- concatenate two tables
+local function list_concat(A, B)
+    local t = {}
+
+    for _, value in ipairs(A) do
+        table.insert(t, value)
+    end
+
+    for _, value in ipairs(B) do
+        table.insert(t, value)
+    end
+
+    return t
+end
+
 -- pos in range
 local in_range = function(pos, range)
     if pos[1] < range['start'].line or pos[1] > range['end'].line then
@@ -85,6 +100,7 @@ end
 return {
     foreach = foreach,
     filter = filter,
+    list_concat = list_concat,
     in_range = in_range,
     lua_systemlist = lua_systemlist,
     lua_system = lua_system,

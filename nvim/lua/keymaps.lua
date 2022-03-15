@@ -20,9 +20,16 @@ utils.map("n", "<leader>3", "<cmd>if AutoHighlightToggle()<bar>set hlsearch<bar>
 -- folds
 utils.map("n", "<space>", "za")
 
+-- misc
+utils.map("n", "/", "ms/")
+utils.map("n", "?", "ms?")
+utils.map("v", "&", ":&&<cr>")
+utils.map("v", ".", ":norm .<cr>")
+utils.map({"n", "v"}, "<c-b>", "<nop>")
+
 -- delete without yank
 utils.map({"n", "v"}, "x", '"_d', {noremap=false})
-utils.map({"n", "v"}, "X", '"_d$', {noremap=false})
+utils.map({"n", "v"}, "X", '"_dd', {noremap=false})
 
 -- paste yanked
 utils.map("n", "-", '"0p')
@@ -50,7 +57,8 @@ utils.map("n", "]q", "<cmd>try | cnext | catch | cfirst | catch | endtry<cr>", {
 
 -- buffer navigation
 utils.map("n", "<bs>", '<c-^>zz')
-utils.map("n", "<leader>bn", "<cmd>bn<cr>")
+utils.map("n", "[b", "<cmd>bprev<cr>")
+utils.map("n", "]b", "<cmd>bnext<cr>")
 utils.map("n", "<leader>q", function() require('bufdelete').bufdelete(0, true) end)
 utils.map("n", "<c-w><c-l>", "<cmd>cclose<cr> <cmd>pclose<cr> <cmd>lclose<cr> <cmd>tabclose<cr>", {silent=true})
 
@@ -74,20 +82,17 @@ utils.map({"n", "i"}, "<left>", "<nop>")
 utils.map({"n", "i"}, "<right>", "<nop>")
 
 -- disable command history, EX mode
-utils.map({'n', 'v'}, 'q:', '<nop>')
-utils.map({'n', 'v'}, 'Q', '<cmd>normal %<cr>')
-
--- hmmm?
-utils.map('n', '/', 'ms/')
-utils.map('n', '?', 'ms?')
+utils.map({"n", "v"}, "q:", "<nop>")
+utils.map({"n", "v"}, "Q", "<cmd>normal %<cr>")
 
 -- fixing that stupid typo when trying to [save]exit
 vim.cmd [[
-    cnoreabbrev <expr> W ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
-    cnoreabbrev <expr> Q ((getcmdtype() is# ':' && getcmdline() is# 'Q')?('q'):('Q'))
+    cnoreabbrev <expr> W  ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
+    cnoreabbrev <expr> Q  ((getcmdtype() is# ':' && getcmdline() is# 'Q')?('q'):('Q'))
     cnoreabbrev <expr> WQ ((getcmdtype() is# ':' && getcmdline() is# 'WQ')?('wq'):('WQ'))
     cnoreabbrev <expr> Wq ((getcmdtype() is# ':' && getcmdline() is# 'Wq')?('wq'):('Wq'))
-    cnoreabbrev <expr> w;  ((getcmdtype() is# ':' && getcmdline() is# 'w;')?('w'):('w;'))
+    cnoreabbrev <expr> w; ((getcmdtype() is# ':' && getcmdline() is# 'w;')?('w'):('w;'))
+    cnoreabbrev <expr> ;w ((getcmdtype() is# ':' && getcmdline() is# ';w')?('w'):(';w'))
 ]]
 
 -- terminal setup
@@ -98,11 +103,11 @@ elseif vim.fn.exists("zsh") then
 else
     vim.opt.shell = "bash"
 end
-utils.map('n', '<leader>s', '<cmd>vsp term://' .. vim.o.shell .. '<cr>')
+utils.map("n", "<leader>s", "<cmd>vsp term://" .. vim.o.shell .. "<cr>")
 
 -- tabular
-utils.map('v', '<leader>=', ':Tab /')
+utils.map("v", "<leader>=", ":Tab /")
 
 -- fugitive
-utils.map('n', '<leader>gD', '<cmd>G! difftool<cr>')
+utils.map("n", "<leader>gD", "<cmd>G! difftool<cr>")
 

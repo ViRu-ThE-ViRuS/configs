@@ -22,6 +22,11 @@ vim.g.moonflyTerminalColors = 1
 vim.g.moonflyUnderlineMatchParen = 1
 vim.g.moonflyVertSplits = 1
 
+vim.g.substrata_italic_keywords = true
+vim.g.substrata_italic_booleans = true
+vim.g.substrata_italic_functions = true
+vim.g.substrata_variant = "default"
+
 vim.g.gruvbox_baby_background_color = 'medium'
 vim.g.moonlight_borders = true
 vim.g.vscode_style = "dark"
@@ -30,7 +35,7 @@ vim.g.aqua_transparency = 0
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme gruvbox-baby ]]
+vim.cmd [[ colorscheme catppuccin ]]
 
 return {
     preferred = {
@@ -43,6 +48,7 @@ return {
         "everforest",
         "vscode",
         "rose-pine",
+        "substrata",
         "monokai", "monokai_pro",
         "nv-vcdark", "nv-solzdark",
         "meh",

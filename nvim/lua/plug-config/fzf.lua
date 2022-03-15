@@ -14,7 +14,8 @@ fzf.setup({
         preview = {
             default = 'bat',
             horizontal = 'right:50%',
-            vertical = 'up:50%'
+            vertical = 'up:50%',
+            scrollbar = false
         },
         on_create = function()
             vim.opt_local.buflisted = false
@@ -25,7 +26,7 @@ fzf.setup({
             utils.map('n', '<c-d>', '<cmd>quit<cr>', {}, 0)
             utils.map('t', '<c-k>', '<up>', {}, 0)
             utils.map('t', '<c-j>', '<down>', {}, 0)
-        end
+        end,
     },
     winopts_fn = function()
         return {
@@ -36,6 +37,21 @@ fzf.setup({
         }
     end,
     fzf_opts = {['--layout'] = 'default'},
+    fzf_colors = {
+        ["fg"]          = { "fg", "CursorLine" },
+        ["bg"]          = { "bg", "Normal" },
+        ["hl"]          = { "fg", "Comment" },
+        ["fg+"]         = { "fg", "Normal" },
+        ["bg+"]         = { "bg", "CursorLine" },
+        ["hl+"]         = { "fg", "Statement" },
+        ["info"]        = { "fg", "PreProc" },
+        ["prompt"]      = { "fg", "Conditional" },
+        ["pointer"]     = { "fg", "Exception" },
+        ["marker"]      = { "fg", "Keyword" },
+        ["spinner"]     = { "fg", "Label" },
+        ["header"]      = { "fg", "Comment" },
+        ["gutter"]      = { "bg", "Normal" },
+    },
     keymap = {
         fzf = {
             ['ctrl-a'] = 'toggle-all',
@@ -72,18 +88,18 @@ fzf.setup({
     },
     files = {rg_opts = '--files' .. default_rg_options},
     grep = {
-        -- rg_opts = "--column --color=always" .. default_rg_options,
+        rg_opts = "--column --color=always" .. default_rg_options,
+        rg_glob = true,
         actions = {
             ['ctrl-q'] = misc.fzf_to_qf,
             ['ctrl-g'] = actions.grep_lgrep,
-            ['ctrl-l'] = false
-        }
+        },
     },
     tags = {
+        previewer = 'bat',
         actions = {
             ['ctrl-q'] = misc.fzf_to_qf,
-            ['ctrl-g'] = actions.grep_lgrep,
-            ['ctrl-l'] = false
+            ['ctrl-g'] = actions.grep_lgrep
         }
     },
     lsp = {
@@ -106,15 +122,12 @@ else
 end
 
 utils.map("n", "<c-p>b", fzf.buffers)
-utils.map("n", "<c-p>f", fzf.live_grep_native)
+utils.map("n", "<c-p>f", fzf.live_grep)
 utils.map("n", "<c-p>z", function() fzf.grep({search = 'TODO'}) end)
 
-utils.map("n", "<c-p>sg", fzf.live_grep_glob)
 utils.map("n", "<c-p>ss", fzf.grep_cword)
--- utils.map("n", "<c-p>sp", fzf.lsp_live_workspace_symbols)
-
-utils.map("n", "<c-p>sP", function() fzf.tags_grep_cword({previewer = 'bat'}) end)
-utils.map("n", "<c-p>sp", function() fzf.tags({previewer = 'bat'}) end)
+utils.map("n", "<c-p>sP", fzf.tags_grep_cword)
+utils.map("n", "<c-p>sp", fzf.tags_live_grep)
 utils.map("n", "<f10>", function()
     plenary.Job:new({
         command = 'ctags',
@@ -132,7 +145,7 @@ utils.map("n", "<leader>U", fzf.lsp_document_symbols)
 utils.map("n", "<leader>d", function() fzf.lsp_definitions({sync = true, jump_to_single_result = true}) end)
 
 vim.api.nvim_add_user_command('Colors', fzf.colorschemes, {
-    bang = true,
+    bang = false,
     nargs = 0,
-    desc = 'Colors scheme picker'
+    desc = 'FzfLua powered colorscheme picker'
 })
