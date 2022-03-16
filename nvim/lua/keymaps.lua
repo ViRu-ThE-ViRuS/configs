@@ -28,8 +28,8 @@ utils.map("v", ".", ":norm .<cr>")
 utils.map({"n", "v"}, "<c-b>", "<nop>")
 
 -- delete without yank
-utils.map({"n", "v"}, "x", '"_d', {noremap=false})
-utils.map({"n", "v"}, "X", '"_dd', {noremap=false})
+utils.map({"n", "v"}, "x", '"_x', {noremap=false})
+utils.map({"n", "v"}, "X", '"_d', {noremap=false})
 
 -- paste yanked
 utils.map("n", "-", '"0p')
@@ -56,9 +56,9 @@ utils.map("n", "[q", "<cmd>try | cprev | catch | clast | catch | endtry<cr>", {s
 utils.map("n", "]q", "<cmd>try | cnext | catch | cfirst | catch | endtry<cr>", {silent=true})
 
 -- buffer navigation
-utils.map("n", "<bs>", '<c-^>zz')
 utils.map("n", "[b", "<cmd>bprev<cr>")
 utils.map("n", "]b", "<cmd>bnext<cr>")
+utils.map("n", "<bs>", '<c-^>zz')
 utils.map("n", "<leader>q", function() require('bufdelete').bufdelete(0, true) end)
 utils.map("n", "<c-w><c-l>", "<cmd>cclose<cr> <cmd>pclose<cr> <cmd>lclose<cr> <cmd>tabclose<cr>", {silent=true})
 

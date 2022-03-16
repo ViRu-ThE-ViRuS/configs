@@ -38,19 +38,19 @@ fzf.setup({
     end,
     fzf_opts = {['--layout'] = 'default'},
     fzf_colors = {
-        ["fg"]          = { "fg", "CursorLine" },
-        ["bg"]          = { "bg", "Normal" },
-        ["hl"]          = { "fg", "Comment" },
-        ["fg+"]         = { "fg", "Normal" },
-        ["bg+"]         = { "bg", "CursorLine" },
-        ["hl+"]         = { "fg", "Statement" },
-        ["info"]        = { "fg", "PreProc" },
-        ["prompt"]      = { "fg", "Conditional" },
-        ["pointer"]     = { "fg", "Exception" },
-        ["marker"]      = { "fg", "Keyword" },
-        ["spinner"]     = { "fg", "Label" },
-        ["header"]      = { "fg", "Comment" },
-        ["gutter"]      = { "bg", "Normal" },
+        ["fg"]       = { "fg", "CursorLine" },
+        ["bg"]       = { "bg", "Normal" },
+        ["hl"]       = { "fg", "Comment" },
+        ["fg+"]      = { "fg", "Normal" },
+        ["bg+"]      = { "bg", "CursorLine" },
+        ["hl+"]      = { "fg", "Statement" },
+        ["info"]     = { "fg", "PreProc" },
+        ["prompt"]   = { "fg", "Conditional" },
+        ["pointer"]  = { "fg", "Exception" },
+        ["marker"]   = { "fg", "Keyword" },
+        ["spinner"]  = { "fg", "Label" },
+        ["header"]   = { "fg", "Comment" },
+        ["gutter"]   = { "bg", "Normal" },
     },
     keymap = {
         fzf = {
@@ -103,7 +103,7 @@ fzf.setup({
         }
     },
     lsp = {
-        actions = {['ctrl-q'] = misc.fzf_to_qf},
+        actions = { ['ctrl-q'] = misc.fzf_to_qf },
         icons = {
             ['Error'] = { icon = utils.symbol_config.indicator_error, color = 'red' },
             ['Warning'] = { icon = utils.symbol_config.indicator_warning, color = 'yellow' },
