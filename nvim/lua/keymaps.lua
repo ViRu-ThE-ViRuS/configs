@@ -23,13 +23,17 @@ utils.map("n", "<space>", "za")
 -- misc
 utils.map("n", "/", "ms/")
 utils.map("n", "?", "ms?")
+utils.map("n", "v", "mvv")
+utils.map("n", "V", "mvV")
+utils.map("n", "<c-v>", "mv<c-v>")
+
 utils.map("v", "&", ":&&<cr>")
 utils.map("v", ".", ":norm .<cr>")
 utils.map({"n", "v"}, "<c-b>", "<nop>")
 
 -- delete without yank
-utils.map({"n", "v"}, "x", '"_x', {noremap=false})
-utils.map({"n", "v"}, "X", '"_d', {noremap=false})
+utils.map({"n", "v"}, "x", '"_d', {noremap=false})
+utils.map({"n", "v"}, "X", '"_x', {noremap=false})
 
 -- paste yanked
 utils.map("n", "-", '"0p')

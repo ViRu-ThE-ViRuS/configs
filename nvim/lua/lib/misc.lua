@@ -2,7 +2,7 @@ local core = require("lib/core")
 local notify = require('notify')
 
 -- convert fzf items to locations
-local fzf_to_location = function(entry)
+local function fzf_to_location(entry)
     local split = vim.split(entry, ":")
     local _, line = pcall(tonumber, split[2])
     local _, character = pcall(tonumber, split[3])
@@ -18,7 +18,7 @@ local fzf_to_location = function(entry)
 end
 
 -- populate qflist with fzf items
-local fzf_to_qf = function(lines)
+local function fzf_to_qf(lines)
     local items = vim.lsp.util.locations_to_items(core.foreach(lines, fzf_to_location), 'utf-16')
     require("utils").qf_populate(items, "r")
 end

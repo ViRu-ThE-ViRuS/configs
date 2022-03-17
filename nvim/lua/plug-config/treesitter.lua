@@ -44,10 +44,3 @@ vim.g['sandwich#recipes'] = require('lib/core').list_concat(
         {buns = {'{ ', ' }'}, nesting = 1, match_syntax = 1, input = {'}'}},
 })
 
--- refactoring.nvim
-require('refactoring').setup({})
-local utils = require("utils")
-utils.map("v", "<leader>rf", '<esc><cmd>lua require("refactoring").refactor("Extract Function")<cr>', {})
-utils.map("v", "<leader>rv", '<esc><cmd>lua require("refactoring").refactor("Extract Variable")<cr>', {})
-utils.map("v", "<leader>ri", '<esc><cmd>lua require("refactoring").refactor("Inline Variable")<cr>', {})
-

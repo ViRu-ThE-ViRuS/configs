@@ -113,7 +113,7 @@ vim.g.enfocado_style = "neon"
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme nightfox ]]
+vim.cmd [[ colorscheme substrata ]]
 
 return {
     preferred = {

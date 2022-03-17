@@ -3,8 +3,32 @@ local utils = require("utils")
 local misc = require('lib/misc')
 local actions = require("fzf-lua").actions
 local plenary = require('plenary')
+local notify = require('notify')
 
 local default_rg_options = ' --hidden --follow --no-heading --smart-case --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build,*.dSYM}"'
+
+-- NOTE(vir): now using nvim-notify
+local function set_harpoons(lines)
+    if not lines then
+        notify('could not set harpoons', 'error',
+               { render = 'minimal' })
+        return
+    end
+
+    if #lines > 10 then
+        notify('trying to set too many harpoons: #' .. #lines, 'error',
+        { render = 'minimal' })
+        return
+    end
+
+    -- using harpoon
+    for _, line in ipairs(lines) do
+        require('harpoon.mark').add_file(line)
+    end
+
+    notify(string.format(#lines .. ' harpoons set'), 'info',
+    { render = 'minimal' })
+end
 
 fzf.register_ui_select()
 fzf.setup({
@@ -67,7 +91,8 @@ fzf.setup({
             ['default'] = actions.file_edit,
             ['ctrl-x'] = actions.file_split,
             ['ctrl-v'] = actions.file_vsplit,
-            ['ctrl-q'] = utils.qf_populate
+            ['ctrl-q'] = utils.qf_populate,
+            -- ['ctrl-t'] = set_harpoons
         },
         buffers = {
             ['default'] = actions.buf_edit,
@@ -89,7 +114,7 @@ fzf.setup({
             ['ctrl-x'] = actions.buf_split,
         }
     },
-    files = {rg_opts = '--files' .. default_rg_options},
+    files = { rg_opts = '--files' .. default_rg_options },
     grep = {
         rg_opts = "--column --color=always" .. default_rg_options,
         rg_glob = true,
@@ -102,7 +127,8 @@ fzf.setup({
         previewer = 'bat',
         actions = {
             ['ctrl-q'] = misc.fzf_to_qf,
-            ['ctrl-g'] = actions.grep_lgrep
+            ['ctrl-g'] = actions.grep_lgrep,
+            ['ctrl-t'] = false
         }
     },
     lsp = {
@@ -136,8 +162,8 @@ utils.map("n", "<f10>", function()
         command = 'ctags',
         args = {'-R', '--excmd=combine'},
         cwd = misc.get_cwd(),
-        on_start = function() require('notify')('generating tags', 'debug', {render = 'minimal'}) end,
-        on_exit = function() require('notify')('tags generated', 'info', {render = 'minimal'}) end
+        on_start = function() notify('generating tags', 'debug', {render = 'minimal'}) end,
+        on_exit = function() notify('tags generated', 'info', {render = 'minimal'}) end
     }):start()
 end)
 

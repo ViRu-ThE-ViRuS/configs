@@ -30,7 +30,6 @@ return require('packer').startup({
             config = 'require("plug-config/treesitter")'
         }
         use { 'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter' }
-        use { 'ThePrimeagen/refactoring.nvim', after = 'nvim-treesitter' }
 
         use {
             'kyazdani42/nvim-tree.lua',
@@ -75,6 +74,12 @@ return require('packer').startup({
             event = 'VimEnter',
             config = 'require("plug-config/fzf")'
         }
+
+        -- use {
+        --     'ThePrimeagen/harpoon',
+        --     event = 'BufEnter',
+        --     config = 'require("plug-config/harpoon")'
+        -- }
 
         use {
             'neovim/nvim-lspconfig',
