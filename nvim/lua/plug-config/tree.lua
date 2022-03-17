@@ -79,3 +79,4 @@ require('nvim-tree').setup({
 })
 
 utils.map('n', '<leader>j', '<cmd>NvimTreeToggle<cr>')
+

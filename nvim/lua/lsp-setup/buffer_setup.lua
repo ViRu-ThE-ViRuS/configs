@@ -32,8 +32,9 @@ local function setup_independent_keymaps(client, buffer_nr)
 end
 
 -- setup buffer options
-local function setup_options(_, buffer_nr)
-    vim.api.nvim_buf_set_option(buffer_nr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+local function setup_options(_, _)
+    vim.opt_local.omnifunc = 'v:lua.vim.lsp.omnifunc'
+    vim.opt_local.formatoptions = "cqnjlr"
 end
 
 -- setup buffer autocommands

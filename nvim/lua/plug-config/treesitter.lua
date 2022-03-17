@@ -31,7 +31,7 @@ require('nvim-treesitter.configs').setup {
     }
 }
 
--- NOTE(vir): related plugin setup
+-- related plugin setup
 
 -- vim-matchup
 vim.g.matchup_matchparen_offscreen = {method = 'popup'}
@@ -42,4 +42,12 @@ vim.g['sandwich#recipes'] = require('lib/core').list_concat(
         {buns = {'( ', ' )'}, nesting = 1, match_syntax = 1, input = {')'}},
         {buns = {'[ ', ' ]'}, nesting = 1, match_syntax = 1, input = {']'}},
         {buns = {'{ ', ' }'}, nesting = 1, match_syntax = 1, input = {'}'}},
-    })
+})
+
+-- refactoring.nvim
+require('refactoring').setup({})
+local utils = require("utils")
+utils.map("v", "<leader>rf", '<esc><cmd>lua require("refactoring").refactor("Extract Function")<cr>', {})
+utils.map("v", "<leader>rv", '<esc><cmd>lua require("refactoring").refactor("Extract Variable")<cr>', {})
+utils.map("v", "<leader>ri", '<esc><cmd>lua require("refactoring").refactor("Inline Variable")<cr>', {})
+

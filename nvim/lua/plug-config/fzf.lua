@@ -84,7 +84,10 @@ fzf.setup({
     },
     buffers = {
         previewer = 'builtin',
-        actions = {['ctrl-q'] = {actions.buf_del, actions.resume}}
+        actions = {
+            ['ctrl-q'] = {actions.buf_del, actions.resume},
+            ['ctrl-x'] = actions.buf_split,
+        }
     },
     files = {rg_opts = '--files' .. default_rg_options},
     grep = {
@@ -149,3 +152,4 @@ vim.api.nvim_add_user_command('Colors', fzf.colorschemes, {
     nargs = 0,
     desc = 'FzfLua powered colorscheme picker'
 })
+

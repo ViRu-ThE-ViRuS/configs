@@ -10,3 +10,4 @@ require('notify').setup({
         TRACE = symbol_config.indicator_hint
     }
 })
+

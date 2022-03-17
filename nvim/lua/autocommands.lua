@@ -13,7 +13,10 @@ vim.api.nvim_create_augroup('UISetup', {clear = true})
 vim.api.nvim_create_autocmd('BufEnter,ColorScheme', { group = 'UISetup', pattern = '*', callback = function()
     vim.highlight.create('Comment', {cterm = 'bold,italic', gui = 'bold,italic'}, false)
     vim.highlight.create('LineNr', {cterm = 'NONE', gui = 'NONE'}, false)
-    vim.highlight.create('SignColumn', {cterm = 'NONE', gui = 'NONE'}, false)
+
+    -- TODO(vir): do this in lua
+    -- vim.highlight.create('SignColumn', {cterm = 'NONE', gui = 'NONE'}, false)
+    vim.cmd [[ highlight! link SignColumn LineNr ]]
 end })
 
 vim.api.nvim_create_augroup('TerminalSetup', {clear = true})

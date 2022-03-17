@@ -27,21 +27,99 @@ vim.g.substrata_italic_booleans = true
 vim.g.substrata_italic_functions = true
 vim.g.substrata_variant = "default"
 
-vim.g.gruvbox_baby_background_color = 'medium'
-vim.g.moonlight_borders = true
-vim.g.vscode_style = "dark"
 vim.g.aqua_transparency = 0
+vim.g.gruvbox_baby_background_color = 'medium'
+vim.g.vscode_style = "dark"
+vim.g.enfocado_plugins = {'all'}
+vim.g.enfocado_style = "neon"
+
+-- {{{ nightfox
+-- require('nightfox').setup({
+--     options = {
+--         terminal_colors = true,
+--         inverse = { search = true },
+--         styles = {
+--             comments = "bold,italic",
+--             functions = "bold,italic",
+--             strings = "italic",
+--         },
+--         modules = {
+--             cmp        = true,
+--             gitsigns   = true,
+--             treesitter = true,
+--             diagnostic = true,
+--             native_lsp = {
+--                 enabled = true,
+--                 virtual_text = {
+--                     errors = "bold,italic",
+--                     hints = "italic",
+--                     warnings = "italic",
+--                     information = "italic",
+--                 },
+--                 underlines = {
+--                     errors = "underline",
+--                     hints = "underline",
+--                     warnings = "underline",
+--                     information = "underline",
+--                 },
+--             },
+--             nvimtree   = {
+--                 enabled = true,
+--                 show_root = true,
+--             },
+--         }
+--     }
+-- })
+-- }}}
+
+-- {{{ catppuccin
+-- require('catppuccin').setup({
+--     term_colors = true,
+--     styles = {
+--         comments = "bold,italic",
+--         functions = "bold,italic",
+--         numbers = "underline",
+--         strings = "italic",
+--     },
+--     integrations = {
+--         cmp = true,
+--         gitsigns = true,
+--         bufferline = true,
+--         notify = true,
+--         treesitter = true,
+--         native_lsp = {
+--             enabled = true,
+--             virtual_text = {
+--                 errors = "bold,italic",
+--                 hints = "italic",
+--                 warnings = "italic",
+--                 information = "italic",
+--             },
+--             underlines = {
+--                 errors = "underline",
+--                 hints = "underline",
+--                 warnings = "underline",
+--                 information = "underline",
+--             },
+--         },
+--         nvimtree = {
+--             enabled = true,
+--             show_root = true,
+--         },
+--     }
+-- })
+-- }}}
 
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme catppuccin ]]
+vim.cmd [[ colorscheme nightfox ]]
 
 return {
     preferred = {
         "nightfly",
+        "nightfox", "duskfox", "nordfox",
         "moonfly",
-        "moonlight",
         "gruvbox-material",
         "gruvbox-baby",
         "catppuccin",
@@ -55,8 +133,8 @@ return {
         "pink-moon",
         "jellybeans",
         "embark",
+        "enfocado",
         "mountain",
-        "nisha",
         "aquarium",
         "saturnite",
         "tempus_tempest", "tempus_night",

@@ -50,7 +50,7 @@ lsp["sumneko_lua"].setup {
     settings = {
         Lua = {
             runtime = {version = "LuaJIT", path = vim.split(package.path, ";")},
-            diagnostics = {globals = {"vim", "use"}},
+            diagnostics = {globals = {"vim", "use", "packer_plugins"}},
             workspace = {
                 library = {
                     [vim.fn.expand("$VIMRUNTIME/lua")] = true,
@@ -83,3 +83,4 @@ require('null-ls').setup({
     end,
     flags = {debounce_text_changes = 150}
 })
+

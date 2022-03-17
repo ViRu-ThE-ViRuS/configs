@@ -32,10 +32,11 @@ local table = {
 }
 
 vim.g['vista#renderer#icons '] = table
-vim.g.vista_icon_indent = {"╰─▸ ", "├─▸ "}
+vim.g.vista_icon_indent = {"-> ", "-> "}
 vim.g.vista_fold_toggle_icons = {">", "$"}
 vim.g.vista_fzf_preview = {'right:50%'}
 vim.g.vista_disable_statusline = true
 vim.g.vista_default_executive = 'nvim_lsp'
 
 utils.map('n', '<leader>k', '<cmd>Vista!!<cr>')
+

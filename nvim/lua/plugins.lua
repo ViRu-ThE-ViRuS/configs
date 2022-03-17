@@ -20,16 +20,17 @@ return require('packer').startup({
         use { 'liuchengxu/vista.vim', cmd = 'Vista' }
         use { 'tpope/vim-eunuch', cmd = {'Delete', 'Rename'} }
         use { 'tpope/vim-fugitive', cmd = {'G', 'Gread', 'GcLog'} }
-        use { 'machakann/vim-sandwich', event = 'BufReadPost' }
+        use { 'machakann/vim-sandwich', event = 'BufRead' }
         use { 'andymass/vim-matchup', after = 'nvim-treesitter' }
 
         use {
             'nvim-treesitter/nvim-treesitter',
             run = ':TSUpdate',
-            event = 'BufRead',
+            after = 'vim-sandwich',
             config = 'require("plug-config/treesitter")'
         }
         use { 'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter' }
+        use { 'ThePrimeagen/refactoring.nvim', after = 'nvim-treesitter' }
 
         use {
             'kyazdani42/nvim-tree.lua',
@@ -94,8 +95,8 @@ return require('packer').startup({
 
         use 'RRethy/nvim-base16'
         use 'bluz71/vim-nightfly-guicolors'
+        use 'EdenEast/nightfox.nvim'
         use 'bluz71/vim-moonfly-colors'
-        use 'shaunsingh/moonlight.nvim'
         use 'sainnhe/gruvbox-material'
         use 'luisiacc/gruvbox-baby'
         use 'catppuccin/nvim'
@@ -109,8 +110,8 @@ return require('packer').startup({
         use 'sts10/vim-pink-moon'
         use 'nanotech/jellybeans.vim'
         use 'embark-theme/vim'
+        use 'wuelnerdotexe/vim-enfocado'
         use 'thepogsupreme/mountain.nvim'
-        use 'heraldofsolace/nisha-vim'
         use 'FrenzyExists/aquarium-vim'
         use 'habamax/vim-saturnite'
         use 'https://gitlab.com/protesilaos/tempus-themes-vim.git'
