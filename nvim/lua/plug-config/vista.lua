@@ -39,4 +39,5 @@ vim.g.vista_disable_statusline = true
 vim.g.vista_default_executive = 'nvim_lsp'
 
 utils.map('n', '<leader>k', '<cmd>Vista!!<cr>')
+vim.api.nvim_create_autocmd('FileType', { group = 'Misc', pattern = 'vista_kind', callback = function() utils.map('n', '<c-o>', '<cmd>wincmd p<cr>', {}, 0) end})
 

@@ -1,13 +1,8 @@
-local utils = require('utils')
 local misc = require('lib/misc')
 
 vim.api.nvim_create_augroup('Misc', {clear = true})
 vim.api.nvim_create_autocmd('TextYankPost', { group = 'Misc', pattern = '*', callback = function() vim.highlight.on_yank({on_visual = true}) end })
 vim.api.nvim_create_autocmd('BufWritePre', { group = 'Misc', pattern = '*', callback = misc.strip_trailing_whitespaces })
-vim.api.nvim_create_autocmd('FileType', { group = 'Misc', pattern = 'qf', callback = function()
-    utils.map('n', '<c-v>', '<c-w><cr><c-w>L', {}, 0)
-    utils.map('n', '<c-x>', '<c-w><cr><c-w>H', {}, 0)
-end })
 
 vim.api.nvim_create_augroup('UISetup', {clear = true})
 vim.api.nvim_create_autocmd('BufEnter,ColorScheme', { group = 'UISetup', pattern = '*', callback = function()
