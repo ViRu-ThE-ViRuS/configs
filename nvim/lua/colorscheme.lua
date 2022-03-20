@@ -121,7 +121,7 @@ require('material').setup({
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme nightfox ]]
+vim.cmd [[ colorscheme gruvbox-material ]]
 
 return {
     preferred = {

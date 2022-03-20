@@ -56,11 +56,10 @@ utils.map({"n", "v"}, "<c-d>", "20jzz")
 utils.map("n", "<ScrollWheelUp>", "<c-y>")
 utils.map("n", "<ScrollWheelDown>", "<c-e>")
 
--- list navigation
+-- qflist
 utils.map("n", "[q", "<cmd>try | cprev | catch | clast | catch | endtry<cr>", {silent=true})
 utils.map("n", "]q", "<cmd>try | cnext | catch | cfirst | catch | endtry<cr>", {silent=true})
--- utils.map("n", "[q", "<cmd>try | lprev | catch | llast | catch | endtry<cr>", {silent=true})
--- utils.map("n", "]q", "<cmd>try | lnext | catch | lfirst | catch | endtry<cr>", {silent=true})
+utils.map("n", "<leader>Q", "<cmd>belowright cwindow<cr> <cmd>copen<cr>")
 
 -- buffer navigation
 utils.map("n", "[b", "<cmd>bprev<cr>")

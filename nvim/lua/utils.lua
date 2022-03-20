@@ -27,10 +27,9 @@ local function qf_populate(lines, mode)
     end
 
     vim.fn.setqflist(lines, mode)
-    -- vim.fn.setloclist(0, lines, mode)
 
     vim.cmd [[
-        copen
+        belowright cwindow
         wincmd p
     ]]
 end
