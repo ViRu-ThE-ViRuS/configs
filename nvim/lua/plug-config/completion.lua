@@ -71,12 +71,11 @@ cmp.setup({
               rg                       = "[rg]",
               buffer                   = "[buf]",
               cmdline                  = "[cmd]",
-              nvim_lsp_document_symbol = "[lsp]"
             }
         })
     }
 })
 
-cmp.setup.cmdline("/", {sources = cmp.config.sources({{name="buffer"}}, {{name='nvim_lsp_document_symbol'}})})
+cmp.setup.cmdline("/", {sources = cmp.config.sources({{name="buffer"}})})
 cmp.setup.cmdline(":", {sources = cmp.config.sources({{name="path"}}, {{name="cmdline", keyword_length=2}})})
 

@@ -14,13 +14,13 @@ return require('packer').startup({
 
         use 'kyazdani42/nvim-web-devicons'
         use { 'rcarriga/nvim-notify', event = 'VimEnter', config = 'require("plug-config/notifications")' }
-        -- use { 'karb94/neoscroll.nvim', event = 'VimEnter', config = 'require("plug-config/neoscroll")' }
 
         use { 'godlygeek/tabular', cmd = 'Tab' }
         use { 'liuchengxu/vista.vim', cmd = 'Vista' }
         use { 'tpope/vim-eunuch', cmd = {'Delete', 'Rename'} }
         use { 'tpope/vim-fugitive', cmd = {'G', 'Gread', 'GcLog'} }
         use { 'machakann/vim-sandwich', event = 'BufRead' }
+        use { 'AndrewRadev/splitjoin.vim', event = 'BufReadPost' }
         use { 'andymass/vim-matchup', after = 'nvim-treesitter' }
 
         use {
@@ -54,12 +54,22 @@ return require('packer').startup({
                 {'lukas-reineke/cmp-rg', after = 'nvim-cmp'},
                 {'hrsh7th/cmp-buffer', after = 'nvim-cmp'},
                 {'hrsh7th/cmp-path', after = 'nvim-cmp'},
-                {'hrsh7th/cmp-cmdline', after = 'nvim-cmp'},
-                {'hrsh7th/cmp-nvim-lsp-document-symbol', after = 'nvim-cmp'}
+                {'hrsh7th/cmp-cmdline', after = 'nvim-cmp'}
             },
             after = {'cmp-nvim-lsp', 'lspkind-nvim'},
             event = 'BufRead',
             config = "require('plug-config/completion')"
+        }
+
+        use {
+            'neovim/nvim-lspconfig',
+            requires = {
+                {'jose-elias-alvarez/null-ls.nvim', event = 'BufRead'},
+                {'ray-x/lsp_signature.nvim', event = 'BufRead'}
+            },
+            after = {'null-ls.nvim', 'lsp_signature.nvim'},
+            event = 'BufRead',
+            config = 'require("lsp")'
         }
 
         use {
@@ -77,20 +87,9 @@ return require('packer').startup({
 
         -- use {
         --     'ThePrimeagen/harpoon',
-        --     event = 'BufEnter',
+        --     event = 'VimEnter',
         --     config = 'require("plug-config/harpoon")'
         -- }
-
-        use {
-            'neovim/nvim-lspconfig',
-            requires = {
-                {'jose-elias-alvarez/null-ls.nvim', event = 'BufRead'},
-                {'ray-x/lsp_signature.nvim', event = 'BufRead'}
-            },
-            after = {'null-ls.nvim', 'lsp_signature.nvim'},
-            event = 'BufRead',
-            config = 'require("lsp")'
-        }
 
         -- use {
         --     'untitled-ai/jupyter_ascending.vim',
@@ -101,6 +100,8 @@ return require('packer').startup({
         use 'RRethy/nvim-base16'
         use 'bluz71/vim-nightfly-guicolors'
         use 'EdenEast/nightfox.nvim'
+        use 'rebelot/kanagawa.nvim'
+        use 'marko-cerovac/material.nvim'
         use 'bluz71/vim-moonfly-colors'
         use 'sainnhe/gruvbox-material'
         use 'luisiacc/gruvbox-baby'
@@ -110,14 +111,8 @@ return require('packer').startup({
         use 'rose-pine/neovim'
         use 'kvrohit/substrata.nvim'
         use 'tanvirtin/monokai.nvim'
-        use 'fedepujol/nv-themes'
-        use 'davidosomething/vim-colors-meh'
-        use 'sts10/vim-pink-moon'
         use 'nanotech/jellybeans.vim'
-        use 'embark-theme/vim'
-        use 'wuelnerdotexe/vim-enfocado'
         use 'thepogsupreme/mountain.nvim'
-        use 'FrenzyExists/aquarium-vim'
         use 'habamax/vim-saturnite'
         use 'https://gitlab.com/protesilaos/tempus-themes-vim.git'
 

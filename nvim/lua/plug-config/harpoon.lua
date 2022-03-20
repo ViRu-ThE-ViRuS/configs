@@ -11,6 +11,8 @@ local function notify_forward(message, callback, ...)
     end
 end
 
+-- vim.g.harpoon_log_level = 'debug'
+
 utils.map('n', '<leader>tA', notify_forward('harpoon set', require('harpoon.mark').add_file))
 utils.map('n', '<leader>ta', harpoo_ui.toggle_quick_menu)
 utils.map('n', '<leader>tq', function() harpoo_ui.nav_file(1) end)

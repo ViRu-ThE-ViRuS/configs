@@ -27,11 +27,19 @@ vim.g.substrata_italic_booleans = true
 vim.g.substrata_italic_functions = true
 vim.g.substrata_variant = "default"
 
-vim.g.aqua_transparency = 0
 vim.g.gruvbox_baby_background_color = 'medium'
 vim.g.vscode_style = "dark"
-vim.g.enfocado_plugins = {'all'}
-vim.g.enfocado_style = "neon"
+vim.g.material_style = "oceanic"
+
+-- {{{ material
+require('material').setup({
+    italics = {
+        comments = true,
+        functions = true,
+        strings = true
+    },
+})
+-- }}}
 
 -- {{{ nightfox
 -- require('nightfox').setup({
@@ -113,12 +121,14 @@ vim.g.enfocado_style = "neon"
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme substrata ]]
+vim.cmd [[ colorscheme nightfox ]]
 
 return {
     preferred = {
         "nightfly",
         "nightfox", "duskfox", "nordfox",
+        "kanagawa",
+        "material",
         "moonfly",
         "gruvbox-material",
         "gruvbox-baby",
@@ -128,16 +138,10 @@ return {
         "rose-pine",
         "substrata",
         "monokai", "monokai_pro",
-        "nv-vcdark", "nv-solzdark",
-        "meh",
-        "pink-moon",
         "jellybeans",
-        "embark",
-        "enfocado",
         "mountain",
-        "aquarium",
         "saturnite",
-        "tempus_tempest", "tempus_night",
+        "tempus_tempest",
         "base16-apprentice", "base16-ashes",
         "base16-monokai"
     }

@@ -101,7 +101,7 @@ local function start_session()
     dapui.open()
 
     local info_string = string.format('[prog] %s', dap.session().config.program)
-    notify(info_string, 'debug', {title = '[DAP] Session Started', timeout = 500})
+    notify(info_string, 'debug', {title = '[dap] session started', timeout = 500})
 end
 
 local function terminate_session()
@@ -110,7 +110,7 @@ local function terminate_session()
     dap.repl.close()
 
     local info_string = string.format('[prog] %s', dap.session().config.program)
-    notify(info_string, 'debug', {title = '[DAP] Session Terminated', timeout = 500})
+    notify(info_string, 'debug', {title = '[dap] session terminated', timeout = 500})
 end
 
 dap.listeners.after.event_initialized["dapui"] = start_session

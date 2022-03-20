@@ -28,7 +28,8 @@ utils.map("n", "V", "mvV")
 utils.map("n", "<c-v>", "mv<c-v>")
 
 utils.map("v", "&", ":&&<cr>")
-utils.map("v", ".", ":norm .<cr>")
+utils.map("v", ".", ":normal! .<cr>")
+utils.map("v", "@", ":normal! @")
 utils.map({"n", "v"}, "<c-b>", "<nop>")
 
 -- delete without yank
@@ -55,9 +56,11 @@ utils.map({"n", "v"}, "<c-d>", "20jzz")
 utils.map("n", "<ScrollWheelUp>", "<c-y>")
 utils.map("n", "<ScrollWheelDown>", "<c-e>")
 
--- qf navigation
+-- list navigation
 utils.map("n", "[q", "<cmd>try | cprev | catch | clast | catch | endtry<cr>", {silent=true})
 utils.map("n", "]q", "<cmd>try | cnext | catch | cfirst | catch | endtry<cr>", {silent=true})
+-- utils.map("n", "[q", "<cmd>try | lprev | catch | llast | catch | endtry<cr>", {silent=true})
+-- utils.map("n", "]q", "<cmd>try | lnext | catch | lfirst | catch | endtry<cr>", {silent=true})
 
 -- buffer navigation
 utils.map("n", "[b", "<cmd>bprev<cr>")
@@ -91,12 +94,12 @@ utils.map({"n", "v"}, "Q", "<cmd>normal %<cr>")
 
 -- fixing that stupid typo when trying to [save]exit
 vim.cmd [[
-    cnoreabbrev <expr> W  ((getcmdtype() is# ':' && getcmdline() is# 'W')?('w'):('W'))
-    cnoreabbrev <expr> Q  ((getcmdtype() is# ':' && getcmdline() is# 'Q')?('q'):('Q'))
-    cnoreabbrev <expr> WQ ((getcmdtype() is# ':' && getcmdline() is# 'WQ')?('wq'):('WQ'))
-    cnoreabbrev <expr> Wq ((getcmdtype() is# ':' && getcmdline() is# 'Wq')?('wq'):('Wq'))
-    cnoreabbrev <expr> w; ((getcmdtype() is# ':' && getcmdline() is# 'w;')?('w'):('w;'))
-    cnoreabbrev <expr> ;w ((getcmdtype() is# ':' && getcmdline() is# ';w')?('w'):(';w'))
+    cnoreabbrev <expr> W     ((getcmdtype()  is# ':' && getcmdline() is# 'W')?('w'):('W'))
+    cnoreabbrev <expr> Q     ((getcmdtype()  is# ':' && getcmdline() is# 'Q')?('q'):('Q'))
+    cnoreabbrev <expr> WQ    ((getcmdtype()  is# ':' && getcmdline() is# 'WQ')?('wq'):('WQ'))
+    cnoreabbrev <expr> Wq    ((getcmdtype()  is# ':' && getcmdline() is# 'Wq')?('wq'):('Wq'))
+    cnoreabbrev <expr> w;    ((getcmdtype()  is# ':' && getcmdline() is# 'w;')?('w'):('w;'))
+    cnoreabbrev <expr> ;w    ((getcmdtype()  is# ':' && getcmdline() is# ';w')?('w'):(';w'))
 ]]
 
 -- terminal setup

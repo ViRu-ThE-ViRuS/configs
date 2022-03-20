@@ -5,30 +5,31 @@ local actions = require("fzf-lua").actions
 local plenary = require('plenary')
 local notify = require('notify')
 
-local default_rg_options = ' --hidden --follow --no-heading --smart-case --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build,*.dSYM}"'
+local default_rg_options = ' --hidden --follow --no-heading --smart-case --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build,*.dSYM,tags}"'
 
 -- NOTE(vir): now using nvim-notify
-local function set_harpoons(lines)
-    if not lines then
-        notify('could not set harpoons', 'error',
-               { render = 'minimal' })
-        return
-    end
+-- TODO(vir): figure out the bugs in harpoon
+-- local function set_harpoons(lines)
+--     if not lines then
+--         notify('could not set harpoons', 'error',
+--                { render = 'minimal' })
+--         return
+--     end
 
-    if #lines > 10 then
-        notify('trying to set too many harpoons: #' .. #lines, 'error',
-        { render = 'minimal' })
-        return
-    end
+--     if #lines > 10 then
+--         notify('trying to set too many harpoons: #' .. #lines, 'error',
+--         { render = 'minimal' })
+--         return
+--     end
 
-    -- using harpoon
-    for _, line in ipairs(lines) do
-        require('harpoon.mark').add_file(line)
-    end
+--     -- using harpoon
+--     for _, line in ipairs(lines) do
+--         require('harpoon.mark').add_file(line)
+--     end
 
-    notify(string.format(#lines .. ' harpoons set'), 'info',
-    { render = 'minimal' })
-end
+--     notify(string.format(#lines .. ' harpoons set'), 'info',
+--     { render = 'minimal' })
+-- end
 
 fzf.register_ui_select()
 fzf.setup({
@@ -114,7 +115,7 @@ fzf.setup({
             ['ctrl-x'] = actions.buf_split,
         }
     },
-    files = { rg_opts = '--files' .. default_rg_options },
+    files = { rg_opts = '--files' .. default_rg_options, },
     grep = {
         rg_opts = "--column --color=always" .. default_rg_options,
         rg_glob = true,
