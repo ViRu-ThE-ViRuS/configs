@@ -1,5 +1,5 @@
 -- auto install packer.nvim if not exists
-local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
+local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/opt/packer.nvim'
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
     vim.api.nvim_command( '!git clone https://github.com/wbthomason/packer.nvim ' .. install_path)
     vim.cmd [[ packadd packer.nvim ]]
@@ -8,42 +8,41 @@ end
 vim.api.nvim_add_user_command('Ps', 'PackerSync', { bang = true, nargs = 0, desc = 'Packer Sync' })
 return require('packer').startup({
     function()
-        use 'wbthomason/packer.nvim'
         use 'nvim-lua/plenary.nvim'
         use 'lewis6991/impatient.nvim'
+        use { 'wbthomason/packer.nvim', event = 'VimEnter' }
 
-        use 'kyazdani42/nvim-web-devicons'
+        use { 'kyazdani42/nvim-web-devicons', event = 'VimEnter' }
         use { 'rcarriga/nvim-notify', event = 'VimEnter', config = 'require("plug-config/notifications")' }
 
         use { 'godlygeek/tabular', cmd = 'Tab' }
         use { 'liuchengxu/vista.vim', cmd = 'Vista' }
         use { 'tpope/vim-eunuch', cmd = {'Delete', 'Rename'} }
         use { 'tpope/vim-fugitive', cmd = {'G', 'Gread', 'GcLog'} }
-        use { 'machakann/vim-sandwich', event = 'BufRead' }
         use { 'AndrewRadev/splitjoin.vim', event = 'BufReadPost' }
-        use { 'andymass/vim-matchup', after = 'nvim-treesitter' }
 
         use {
             'nvim-treesitter/nvim-treesitter',
+            requires = {
+                {'machakann/vim-sandwich', event = 'BufRead'},
+                {'andymass/vim-matchup', after = 'nvim-treesitter'},
+                {'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter'}
+            },
             run = ':TSUpdate',
             after = 'vim-sandwich',
             config = 'require("plug-config/treesitter")'
-        }
-        use { 'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter' }
-
-        use {
-            'kyazdani42/nvim-tree.lua',
-            event = 'VimEnter',
-            config = 'require("plug-config/tree")'
         }
 
         use { 'famiu/bufdelete.nvim', event = 'BufReadPost' }
         use { 'b3nj5m1n/kommentary', event = 'BufReadPost', config = 'require("plug-config/kommentary")' }
         use { 'lewis6991/gitsigns.nvim', event = 'BufReadPost', config = 'require("plug-config/gitsigns")' }
-        use { 'akinsho/nvim-bufferline.lua', event = 'BufReadPost', config = 'require("plug-config/bufferline")' }
         use { 'aserowy/tmux.nvim', event = 'VimEnter', config = 'require("plug-config/tmux")' }
+
         use { 'sindrets/diffview.nvim', after = 'vim-fugitive', config = 'require("plug-config/diffview")' }
         use { 'windwp/nvim-autopairs', after = 'nvim-cmp', config = 'require("plug-config/autopairs")' }
+        use { 'kyazdani42/nvim-tree.lua', after = 'nvim-web-devicons', config = 'require("plug-config/tree")' }
+        use { 'akinsho/nvim-bufferline.lua', after = 'nvim-web-devicons', config = 'require("plug-config/bufferline")' }
+        use { 'ibhagwan/fzf-lua', after = 'nvim-web-devicons', config = 'require("plug-config/fzf")' }
 
         use {
             'hrsh7th/nvim-cmp',
@@ -68,7 +67,6 @@ return require('packer').startup({
                 {'ray-x/lsp_signature.nvim', event = 'BufRead'}
             },
             after = {'null-ls.nvim', 'lsp_signature.nvim'},
-            event = 'BufRead',
             config = 'require("lsp")'
         }
 
@@ -77,12 +75,6 @@ return require('packer').startup({
             requires = {{'rcarriga/nvim-dap-ui', ft = {'c', 'cpp', 'python'}}},
             ft = {'c', 'cpp', 'python'},
             config = 'require("plug-config/dap")'
-        }
-
-        use {
-            'ibhagwan/fzf-lua',
-            event = 'VimEnter',
-            config = 'require("plug-config/fzf")'
         }
 
         -- use {

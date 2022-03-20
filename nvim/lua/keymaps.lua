@@ -23,10 +23,6 @@ utils.map("n", "<space>", "za")
 -- misc
 utils.map("n", "/", "ms/")
 utils.map("n", "?", "ms?")
-utils.map("n", "v", "mvv")
-utils.map("n", "V", "mvV")
-utils.map("n", "<c-v>", "mv<c-v>")
-
 utils.map("v", "&", ":&&<cr>")
 utils.map("v", ".", ":normal! .<cr>")
 utils.map("v", "@", ":normal! @")

@@ -29,7 +29,7 @@ vim.g.substrata_variant = "default"
 
 vim.g.gruvbox_baby_background_color = 'medium'
 vim.g.vscode_style = "dark"
-vim.g.material_style = "oceanic"
+vim.g.material_style = "darker"
 
 -- {{{ material
 require('material').setup({
@@ -37,7 +37,7 @@ require('material').setup({
         comments = true,
         functions = true,
         strings = true
-    },
+    }
 })
 -- }}}
 
@@ -121,7 +121,7 @@ require('material').setup({
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme gruvbox-material ]]
+vim.cmd [[ colorscheme material ]]
 
 return {
     preferred = {

@@ -134,6 +134,7 @@ fzf.setup({
     },
     lsp = {
         actions = { ['ctrl-q'] = misc.fzf_to_qf },
+        continue_last_search = false,
         icons = {
             ['Error'] = { icon = utils.symbol_config.indicator_error, color = 'red' },
             ['Warning'] = { icon = utils.symbol_config.indicator_warning, color = 'yellow' },
