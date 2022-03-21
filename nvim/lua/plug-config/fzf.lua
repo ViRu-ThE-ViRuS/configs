@@ -3,7 +3,6 @@ local utils = require("utils")
 local misc = require('lib/misc')
 local actions = require("fzf-lua").actions
 local plenary = require('plenary')
-local notify = require('notify')
 
 local default_rg_options = ' --hidden --follow --no-heading --smart-case --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build,*.dSYM,tags}"'
 
@@ -157,9 +156,14 @@ utils.map("n", "<c-p>f", fzf.live_grep)
 utils.map("n", "<c-p>z", function() fzf.grep({search = 'TODO'}) end)
 
 utils.map("n", "<c-p>ss", fzf.grep_cword)
+
+-- ctags interaction
 utils.map("n", "<c-p>sP", fzf.tags_grep_cword)
 utils.map("n", "<c-p>sp", fzf.tags_live_grep)
 utils.map("n", "<f10>", function()
+    -- NOTE(vir): now using nvim-notify
+    local notify = require('notify')
+
     plenary.Job:new({
         command = 'ctags',
         args = {'-R', '--excmd=combine'},
@@ -173,6 +177,7 @@ end)
 utils.map("n", "<m-cr>", fzf.lsp_code_actions)
 utils.map("n", "<leader>u", fzf.lsp_references)
 utils.map("n", "<leader>U", fzf.lsp_document_symbols)
+utils.map("n", "<leader>E", fzf.lsp_workspace_diagnostics)
 utils.map("n", "<leader>d", function() fzf.lsp_definitions({sync = true, jump_to_single_result = true}) end)
 
 vim.api.nvim_add_user_command('Colors', fzf.colorschemes, {

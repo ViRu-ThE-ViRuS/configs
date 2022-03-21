@@ -1,5 +1,4 @@
 local core = require("lib/core")
-local notify = require('notify')
 
 -- convert fzf items to locations
 local function fzf_to_location(entry)
@@ -58,6 +57,8 @@ end
 -- open repository on github
 -- NOTE(vir): using nvim-notify
 local function open_repo_on_github(remote)
+    local notify = require('notify')
+
     if get_git_root() == nil then
         notify('not in a git repository', 'error',
                {title = 'could not open on github'})

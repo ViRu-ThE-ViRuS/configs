@@ -1,11 +1,10 @@
--- NOTE(vir): now using nvim-notify
-local notify = require('notify')
-
 -- bordered hover
 vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {border = 'rounded', focusable = false})
 
 -- populate qf list with changes (if multiple files modified)
+-- NOTE(vir): now using nvim-notify
 local function qf_rename()
+    local notify = require('notify')
     local position_params = vim.lsp.util.make_position_params()
     position_params.oldName = vim.fn.expand("<cword>")
 

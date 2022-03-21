@@ -27,6 +27,7 @@ utils.map("v", "&", ":&&<cr>")
 utils.map("v", ".", ":normal! .<cr>")
 utils.map("v", "@", ":normal! @")
 utils.map({"n", "v"}, "<c-b>", "<nop>")
+utils.map("n", "ss", "s")
 
 -- delete without yank
 utils.map({"n", "v"}, "x", '"_d', {noremap=false})

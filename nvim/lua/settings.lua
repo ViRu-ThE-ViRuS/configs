@@ -52,6 +52,9 @@ vim.opt.pumheight = 10
 vim.opt.equalalways = true
 vim.opt.wildmode = "full"
 vim.opt.visualbell = false
+vim.opt.fixendofline = false
+vim.opt.laststatus = 3
+-- vim.opt.fillchars = {  horiz = '━',  horizup = '┻',  horizdown = '┳',  vert = '┃', vertleft  = '┫', vertright = '┣', verthoriz = '╋', }
 
 vim.opt.number = true
 vim.opt.signcolumn = "yes"
@@ -60,6 +63,7 @@ vim.opt.wrap = false
 vim.opt.colorcolumn = "+1"
 vim.opt.foldmethod = "marker" -- {{{ }}}
 vim.opt.foldmarker = "{{{,}}}"
+-- vim.opt.foldcolumn = 'auto'
 
 -- buffer local options
 vim.opt.formatoptions = "cqnjlr"

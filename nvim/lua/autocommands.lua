@@ -5,13 +5,14 @@ vim.api.nvim_create_autocmd('TextYankPost', { group = 'Misc', pattern = '*', cal
 vim.api.nvim_create_autocmd('BufWritePre', { group = 'Misc', pattern = '*', callback = misc.strip_trailing_whitespaces })
 
 vim.api.nvim_create_augroup('UISetup', {clear = true})
-vim.api.nvim_create_autocmd('BufEnter,ColorScheme', { group = 'UISetup', pattern = '*', callback = function()
+vim.api.nvim_create_autocmd('ColorScheme', { group = 'UISetup', pattern = '*', callback = function()
     vim.highlight.create('Comment', {cterm = 'bold,italic', gui = 'bold,italic'}, false)
     vim.highlight.create('LineNr', {cterm = 'NONE', gui = 'NONE'}, false)
 
     -- TODO(vir): do this in lua
     -- vim.highlight.create('SignColumn', {cterm = 'NONE', gui = 'NONE'}, false)
     vim.cmd [[ highlight! link SignColumn LineNr ]]
+    vim.cmd [[ highlight! link VertSplit SignColumn ]]
 end })
 
 vim.api.nvim_create_augroup('TerminalSetup', {clear = true})
@@ -23,8 +24,9 @@ end })
 
 vim.cmd [[
     " TODO(vir): do this in lua
-    augroup ConfigUpdate
+    augroup Configs
         autocmd!
+        autocmd BufEnter ~/.config/kitty/kitty.conf setlocal filetype=bash
         autocmd BufWritePost ~/.config/nvim/init.lua source <afile>
         autocmd BufWritePost ~/.config/nvim/lua/*.lua source <afile>
     augroup end

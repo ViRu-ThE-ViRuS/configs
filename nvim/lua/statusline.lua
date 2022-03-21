@@ -38,7 +38,7 @@ end
 -- get current file name
 local function get_filename()
     if utils.is_htruncated(utils.truncation_limit_s) then return ' %t ' end
-    return ' %t '
+    return ' %f '
 end
 
 -- get current line/col

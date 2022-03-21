@@ -17,7 +17,7 @@ return require('packer').startup({
 
         use { 'godlygeek/tabular', cmd = 'Tab' }
         use { 'liuchengxu/vista.vim', cmd = 'Vista' }
-        use { 'tpope/vim-eunuch', cmd = {'Delete', 'Rename'} }
+        use { 'tpope/vim-eunuch', cmd = {'Delete', 'Rename', 'Chmod'} }
         use { 'tpope/vim-fugitive', cmd = {'G', 'Gread', 'GcLog'} }
         use { 'AndrewRadev/splitjoin.vim', event = 'BufReadPost' }
 
@@ -25,8 +25,8 @@ return require('packer').startup({
             'nvim-treesitter/nvim-treesitter',
             requires = {
                 {'machakann/vim-sandwich', event = 'BufRead'},
+                {'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter'},
                 {'andymass/vim-matchup', after = 'nvim-treesitter'},
-                {'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter'}
             },
             run = ':TSUpdate',
             after = 'vim-sandwich',
@@ -56,7 +56,6 @@ return require('packer').startup({
                 {'hrsh7th/cmp-cmdline', after = 'nvim-cmp'}
             },
             after = {'cmp-nvim-lsp', 'lspkind-nvim'},
-            event = 'BufRead',
             config = "require('plug-config/completion')"
         }
 

@@ -32,13 +32,13 @@ vim.g.vscode_style = "dark"
 vim.g.material_style = "darker"
 
 -- {{{ material
-require('material').setup({
-    italics = {
-        comments = true,
-        functions = true,
-        strings = true
-    }
-})
+-- require('material').setup({
+--     italics = {
+--         comments = true,
+--         functions = true,
+--         strings = true
+--     }
+-- })
 -- }}}
 
 -- {{{ nightfox
@@ -50,31 +50,6 @@ require('material').setup({
 --             comments = "bold,italic",
 --             functions = "bold,italic",
 --             strings = "italic",
---         },
---         modules = {
---             cmp        = true,
---             gitsigns   = true,
---             treesitter = true,
---             diagnostic = true,
---             native_lsp = {
---                 enabled = true,
---                 virtual_text = {
---                     errors = "bold,italic",
---                     hints = "italic",
---                     warnings = "italic",
---                     information = "italic",
---                 },
---                 underlines = {
---                     errors = "underline",
---                     hints = "underline",
---                     warnings = "underline",
---                     information = "underline",
---                 },
---             },
---             nvimtree   = {
---                 enabled = true,
---                 show_root = true,
---             },
 --         }
 --     }
 -- })
@@ -121,7 +96,7 @@ require('material').setup({
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme material ]]
+vim.cmd [[ colorscheme nightfox ]]
 
 return {
     preferred = {
