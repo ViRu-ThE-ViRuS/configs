@@ -52,7 +52,6 @@ vim.opt.equalalways = true
 vim.opt.wildmode = "full"
 vim.opt.visualbell = false
 vim.opt.laststatus = 3
--- vim.opt.fillchars = {  horiz = '━',  horizup = '┻',  horizdown = '┳',  vert = '┃', vertleft  = '┫', vertright = '┣', verthoriz = '╋', }
 
 -- window local
 vim.opt.wrap = false

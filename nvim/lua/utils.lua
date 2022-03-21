@@ -46,6 +46,8 @@ local function random_colors()
         target()
     else
         vim.cmd(string.format('colorscheme %s\ncolorscheme', target))
+        -- require('notify')('colorscheme set: ' .. vim.g.colors_name,
+        --                   'info', {render='minimal'})
     end
 end
 

@@ -84,23 +84,55 @@ local function open_repo_on_github(remote)
 end
 
 -- window: toggle state, keep track of window ids
-local state = {}
+local window_state = {}
 
 -- window: toggle current window (maximum <-> original)
 local function toggle_window()
     if vim.fn.winnr('$') > 1 then
         local original = vim.fn.win_getid()
         vim.cmd('tab sp')
-        state[vim.fn.win_getid()] = original
+        window_state[vim.fn.win_getid()] = original
     else
         local maximized = vim.fn.win_getid()
-        local original = state[maximized]
+        local original = window_state[maximized]
 
         if original ~= nil then
             vim.cmd('tabclose')
             vim.fn.win_gotoid(original)
-            state[maximized] = nil
+            window_state[maximized] = nil
         end
+    end
+end
+
+-- separator: toggle state, between thick and default
+local separator_state = false
+
+-- separator: toggle buffer separators (thick <-> default)
+local function toggle_thicc_separators()
+    if separator_state then
+        vim.opt.fillchars = {
+            horiz = nil,
+            horizup = nil,
+            horizdown = nil,
+            vert = nil,
+            vertleft = nil,
+            vertright = nil,
+            verthoriz = nil
+        }
+
+        separator_state = false
+    else
+        vim.opt.fillchars = {
+            horiz = '━',
+            horizup = '┻',
+            horizdown = '┳',
+            vert = '┃',
+            vertleft = '┫',
+            vertright = '┣',
+            verthoriz = '╋',
+        }
+
+        separator_state = true
     end
 end
 
@@ -112,5 +144,6 @@ return {
     get_git_root = get_git_root,
     get_git_remotes = get_git_remotes,
     open_repo_on_github = open_repo_on_github,
-    toggle_window = toggle_window
+    toggle_window = toggle_window,
+    toggle_thicc_separators = toggle_thicc_separators
 }

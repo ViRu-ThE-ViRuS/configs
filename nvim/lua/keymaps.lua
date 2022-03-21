@@ -1,5 +1,6 @@
 local utils = require("utils")
 local terminal = require('terminal')
+local misc = require('lib/misc')
 
 -- line navigation and movements
 utils.map("v", "<", "<gv")
@@ -13,9 +14,11 @@ utils.map("n", "U", "<c-r>")
 utils.map("n", ";", ":")
 utils.map("n", ":", ";")
 utils.map('n', 'Y', 'yy')
-utils.map("n", "<leader>1", require('lib/misc').toggle_window)
+utils.map("n", "<leader>1", misc.toggle_window)
 utils.map("n", "<leader>2", utils.random_colors, {silent = false})
 utils.map("n", "<leader>3", "<cmd>if AutoHighlightToggle()<bar>set hlsearch<bar>endif<cr>")
+utils.map("n", "<leader>4", "<cmd>set spell!<cr>")
+utils.map("n", "<leader>5", misc.toggle_thicc_separators)
 
 -- folds
 utils.map("n", "<space>", "za")
@@ -84,9 +87,6 @@ utils.map({"n", "i"}, "<up>", "<nop>")
 utils.map({"n", "i"}, "<down>", "<nop>")
 utils.map({"n", "i"}, "<left>", "<nop>")
 utils.map({"n", "i"}, "<right>", "<nop>")
-
--- spellings
-utils.map("n", "<f11>", "<cmd>set spell!<cr>")
 
 -- disable command history, EX mode
 utils.map({"n", "v"}, "q:", "<nop>")
