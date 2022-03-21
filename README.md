@@ -13,10 +13,10 @@ my dev setup :)
 
 #### Neovim
 
-everything in this config was added piecewise, based on the explicit need for
+everything in this config was added piece wise, based on the explicit need for
 something in my workflow. ive spent a lot of time optimizing for:
 
-- speed (startuptime ~5ms, lazyloading almost everything)
+- speed (startup time ~5ms, lazy loading almost everything)
 - no bloat (only features i use regularly)
 - custom implementation instead of pulling in new plugins for everything
 
@@ -29,9 +29,9 @@ some things i decided to implement on my own:
 - functionality to open file in `Finder`, repository in `GitHub`
 - lua utilities library with things like map, filter, shell commands, +more
 - small utilities like highlight current word, switch bw preferred colorschemes,
-  collect all TODOs, toggle maximise buffer, etc
+  collect all TODOs, toggle maximize buffer, etc
 
-i recommend using `neovim HEAD` (or atleast 0.6+) to keep up with latest config
+i recommend using `neovim HEAD` (or at least 0.6+) to keep up with latest config
 changes.
 
 ##### LSP
