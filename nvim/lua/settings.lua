@@ -7,7 +7,7 @@ vim.g.loaded_perl_provider = 0
 vim.g.loaded_python_provider = 0
 vim.g.python_host_skip_check = 1
 
--- setup python path
+-- set python path
 vim.defer_fn(function() vim.g.python3_host_prog = core.get_python() end, 0)
 
 -- use filetype.lua instead of filetype.vim
@@ -39,11 +39,10 @@ vim.opt.smartcase = true
 vim.opt.showmode = false
 vim.opt.showcmd = false
 vim.opt.joinspaces = false
+vim.opt.title = true
 vim.opt.clipboard = "unnamed,unnamedplus"
 vim.opt.shortmess = "filnxtToOFc"
-vim.opt.omnifunc = "syntaxcomplete#Complete"
 vim.opt.display = "lastline,msgsep"
-vim.opt.title = true
 vim.opt.completeopt = "menu,menuone,noinsert"
 vim.opt.diffopt = "internal,filler,vertical"
 vim.opt.updatetime = 1000
@@ -52,40 +51,46 @@ vim.opt.pumheight = 10
 vim.opt.equalalways = true
 vim.opt.wildmode = "full"
 vim.opt.visualbell = false
-vim.opt.fixendofline = false
 vim.opt.laststatus = 3
 -- vim.opt.fillchars = {  horiz = '━',  horizup = '┻',  horizdown = '┳',  vert = '┃', vertleft  = '┫', vertright = '┣', verthoriz = '╋', }
 
-vim.opt.number = true
-vim.opt.signcolumn = "yes"
-vim.opt.cursorline = true
+-- window local
 vim.opt.wrap = false
+vim.opt.number = true
+vim.opt.cursorline = true
+vim.opt.signcolumn = "yes"
 vim.opt.colorcolumn = "+1"
 vim.opt.foldmethod = "marker" -- {{{ }}}
 vim.opt.foldmarker = "{{{,}}}"
 -- vim.opt.foldcolumn = 'auto'
 
--- buffer local options
+-- spellings
+vim.opt.spelllang = 'en_us'
+vim.opt.spellsuggest = 'best'
+
+-- buffer local
 vim.opt.formatoptions = "cqnjlr"
 vim.opt.matchpairs = "(:),{:},[:],<:>"
 vim.opt.textwidth = 79
-vim.opt.swapfile = false
 vim.opt.undofile = true
-
-vim.opt.tabstop = 4
-vim.opt.softtabstop = 4
-vim.opt.shiftwidth = 4
+vim.opt.swapfile = false
+vim.opt.fixendofline = false
 vim.opt.expandtab = true
 vim.opt.autoindent = true
 vim.opt.smartindent = true
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.shiftwidth = 4
 
+-- TODO(vir): figure this out
 -- vim.opt.exrc = true
 -- vim.opt.secure = true
 
+-- global options
 vim.opt.undodir = core.get_homedir() .. "/.config/undodir/"
 vim.opt.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20'
 
--- disable some builtin plugins
+-- disable builtin plugins
 local disabled_plugins = {
     "2html_plugin",
     "getscript",

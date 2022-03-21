@@ -7,7 +7,8 @@ local core = require("lib/core")
 local on_attach = function(client, buffer_nr)
     -- NOTE(vir): now using nvim-notify
     -- print("[LSP] Active")
-    require("notify")(string.format('[lsp] %s\n[cwd] %s', client.name, misc.get_cwd()), 'info', {title = '[lsp] Active'})
+    require("notify")(string.format('[lsp] %s\n[cwd] %s', client.name, misc.get_cwd()),
+                                    'info', {title = '[lsp] Active'})
 
     setup_buffer.setup_general_keymaps(client, buffer_nr)
     setup_buffer.setup_independent_keymaps(client, buffer_nr)
@@ -71,14 +72,19 @@ lsp['cmake'].setup {
 }
 
 -- null-ls setup
-local formatting = require('null-ls').builtins.formatting
-local diagnostics = require('null-ls').builtins.diagnostics
-require('null-ls').setup({
-    sources = { formatting.lua_format, formatting.autopep8, formatting.prettier, diagnostics.flake8 },
+local null_ls = require('null-ls')
+null_ls.setup({
+    sources = {
+        null_ls.builtins.formatting.lua_format,
+        null_ls.builtins.formatting.autopep8,
+        null_ls.builtins.formatting.prettier,
+        null_ls.builtins.diagnostics.flake8,
+        null_ls.builtins.completion.spell
+    },
     capabilities = capabilities,
     on_attach = function(client, buffer_nr)
-        require("notify")(string.format('[lsp] %s\n[cwd] %s', client.name, misc.get_cwd()), 'info',
-                          {title = '[lsp] active'})
+        require("notify")(string.format('[lsp] %s\n[cwd] %s', client.name, misc.get_cwd()),
+                          'info', {title = '[lsp] active'})
         setup_buffer.setup_independent_keymaps(client, buffer_nr)
     end,
     flags = {debounce_text_changes = 150}

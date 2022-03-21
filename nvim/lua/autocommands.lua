@@ -58,27 +58,28 @@ vim.cmd [[
     endfunction
 ]]
 
--- setup OpenInGithub command, with vim.ui currently using fzf-lua
-if misc.get_git_root() ~= nil then
-    vim.api.nvim_add_user_command('OpenInGithub', function(_)
-        local remotes = misc.get_git_remotes()
+vim.defer_fn(function()
+    -- setup OpenInGithub command, with vim.ui currently using fzf-lua
+    if misc.get_git_root() ~= nil then
+        vim.api.nvim_add_user_command('OpenInGithub', function(_)
+            local remotes = misc.get_git_remotes()
 
-        if #remotes > 1 then
-            vim.ui.select(remotes, { prompt = 'remote> ' },
-                          function(remote) misc.open_repo_on_github(remote) end)
-        else misc.open_repo_on_github(remotes[1]) end
+            if #remotes > 1 then
+                vim.ui.select(remotes, { prompt = 'remote> ' },
+                              function(remote) misc.open_repo_on_github(remote) end)
+            else misc.open_repo_on_github(remotes[1]) end
 
-    end, {
-        bang = true,
-        nargs = 0,
-        desc = 'Open chosen remote on GitHub, in the Browser'
-    })
-end
+        end, {
+            bang = true,
+            nargs = 0,
+            desc = 'Open chosen remote on GitHub, in the Browser'
+        })
+    end
 
-vim.api.nvim_add_user_command('SudoWrite', function()
-    vim.cmd [[
-        write !sudo -A tee > /dev/null %
-        edit
-    ]]
-end, { bang = true, nargs = 0, desc = 'Sudo Write'})
-
+    vim.api.nvim_add_user_command('SudoWrite', function()
+        vim.cmd [[
+            write !sudo -A tee > /dev/null %
+            edit
+        ]]
+    end, { bang = true, nargs = 0, desc = 'Sudo Write'})
+end, 0)

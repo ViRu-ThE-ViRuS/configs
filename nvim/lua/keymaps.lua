@@ -59,6 +59,7 @@ utils.map("n", "]q", "<cmd>try | cnext | catch | cfirst | catch | endtry<cr>", {
 utils.map("n", "<leader>Q", "<cmd>belowright cwindow<cr> <cmd>copen<cr>")
 
 -- buffer navigation
+-- NOTE(vir): bufdelete loaded after BufReadPost, causes error on fresh start
 utils.map("n", "[b", "<cmd>bprev<cr>")
 utils.map("n", "]b", "<cmd>bnext<cr>")
 utils.map("n", "<bs>", '<c-^>zz')
@@ -83,6 +84,9 @@ utils.map({"n", "i"}, "<up>", "<nop>")
 utils.map({"n", "i"}, "<down>", "<nop>")
 utils.map({"n", "i"}, "<left>", "<nop>")
 utils.map({"n", "i"}, "<right>", "<nop>")
+
+-- spellings
+utils.map("n", "<f11>", "<cmd>set spell!<cr>")
 
 -- disable command history, EX mode
 utils.map({"n", "v"}, "q:", "<nop>")
