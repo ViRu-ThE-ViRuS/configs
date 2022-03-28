@@ -108,7 +108,10 @@ end
 local separator_state = false
 
 -- separator: toggle buffer separators (thick <-> default)
+-- NOTE(vir): using nvim-notify
 local function toggle_thicc_separators()
+    local notify = require("notify")
+
     if separator_state then
         vim.opt.fillchars = {
             horiz = nil,
@@ -121,6 +124,7 @@ local function toggle_thicc_separators()
         }
 
         separator_state = false
+        notify('thiccness deactivated', 'debug', {render = 'minimal'})
     else
         vim.opt.fillchars = {
             horiz = '━',
@@ -133,6 +137,21 @@ local function toggle_thicc_separators()
         }
 
         separator_state = true
+        notify('thiccness activated', 'info', {render = 'minimal'})
+    end
+end
+
+-- spellings: toggle spellings globally
+-- NOTE(vir): using nvim-notify
+local function toggle_spellings()
+    local notify = require('notify')
+
+    if vim.opt.spell._value then
+        vim.opt.spell = false
+        notify('spellings deactivated', 'debug', {render = 'minimal'})
+    else
+        vim.opt.spell = true
+        notify('spellings activated', 'info', {render = 'minimal'})
     end
 end
 
@@ -145,5 +164,7 @@ return {
     get_git_remotes = get_git_remotes,
     open_repo_on_github = open_repo_on_github,
     toggle_window = toggle_window,
-    toggle_thicc_separators = toggle_thicc_separators
+    toggle_thicc_separators = toggle_thicc_separators,
+    toggle_spellings = toggle_spellings
 }
+

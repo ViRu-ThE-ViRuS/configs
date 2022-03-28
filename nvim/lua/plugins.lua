@@ -65,14 +65,14 @@ return require('packer').startup({
                 {'jose-elias-alvarez/null-ls.nvim', event = 'BufRead'},
                 {'ray-x/lsp_signature.nvim', event = 'BufRead'}
             },
-            after = {'null-ls.nvim', 'lsp_signature.nvim'},
+            after = {'null-ls.nvim', 'lsp_signature.nvim', 'cmp-nvim-lsp'},
             config = 'require("lsp")'
         }
 
         use {
             'mfussenegger/nvim-dap',
             requires = {{'rcarriga/nvim-dap-ui', ft = {'c', 'cpp', 'python'}}},
-            ft = {'c', 'cpp', 'python'},
+            after = 'nvim-dap-ui',
             config = 'require("plug-config/dap")'
         }
 

@@ -1,5 +1,7 @@
 local symbol_config = require('utils').symbol_config
-require('notify').setup({
+local notify = require('notify')
+
+notify.setup({
     stages = 'fade',
     timeout = 250,
     icons = {
@@ -11,3 +13,4 @@ require('notify').setup({
     }
 })
 
+vim.notify = notify

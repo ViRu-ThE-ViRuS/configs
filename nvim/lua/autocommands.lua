@@ -12,6 +12,7 @@ vim.api.nvim_create_autocmd('BufWritePre', {
     callback = misc.strip_trailing_whitespaces
 })
 
+-- NOTE(vir): this only applies to colorschemes set manually
 vim.api.nvim_create_augroup('UISetup', {clear = true})
 vim.api.nvim_create_autocmd('ColorScheme', {
     group = 'UISetup',
@@ -26,13 +27,13 @@ vim.api.nvim_create_autocmd('ColorScheme', {
         vim.cmd [[ highlight! link VertSplit SignColumn ]]
     end
 })
-vim.api.nvim_create_autocmd('FileType', {
-    group = 'UISetup',
-    pattern = 'vista_kind',
-    callback = function()
-        vim.opt_local.winhighlight = 'Normal:NormalFloat,SignColumn:NormalFloat'
-    end
-})
+-- vim.api.nvim_create_autocmd('FileType', {
+--     group = 'UISetup',
+--     pattern = 'vista_kind',
+--     callback = function()
+--         vim.opt_local.winhighlight = 'Normal:NormalFloat,SignColumn:NormalFloat'
+--     end
+-- })
 
 vim.api.nvim_create_augroup('TerminalSetup', {clear = true})
 vim.api.nvim_create_autocmd('TermOpen', {
@@ -63,7 +64,7 @@ vim.cmd [[
         setlocal updatetime=2500
 
         " echo 'highlight current word: off'
-        lua require('notify')('highlight current word: OFF', 'info', {render='minimal'})
+        lua require('notify')('<cword> highlight deactivated', 'debug', {render='minimal'})
 
         return 0
       else
@@ -74,7 +75,7 @@ vim.cmd [[
         setl updatetime=1000
 
         " echo 'highlight current word: on'
-        lua require('notify')('highlight current word: ON', 'info', {render='minimal'})
+        lua require('notify')('<cword> highlight activated', 'info', {render='minimal'})
 
         return 1
       endif

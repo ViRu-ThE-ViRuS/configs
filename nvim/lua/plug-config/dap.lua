@@ -3,7 +3,6 @@ local dapui = require('dapui')
 local utils = require('utils')
 local core = require('lib/core')
 local plenary = require('plenary')
-local notify = require('notify')
 
 dap.adapters.python = { type = 'executable', command = 'python3', args = {'-m', 'debugpy.adapter'} }
 dap.adapters.codelldb = function(callback, _)
@@ -101,7 +100,7 @@ local function start_session()
     dapui.open()
 
     local info_string = string.format('[prog] %s', dap.session().config.program)
-    notify(info_string, 'debug', {title = '[dap] session started', timeout = 500})
+    require('notify')(info_string, 'debug', {title = '[dap] session started', timeout = 500})
 end
 
 local function terminate_session()
@@ -110,7 +109,7 @@ local function terminate_session()
     dap.repl.close()
 
     local info_string = string.format('[prog] %s', dap.session().config.program)
-    notify(info_string, 'debug', {title = '[dap] session terminated', timeout = 500})
+    require('notify')(info_string, 'debug', {title = '[dap] session terminated', timeout = 500})
 end
 
 dap.listeners.after.event_initialized["dapui"] = start_session

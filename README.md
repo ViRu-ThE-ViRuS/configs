@@ -71,3 +71,4 @@ for my dap setup to work, you will need to install adapters manually
 - kitty: setup fonts according to `kitty/kitty.conf`
 - nvim: use `LuaCacheClear` from impatient.nvim, if startup seems weirdly slow
 - periodically use `brew cleanup --prune 5; brew autoremove; brew doctor`
+
