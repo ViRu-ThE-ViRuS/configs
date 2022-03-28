@@ -26,13 +26,11 @@ libidn2
 libnghttp2
 libtasn1
 libtermkey
-libtool
 libunistring
 libuv
 libyaml
 luajit-openresty
 luv
-m4
 megatools
 mpdecimal
 msgpack
@@ -40,7 +38,6 @@ ncurses
 neovim
 nettle
 node
-openssl@1.1
 p11-kit
 pcre
 pcre2
