@@ -40,21 +40,13 @@ local lsp_icons = {
     TypeParameter = {icon = "𝙏",    hl = "TSParameter"}
 }
 
--- lsp diagnostic list visible?
-local diagnostics_set = {}
-
 -- toggle diagnostics list
 local function toggle_diagnostics_list()
-    local current_buf = vim.api.nvim_get_current_buf()
-
-    if not diagnostics_set[current_buf] then
+    if vim.fn.empty(vim.fn.filter(vim.fn.getwininfo(), "v:val.loclist")) == 1 then
         vim.diagnostic.setloclist()
-        diagnostics_set[current_buf] = true
-
         vim.opt_local.statusline = require('statusline').StatusLine('Diagnostics')
         vim.cmd [[ wincmd p ]]
     else
-        diagnostics_set[current_buf] = false
         vim.cmd [[ lclose ]]
     end
 end

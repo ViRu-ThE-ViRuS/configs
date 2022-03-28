@@ -59,7 +59,7 @@ utils.map("n", "<ScrollWheelDown>", "<c-e>")
 -- qflist
 utils.map("n", "[q", "<cmd>try | cprev | catch | clast | catch | endtry<cr>", {silent=true})
 utils.map("n", "]q", "<cmd>try | cnext | catch | cfirst | catch | endtry<cr>", {silent=true})
-utils.map("n", "<leader>Q", "<cmd>belowright cwindow<cr> <cmd>copen<cr>")
+utils.map("n", "<leader>Q", misc.toggle_qflist)
 
 -- buffer navigation
 -- NOTE(vir): bufdelete loaded after BufReadPost, causes error on fresh start

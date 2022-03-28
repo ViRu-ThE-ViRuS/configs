@@ -29,7 +29,7 @@ local function qf_populate(lines, mode)
     vim.fn.setqflist(lines, mode)
 
     vim.cmd [[
-        belowright cwindow
+        belowright copen
         wincmd p
     ]]
 end

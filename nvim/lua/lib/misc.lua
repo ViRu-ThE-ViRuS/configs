@@ -155,6 +155,15 @@ local function toggle_spellings()
     end
 end
 
+-- quickfix: toggle qflist
+local function toggle_qflist()
+    if vim.fn.empty(vim.fn.filter(vim.fn.getwininfo(), "v:val.quickfix")) == 1 then
+        vim.cmd [[ belowright copen ]]
+    else
+        vim.cmd [[ cclose ]]
+    end
+end
+
 return {
     fzf_to_qf = fzf_to_qf,
     strip_fname = strip_fname,
@@ -165,6 +174,7 @@ return {
     open_repo_on_github = open_repo_on_github,
     toggle_window = toggle_window,
     toggle_thicc_separators = toggle_thicc_separators,
-    toggle_spellings = toggle_spellings
+    toggle_spellings = toggle_spellings,
+    toggle_qflist = toggle_qflist
 }
 
