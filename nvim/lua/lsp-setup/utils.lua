@@ -40,26 +40,37 @@ local lsp_icons = {
     TypeParameter = {icon = "𝙏",    hl = "TSParameter"}
 }
 
--- toggle diagnostics list
-local function toggle_diagnostics_list(global)
-    if global then
+-- local diagnostics state
+local buffer_diagnostics_state = {}
+
+ -- toggle diagnostics list
+ local function toggle_diagnostics_list(global)
+     if global then
         if vim.fn.empty(vim.fn.filter(vim.fn.getwininfo(), "v:val.quickfix")) == 1 then
-            vim.diagnostic.setqflist()
+            vim.diagnostic.setqflist({open=false})
             vim.opt_local.statusline = require('statusline').StatusLine('Diagnostics')
-            vim.cmd [[ wincmd p ]]
+            vim.cmd [[
+                belowright copen
+                wincmd p
+            ]]
         else
             vim.cmd [[ cclose ]]
         end
-    else
-        if vim.fn.empty(vim.fn.filter(vim.fn.getwininfo(), "v:val.loclist")) == 1 then
-            vim.diagnostic.setloclist()
-            vim.opt_local.statusline = require('statusline').StatusLine('Workspace Diagnostics')
-            vim.cmd [[ wincmd p ]]
-        else
-            vim.cmd [[ lclose ]]
-        end
-    end
-end
+     else
+         local current_buf = vim.api.nvim_get_current_buf()
+
+         if not buffer_diagnostics_state[current_buf] then
+             vim.diagnostic.setloclist()
+             buffer_diagnostics_state[current_buf] = true
+
+             vim.opt_local.statusline = require('statusline').StatusLine('Diagnostics')
+             vim.cmd [[ wincmd p ]]
+         else
+             buffer_diagnostics_state[current_buf] = false
+             vim.cmd [[ lclose ]]
+         end
+     end
+ end
 
 -- print lsp diagnostics in CMD line
 local function cmd_line_diagnostics()

@@ -34,8 +34,8 @@ utils.map("n", "ss", "s")
 
 -- delete without yank
 utils.map({"n", "v"}, "x", '"_d', {noremap=false})
-utils.map({"n", "v"}, "X", '"_D', {noremap=false})
-utils.map({"n", "v"}, "<a-bs>", '"_x', {noremap=false})
+utils.map({"n", "v"}, "X", '"_dd', {noremap=false})
+utils.map({"n", "v"}, "<a-bs>", '"_dh', {noremap=false})
 
 -- paste yanked
 utils.map("n", "-", '"0p')

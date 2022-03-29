@@ -12,6 +12,15 @@ vim.api.nvim_create_autocmd('BufWritePre', {
     callback = misc.strip_trailing_whitespaces
 })
 
+-- NOTE(vir): vista_kind ft remap, consider moving to ftplugin/vista_kind.lua
+vim.api.nvim_create_autocmd('FileType', {
+    group = 'Misc',
+    pattern = {'vista_kind', 'NvimTree'},
+    callback = function()
+        require('utils').map('n', '<c-o>', '<cmd>wincmd p<cr>', {}, 0)
+    end,
+})
+
 -- NOTE(vir): this only applies to colorschemes set manually
 vim.api.nvim_create_augroup('UISetup', {clear = true})
 vim.api.nvim_create_autocmd('ColorScheme', {

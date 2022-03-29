@@ -151,7 +151,7 @@ else
 end
 
 utils.map("n", "<c-p>f", function() fzf.live_grep({exec_empty_query=true}) end)
-utils.map("n", "<c-p>sb", fzf.buffers)
+utils.map("n", "<c-p>b", fzf.buffers)
 utils.map("n", "<c-p>sz", function() fzf.grep({search = 'TODO'}) end)
 utils.map("n", "<c-p>ss", fzf.grep_cword)
 
