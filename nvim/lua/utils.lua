@@ -36,9 +36,6 @@ end
 
 -- randomize colorscheme
 local function random_colors()
-    -- local colorscheme_paths = vim.fn.globpath(vim.o.rtp, 'colors/*.vim', true, true)
-    -- local colorschemes = core.foreach(colorscheme_paths, misc.strip_fname)
-
     local colorschemes = require('colorscheme').preferred
     local target = colorschemes[math.random(1, #colorschemes)]
 
@@ -46,8 +43,6 @@ local function random_colors()
         target()
     else
         vim.cmd(string.format('colorscheme %s\ncolorscheme', target))
-        -- require('notify')('colorscheme set: ' .. vim.g.colors_name,
-        --                   'info', {render='minimal'})
     end
 end
 

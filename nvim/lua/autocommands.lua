@@ -27,13 +27,6 @@ vim.api.nvim_create_autocmd('ColorScheme', {
         vim.cmd [[ highlight! link VertSplit SignColumn ]]
     end
 })
--- vim.api.nvim_create_autocmd('FileType', {
---     group = 'UISetup',
---     pattern = 'vista_kind',
---     callback = function()
---         vim.opt_local.winhighlight = 'Normal:NormalFloat,SignColumn:NormalFloat'
---     end
--- })
 
 vim.api.nvim_create_augroup('TerminalSetup', {clear = true})
 vim.api.nvim_create_autocmd('TermOpen', {
