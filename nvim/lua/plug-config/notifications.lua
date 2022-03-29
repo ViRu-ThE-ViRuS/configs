@@ -10,7 +10,8 @@ notify.setup({
         INFO  = symbol_config.indicator_info,
         DEBUG = symbol_config.indicator_hint,
         TRACE = symbol_config.indicator_hint
-    }
+    },
+    on_open = function(win) vim.api.nvim_win_set_config(win, { focusable = false }) end
 })
 
 vim.notify = notify
