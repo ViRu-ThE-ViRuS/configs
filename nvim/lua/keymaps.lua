@@ -113,9 +113,9 @@ else
 end
 utils.map("n", "<leader>cc", "<cmd>vsp term://" .. vim.o.shell .. "<cr>")
 
--- tabular
+-- NOTE(vir): tabular
 utils.map("v", "<leader>=", ":Tab /")
 
--- fugitive
+-- NOTE(vir): fugitive
 utils.map("n", "<leader>gD", "<cmd>G! difftool<cr>")
 
