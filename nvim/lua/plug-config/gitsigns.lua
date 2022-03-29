@@ -37,16 +37,11 @@ require('gitsigns').setup {
             vim.schedule(refresh_fugitive)
         end, {silent = true}, buffer_nr)
 
-        utils.map({'n', 'v'}, '<leader>gr', '<cmd>Gitsigns reset_hunk<cr>',
-                  {silent = true}, buffer_nr)
-        utils.map('n', '<leader>gp', gitsigns.preview_hunk, {silent = true},
-                  buffer_nr)
-        utils.map('n', '<leader>gt', gitsigns.toggle_deleted, {silent = true},
-                  buffer_nr)
+        utils.map({'n', 'v'}, '<leader>gr', '<cmd>Gitsigns reset_hunk<cr>', {silent = true}, buffer_nr)
+        utils.map('n', '<leader>gp', gitsigns.preview_hunk, {silent = true}, buffer_nr)
+        utils.map('n', '<leader>gt', gitsigns.toggle_deleted, {silent = true}, buffer_nr)
 
-        utils.map({'o', 'x'}, 'ig', gitsigns.select_hunk, {silent = true},
-                  buffer_nr)
-        utils.map({'o', 'x'}, 'ag', gitsigns.select_hunk, {silent = true},
-                  buffer_nr)
+        utils.map({'o', 'x'}, 'ig', gitsigns.select_hunk, {silent = true}, buffer_nr)
+        utils.map({'o', 'x'}, 'ag', gitsigns.select_hunk, {silent = true}, buffer_nr)
     end
 }
