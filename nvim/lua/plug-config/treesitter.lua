@@ -4,7 +4,7 @@ require('nvim-treesitter.configs').setup {
         'make', 'cuda', 'markdown', 'rust', 'vim'
     },
 
-    highlight = {enable = true, additional_vim_regex_highlighting = false},
+    highlight = {enable = true, additional_vim_regex_highlighting = false, use_languagetree = true},
     indent = {enable = false},
     matchup = {enable = true, disable_virtual_text = true},
 
@@ -26,8 +26,8 @@ require('nvim-treesitter.configs').setup {
         prev_selection = ',', -- (Optional) keymap to select the previous selection
         keymaps = {
             ['.'] = 'textsubjects-smart',
-            ['a;'] = 'textsubjects-container-outer',
             ['i;'] = 'textsubjects-container-inner',
+            ['a;'] = 'textsubjects-container-outer',
         },
     },
 

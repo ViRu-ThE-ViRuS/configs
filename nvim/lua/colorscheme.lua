@@ -101,7 +101,7 @@ vim.cmd [[ colorscheme gruvbox-material ]]
 return {
     preferred = {
         "nightfly",
-        "nightfox", "duskfox", "nordfox",
+        "nightfox", "duskfox", "nordfox", "terafox",
         "kanagawa",
         "material",
         "moonfly",

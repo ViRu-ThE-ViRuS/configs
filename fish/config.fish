@@ -82,6 +82,11 @@ function codelldb --description 'launch codelldb with custom config'
 end
 
 function python --description 'launch python'
+    if test -e "$VIRTUAL_ENV"
+       command python3 $argv
+       return
+    end
+
     if command -sq 'ipython'
         command ipython $argv
     else

@@ -48,9 +48,9 @@ local buffer_diagnostics_state = {}
      if global then
         if vim.fn.empty(vim.fn.filter(vim.fn.getwininfo(), "v:val.quickfix")) == 1 then
             vim.diagnostic.setqflist({open=false})
-            vim.opt_local.statusline = require('statusline').StatusLine('Diagnostics')
             vim.cmd [[
                 belowright copen
+                setlocal statusline=%!v:lua.StatusLine('Workspace\ Diagnostics')
                 wincmd p
             ]]
         else

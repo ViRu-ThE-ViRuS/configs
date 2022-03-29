@@ -62,6 +62,7 @@ require('nvim-tree').setup({
                 {key = "q", action = "close"},
                 {key = "Y", action = "copy_absolute_path"},
                 {key = "OO", action = "open_in_finder", action_cb = open_in_finder},
+                {key = "<leader>Q", action = "<nop>"}
             }
         }
     },

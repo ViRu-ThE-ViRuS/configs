@@ -47,7 +47,6 @@ fzf.setup({
             -- vim.opt_local.signcolumn = 'no'
             -- vim.opt_local.statusline = require('statusline').StatusLine('FZF')
 
-            utils.map('n', '<c-d>', '<cmd>quit<cr>', {}, 0)
             utils.map('t', '<c-k>', '<up>', {}, 0)
             utils.map('t', '<c-j>', '<down>', {}, 0)
             utils.map('t', '<esc>', '<cmd>quit<cr>', {}, 0)
@@ -110,8 +109,9 @@ fzf.setup({
     buffers = {
         previewer = 'builtin',
         actions = {
-            ['ctrl-q'] = {actions.buf_del, actions.resume},
+            ['ctrl-d'] = {actions.buf_del, actions.resume},
             ['ctrl-x'] = actions.buf_split,
+            ['ctrl-q'] = false
         }
     },
     files = { rg_opts = '--files' .. default_rg_options, },
