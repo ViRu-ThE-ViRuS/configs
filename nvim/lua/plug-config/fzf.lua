@@ -50,6 +50,7 @@ fzf.setup({
             utils.map('n', '<c-d>', '<cmd>quit<cr>', {}, 0)
             utils.map('t', '<c-k>', '<up>', {}, 0)
             utils.map('t', '<c-j>', '<down>', {}, 0)
+            utils.map('t', '<esc>', '<cmd>quit<cr>', {}, 0)
         end,
     },
     winopts_fn = function()
@@ -92,7 +93,6 @@ fzf.setup({
             ['ctrl-x'] = actions.file_split,
             ['ctrl-v'] = actions.file_vsplit,
             ['ctrl-q'] = utils.qf_populate,
-            -- ['ctrl-t'] = set_harpoons
         },
         buffers = {
             ['default'] = actions.buf_edit,
@@ -128,7 +128,6 @@ fzf.setup({
         actions = {
             ['ctrl-q'] = misc.fzf_to_qf,
             ['ctrl-g'] = actions.grep_lgrep,
-            ['ctrl-t'] = false
         }
     },
     lsp = {
@@ -151,17 +150,17 @@ else
     utils.map("n", "<c-p>P", fzf.files)
 end
 
-utils.map("n", "<c-p>b", fzf.buffers)
-utils.map("n", "<c-p>f", fzf.live_grep)
-utils.map("n", "<c-p>z", function() fzf.grep({search = 'TODO'}) end)
-
+utils.map("n", "<c-p>f", function() fzf.live_grep({exec_empty_query=true}) end)
+utils.map("n", "<c-p>sb", fzf.buffers)
+utils.map("n", "<c-p>sz", function() fzf.grep({search = 'TODO'}) end)
 utils.map("n", "<c-p>ss", fzf.grep_cword)
 
 -- ctags interaction
 utils.map("n", "<c-p>sP", fzf.tags_grep_cword)
-utils.map("n", "<c-p>sp", fzf.tags_live_grep)
+utils.map("n", "<c-p>sp", function() fzf.tags_live_grep({exec_empty_query=true}) end)
+
+-- NOTE(vir): now using nvim-notify
 utils.map("n", "<f10>", function()
-    -- NOTE(vir): now using nvim-notify
     local notify = require('notify')
 
     plenary.Job:new({
@@ -175,9 +174,9 @@ end)
 
 -- NOTE(vir): present even in non-lsp files, consider moving to lsp setup code
 utils.map("n", "<m-cr>", fzf.lsp_code_actions)
-utils.map("n", "<leader>u", fzf.lsp_references)
-utils.map("n", "<leader>U", fzf.lsp_document_symbols)
-utils.map("n", "<leader>E", fzf.lsp_workspace_diagnostics)
+utils.map("n", "<leader>us", fzf.lsp_references)
+utils.map("n", "<leader>ud", fzf.lsp_document_symbols)
+utils.map("n", "<leader>uw", fzf.lsp_live_workspace_symbols)
 utils.map("n", "<leader>d", function() fzf.lsp_definitions({sync = true, jump_to_single_result = true}) end)
 
 vim.api.nvim_add_user_command('Colors', fzf.colorschemes, {

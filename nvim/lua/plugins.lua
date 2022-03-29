@@ -26,6 +26,7 @@ return require('packer').startup({
             requires = {
                 {'machakann/vim-sandwich', event = 'BufRead'},
                 {'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter'},
+                {'RRethy/nvim-treesitter-textsubjects', after = 'nvim-treesitter'},
                 {'andymass/vim-matchup', after = 'nvim-treesitter'},
             },
             run = ':TSUpdate',

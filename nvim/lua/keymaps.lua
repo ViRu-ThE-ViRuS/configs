@@ -34,7 +34,8 @@ utils.map("n", "ss", "s")
 
 -- delete without yank
 utils.map({"n", "v"}, "x", '"_d', {noremap=false})
-utils.map({"n", "v"}, "X", '"_x', {noremap=false})
+utils.map({"n", "v"}, "X", '"_D', {noremap=false})
+utils.map({"n", "v"}, "<a-bs>", '"_x', {noremap=false})
 
 -- paste yanked
 utils.map("n", "-", '"0p')
@@ -63,8 +64,8 @@ utils.map("n", "<leader>Q", misc.toggle_qflist)
 
 -- buffer navigation
 -- NOTE(vir): bufdelete loaded after BufReadPost, causes error on fresh start
-utils.map("n", "[b", "<cmd>bprev<cr>")
-utils.map("n", "]b", "<cmd>bnext<cr>")
+utils.map("n", "<a-[>", "<cmd>bprev<cr>")
+utils.map("n", "<a-]>", "<cmd>bnext<cr>")
 utils.map("n", "<bs>", '<c-^>zz')
 utils.map("n", "<leader>q", function() require('bufdelete').bufdelete(0, true) end)
 utils.map("n", "<c-w><c-l>", "<cmd>cclose<cr> <cmd>pclose<cr> <cmd>lclose<cr> <cmd>tabclose<cr>", {silent=true})
@@ -110,7 +111,7 @@ elseif vim.fn.exists("zsh") then
 else
     vim.opt.shell = "bash"
 end
-utils.map("n", "<leader>s", "<cmd>vsp term://" .. vim.o.shell .. "<cr>")
+utils.map("n", "<leader>cc", "<cmd>vsp term://" .. vim.o.shell .. "<cr>")
 
 -- tabular
 utils.map("v", "<leader>=", ":Tab /")

@@ -38,6 +38,7 @@ ncurses
 neovim
 nettle
 node
+openssl@1.1
 p11-kit
 pcre
 pcre2

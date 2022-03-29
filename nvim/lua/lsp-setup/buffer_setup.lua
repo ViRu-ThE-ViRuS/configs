@@ -1,4 +1,5 @@
 local utils = require('utils')
+local lsp_utils = require('lsp-setup/utils')
 
 -- setup general keymaps
 local function setup_general_keymaps(_, buffer_nr)
@@ -13,7 +14,9 @@ local function setup_general_keymaps(_, buffer_nr)
 
     utils.map('n', '[e', function() vim.diagnostic.goto_prev({ float = true }) end, {silent = true}, buffer_nr)
     utils.map('n', ']e', function() vim.diagnostic.goto_next({ float = true }) end, {silent = true}, buffer_nr)
-    utils.map('n', '<leader>e', require("lsp-setup/utils").toggle_diagnostics_list, {silent = true}, buffer_nr)
+
+    utils.map('n', '<leader>e', lsp_utils.toggle_diagnostics_list, {silent = true}, buffer_nr)
+    utils.map('n', '<leader>E', function() lsp_utils.toggle_diagnostics_list(true) end, {silent=true}, buffer_nr)
 end
 
 -- setup independent keymaps
@@ -47,8 +50,8 @@ local function setup_autocmds(client, buffer_nr)
 
     if client.resolved_capabilities.document_symbol then
         vim.api.nvim_create_augroup('LspStates', { clear = false })
-        vim.api.nvim_create_autocmd('CursorMoved,InsertLeave,BufEnter', { group = 'LspStates', callback = require('lsp-setup/utils').refresh_tag_state, buffer = buffer_nr })
-        vim.api.nvim_create_autocmd('BufLeave', { group = 'LspStates', callback = require('lsp-setup/utils').reset_tag_state, buffer = buffer_nr })
+        vim.api.nvim_create_autocmd('CursorMoved,InsertLeave,BufEnter', { group = 'LspStates', callback = lsp_utils.refresh_tag_state, buffer = buffer_nr })
+        vim.api.nvim_create_autocmd('BufLeave', { group = 'LspStates', callback = lsp_utils.reset_tag_state, buffer = buffer_nr })
     end
 
     vim.api.nvim_create_augroup('LspPopups', { clear = false })
@@ -64,7 +67,7 @@ local function setup_highlights()
       highlight! clear LspReferenceText
   ]]
 
-  require('lsp-setup/utils').setup_lsp_icon_highlights()
+  lsp_utils.setup_lsp_icon_highlights()
 end
 
 return {
