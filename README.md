@@ -1,7 +1,6 @@
 # ViRu-ThE-ViRuS
 
-my dev setup :)
-![SS2.jpg](images/SS2.jpg)
+my dev setup :) ![SS2.jpg](images/SS2.jpg)
 
 ### Setup
 
@@ -19,6 +18,7 @@ something in my workflow. ive spent a lot of time optimizing for:
 - speed (startup time ~5ms, lazy loading almost everything)
 - no bloat (only features i use regularly)
 - custom implementation instead of pulling in new plugins for everything
+- making plugins work nicely together (eg: gitsigns and fugitive interactions)
 
 some things i decided to implement on my own:
 
@@ -28,11 +28,18 @@ some things i decided to implement on my own:
 - terminal setup (send commands, toggle, run last, notifications, +more)
 - functionality to open file in `Finder`, repository in `GitHub`
 - lua utilities library with things like map, filter, shell commands, +more
-- small utilities like highlight current word, switch bw preferred colorschemes,
-  collect all TODOs, toggle maximize buffer, etc
+- small utilities like highlight current word, switch bw preferred
+  colorschemes, collect all TODOs, toggle maximize buffer, etc
 
-i recommend using `neovim HEAD` (or at least 0.6+) to keep up with latest config
-changes.
+i recommend using `neovim HEAD` (or at least 0.6+) to keep up with latest
+config changes.
+
+**NOTE**: this config can be a little difficult to bootstrap because of all the
+weird lazy loading optimizations i have made, for example the colorscheme is
+not downloaded on first open, so i recommend after cloing the repo and running
+the `update_config.sh` script, directly open the `lua/plugins.lua` file, ignore
+errors and source it with `:luafile %`, and relaunch. most issues should be
+fixed
 
 ##### LSP
 
@@ -42,7 +49,8 @@ you will need to install lsp(s) manually:
 - **cmake**: cmake-language-server
 - **python**: pyright
 - **c/c++**: clangd, clang-format, clang-tidy
-- **general**: null-ls (lua_format, autopep8, prettier, flake8), universal-ctags
+- **general**: null-ls (lua_format, autopep8, prettier, flake8),
+  universal-ctags
 
 ##### DAP
 
