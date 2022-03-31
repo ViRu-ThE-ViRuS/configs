@@ -6,6 +6,13 @@ local plenary = require('plenary')
 
 dap.adapters.python = { type = 'executable', command = 'python3', args = {'-m', 'debugpy.adapter'} }
 dap.adapters.codelldb = function(callback, _)
+    if vim.o.shell ~= 'fish' then
+        require('notify')('codelldb can only be launched automatically from fish shell',
+                          'debug',
+                          {render = 'minimal'})
+        return
+    end
+
     plenary.Job:new({
         command = 'fish',
         args = {'--command', 'codelldb'},

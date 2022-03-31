@@ -91,7 +91,7 @@ vim.opt.tabstop = 4
 vim.opt.softtabstop = 4
 vim.opt.shiftwidth = 4
 
--- TODO(vir): figure this out
+-- NOTE(vir): now using custom project_config functionality
 -- vim.opt.exrc = true
 -- vim.opt.secure = true
 

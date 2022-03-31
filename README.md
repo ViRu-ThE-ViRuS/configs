@@ -27,6 +27,7 @@ some things i decided to implement on my own:
 - lsp handlers (quickfix list, notifications, multi-file rename, +more)
 - terminal setup (send commands, toggle, run last, notifications, +more)
 - functionality to open file in `Finder`, repository in `GitHub`
+- custom project local lua settings functionality, lazy loading local config
 - lua utilities library with things like map, filter, shell commands, +more
 - small utilities like highlight current word, switch bw preferred
   colorschemes, collect all TODOs, toggle maximize buffer, etc
