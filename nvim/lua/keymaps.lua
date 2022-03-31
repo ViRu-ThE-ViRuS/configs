@@ -104,14 +104,7 @@ vim.cmd [[
     cnoreabbrev <expr> ;w    ((getcmdtype()  is# ':' && getcmdline() is# ';w')?('w'):(';w'))
 ]]
 
--- terminal setup
-if vim.fn.exists("fish") then
-    vim.opt.shell = "fish"
-elseif vim.fn.exists("zsh") then
-    vim.opt.shell = "zsh"
-else
-    vim.opt.shell = "bash"
-end
+-- new terminal
 utils.map("n", "<leader>s", "<cmd>vsp term://" .. vim.o.shell .. "<cr>")
 
 -- NOTE(vir): tabular

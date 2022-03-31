@@ -7,8 +7,18 @@ vim.g.loaded_perl_provider = 0
 vim.g.loaded_python_provider = 0
 vim.g.python_host_skip_check = 1
 
--- set python path
-vim.defer_fn(function() vim.g.python3_host_prog = core.get_python() end, 0)
+-- set python path and shell
+vim.defer_fn(function()
+    vim.g.python3_host_prog = core.get_python()
+
+    if vim.fn.exists("fish") then
+        vim.opt.shell = "fish"
+    elseif vim.fn.exists("zsh") then
+        vim.opt.shell = "zsh"
+    else
+        vim.opt.shell = "bash"
+    end
+end, 0)
 
 -- use filetype.lua instead of filetype.vim
 vim.g.do_filetype_lua = 1
@@ -16,7 +26,6 @@ vim.g.did_load_filetypes = 0
 
 -- global options
 vim.opt.path = vim.opt.path + "**/*"
-vim.opt.shell = "bash"
 vim.opt.mouse = "a"
 vim.opt.modelines = 0
 vim.opt.history = 100
