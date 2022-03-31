@@ -17,7 +17,7 @@ local function qf_rename()
         position_params.newName = input
         vim.lsp.buf_request(0, "textDocument/rename", position_params, function(err, result, ...)
             if not result or not result.changes then
-                notify(string.format('could not perform rename'), 'error', {
+                notify('could not perform rename', 'error', {
                     title = string.format('[lsp] rename: %s -> %s', position_params.oldName, position_params.newName),
                     timeout = 500
                 })

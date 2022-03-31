@@ -154,6 +154,7 @@ utils.map("n", "<c-p>f", function() fzf.live_grep({exec_empty_query=true}) end)
 utils.map("n", "<c-p>b", fzf.buffers)
 utils.map("n", "<c-p>sz", function() fzf.grep({search = 'TODO'}) end)
 utils.map("n", "<c-p>ss", fzf.grep_cword)
+utils.map("n", "<c-p>sl", fzf.blines)
 
 -- ctags interaction
 utils.map("n", "<c-p>sP", fzf.tags_grep_cword)

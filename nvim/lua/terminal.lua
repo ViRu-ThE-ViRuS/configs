@@ -118,11 +118,25 @@ local function run_previous_command()
     send_to_target(nil, true)
 end
 
+-- launch a terminal with the command in a split
+local function launch_terminal(command)
+    vim.cmd('vsp term://' .. vim.o.shell)
+
+    vim.defer_fn(function()
+        if pcall(vim.api.nvim_chan_send, vim.b.terminal_job_id, command .. "\n") then
+            require("notify")('[config] loaded: .nvimrc.lua', 'info', { render = 'minimal' })
+        end
+
+        vim.cmd [[ wincmd p ]]
+    end, 250)
+end
+
 return {
     toggle_target = toggle_target,
     query_state = query_state,
     set_target = set_target,
     run_target_command = run_target_command,
-    run_previous_command = run_previous_command
+    run_previous_command = run_previous_command,
+    launch_terminal = launch_terminal
 }
 

@@ -29,8 +29,9 @@ utils.map("n", "?", "ms?")
 utils.map("v", "&", ":&&<cr>")
 utils.map("v", ".", ":normal! .<cr>")
 utils.map("v", "@", ":normal! @")
-utils.map({"n", "v"}, "<c-b>", "<nop>")
 utils.map("n", "ss", "s")
+utils.map("n", "gp", "`[v`]")
+utils.map({"n", "v"}, "<c-b>", "<nop>")
 
 -- delete without yank
 utils.map({"n", "v"}, "x", '"_d', {noremap=false})
@@ -111,7 +112,7 @@ elseif vim.fn.exists("zsh") then
 else
     vim.opt.shell = "bash"
 end
-utils.map("n", "<leader>cc", "<cmd>vsp term://" .. vim.o.shell .. "<cr>")
+utils.map("n", "<leader>s", "<cmd>vsp term://" .. vim.o.shell .. "<cr>")
 
 -- NOTE(vir): tabular
 utils.map("v", "<leader>=", ":Tab /")

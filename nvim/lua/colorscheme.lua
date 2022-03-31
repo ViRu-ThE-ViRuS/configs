@@ -29,16 +29,16 @@ vim.g.substrata_variant = "default"
 
 vim.g.gruvbox_baby_background_color = 'medium'
 vim.g.vscode_style = "dark"
-vim.g.material_style = "deep ocean"
+vim.g.material_style = "darker"
 
 -- {{{ material
--- require('material').setup({
---     italics = {
---         comments = true,
---         functions = true,
---         strings = true
---     }
--- })
+require('material').setup({
+    italics = {
+        comments = true,
+        functions = true,
+        strings = true
+    }
+})
 -- }}}
 
 -- {{{ nightfox
@@ -96,7 +96,7 @@ vim.g.material_style = "deep ocean"
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme gruvbox-material ]]
+vim.cmd [[ colorscheme rose-pine ]]
 
 return {
     preferred = {

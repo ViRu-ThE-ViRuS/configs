@@ -18,6 +18,7 @@ async = vim.loop.new_async(vim.schedule_wrap(function()
     -- NOTE(vir): load this here, to keep plugins.lua clean
     require('plug-config/vista')
 
+    require('project_config').load()
     async:close()
 end))
 async:send()

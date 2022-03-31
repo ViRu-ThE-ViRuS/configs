@@ -33,7 +33,7 @@ local function strip_trailing_whitespaces()
 end
 
 -- get vim cwd
-local function get_cwd() return vim.fn['getcwd']() end
+local function get_cwd() return vim.fn.getcwd() end
 
 -- get git repo root dir (or nil)
 local function get_git_root()
