@@ -15,6 +15,7 @@ vim.g.do_filetype_lua = 1
 vim.g.did_load_filetypes = 0
 
 -- global options
+vim.opt.path = vim.opt.path + "**/*"
 vim.opt.shell = "bash"
 vim.opt.mouse = "a"
 vim.opt.modelines = 0
