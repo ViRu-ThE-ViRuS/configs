@@ -50,6 +50,7 @@ fzf.setup({
             utils.map('t', '<c-k>', '<up>', {}, 0)
             utils.map('t', '<c-j>', '<down>', {}, 0)
             utils.map('t', '<esc>', '<cmd>quit<cr>', {}, 0)
+            utils.map('t', '', '<c-i>', {}, 0)
         end,
     },
     winopts_fn = function()
@@ -83,7 +84,8 @@ fzf.setup({
             ['ctrl-b'] = 'half-page-up',
             ['ctrl-u'] = 'beginning-of-line',
             ['ctrl-o'] = 'end-of-line',
-            ['ctrl-d'] = 'abort'
+            ['ctrl-d'] = 'abort',
+            ['ctrl-i'] = 'clear-query'
         }
     },
     actions = {
