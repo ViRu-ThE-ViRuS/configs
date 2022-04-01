@@ -128,7 +128,11 @@ fzf.setup({
         actions = {
             ['ctrl-q'] = misc.fzf_to_qf,
             ['ctrl-g'] = actions.grep_lgrep,
-        }
+        },
+        -- fzf_opts = {
+        --     ['--with-nth'] = '3,1,2',
+        --     ['--nth'] = '3,1,..',
+        -- },
     },
     lsp = {
         actions = { ['ctrl-q'] = misc.fzf_to_qf },

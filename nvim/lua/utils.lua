@@ -18,7 +18,7 @@ local function unmap(mode, lhs, buffer_nr)
 end
 
 -- set qflist and open
-local function qf_populate(lines, mode)
+local function qf_populate(lines, mode, statusline)
     if mode == nil or type(mode) == 'table' then
         lines = core.foreach(lines, function(item)
             return { filename = item, lnum = 1, col = 1, text = item }
@@ -28,10 +28,14 @@ local function qf_populate(lines, mode)
 
     vim.fn.setqflist(lines, mode)
 
-    vim.cmd [[
-        belowright copen
-        wincmd p
-    ]]
+    if not statusline then
+        vim.cmd [[
+            belowright copen
+            wincmd p
+        ]]
+    else
+        vim.cmd(string.format("belowright copen\n%s\nwincmd p", statusline))
+    end
 end
 
 -- randomize colorscheme

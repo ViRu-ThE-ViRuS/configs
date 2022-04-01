@@ -113,4 +113,10 @@ vim.defer_fn(function()
         ]]
     end, {bang = true, nargs = 0, desc = 'Sudo Write'})
 
+    vim.api.nvim_add_user_command('Messages', misc.show_messages, {
+        bang = false,
+        nargs = 0,
+        desc = 'Show :messages in qflist',
+    })
+
 end, 0)

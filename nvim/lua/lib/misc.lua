@@ -164,6 +164,18 @@ local function toggle_qflist()
     end
 end
 
+-- send :messages to qflist
+local function show_messages()
+    local messages = vim.api.nvim_exec('messages', true)
+    local entries = {}
+
+    for _, line in ipairs(vim.split(messages, '\n', true)) do
+        table.insert(entries, { text = line })
+    end
+
+    require("utils").qf_populate(entries, 'r', "setlocal statusline=%!v:lua.StatusLine('Messages')")
+end
+
 return {
     fzf_to_qf = fzf_to_qf,
     strip_fname = strip_fname,
@@ -175,6 +187,7 @@ return {
     toggle_window = toggle_window,
     toggle_thicc_separators = toggle_thicc_separators,
     toggle_spellings = toggle_spellings,
-    toggle_qflist = toggle_qflist
+    toggle_qflist = toggle_qflist,
+    show_messages = show_messages
 }
 
