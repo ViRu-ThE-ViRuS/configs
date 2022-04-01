@@ -1,4 +1,9 @@
-vim.api.nvim_add_user_command('UpdateRepo', '!source update_repo.sh', {
+vim.api.nvim_add_user_command('UpdateRepo', function()
+    vim.cmd [[
+        !source update_repo.sh
+        G
+    ]]
+end, {
     bang = false,
     nargs = 0,
     desc = 'Update repository with current config files'
