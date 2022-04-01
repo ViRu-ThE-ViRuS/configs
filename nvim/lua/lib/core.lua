@@ -87,6 +87,7 @@ local function get_username() return os.getenv('USER') end
 local function get_homedir() return os.getenv('HOME') end
 
 -- get operating system name
+-- NOTE(vir): never loose ur way enough to be using windows
 local function get_os(table)
     if table == nil then table = {macOS = 'macOS', linux = 'Linux'} end
 

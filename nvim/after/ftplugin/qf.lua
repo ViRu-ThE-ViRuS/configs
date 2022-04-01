@@ -7,5 +7,5 @@ vim.keymap.set('n', '<c-v>', '<c-w><cr><c-w>L', { noremap = true, buffer = 0})
 vim.keymap.set('n', '<c-x>', '<c-w><cr><c-w>K', { noremap = true, buffer = 0})
 vim.keymap.set('n', '<c-o>', '<cmd>wincmd p<cr>', { noremap = true, buffer = 0 })
 
-vim.cmd [[ autocmd! BufEnter <buffer> if winnr('$') < 2| q | endif ]]
+vim.cmd [[ autocmd! BufEnter <buffer> if winnr('$') < 2 | q | endif ]]
 
