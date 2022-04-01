@@ -34,9 +34,11 @@ utils.map("n", "gp", "`[v`]")
 utils.map({"n", "v"}, "<c-b>", "<nop>")
 
 -- delete without yank
+-- NOTE(vir): <c-v> in insert mode, to get key code
 utils.map({"n", "v"}, "x", '"_d', {noremap=false})
 utils.map({"n", "v"}, "X", '"_dd', {noremap=false})
-utils.map({"n", "v"}, "<a-bs>", '"_dh', {noremap=false})
+utils.map({"n", "v"}, "", '"_dh', {noremap=false})
+utils.map({"n", "v"}, "<a-bs>", '"_dl', {noremap=false})
 
 -- paste yanked
 utils.map("n", "-", '"0p')
