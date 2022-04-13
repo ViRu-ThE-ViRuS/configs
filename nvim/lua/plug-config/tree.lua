@@ -3,7 +3,6 @@ local core = require('lib/core')
 
 local function open_in_finder(handle) core.lua_system("open -R " .. handle.absolute_path) end
 
-vim.g.nvim_tree_indent_markers = 1
 vim.g.nvim_tree_add_trailing = 1
 vim.g.nvim_tree_group_empty = 1
 vim.g.nvim_tree_show_icons = {git = 1, folders = 1, files = 0}
@@ -67,6 +66,7 @@ require('nvim-tree').setup({
         }
     },
     git = {ignore = false},
+    renderer = { indent_markers = { enable = true } },
     actions = {
         open_file = {
             window_pciker = {

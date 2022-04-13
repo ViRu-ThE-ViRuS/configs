@@ -32,13 +32,13 @@ vim.g.vscode_style = "dark"
 vim.g.material_style = "darker"
 
 -- {{{ material
-require('material').setup({
-    italics = {
-        comments = true,
-        functions = true,
-        strings = true
-    }
-})
+-- require('material').setup({
+--     italics = {
+--         comments = true,
+--         functions = true,
+--         strings = true
+--     }
+-- })
 -- }}}
 
 -- {{{ nightfox
@@ -93,10 +93,37 @@ require('material').setup({
 -- })
 -- }}}
 
+-- {{{ overrides
+
+-- setup colorscheme overrides
+local function setup_ui_overrides()
+    vim.highlight.create('Comment', {cterm = 'bold,italic', gui = 'bold,italic'}, false)
+    vim.highlight.create('LineNr', {cterm = 'NONE', gui = 'NONE'}, false)
+
+    -- TODO(vir): do this in lua
+    vim.cmd [[
+        highlight! link SignColumn LineNr
+        highlight! link VertSplit SignColumn
+    ]]
+
+    -- NOTE(vir): some colorschemes aint pretty with gitsigns
+    -- GitSign* highlights link to Diff* highlights for some reason despite
+    -- configuring them not to
+    if require('lib/misc').get_git_root() ~= nil then
+        vim.cmd [[
+            highlight! link GitSignsAdd GitGutterAdd
+            highlight! link GitSignsChange GitGutterChange
+            highlight! link GitSignsDelete GitGutterDelete
+        ]]
+    end
+end
+-- }}}
+
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme rose-pine ]]
+vim.cmd [[ colorscheme substrata ]]
+setup_ui_overrides()
 
 return {
     preferred = {
@@ -108,6 +135,7 @@ return {
         "gruvbox-material",
         "gruvbox-baby",
         "catppuccin",
+        "adwaita",
         "everforest",
         "vscode",
         "rose-pine",
@@ -119,6 +147,7 @@ return {
         "tempus_tempest",
         "base16-apprentice", "base16-ashes",
         "base16-monokai"
-    }
+    },
+    setup_ui_overrides = setup_ui_overrides
 }
 

@@ -1,4 +1,5 @@
 local misc = require('lib/misc')
+local colorscheme = require('colorscheme')
 
 vim.api.nvim_create_augroup('Misc', {clear = true})
 vim.api.nvim_create_autocmd('TextYankPost', {
@@ -26,15 +27,7 @@ vim.api.nvim_create_augroup('UISetup', {clear = true})
 vim.api.nvim_create_autocmd('ColorScheme', {
     group = 'UISetup',
     pattern = '*',
-    callback = function()
-        vim.highlight.create('Comment', {cterm = 'bold,italic', gui = 'bold,italic'}, false)
-        vim.highlight.create('LineNr', {cterm = 'NONE', gui = 'NONE'}, false)
-
-        -- TODO(vir): do this in lua
-        -- vim.highlight.create('SignColumn', {cterm = 'NONE', gui = 'NONE'}, false)
-        vim.cmd [[ highlight! link SignColumn LineNr ]]
-        vim.cmd [[ highlight! link VertSplit SignColumn ]]
-    end
+    callback = colorscheme.setup_ui_overrides,
 })
 
 vim.api.nvim_create_augroup('TerminalSetup', {clear = true})
@@ -120,3 +113,4 @@ vim.defer_fn(function()
     })
 
 end, 0)
+

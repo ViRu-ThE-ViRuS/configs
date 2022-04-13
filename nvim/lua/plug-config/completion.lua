@@ -56,9 +56,9 @@ cmp.setup({
         native_menu = false,
         ghost_text = false
     },
-    documentation = {
-        -- border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
-        border = "rounded"
+    window = {
+      -- completion = { border = "rounded" },
+      documentation = { border = "rounded" }
     },
     formatting = {
         format = require("lspkind").cmp_format({
@@ -78,4 +78,5 @@ cmp.setup({
 
 cmp.setup.cmdline("/", {sources = cmp.config.sources({{name="buffer"}})})
 cmp.setup.cmdline(":", {sources = cmp.config.sources({{name="path"}}, {{name="cmdline", keyword_length=2}})})
+
 

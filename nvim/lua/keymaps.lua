@@ -23,6 +23,10 @@ utils.map("n", "<leader>5", misc.toggle_thicc_separators)
 -- folds
 utils.map("n", "<space>", "za")
 
+-- paste yanked
+utils.map({"n", "o"}, "-", '"0p')
+utils.map({"n", "o"}, "_", '"0P')
+
 -- misc
 utils.map("n", "/", "ms/")
 utils.map("n", "?", "ms?")
@@ -30,19 +34,16 @@ utils.map("v", "&", ":&&<cr>")
 utils.map("v", ".", ":normal! .<cr>")
 utils.map("v", "@", ":normal! @")
 utils.map("n", "ss", "s")
-utils.map("n", "gp", "`[v`]")
 utils.map({"n", "v"}, "<c-b>", "<nop>")
+utils.map("n", "gp", "`[v`]")
+utils.map("n", "ss", "s")
 
 -- delete without yank
 -- NOTE(vir): <c-v> in insert mode, to get key code
 utils.map({"n", "v"}, "x", '"_d', {noremap=false})
 utils.map({"n", "v"}, "X", '"_dd', {noremap=false})
-utils.map({"n", "v"}, "", '"_dh', {noremap=false})
+-- utils.map({"n", "v"}, "", '"_dh', {noremap=false})
 utils.map({"n", "v"}, "<a-bs>", '"_dl', {noremap=false})
-
--- paste yanked
-utils.map("n", "-", '"0p')
-utils.map("n", "_", '"0P')
 
 -- buffer resizing
 utils.map("n", "<m-j>", "<cmd>resize +2<cr>")

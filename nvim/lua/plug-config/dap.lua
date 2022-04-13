@@ -8,7 +8,7 @@ dap.adapters.python = { type = 'executable', command = 'python3', args = {'-m', 
 dap.adapters.codelldb = function(callback, _)
     if vim.o.shell ~= 'fish' then
         require('notify')('codelldb can only be launched automatically from fish shell',
-                          'debug',
+                          'warn',
                           {render = 'minimal'})
         return
     end

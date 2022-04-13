@@ -46,10 +46,10 @@ local function qf_rename()
                 end
 
                 local short_uri = string.sub(vim.uri_to_fname(uri), #vim.fn.getcwd() + 2)
-                notification = notification .. string.format('made %d change(s) in %s', #edits, short_uri)
+                notification = notification .. string.format('made %d change(s) in %s\n', #edits, short_uri)
             end
 
-            notify(notification, 'info', {
+            notify(notification:sub(1, -2), 'info', {
                 title = string.format('[lsp] rename: %s -> %s', position_params.oldName, position_params.newName),
                 timeout = 2500
             })

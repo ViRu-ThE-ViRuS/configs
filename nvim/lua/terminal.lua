@@ -6,8 +6,7 @@ local state = utils.run_config
 -- toggle target_terminal
 local function toggle_target(open)
     if state.target_terminal == nil then
-        -- print("target_terminal not set")
-        require('notify')('target_terminal not set', 'warn', { render = 'minimal' })
+        require('notify')('[terminal] target not set', 'warn', { render = 'minimal' })
         return
     end
 
@@ -16,8 +15,7 @@ local function toggle_target(open)
     if target_winid ~= -1 and #vim.api.nvim_list_wins() ~= 1 then
         if not open then
             if not pcall(vim.api.nvim_win_close, target_winid, false) then
-                -- print("target_terminal exited, resetting state")
-                require('notify')('target_terminal exited, resetting state', 'debug', { render = 'minimal' })
+                require('notify')('[terminal] target exited, resetting state', 'debug', { render = 'minimal' })
                 state.target_terminal = nil
             end
         end
@@ -31,8 +29,7 @@ local function toggle_target(open)
     end
 
     if not pcall(vim.cmd, split_dir .. "split #" .. state.target_terminal.buf_nr) then
-        -- print("target_terminal exited, resetting state")
-        require('notify')('target_terminal exited, resetting state', 'debug', { render = 'minimal' })
+        require('notify')('[terminal] target exited, resetting state', 'debug', { render = 'minimal' })
         state.target_terminal = nil
     end
 end
@@ -53,19 +50,16 @@ local function send_to_target(payload, repeat_last)
                 end
             end
 
-            -- print("target_terminal exited, resetting state")
-            require('notify')('target_terminal exited, resetting state', 'debug', { render = 'minimal' })
+            require('notify')('[terminal] target exited, resetting state', 'debug', { render = 'minimal' })
             state.target_terminal = nil
 
             return
         else
-            -- print("target_terminal does not exist, resetting state")
-            require('notify')('target_terminal does not exist, resetting state', 'debug', { render = 'minimal' })
+            require('notify')('[terminal] target does not exist, resetting state', 'debug', { render = 'minimal' })
             state.target_terminal = nil
         end
     else
-        -- print("target_terminal not set")
-        require('notify')('target_terminal not set', 'warn', { render = 'minimal' })
+        require('notify')('[terminal] target not set', 'warn', { render = 'minimal' })
     end
 end
 
@@ -77,18 +71,16 @@ local function set_target_terminal()
             buf_nr = vim.api.nvim_win_get_buf(0)
         }
 
-        -- print(string.format("target_terminal set to: { job_id: %s, buf_nr: %s }", state.target_terminal.job_id, state.target_terminal.buf_nr))
         require('notify')(string.format("target_terminal set to: { job_id: %s, buf_nr: %s }", state.target_terminal.job_id, state.target_terminal.buf_nr),
                           'info', { render = 'minimal' })
     else
-        -- print("target_terminal not set")
-        require('notify')('target_terminal not set', 'warn', { render = 'minimal' })
+        require('notify')('[terminal] target not set', 'warn', { render = 'minimal' })
     end
 end
 
 -- setup target_command
 local function set_target_command()
-    state.target_command = vim.fn.input("target_command: ", "")
+    state.target_command = vim.fn.input("[terminal] target_command: ", "")
 end
 
 -- query the current state, utility
@@ -108,8 +100,7 @@ local function run_target_command()
     if state.target_command ~= "" then
         send_to_target(state.target_command, false)
     else
-        -- print("target_command not set")
-        require('notify')('target_terminal not set', 'warn', { render = 'minimal' })
+        require('notify')('[terminal] target not set', 'warn', { render = 'minimal' })
     end
 end
 
@@ -119,15 +110,18 @@ local function run_previous_command()
 end
 
 -- launch a terminal with the command in a split
-local function launch_terminal(command)
+local function launch_terminal(command, background, callback)
     vim.cmd('vsp term://' .. vim.o.shell)
 
     vim.defer_fn(function()
         if pcall(vim.api.nvim_chan_send, vim.b.terminal_job_id, command .. "\n") then
-            require("notify")('[config] loaded: .nvimrc.lua', 'info', { render = 'minimal' })
+            require("notify")(command, 'info', { title = '[terminal] launched command', })
         end
 
-        vim.cmd [[ wincmd p ]]
+        if callback then callback() end
+
+        if background then vim.cmd [[ :q ]]
+        else vim.cmd [[ wincmd p ]] end
     end, 250)
 end
 

@@ -4,6 +4,7 @@ local notify = require('notify')
 notify.setup({
     stages = 'fade',
     timeout = 250,
+    level = 'DEBUG',
     icons = {
         ERROR = symbol_config.indicator_error,
         WARN  = symbol_config.indicator_warning,

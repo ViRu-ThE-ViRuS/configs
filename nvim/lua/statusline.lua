@@ -128,7 +128,7 @@ StatusLineInactive = function() return statusline_inactive() end
 
 -- NOTE(vir): consider moving to lua
 vim.cmd [[
-    let statusline_blacklist = ['terminal', 'vista_kind', 'vista', 'fugitive', 'diagnostics', 'qf', 'fzf', 'gitcommit', 'NvimTree',
+    let g:statusline_blacklist = ['terminal', 'vista_kind', 'vista', 'fugitive', 'diagnostics', 'qf', 'fzf', 'gitcommit', 'NvimTree',
                                 \ 'DiffviewFiles', 'DiffviewFileHistory',
                                 \ 'dapui_watches', 'dapui_stacks', 'dapui_scopes', 'dapui_breakpoints', 'dap-repl']
 
