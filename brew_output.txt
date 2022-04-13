@@ -26,11 +26,15 @@ libidn2
 libnghttp2
 libtasn1
 libtermkey
+libtool
 libunistring
 libuv
 libyaml
+lua
 luajit-openresty
+luarocks
 luv
+m4
 megatools
 mpdecimal
 msgpack
