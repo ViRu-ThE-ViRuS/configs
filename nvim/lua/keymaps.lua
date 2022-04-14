@@ -30,13 +30,12 @@ utils.map({"n", "o"}, "_", '"0P')
 -- misc
 utils.map("n", "/", "ms/")
 utils.map("n", "?", "ms?")
-utils.map("v", "&", ":&&<cr>")
-utils.map("v", ".", ":normal! .<cr>")
-utils.map("v", "@", ":normal! @")
+utils.map("v", "&", ":&&<cr>")                              -- substitutions
+utils.map("v", ".", ":normal! .<cr>")                       -- . motions
+utils.map("v", "@", ":normal! @")                           -- macros
 utils.map("n", "ss", "s")
 utils.map({"n", "v"}, "<c-b>", "<nop>")
-utils.map("n", "gp", "`[v`]")
-utils.map("n", "ss", "s")
+utils.map("n", "gp", "`[v`]")                               -- last paste
 
 -- delete without yank
 -- NOTE(vir): <c-v> in insert mode, to get key code

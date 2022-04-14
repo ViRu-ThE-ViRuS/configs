@@ -101,28 +101,26 @@ local function setup_ui_overrides()
     vim.highlight.create('LineNr', {cterm = 'NONE', gui = 'NONE'}, false)
 
     -- TODO(vir): do this in lua
-    vim.cmd [[
-        highlight! link SignColumn LineNr
-        highlight! link VertSplit SignColumn
-    ]]
-
     -- NOTE(vir): some colorschemes aint pretty with gitsigns
     -- GitSign* highlights link to Diff* highlights for some reason despite
-    -- configuring them not to
-    if require('lib/misc').get_git_root() ~= nil then
-        vim.cmd [[
-            highlight! link GitSignsAdd GitGutterAdd
-            highlight! link GitSignsChange GitGutterChange
-            highlight! link GitSignsDelete GitGutterDelete
-        ]]
-    end
+    -- configuring them not to. Consider linking these only when in git repos?
+    vim.cmd [[
+        " Misc
+        highlight! link SignColumn LineNr
+        highlight! link VertSplit SignColumn
+
+        " gitsigns
+        highlight! link GitSignsAdd GitGutterAdd
+        highlight! link GitSignsChange GitGutterChange
+        highlight! link GitSignsDelete GitGutterDelete
+    ]]
 end
 -- }}}
 
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme substrata ]]
+vim.cmd [[ colorscheme mountain ]]
 setup_ui_overrides()
 
 return {

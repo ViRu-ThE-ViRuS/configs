@@ -14,7 +14,8 @@ local function unmap(mode, lhs, buffer_nr)
     local options = {}
     if buffer_nr then options['buffer'] = buffer_nr end
 
-    vim.keymap.del(mode, lhs, options)
+    -- vim.keymap.del(mode, lhs, options)
+    pcall(vim.keymap.del, mode, lhs, options)
 end
 
 -- set qflist and open
