@@ -110,8 +110,6 @@ local separator_state = false
 -- separator: toggle buffer separators (thick <-> default)
 -- NOTE(vir): using nvim-notify
 local function toggle_thicc_separators()
-    local notify = require("notify")
-
     if separator_state then
         vim.opt.fillchars = {
             horiz = nil,
@@ -124,7 +122,7 @@ local function toggle_thicc_separators()
         }
 
         separator_state = false
-        notify('thiccness deactivated', 'debug', {render = 'minimal'})
+        require('notify')('thiccness dectivated', 'debug', {render = 'minimal'})
     else
         vim.opt.fillchars = {
             horiz = '━',
@@ -137,21 +135,30 @@ local function toggle_thicc_separators()
         }
 
         separator_state = true
-        notify('thiccness activated', 'info', {render = 'minimal'})
+        require('notify')('thiccness activated', 'info', {render = 'minimal'})
     end
 end
 
 -- spellings: toggle spellings globally
 -- NOTE(vir): using nvim-notify
 local function toggle_spellings()
-    local notify = require('notify')
-
     if vim.opt.spell._value then
         vim.opt.spell = false
-        notify('spellings deactivated', 'debug', {render = 'minimal'})
+        require('notify')('spellings deactivated', 'debug', {render = 'minimal'})
     else
         vim.opt.spell = true
-        notify('spellings activated', 'info', {render = 'minimal'})
+        require('notify')('spellings activated', 'info', {render = 'minimal'})
+    end
+end
+
+-- laststatus: toggle between global and local statusline
+local function toggle_global_statusline()
+    if vim.opt.laststatus._value == 3 then
+        vim.opt.laststatus = 2
+        require('notify')('global statusline deactivated', 'debug', {render = 'minimal'})
+    else
+        vim.opt.laststatus = 3
+        require('notify')('global statusline activated', 'debug', {render = 'minimal'})
     end
 end
 
@@ -187,6 +194,7 @@ return {
     toggle_window = toggle_window,
     toggle_thicc_separators = toggle_thicc_separators,
     toggle_spellings = toggle_spellings,
+    toggle_global_statusline = toggle_global_statusline,
     toggle_qflist = toggle_qflist,
     show_messages = show_messages
 }

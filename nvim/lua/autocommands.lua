@@ -41,45 +41,50 @@ vim.api.nvim_create_autocmd('TermOpen', {
     end
 })
 
+-- TODO(vir): do this in lua
 vim.cmd [[
-    " TODO(vir): do this in lua
     augroup Configs
         autocmd!
         autocmd BufEnter ~/.config/kitty/kitty.conf setlocal filetype=bash
         autocmd BufWritePost ~/.config/nvim/init.lua source <afile>
         autocmd BufWritePost ~/.config/nvim/lua/*.lua source <afile>
     augroup end
-
-    " NOTE(vir): now using nvim-notify
-    function! CWordHlToggle()
-      let @/ = ''
-      if exists('#auto_highlight')
-        autocmd! auto_highlight
-        augroup! auto_highlight
-        setlocal updatetime=1000
-
-        " echo 'highlight current word: off'
-        lua require('notify')('<cword> highlight deactivated', 'debug', {render='minimal'})
-
-        return 0
-      else
-        augroup auto_highlight
-          autocmd!
-          autocmd CursorHold * let @/ = '\V\<'.escape(expand('<cword>'), '\').'\>'
-        augroup end
-        setl updatetime=250
-
-        " echo 'highlight current word: on'
-        lua require('notify')('<cword> highlight activated', 'info', {render='minimal'})
-
-        return 1
-      endif
-    endfunction
 ]]
 
+-- custom commands
 vim.defer_fn(function()
 
-    -- setup OpenInGithub command, with vim.ui currently using fzf-lua
+    -- TODO(vir): do this in lua
+    -- NOTE(vir): now using nvim-notify
+    -- <cword> highlight toggle
+    vim.cmd [[
+        function! CWordHlToggle()
+          let @/ = ''
+          if exists('#auto_highlight')
+            autocmd! auto_highlight
+            augroup! auto_highlight
+            setlocal updatetime=1000
+
+            " echo 'highlight current word: off'
+            lua require('notify')('<cword> highlight deactivated', 'debug', {render='minimal'})
+
+            return 0
+          else
+            augroup auto_highlight
+              autocmd!
+              autocmd CursorHold * let @/ = '\V\<'.escape(expand('<cword>'), '\').'\>'
+            augroup end
+            setl updatetime=250
+
+            " echo 'highlight current word: on'
+            lua require('notify')('<cword> highlight activated', 'info', {render='minimal'})
+
+            return 1
+          endif
+        endfunction
+    ]]
+
+    -- open repository in github (after selecting remote)
     if misc.get_git_root() ~= nil then
         vim.api.nvim_add_user_command('OpenInGithub', function(_)
             local remotes = misc.get_git_remotes()
@@ -99,6 +104,7 @@ vim.defer_fn(function()
         })
     end
 
+    -- sudowrite to file
     vim.api.nvim_add_user_command('SudoWrite', function()
         vim.cmd [[
             write !sudo -A tee > /dev/null %
@@ -106,6 +112,7 @@ vim.defer_fn(function()
         ]]
     end, {bang = true, nargs = 0, desc = 'Sudo Write'})
 
+    -- messages in qflist
     vim.api.nvim_add_user_command('Messages', misc.show_messages, {
         bang = false,
         nargs = 0,

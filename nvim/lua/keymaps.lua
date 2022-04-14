@@ -16,9 +16,12 @@ utils.map("n", ":", ";")
 utils.map('n', 'Y', 'yy')
 utils.map("n", "<leader>1", misc.toggle_window)
 utils.map("n", "<leader>2", utils.random_colors, {silent = false})
-utils.map("n", "<leader>3", "<cmd>if CWordHlToggle() | set hlsearch | endif<cr>")
-utils.map("n", "<leader>4", misc.toggle_spellings)
-utils.map("n", "<leader>5", misc.toggle_thicc_separators)
+
+-- toggles
+utils.map("n", "<leader>t1", "<cmd>if CWordHlToggle() | set hlsearch | endif<cr>")
+utils.map("n", "<leader>t2", misc.toggle_global_statusline)
+utils.map("n", "<leader>t3", misc.toggle_thicc_separators)
+utils.map("n", "<leader>t4", misc.toggle_spellings)
 
 -- folds
 utils.map("n", "<space>", "za")
