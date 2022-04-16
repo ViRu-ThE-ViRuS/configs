@@ -142,7 +142,7 @@ end
 -- spellings: toggle spellings globally
 -- NOTE(vir): using nvim-notify
 local function toggle_spellings()
-    if vim.opt.spell._value then
+    if vim.api.nvim_get_option_value('spell', {scope='global'}) then
         vim.opt.spell = false
         require('notify')('spellings deactivated', 'debug', {render = 'minimal'})
     else
@@ -153,7 +153,7 @@ end
 
 -- laststatus: toggle between global and local statusline
 local function toggle_global_statusline()
-    if vim.opt.laststatus._value == 3 then
+    if vim.api.nvim_get_option_value('laststatus', {scope='global'}) == 3 then
         vim.opt.laststatus = 2
         require('notify')('global statusline deactivated', 'debug', {render = 'minimal'})
     else

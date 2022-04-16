@@ -4,10 +4,10 @@ local lsp_utils = require('lsp-setup/utils')
 -- setup general keymaps
 local function setup_general_keymaps(_, buffer_nr)
     -- NOTE(vir): now using fzf-lua
-    -- utils.map('n', '<leader>d', '<cmd>lua vim.lsp.buf.definition()<cr>', { silent = true }, buffer_nr)
-    -- utils.map('n', '<leader>u', '<cmd>lua vim.lsp.buf.references()<cr>', { silent = true }, buffer_nr)
-    -- utils.map('n', '<leader>U', '<cmd>lua vim.lsp.buf.document_symbols()<cr>', { silent = true }, buffer_nr)
-    -- utils.map('n', '<a-cr>', '<cmd>lua vim.lsp.buf.code_action()<cr>', { silent = true }, buffer_nr)
+    -- utils.map('n', '<leader>d', vim.lsp.buf.definition, { silent = true }, buffer_nr)
+    -- utils.map('n', '<leader>u', vim.lsp.buf.references, { silent = true }, buffer_nr)
+    -- utils.map('n', '<leader>U', vim.lsp.buf.document_symbols, { silent = true }, buffer_nr)
+    -- utils.map('n', '<a-cr>', vim.lsp.buf.code_action, { silent = true }, buffer_nr)
 
     utils.map('n', '<leader>r', vim.lsp.buf.rename, {silent = true}, buffer_nr)
     utils.map('n', 'K', vim.lsp.buf.hover, {silent = true}, buffer_nr)
@@ -15,7 +15,7 @@ local function setup_general_keymaps(_, buffer_nr)
     utils.map('n', '[e', function() vim.diagnostic.goto_prev({ float = true }) end, {silent = true}, buffer_nr)
     utils.map('n', ']e', function() vim.diagnostic.goto_next({ float = true }) end, {silent = true}, buffer_nr)
 
-    utils.map('n', '<leader>e', lsp_utils.toggle_diagnostics_list, {silent = true}, buffer_nr)
+    utils.map('n', '<leader>e', function() lsp_utils.toggle_diagnostics_list(false) end, {silent = true}, buffer_nr)
     utils.map('n', '<leader>E', function() lsp_utils.toggle_diagnostics_list(true) end, {silent=true}, buffer_nr)
 end
 
@@ -55,7 +55,7 @@ local function setup_autocmds(client, buffer_nr)
     end
 
     vim.api.nvim_create_augroup('LspPopups', { clear = false })
-    vim.api.nvim_create_autocmd('CursorHold', { group = 'LspPopups', callback = function() vim.diagnostic.open_float() end, buffer = buffer_nr })
+    vim.api.nvim_create_autocmd('CursorHold', { group = 'LspPopups', callback = vim.diagnostic.open_float, buffer = buffer_nr })
 end
 
 -- setup highlights

@@ -5,7 +5,7 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
     vim.cmd [[ packadd packer.nvim ]]
 end
 
-vim.api.nvim_add_user_command('Ps', 'PackerSync', { bang = true, nargs = 0, desc = 'Packer Sync' })
+vim.api.nvim_create_user_command('Ps', 'PackerSync', { bang = true, nargs = 0, desc = 'Packer Sync' })
 return require('packer').startup({
     function()
         use 'nvim-lua/plenary.nvim'
@@ -98,6 +98,7 @@ return require('packer').startup({
         use 'sainnhe/gruvbox-material'
         use 'luisiacc/gruvbox-baby'
         use 'catppuccin/nvim'
+        use 'kvrohit/rasmus.nvim'
         use 'Mofiqul/adwaita.nvim'
         use 'sainnhe/everforest'
         use 'Mofiqul/vscode.nvim'

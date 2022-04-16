@@ -17,7 +17,7 @@ dap.adapters.codelldb = function(callback, _)
         command = 'fish',
         args = {'--command', 'codelldb'},
         cwd = '~/',
-        on_start = function() callback({type = 'server', host = '127.0.0.1', port = 13000}) end
+        on_start = function() vim.defer_fn(function() callback({type = 'server', host = '127.0.0.1', port = 13000}) end, 100) end
     }):start()
 end
 

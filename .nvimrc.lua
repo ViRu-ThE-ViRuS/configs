@@ -1,4 +1,4 @@
-vim.api.nvim_add_user_command('UpdateRepo', function()
+vim.api.nvim_create_user_command('UpdateRepo', function()
     vim.cmd [[
         !source update_repo.sh
         G
@@ -9,7 +9,7 @@ end, {
     desc = 'Update repository with current config files'
 })
 
-vim.api.nvim_add_user_command('UpdateConfigs', function()
+vim.api.nvim_create_user_command('UpdateConfigs', function()
     vim.ui.select({'yes', 'no'}, {prompt = 'Update System Config>'},
                   function(choice)
         if choice == 'yes' then

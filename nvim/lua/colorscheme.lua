@@ -27,6 +27,10 @@ vim.g.substrata_italic_booleans = true
 vim.g.substrata_italic_functions = true
 vim.g.substrata_variant = "default"
 
+vim.g.rasmus_italic_keywords = true
+vim.g.rasmus_italic_booleans = true
+vim.g.rasmus_italic_functions = true
+
 vim.g.gruvbox_baby_background_color = 'medium'
 vim.g.vscode_style = "dark"
 vim.g.material_style = "darker"
@@ -120,7 +124,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme mountain ]]
+vim.cmd [[ colorscheme rasmus ]]
 setup_ui_overrides()
 
 return {
@@ -133,6 +137,7 @@ return {
         "gruvbox-material",
         "gruvbox-baby",
         "catppuccin",
+        "rasmus",
         "adwaita",
         "everforest",
         "vscode",

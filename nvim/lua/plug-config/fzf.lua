@@ -186,7 +186,7 @@ utils.map("n", "<leader>ud", fzf.lsp_document_symbols)
 utils.map("n", "<leader>uw", fzf.lsp_live_workspace_symbols)
 utils.map("n", "<leader>d", function() fzf.lsp_definitions({sync = true, jump_to_single_result = true}) end)
 
-vim.api.nvim_add_user_command('Colors', fzf.colorschemes, {
+vim.api.nvim_create_user_command('Colors', fzf.colorschemes, {
     bang = false,
     nargs = 0,
     desc = 'FzfLua powered colorscheme picker'

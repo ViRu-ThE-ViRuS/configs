@@ -1,4 +1,5 @@
 local misc = require('lib/misc')
+local core = require('lib/core')
 local colorscheme = require('colorscheme')
 
 vim.api.nvim_create_augroup('Misc', {clear = true})
@@ -41,15 +42,20 @@ vim.api.nvim_create_autocmd('TermOpen', {
     end
 })
 
--- TODO(vir): do this in lua
-vim.cmd [[
-    augroup Configs
-        autocmd!
-        autocmd BufEnter ~/.config/kitty/kitty.conf setlocal filetype=bash
-        autocmd BufWritePost ~/.config/nvim/init.lua source <afile>
-        autocmd BufWritePost ~/.config/nvim/lua/*.lua source <afile>
-    augroup end
-]]
+vim.api.nvim_create_augroup('Configs', {clear = true})
+vim.api.nvim_create_autocmd('BufWritePost', {
+    group = 'Configs',
+    pattern = {
+        core.get_homedir() .. '/.config/nvim/init.lua',
+        core.get_homedir() .. '/.config/nvim/lua/*.lua',
+    },
+    command = 'source <afile>'
+})
+vim.api.nvim_create_autocmd('BufEnter', {
+    group = 'Configs',
+    pattern = core.get_homedir() .. '/.config/kitty/kitty.conf',
+    command = 'setlocal filetype=bash'
+})
 
 -- custom commands
 vim.defer_fn(function()
@@ -86,7 +92,7 @@ vim.defer_fn(function()
 
     -- open repository in github (after selecting remote)
     if misc.get_git_root() ~= nil then
-        vim.api.nvim_add_user_command('OpenInGithub', function(_)
+        vim.api.nvim_create_user_command('OpenInGithub', function(_)
             local remotes = misc.get_git_remotes()
 
             if #remotes > 1 then
@@ -105,7 +111,7 @@ vim.defer_fn(function()
     end
 
     -- sudowrite to file
-    vim.api.nvim_add_user_command('SudoWrite', function()
+    vim.api.nvim_create_user_command('SudoWrite', function()
         vim.cmd [[
             write !sudo -A tee > /dev/null %
             edit
@@ -113,7 +119,7 @@ vim.defer_fn(function()
     end, {bang = true, nargs = 0, desc = 'Sudo Write'})
 
     -- messages in qflist
-    vim.api.nvim_add_user_command('Messages', misc.show_messages, {
+    vim.api.nvim_create_user_command('Messages', misc.show_messages, {
         bang = false,
         nargs = 0,
         desc = 'Show :messages in qflist',

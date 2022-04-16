@@ -41,32 +41,37 @@ local lsp_icons = {
 }
 
 -- local diagnostics state
-local buffer_diagnostics_state = {}
+local diagnostics_state = {
+    ['local'] = {},
+    ['global'] = false
+}
 
  -- toggle diagnostics list
  local function toggle_diagnostics_list(global)
      if global then
-        if vim.fn.empty(vim.fn.filter(vim.fn.getwininfo(), "v:val.quickfix")) == 1 then
+        if not diagnostics_state['global'] then
             vim.diagnostic.setqflist({open=false})
+            diagnostics_state['global'] = true
             vim.cmd [[
                 belowright copen
                 setlocal statusline=%!v:lua.StatusLine('Workspace\ Diagnostics')
                 wincmd p
             ]]
         else
+            diagnostics_state['global'] = false
             vim.cmd [[ cclose ]]
         end
      else
          local current_buf = vim.api.nvim_get_current_buf()
 
-         if not buffer_diagnostics_state[current_buf] then
+         if not diagnostics_state['local'][current_buf] then
              vim.diagnostic.setloclist()
-             buffer_diagnostics_state[current_buf] = true
+             diagnostics_state['local'][current_buf] = true
 
              vim.opt_local.statusline = require('statusline').StatusLine('Diagnostics')
              vim.cmd [[ wincmd p ]]
          else
-             buffer_diagnostics_state[current_buf] = false
+             diagnostics_state['local'][current_buf] = false
              vim.cmd [[ lclose ]]
          end
      end
