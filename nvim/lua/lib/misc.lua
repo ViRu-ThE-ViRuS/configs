@@ -152,8 +152,8 @@ local function toggle_spellings()
 end
 
 -- laststatus: toggle between global and local statusline
-local function toggle_global_statusline()
-    if vim.api.nvim_get_option_value('laststatus', {scope='global'}) == 3 then
+local function toggle_global_statusline(force_local)
+    if vim.api.nvim_get_option_value('laststatus', {scope='global'}) == 3 or force_local then
         vim.opt.laststatus = 2
         require('notify')('global statusline deactivated', 'debug', {render = 'minimal'})
     else

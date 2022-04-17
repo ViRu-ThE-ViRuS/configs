@@ -78,7 +78,7 @@ function tree --description 'tree'
 end
 
 function codelldb --description 'launch codelldb with custom config'
-    while sleep 1; ~/.local/codelldb/adapter/codelldb --port 13000; end
+    ~/.local/codelldb/adapter/codelldb --port 13000
 end
 
 function python --description 'launch python'

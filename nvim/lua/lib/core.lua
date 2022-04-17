@@ -4,8 +4,10 @@ local next = next
 
 -- apply f to all elements in table
 local function foreach(tbl, f)
+    if not tbl then return nil end
+
     local t = {}
-    for key, value in ipairs(tbl) do t[key] = f(value) end
+    for key, value in pairs(tbl) do t[key] = f(value) end
     return t
 end
 
@@ -14,7 +16,7 @@ local function filter(tbl, f)
     if not tbl or tbl == {} then return {} end
 
     local t = {}
-    for key, value in ipairs(tbl) do
+    for key, value in pairs(tbl) do
         if f(key, value) then table.insert(t, value) end
     end
 
@@ -36,8 +38,17 @@ local function list_concat(A, B)
     return t
 end
 
+-- return index if table contains given value
+local function table_contains(table, target_value)
+    for key, value in pairs(table) do
+        if value == target_value then return key end
+    end
+
+    return nil
+end
+
 -- pos in range
-local in_range = function(pos, range)
+local function in_range (pos, range)
     if pos[1] < range['start'].line or pos[1] > range['end'].line then
         return false
     end
@@ -102,6 +113,7 @@ return {
     foreach = foreach,
     filter = filter,
     list_concat = list_concat,
+    table_contains = table_contains,
     in_range = in_range,
     lua_systemlist = lua_systemlist,
     lua_system = lua_system,

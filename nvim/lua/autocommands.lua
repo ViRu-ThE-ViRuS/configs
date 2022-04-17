@@ -48,6 +48,7 @@ vim.api.nvim_create_autocmd('BufWritePost', {
     pattern = {
         core.get_homedir() .. '/.config/nvim/init.lua',
         core.get_homedir() .. '/.config/nvim/lua/*.lua',
+        '.nvimrc.lua'
     },
     command = 'source <afile>'
 })

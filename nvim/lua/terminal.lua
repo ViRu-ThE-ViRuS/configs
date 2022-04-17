@@ -112,6 +112,7 @@ end
 -- launch a terminal with the command in a split
 local function launch_terminal(command, background, callback)
     vim.cmd('vsp term://' .. vim.o.shell)
+    local bufnr = vim.api.nvim_get_current_buf()
 
     vim.defer_fn(function()
         if pcall(vim.api.nvim_chan_send, vim.b.terminal_job_id, command .. "\n") then
@@ -123,6 +124,8 @@ local function launch_terminal(command, background, callback)
         if background then vim.cmd [[ :q ]]
         else vim.cmd [[ wincmd p ]] end
     end, 250)
+
+    return bufnr
 end
 
 return {
