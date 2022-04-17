@@ -8,9 +8,8 @@ require('settings')
 require('colorscheme')
 require('statusline')
 
-local async
-async = vim.loop.new_async(vim.schedule_wrap(function()
-    -- deferred execution makes the editor feel more responsive
+-- deferred execution makes the editor feel more responsive
+vim.defer_fn(function()
     require('keymaps')
     require('autocommands')
     require('plugins')
@@ -18,10 +17,9 @@ async = vim.loop.new_async(vim.schedule_wrap(function()
     -- NOTE(vir): load this here, to keep plugins.lua clean
     require('plug-config/vista')
 
+    -- NOTE(vir): load project local config last
     require('project_config').load()
-    async:close()
-end))
-async:send()
+end, 0)
 
 -- notes --
 -- so $VIMRUNTIME/syntax/hitest.vim : see colors

@@ -125,5 +125,11 @@ vim.defer_fn(function()
         desc = 'Show :messages in qflist',
     })
 
+    -- command output in qflist
+    vim.api.nvim_create_user_command('Show', misc.show_command, {
+        bang = false,
+        nargs = '+',
+        desc = 'Run Command and show output in qflist'
+    })
 end, 0)
 

@@ -124,7 +124,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme rasmus ]]
+vim.cmd [[ colorscheme gruvbox-baby ]]
 setup_ui_overrides()
 
 return {

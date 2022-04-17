@@ -183,6 +183,20 @@ local function show_messages()
     require("utils").qf_populate(entries, 'r', "setlocal statusline=%!v:lua.StatusLine('Messages')")
 end
 
+-- send :command output to qflist
+local function show_command(command)
+    command = command.args
+
+    local output = vim.api.nvim_exec(command, true)
+    local entries = {}
+
+    for _, line in ipairs(vim.split(output, '\n', true)) do
+        table.insert(entries, { text = line })
+    end
+
+    require("utils").qf_populate(entries, 'r', "setlocal statusline=%!v:lua.StatusLine('Command\\ Output')")
+end
+
 return {
     fzf_to_qf = fzf_to_qf,
     strip_fname = strip_fname,
@@ -196,6 +210,7 @@ return {
     toggle_spellings = toggle_spellings,
     toggle_global_statusline = toggle_global_statusline,
     toggle_qflist = toggle_qflist,
-    show_messages = show_messages
+    show_messages = show_messages,
+    show_command = show_command
 }
 
