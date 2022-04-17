@@ -98,9 +98,8 @@ vim.g.material_style = "darker"
 -- }}}
 
 -- {{{ overrides
-
 -- setup colorscheme overrides
-local function setup_ui_overrides()
+local function ui_overrides()
     vim.highlight.create('Comment', {cterm = 'bold,italic', gui = 'bold,italic'}, false)
     vim.highlight.create('LineNr', {cterm = 'NONE', gui = 'NONE'}, false)
 
@@ -124,8 +123,8 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme gruvbox-baby ]]
-setup_ui_overrides()
+vim.cmd [[ colorscheme terafox ]]
+ui_overrides()
 
 return {
     preferred = {
@@ -151,6 +150,6 @@ return {
         "base16-apprentice", "base16-ashes",
         "base16-monokai"
     },
-    setup_ui_overrides = setup_ui_overrides
+    ui_overrides = ui_overrides
 }
 

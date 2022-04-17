@@ -28,7 +28,7 @@ vim.api.nvim_create_augroup('UISetup', {clear = true})
 vim.api.nvim_create_autocmd('ColorScheme', {
     group = 'UISetup',
     pattern = '*',
-    callback = colorscheme.setup_ui_overrides,
+    callback = colorscheme.ui_overrides,
 })
 
 vim.api.nvim_create_augroup('TerminalSetup', {clear = true})
