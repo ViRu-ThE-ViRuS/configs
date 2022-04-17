@@ -29,6 +29,8 @@ some things i decided to implement on my own:
 - functionality to open file in `Finder`, repository in `GitHub`
 - custom project local lua settings functionality, lazy loading local config
 - lua utilities library with things like map, filter, shell commands, +more
+- dap configurations: launch/stop servers, control ui, close outputs
+  automatically etc
 - small utilities like highlight current word, switch bw preferred
   colorschemes, collect all TODOs, toggle maximize buffer, etc
 
