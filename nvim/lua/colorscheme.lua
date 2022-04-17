@@ -100,8 +100,8 @@ vim.g.material_style = "darker"
 -- {{{ overrides
 -- setup colorscheme overrides
 local function ui_overrides()
-    vim.highlight.create('Comment', {cterm = 'bold,italic', gui = 'bold,italic'}, false)
-    vim.highlight.create('LineNr', {cterm = 'NONE', gui = 'NONE'}, false)
+    -- vim.highlight.create('Comment', {cterm = 'bold,italic', gui = 'bold,italic'}, false)
+    -- vim.highlight.create('LineNr', {cterm = 'NONE', gui = 'NONE'}, false)
 
     -- TODO(vir): do this in lua
     -- NOTE(vir): some colorschemes aint pretty with gitsigns
@@ -110,7 +110,9 @@ local function ui_overrides()
     vim.cmd [[
         " Misc
         highlight! link SignColumn LineNr
-        highlight! link VertSplit SignColumn
+        highlight! link VertSplit LineNr
+        highlight! link FloatBorder Normal
+        highlight! link NormalFloat Normal
 
         " gitsigns
         highlight! link GitSignsAdd GitGutterAdd
@@ -123,7 +125,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme terafox ]]
+vim.cmd [[ colorscheme substrata ]]
 ui_overrides()
 
 return {

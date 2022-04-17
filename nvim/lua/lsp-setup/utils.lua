@@ -52,6 +52,7 @@ local diagnostics_state = {
         if not diagnostics_state['global'] then
             vim.diagnostic.setqflist({open=false})
             diagnostics_state['global'] = true
+
             vim.cmd [[
                 belowright copen
                 setlocal statusline=%!v:lua.StatusLine('Workspace\ Diagnostics')

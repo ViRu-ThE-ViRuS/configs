@@ -13,13 +13,6 @@ dap.adapters.python = {
     args = {'-m', 'debugpy.adapter'}
 }
 dap.adapters.codelldb = function(callback, _)
-    if vim.o.shell ~= 'fish' then
-        require('notify')(
-            'codelldb can only be launched automatically from fish shell',
-            'warn', {render = 'minimal'})
-        return
-    end
-
     require('terminal').launch_terminal('codelldb', true, function()
         vim.api.nvim_buf_set_name(0, internal_servers.codelldb)
         vim.defer_fn(function()
@@ -139,7 +132,8 @@ end
 -- setup debugging keymaps
 local function setup_maps()
     utils.map('n', '<m-d>B', function()
-        dap.set_breakpoint(vim.fn.input("breakpoint condition: "))
+        local condition = vim.fn.input('breakpoint condition: ')
+        if condition then dap.set_breakpoint(condition) end
     end)
 
     utils.map('n', '<m-d>k', dapui.eval)
@@ -158,8 +152,7 @@ local function setup_maps()
         close_internal_servers() -- close servers launched within neovim
 
         -- close output windows
-        local handles = get_output_windows()
-        core.foreach(handles, function(handle)
+        core.foreach(get_output_windows(), function(handle)
             vim.api.nvim_buf_delete(handle, {force = true})
         end)
     end)
