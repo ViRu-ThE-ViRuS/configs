@@ -75,8 +75,8 @@ utils.map("n", "<leader>t3", misc.toggle_thicc_separators)
 utils.map("n", "<leader>t4", misc.toggle_spellings)
 
 -- qflist navigation & toggle
-utils.map("n", "[q", "<cmd>try | cprev | catch | clast | catch | endtry<cr>", {silent=true})
-utils.map("n", "]q", "<cmd>try | cnext | catch | cfirst | catch | endtry<cr>", {silent=true})
+utils.map("n", "[q", "<cmd>try | cprev | catch | silent! clast | catch | endtry<cr>")
+utils.map("n", "]q", "<cmd>try | cnext | catch | silent! cfirst | catch | endtry<cr>")
 utils.map("n", "<leader>Q", misc.toggle_qflist)
 
 -- buffer resizing
