@@ -85,11 +85,13 @@ utils.map("n", "<m-k>", "<cmd>resize -2<cr>")
 utils.map("n", "<m-h>", "<cmd>vertical resize -2<cr>")
 utils.map("n", "<m-l>", "<cmd>vertical resize +2<cr>")
 
--- buffer navigation
+-- buffer & tab navigation
 -- NOTE(vir): bufdelete loaded after BufReadPost, causes error on fresh start
+utils.map("n", "[t", "<cmd>tabprev<cr>")
+utils.map("n", "]t", "<cmd>tabnext<cr>")
+utils.map("n", "[b", "<cmd>bprev<cr>")
+utils.map("n", "]b", "<cmd>bnext<cr>")
 utils.map("n", "<bs>", '<c-^>zz')
-utils.map("n", "<a-[>", "<cmd>bprev<cr>")
-utils.map("n", "<a-]>", "<cmd>bnext<cr>")
 utils.map("n", "<leader>q", function() require('bufdelete').bufdelete(0, true) end)
 utils.map("n", "<c-w><c-l>", "<cmd>cclose<cr> <cmd>pclose<cr> <cmd>lclose<cr> <cmd>tabclose<cr>", {silent=true})
 

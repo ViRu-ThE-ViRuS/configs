@@ -31,6 +31,8 @@ local function setup_independent_keymaps(client, buffer_nr)
 
     if client.name == 'clangd' then
         utils.map('n', '<f9>', '<cmd>ClangdSwitchSourceHeader<cr>', {}, buffer_nr)
+    elseif client.name == 'pyright' then
+        utils.map('n', '<f9>', '<cmd>PyrightOrganizeImports<cr>', {}, buffer_nr)
     end
 end
 

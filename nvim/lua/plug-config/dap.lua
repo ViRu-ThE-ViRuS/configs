@@ -77,7 +77,7 @@ dapui.setup({
         position = "right"
     },
     tray = {elements = {"repl", "watches"}, size = 10, position = "bottom"},
-    floating = {border = "rounded", mappings = {close = "q"}}
+    floating = {border = "rounded", mappings = {close = {"q", "<esc>", "<c-o>"}}}
 })
 
 -- get handles of output windows
@@ -121,7 +121,7 @@ end
 -- remove debugging keymaps
 local function remove_maps()
     utils.unmap('n', '<m-d>B')
-    utils.unmap('n', '<m-d>k')
+    utils.unmap({'n', 'v'}, '<m-d>k')
     utils.unmap('n', '<m-1>')
     utils.unmap('n', '<m-2>')
     utils.unmap('n', '<m-3>')
@@ -136,7 +136,7 @@ local function setup_maps()
         if condition then dap.set_breakpoint(condition) end
     end)
 
-    utils.map('n', '<m-d>k', dapui.eval)
+    utils.map({'n', 'v'}, '<m-d>k', dapui.eval)
     utils.map('n', '<m-1>', dap.step_over)
     utils.map('n', '<m-2>', dap.step_into)
     utils.map('n', '<m-3>', dap.step_out)
@@ -144,6 +144,8 @@ local function setup_maps()
     -- hard terminate: remove keymaps, close dapui, close dap repl, close dap,
     -- delete output buffers, close internal_servers
     utils.map('n', '<m-q>', function()
+        local session_tab = dap.session().session_target_tab
+
         remove_maps()
         dapui.close()
         dap.repl.close()
@@ -155,6 +157,9 @@ local function setup_maps()
         core.foreach(get_output_windows(), function(handle)
             vim.api.nvim_buf_delete(handle, {force = true})
         end)
+
+        -- close debugging tab
+        vim.cmd('tabclose ' .. session_tab)
     end)
 
     utils.map('n', '<f4>', dapui.toggle)
@@ -201,6 +206,17 @@ vim.fn.sign_define("DapLogPoint", {text = '.>', texthl = 'DiagnosticInfo'})
 
 -- general keymaps
 utils.map('n', '<m-d>b', dap.toggle_breakpoint)
-utils.map('n', '<f5>', dap.continue)
+utils.map('n', '<f5>', function()
+    -- create debugging tab if needed
+    if dap.session() == nil then
+        vim.cmd('tab sb ' .. vim.api.nvim_win_get_buf(0))
+    else
+        vim.cmd('normal ' .. dap.session().session_target_tab .. 'gt')
+    end
+
+    dap.continue()
+    dap.session().session_target_tab = vim.fn.tabpagenr()
+
+end)
 
 return {remove_maps = remove_maps, setup_maps = setup_maps}
