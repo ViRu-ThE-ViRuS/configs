@@ -158,7 +158,7 @@ local function setup_maps()
             vim.api.nvim_buf_delete(handle, {force = true})
         end)
 
-        -- close debugging tab
+        -- close session tab
         vim.cmd('tabclose ' .. session_tab)
     end)
 
@@ -167,6 +167,9 @@ end
 
 -- start session: setup keymaps, open dapui
 local function start_session()
+    -- set session tab
+    dap.session().session_target_tab = vim.fn.tabpagenr()
+
     setup_maps()
     dapui.open()
 
@@ -207,7 +210,7 @@ vim.fn.sign_define("DapLogPoint", {text = '.>', texthl = 'DiagnosticInfo'})
 -- general keymaps
 utils.map('n', '<m-d>b', dap.toggle_breakpoint)
 utils.map('n', '<f5>', function()
-    -- create debugging tab if needed
+    -- create session tab if needed
     if dap.session() == nil then
         vim.cmd('tab sb ' .. vim.api.nvim_win_get_buf(0))
     else
@@ -215,8 +218,6 @@ utils.map('n', '<f5>', function()
     end
 
     dap.continue()
-    dap.session().session_target_tab = vim.fn.tabpagenr()
-
 end)
 
 return {remove_maps = remove_maps, setup_maps = setup_maps}

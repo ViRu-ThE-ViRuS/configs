@@ -125,7 +125,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme tempus_spring ]]
+vim.cmd [[ colorscheme terafox ]]
 ui_overrides()
 
 return {
