@@ -154,7 +154,7 @@ return {
 
         -- NOTE(vir): light themes. Yes, sometimes, i like light themes, they
         -- remind me of the pain that exists in the world :o
-        "tempus_totus",
+        -- "tempus_totus",
     },
     ui_overrides = ui_overrides
 }

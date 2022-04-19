@@ -51,7 +51,7 @@ require('nvim-treesitter.configs').setup {
     }
 }
 
--- text-subjects : move
+-- text-subjects : move + center
 utils.map('n', ']f', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@function.outer")<CR>zz')
 utils.map('n', '[f', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@function.outer")<CR>zz')
 
