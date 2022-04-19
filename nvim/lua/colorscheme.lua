@@ -125,7 +125,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme substrata ]]
+vim.cmd [[ colorscheme tempus_spring ]]
 ui_overrides()
 
 return {
@@ -148,9 +148,13 @@ return {
         "jellybeans",
         "mountain",
         "saturnite",
-        "tempus_tempest",
+        "tempus_tempest", "tempus_spring",
         "base16-apprentice", "base16-ashes",
-        "base16-monokai"
+        "base16-monokai",
+
+        -- NOTE(vir): light themes. Yes, sometimes, i like light themes, they
+        -- remind me of the pain that exists in the world :o
+        "tempus_totus",
     },
     ui_overrides = ui_overrides
 }

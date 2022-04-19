@@ -44,6 +44,7 @@ vim.opt.sidescrolloff = 8
 vim.opt.joinspaces = false
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
+vim.opt.inccommand = 'nosplit'
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.showmode = false

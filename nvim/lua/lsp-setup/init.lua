@@ -43,6 +43,12 @@ lsp["clangd"].setup {
 }
 
 -- sumneko_lua setup
+-- vim runtime files
+local runtime_path = vim.split(package.path, ';')
+table.insert(runtime_path, 'lua/?.lua')
+table.insert(runtime_path, 'lua/?/initlua')
+
+-- sumneko_lua location
 local sumneko_lua_root = core.get_homedir() .. "/.local/lsp/lua-language-server/"
 local sumneko_lua_bin = sumneko_lua_root .. "bin/" .. core.get_os() .. "/lua-language-server"
 lsp["sumneko_lua"].setup {
@@ -50,14 +56,10 @@ lsp["sumneko_lua"].setup {
     cmd = {sumneko_lua_bin, "-E", sumneko_lua_root .. "main.lua"},
     settings = {
         Lua = {
-            runtime = {version = "LuaJIT", path = vim.split(package.path, ";")},
+            runtime = {version = "LuaJIT", path = runtime_path},
             diagnostics = {globals = {"vim", "use", "packer_plugins"}},
-            workspace = {
-                library = {
-                    [vim.fn.expand("$VIMRUNTIME/lua")] = true,
-                    [vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true
-                }
-            }
+            telemetry = {enable = false},
+            workspace = {library = vim.api.nvim_get_runtime_file('', true)}
         }
     },
     on_attach = on_attach,
@@ -75,7 +77,7 @@ lsp['cmake'].setup {
 local null_ls = require('null-ls')
 null_ls.setup({
     sources = {
-        null_ls.builtins.formatting.lua_format,
+        null_ls.builtins.formatting.stylua,
         null_ls.builtins.formatting.autopep8,
         null_ls.builtins.formatting.prettier,
         -- null_ls.builtins.diagnostics.flake8,
@@ -83,8 +85,10 @@ null_ls.setup({
     },
     capabilities = capabilities,
     on_attach = function(client, buffer_nr)
+        -- NOTE(vir): now using nvim-notify
         require("notify")(string.format('[lsp] %s\n[cwd] %s', client.name, misc.get_cwd()),
                           'info', {title = '[lsp] active'})
+
         setup_buffer.setup_independent_keymaps(client, buffer_nr)
     end,
     flags = {debounce_text_changes = 150}

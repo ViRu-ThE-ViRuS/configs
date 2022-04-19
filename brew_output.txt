@@ -50,6 +50,7 @@ readline
 ripgrep
 rustup-init
 sqlite
+stylua
 tmux
 tree
 tree-sitter

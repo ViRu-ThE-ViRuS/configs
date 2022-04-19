@@ -31,20 +31,21 @@ utils.map({"n", "o"}, "-", '"0p')
 utils.map({"n", "o"}, "_", '"0P')
 
 -- misc
-utils.map("n", "/", "ms/")
-utils.map("n", "?", "ms?")
+utils.map("n", "/", "ms/")                                  -- mark search start
+utils.map("n", "?", "ms?")                                  -- mark search start
 utils.map("v", "&", ":&&<cr>")                              -- substitutions
 utils.map("v", ".", ":normal! .<cr>")                       -- . motions
 utils.map("v", "@", ":normal! @")                           -- macros
-utils.map("n", "ss", "s")
-utils.map({"n", "v"}, "<c-b>", "<nop>")
+utils.map("n", "ss", "s")                                   -- substitute mode
+utils.map({"n", "v"}, "<c-b>", "<nop>")                     -- disable <c-b>
 utils.map("n", "gp", "`[v`]")                               -- last paste
+utils.map("n", "p", "p`[v`]=")                              -- autoformat paste
+utils.map("n", "P", "P`[v`]=")                              -- autoformat paste
 
 -- delete without yank
 -- NOTE(vir): <c-v> in insert mode, to get key code
 utils.map({"n", "v"}, "x", '"_d', {noremap=false})
 utils.map({"n", "v"}, "X", '"_dd', {noremap=false})
--- utils.map({"n", "v"}, "", '"_dh', {noremap=false})
 utils.map({"n", "v"}, "<a-bs>", '"_dl', {noremap=false})
 
 -- buffer resizing

@@ -11,11 +11,14 @@ cmp.setup({
         expand = function(args) require('luasnip').lsp_expand(args.body) end
     },
     mapping = {
-        ["<cr>"] = cmp.mapping.confirm({behavior = cmp.ConfirmBehavior.Replace, select = false}),
         ["<c-space>"] = cmp.mapping.complete(),
         ["<c-e>"] = cmp.mapping.close(),
         ["<c-n>"] = cmp.mapping(cmp.mapping.select_next_item(), {"i"}),
         ["<c-p>"] = cmp.mapping(cmp.mapping.select_prev_item(), {"i"}),
+        ["<cr>"] = cmp.mapping.confirm({
+            behavior = cmp.ConfirmBehavior.Replace,
+            select = false,
+        }),
 
         ["<Tab>"] = cmp.mapping(
             function(fallback)
@@ -46,7 +49,6 @@ cmp.setup({
     },
     sources = {
         {name = "nvim_lsp"},
-        {name = "treesitter"},
         {name = "luasnip"},
         {name = "path"},
         {name = 'rg', keyword_length = 4},
@@ -57,7 +59,6 @@ cmp.setup({
         ghost_text = false
     },
     window = {
-      -- completion = { border = "rounded" },
       documentation = { border = "rounded" }
     },
     formatting = {
@@ -65,18 +66,23 @@ cmp.setup({
             with_text = true,
             menu = {
               nvim_lsp                 = "[lsp]",
-              treesitter               = "[ts]",
               luasnip                  = "[snip]",
-              path                     = "[path]",
               rg                       = "[rg]",
               buffer                   = "[buf]",
-              cmdline                  = "[cmd]",
+              path                     = "[path]",
+              cmdline                  = "[cmd]"
             }
         })
     }
 })
 
-cmp.setup.cmdline("/", {sources = cmp.config.sources({{name="buffer"}})})
-cmp.setup.cmdline(":", {sources = cmp.config.sources({{name="path"}}, {{name="cmdline", keyword_length=2}})})
 
+cmp.setup.cmdline(":", {
+    mapping = cmp.mapping.preset.cmdline({}),
+    sources = {{name="path"}, {name="cmdline", keyword_length=2}}
+})
+cmp.setup.cmdline("/", {
+    mapping = cmp.mapping.preset.cmdline({}),
+    sources = {{name="buffer"}}
+})
 

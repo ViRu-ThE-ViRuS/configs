@@ -19,12 +19,12 @@ return require('packer').startup({
         use { 'liuchengxu/vista.vim', cmd = 'Vista' }
         use { 'tpope/vim-eunuch', cmd = {'Delete', 'Rename', 'Chmod'} }
         use { 'tpope/vim-fugitive', cmd = {'G', 'Gread', 'GcLog'} }
+        use { 'machakann/vim-sandwich', event = 'BufRead' }
         use { 'AndrewRadev/splitjoin.vim', event = 'BufReadPost' }
 
         use {
             'nvim-treesitter/nvim-treesitter',
             requires = {
-                {'machakann/vim-sandwich', event = 'BufRead'},
                 {'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter'},
                 {'RRethy/nvim-treesitter-textsubjects', after = 'nvim-treesitter'},
                 {'andymass/vim-matchup', after = 'nvim-treesitter'},
@@ -34,10 +34,10 @@ return require('packer').startup({
             config = 'require("plug-config/treesitter")'
         }
 
-        use { 'famiu/bufdelete.nvim', event = 'BufReadPost' }
+        use { 'aserowy/tmux.nvim', event = 'VimEnter', config = 'require("plug-config/tmux")' }
         use { 'b3nj5m1n/kommentary', event = 'BufReadPost', config = 'require("plug-config/kommentary")' }
         use { 'lewis6991/gitsigns.nvim', event = 'BufReadPost', config = 'require("plug-config/gitsigns")' }
-        use { 'aserowy/tmux.nvim', event = 'VimEnter', config = 'require("plug-config/tmux")' }
+        use { 'famiu/bufdelete.nvim', event = 'BufReadPost' }
 
         use { 'sindrets/diffview.nvim', after = 'vim-fugitive', config = 'require("plug-config/diffview")' }
         use { 'windwp/nvim-autopairs', after = 'nvim-cmp', config = 'require("plug-config/autopairs")' }

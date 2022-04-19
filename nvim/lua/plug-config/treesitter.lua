@@ -1,12 +1,24 @@
+local utils = require("utils")
+
 require('nvim-treesitter.configs').setup {
     ensure_installed = {
         'lua', 'python', 'c', 'cpp', 'java', 'go', 'bash', 'fish', 'cmake',
         'make', 'cuda', 'markdown', 'rust', 'vim'
     },
 
+    indent = {enable = true},
     highlight = {enable = true, additional_vim_regex_highlighting = false, use_languagetree = true},
-    indent = {enable = false},
     matchup = {enable = true, disable_virtual_text = true},
+
+    incremental_selection = {
+        enable = true,
+        keymaps = {
+            init_selection = 'ge=',
+            node_incremental = 'ge=',
+            node_decremental = 'ge-',
+            scope_incremental = 'ge+'
+        }
+    },
 
     textobjects = {
         select = {
@@ -18,35 +30,40 @@ require('nvim-treesitter.configs').setup {
                 ['ac'] = '@block.outer',
                 ['ic'] = '@block.inner'
             }
+        },
+        move = {
+            enable = true,
+            set_jumps = true,
+
+            -- NOTE(vir): doing this manually below
+            -- goto_previous_start = { ['[f'] = '@function.outer' },
+            -- goto_next_start = { [']f'] = '@function.outer' }
         }
     },
 
     textsubjects = {
         enable = true,
-        prev_selection = ',', -- (Optional) keymap to select the previous selection
         keymaps = {
             ['.'] = 'textsubjects-smart',
             ['i;'] = 'textsubjects-container-inner',
             ['a;'] = 'textsubjects-container-outer',
         },
-    },
-
-    -- rainbow = {enable = true, extended_mode = true},
-    incremental_selection = {
-        enable = true,
-        keymaps = {
-            init_selection = 'ge=',
-            node_incremental = 'ge=',
-            node_decremental = 'ge-',
-            scope_incremental = 'ge+'
-        }
     }
 }
 
--- related plugin setup
+-- text-subjects : move
+utils.map('n', ']f', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@function.outer")<CR>zz')
+utils.map('n', '[f', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@function.outer")<CR>zz')
 
+-- treesitter api updates
+local ts_utils = require("nvim-treesitter.ts_utils")
+ts_utils.get_node_text = vim.treesitter.query.get_node_text
+
+-- NOTE(vir): related plugin setup
 -- vim-matchup
 vim.g.matchup_matchparen_offscreen = {method = 'popup'}
+utils.map({'o', 'x'}, 'iQ', '<plug>(matchup-i%)')
+utils.map({'o', 'x'}, 'aQ', '<plug>(matchup-a%)')
 
 -- vim-sandwich
 vim.g['sandwich#recipes'] = require('lib/core').list_concat(
@@ -55,3 +72,4 @@ vim.g['sandwich#recipes'] = require('lib/core').list_concat(
         {buns = {'[ ', ' ]'}, nesting = 1, match_syntax = 1, input = {']'}},
         {buns = {'{ ', ' }'}, nesting = 1, match_syntax = 1, input = {'}'}}
     })
+
