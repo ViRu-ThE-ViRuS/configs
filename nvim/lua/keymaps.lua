@@ -12,7 +12,7 @@ utils.map({"n", "v", "o"}, "L", "$")
 -- NOTE(vir): <c-v> in insert mode, to get key code
 utils.map({"n", "v"}, "x", '"_d', {noremap=false})
 utils.map({"n", "v"}, "X", '"_dd', {noremap=false})
-utils.map({"n", "v"}, "<a-bs>", '"_dl', {noremap=false})
+utils.map({"n", "v"}, "<a-bs>", '"_dh', {noremap=false})
 
 -- paste yanked
 utils.map({"n", "o"}, "-", '"0p')
@@ -32,8 +32,8 @@ utils.map("v", ".", ":normal! .<cr>")                       -- . motions
 utils.map("v", "@", ":normal! @")                           -- macros
 utils.map("n", "ss", "s")                                   -- substitute mode
 utils.map("n", "gp", "`[v`]")                               -- last paste
-utils.map("n", "p", "p`[v`]=")                              -- autoformat paste
-utils.map("n", "P", "P`[v`]=")                              -- autoformat Paste
+utils.map("n", "p", "p=`]")                                 -- autoformat paste
+utils.map("n", "P", "P=`]")                                 -- autoformat Paste
 utils.map({"n", "v"}, "<c-b>", "<nop>")                     -- disable <c-b>
 
 -- disable command history, EX mode
@@ -93,7 +93,7 @@ utils.map("n", "[b", "<cmd>bprev<cr>")
 utils.map("n", "]b", "<cmd>bnext<cr>")
 utils.map("n", "<bs>", '<c-^>zz')
 utils.map("n", "<leader>q", function() require('bufdelete').bufdelete(0, true) end)
-utils.map("n", "<c-w><c-l>", "<cmd>cclose<cr> <cmd>pclose<cr> <cmd>lclose<cr> <cmd>tabclose<cr>", {silent=true})
+utils.map("n", "<c-w><c-l>", "<cmd>try | cclose | pclose | lclose | tabclose | catch | endtry <cr>", {silent=true})
 
 -- terminal navigation
 utils.map("t", "<esc>", "<c-\\><c-n>")
