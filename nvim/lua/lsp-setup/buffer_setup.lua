@@ -26,7 +26,7 @@ local function setup_independent_keymaps(client, buffer_nr)
     end
 
     if client.resolved_capabilities.document_range_formatting then
-        utils.map('v', '<c-f>', vim.lsp.buf.range_formatting, {silent = true}, buffer_nr)
+        utils.map('v', '<c-f>', '<esc><cmd>lua vim.lsp.buf.range_formatting()<cr>', {silent = true}, buffer_nr)
     end
 
     if client.name == 'clangd' then

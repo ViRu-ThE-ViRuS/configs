@@ -24,3 +24,4 @@ cp alacritty/* ~/.config/alacritty/
 cp emacs/init.el ~/.config/emacs/init.el
 cp zsh/.zshrc ~/.config/zsh/
 cp zsh/.zshenv ~/.zshenv
+

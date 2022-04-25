@@ -125,7 +125,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme material ]]
+vim.cmd [[ colorscheme substrata ]]
 ui_overrides()
 
 return {
