@@ -10,27 +10,29 @@ local function toggle_target(open)
         return
     end
 
-    -- if visible, close
     local target_winid = vim.fn.bufwinid(state.target_terminal.buf_nr)
+
     if target_winid ~= -1 and #vim.api.nvim_list_wins() ~= 1 then
+        -- hide target
         if not open then
             if not pcall(vim.api.nvim_win_close, target_winid, false) then
                 require('notify')('[terminal] target exited, resetting state', 'debug', { render = 'minimal' })
                 state.target_terminal = nil
+                return
             end
         end
-        return
-    end
+    else
+        local split_dir = "v"
+        if utils.is_htruncated(utils.truncation_limit_s_terminal) then
+            split_dir = ""
+        end
 
-    -- else split
-    local split_dir = "v"
-    if utils.is_htruncated(utils.truncation_limit_s_terminal) then
-        split_dir = ""
-    end
-
-    if not pcall(vim.cmd, split_dir .. "split #" .. state.target_terminal.buf_nr) then
-        require('notify')('[terminal] target exited, resetting state', 'debug', { render = 'minimal' })
-        state.target_terminal = nil
+        -- open in split
+        if not pcall(vim.cmd, split_dir .. "split #" .. state.target_terminal.buf_nr) then
+            require('notify')('[terminal] target exited, resetting state', 'debug', { render = 'minimal' })
+            state.target_terminal = nil
+            return
+        end
     end
 end
 

@@ -69,7 +69,7 @@ require('nvim-tree').setup({
     renderer = { indent_markers = { enable = true } },
     actions = {
         open_file = {
-            window_pciker = {
+            window_picker = {
                 exclude = {
                     filetype = {'packer', 'qf', 'fugitive', 'Outline', 'vista', 'diagnostics'},
                     buftype = {'terminal', 'nofile', 'help'}

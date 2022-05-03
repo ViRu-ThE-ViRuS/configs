@@ -38,6 +38,7 @@ return require('packer').startup({
         use { 'b3nj5m1n/kommentary', event = 'BufReadPost', config = 'require("plug-config/kommentary")' }
         use { 'lewis6991/gitsigns.nvim', event = 'BufReadPost', config = 'require("plug-config/gitsigns")' }
         use { 'famiu/bufdelete.nvim', event = 'BufReadPost' }
+        -- use { 'karb94/neoscroll.nvim', event = 'BufReadPost', config = 'require("plug-config/neoscroll")'}
 
         use { 'sindrets/diffview.nvim', after = 'vim-fugitive', config = 'require("plug-config/diffview")' }
         use { 'windwp/nvim-autopairs', after = 'nvim-cmp', config = 'require("plug-config/autopairs")' }
@@ -112,6 +113,9 @@ return require('packer').startup({
 
         use { 'tweekmonster/startuptime.vim', cmd = 'StartupTime' }
     end,
-    config = { compile_path = vim.fn.stdpath('config') .. '/lua/packer_compiled.lua' }
+    config = {
+        compile_path = vim.fn.stdpath('config') .. '/lua/packer_compiled.lua',
+        display = { prompt_border = 'single' }
+    }
 })
 

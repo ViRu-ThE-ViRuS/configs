@@ -125,7 +125,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme substrata ]]
+vim.cmd [[ colorscheme rose-pine ]]
 ui_overrides()
 
 return {
@@ -149,12 +149,18 @@ return {
         "mountain",
         "saturnite",
         "tempus_tempest", "tempus_spring",
-        "base16-apprentice", "base16-ashes",
-        "base16-monokai",
+        "base16-apprentice", "base16-ashes", "base16-atlas",
+        "base16-monokai", "base16-atelier-sulphurpool",
+        "base16-black-metal-burzum",
 
         -- NOTE(vir): light themes. Yes, sometimes, i like light themes, they
         -- remind me of the pain that exists in the world :o
         -- "tempus_totus",
+        -- "adwaita",
+        -- "base16-atelier-cave-light", "base16-atelier-savanna-light",
+        -- "base16-equilibrium-gray-light", "base16-equilibrium-light",
+        -- "base16-atelier-savanna-light", "base16-solarized-light",
+        -- "base16-atelier-sulphurpool-light"
     },
     ui_overrides = ui_overrides
 }

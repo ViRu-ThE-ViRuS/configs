@@ -30,6 +30,7 @@ utils.map("n", "?", "ms?")                                  -- mark search start
 utils.map("v", "&", ":&&<cr>")                              -- substitutions
 utils.map("v", ".", ":normal! .<cr>")                       -- . motions
 utils.map("v", "@", ":normal! @")                           -- macros
+utils.map("v", "ss", ":s/")                                 -- quick subs
 utils.map("n", "ss", "s")                                   -- substitute mode
 utils.map("n", "gp", "`[v`]")                               -- last paste
 utils.map("n", "p", "p=`]")                                 -- autoformat paste
