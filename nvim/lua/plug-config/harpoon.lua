@@ -1,9 +1,8 @@
 local utils = require('utils')
-local notify = require('notify')
 local harpoo_ui = require('harpoon/ui')
 
 local function harpoon_mark()
-    notify('harpoon set', 'info', { render = 'minimal' })
+    utils.notify('harpoon set', 'info', { render = 'minimal' }, true)
     require('harpoon.mark').add_file(arg)
 end
 

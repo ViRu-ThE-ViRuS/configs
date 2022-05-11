@@ -1,12 +1,10 @@
 local utils = require("utils")
 local state = utils.run_config
 
--- NOTE(vir): now using nvim-notify
-
 -- toggle target_terminal
 local function toggle_target(open)
     if state.target_terminal == nil then
-        require('notify')('[terminal] target not set', 'warn', { render = 'minimal' })
+        utils.notify('[terminal] target not set', 'warn', { render = 'minimal' }, true)
         return
     end
 
@@ -16,7 +14,7 @@ local function toggle_target(open)
         -- hide target
         if not open then
             if not pcall(vim.api.nvim_win_close, target_winid, false) then
-                require('notify')('[terminal] target exited, resetting state', 'debug', { render = 'minimal' })
+                utils.notify('[terminal] target exited, resetting state', 'debug', { render = 'minimal' }, true)
                 state.target_terminal = nil
                 return
             end
@@ -29,7 +27,7 @@ local function toggle_target(open)
 
         -- open in split
         if not pcall(vim.cmd, split_dir .. "split #" .. state.target_terminal.buf_nr) then
-            require('notify')('[terminal] target exited, resetting state', 'debug', { render = 'minimal' })
+            utils.notify('[terminal] target exited, resetting state', 'debug', { render = 'minimal' }, true)
             state.target_terminal = nil
             return
         end
@@ -52,16 +50,16 @@ local function send_to_target(payload, repeat_last)
                 end
             end
 
-            require('notify')('[terminal] target exited, resetting state', 'debug', { render = 'minimal' })
+            utils.notify('[terminal] target exited, resetting state', 'debug', { render = 'minimal' }, true)
             state.target_terminal = nil
 
             return
         else
-            require('notify')('[terminal] target does not exist, resetting state', 'debug', { render = 'minimal' })
+            utils.notify('[terminal] target does not exist, resetting state', 'debug', { render = 'minimal' }, true)
             state.target_terminal = nil
         end
     else
-        require('notify')('[terminal] target not set', 'warn', { render = 'minimal' })
+        utils.notify('[terminal] target not set', 'warn', { render = 'minimal' }, true)
     end
 end
 
@@ -73,10 +71,18 @@ local function set_target_terminal()
             buf_nr = vim.api.nvim_win_get_buf(0)
         }
 
-        require('notify')(string.format("target_terminal set to: { job_id: %s, buf_nr: %s }", state.target_terminal.job_id, state.target_terminal.buf_nr),
-                          'info', { render = 'minimal' })
+		utils.notify(
+			string.format(
+				"target_terminal set to: { job_id: %s, buf_nr: %s }",
+				state.target_terminal.job_id,
+				state.target_terminal.buf_nr
+			),
+			"info",
+			{ render = "minimal" },
+			true
+		)
     else
-        require('notify')('[terminal] target not set', 'warn', { render = 'minimal' })
+        utils.notify('[terminal] target not set', 'warn', { render = 'minimal' }, true)
     end
 end
 
@@ -86,7 +92,7 @@ local function set_target_command()
 end
 
 -- query the current state, utility
-local function query_state() print(vim.inspect(state)) end
+local function query_state() vim.pretty_print(state) end
 
 -- set target_terminal/target_command
 local function set_target()
@@ -102,7 +108,7 @@ local function run_target_command()
     if state.target_command ~= "" then
         send_to_target(state.target_command, false)
     else
-        require('notify')('[terminal] target not set', 'warn', { render = 'minimal' })
+        utils.notify('[terminal] target not set', 'warn', { render = 'minimal' }, true)
     end
 end
 
@@ -118,7 +124,7 @@ local function launch_terminal(command, background, callback)
 
     vim.defer_fn(function()
         if pcall(vim.api.nvim_chan_send, vim.b.terminal_job_id, command .. "\n") then
-            require("notify")(command, 'info', { title = '[terminal] launched command', })
+            utils.notify(command, 'info', { title = '[terminal] launched command' }, true)
         end
 
         if callback then callback() end
@@ -138,4 +144,3 @@ return {
     run_previous_command = run_previous_command,
     launch_terminal = launch_terminal
 }
-

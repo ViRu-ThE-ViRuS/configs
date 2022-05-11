@@ -3,16 +3,9 @@ local core = require('lib/core')
 local colorscheme = require('colorscheme')
 
 vim.api.nvim_create_augroup('Misc', {clear = true})
-vim.api.nvim_create_autocmd('TextYankPost', {
-    group = 'Misc',
-    pattern = '*',
-    callback = function() vim.highlight.on_yank({on_visual = true}) end
-})
-vim.api.nvim_create_autocmd('BufWritePre', {
-    group = 'Misc',
-    pattern = '*',
-    callback = misc.strip_trailing_whitespaces
-})
+vim.api.nvim_create_autocmd('TextYankPost', { group = 'Misc', pattern = '*', callback = function() vim.highlight.on_yank({on_visual = true}) end })
+vim.api.nvim_create_autocmd('BufWritePre', { group = 'Misc', pattern = '*', callback = misc.strip_trailing_whitespaces })
+vim.api.nvim_create_autocmd('BufReadPost', { group = 'Misc', pattern = '*', command = 'normal `"' })
 
 -- NOTE(vir): plugin ft remaps: vista, nvimtree
 vim.api.nvim_create_autocmd('FileType', {
@@ -23,7 +16,6 @@ vim.api.nvim_create_autocmd('FileType', {
     end,
 })
 
--- NOTE(vir): this only applies to colorschemes set manually
 vim.api.nvim_create_augroup('UISetup', {clear = true})
 vim.api.nvim_create_autocmd('ColorScheme', {
     group = 'UISetup',
@@ -62,7 +54,6 @@ vim.api.nvim_create_autocmd('BufEnter', {
 vim.defer_fn(function()
 
     -- TODO(vir): do this in lua
-    -- NOTE(vir): now using nvim-notify
     -- <cword> highlight toggle
     vim.cmd [[
         function! CWordHlToggle()
@@ -73,7 +64,7 @@ vim.defer_fn(function()
             setlocal updatetime=1000
 
             " echo 'highlight current word: off'
-            lua require('notify')('<cword> highlight deactivated', 'debug', {render='minimal'})
+            lua require('utils').notify('<cword> highlight deactivated', 'debug', {render='minimal'})
 
             return 0
           else
@@ -84,7 +75,7 @@ vim.defer_fn(function()
             setl updatetime=250
 
             " echo 'highlight current word: on'
-            lua require('notify')('<cword> highlight activated', 'info', {render='minimal'})
+            lua require('utils').notify('<cword> highlight activated', 'info', {render='minimal'})
 
             return 1
           endif

@@ -1,7 +1,7 @@
 -- auto install packer.nvim if not exists
 local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/opt/packer.nvim'
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-    vim.api.nvim_command( '!git clone https://github.com/wbthomason/packer.nvim ' .. install_path)
+    vim.api.nvim_command('!git clone https://github.com/wbthomason/packer.nvim ' .. install_path)
     vim.cmd [[ packadd packer.nvim ]]
 end
 
@@ -98,6 +98,7 @@ return require('packer').startup({
         use 'bluz71/vim-moonfly-colors'
         use 'sainnhe/gruvbox-material'
         use 'luisiacc/gruvbox-baby'
+        use 'kyazdani42/blue-moon'
         use 'catppuccin/nvim'
         use 'kvrohit/rasmus.nvim'
         use 'Mofiqul/adwaita.nvim'
@@ -106,9 +107,16 @@ return require('packer').startup({
         use 'rose-pine/neovim'
         use 'kvrohit/substrata.nvim'
         use 'tanvirtin/monokai.nvim'
+        use 'habamax/vim-habamax'
+        use 'embark-theme/vim'
+        use 'hardselius/warlock'
+        use 'jacoborus/tender.vim'
+        use 'ChausseBenjamin/friffle-vim'
+        use 'srcery-colors/srcery-vim'
+        use 'bcicen/vim-vice'
+        use 'kjssad/quantum.vim'
         use 'nanotech/jellybeans.vim'
         use 'thepogsupreme/mountain.nvim'
-        use 'habamax/vim-saturnite'
         use 'https://gitlab.com/protesilaos/tempus-themes-vim.git'
 
         use { 'tweekmonster/startuptime.vim', cmd = 'StartupTime' }

@@ -2,12 +2,16 @@ local proto = require('vim.lsp.protocol')
 local utils = require('utils')
 local core = require('lib/core')
 
--- lsp int(kind) -> str(kind) map
-local lsp_kinds = {
-    "File", "Module", "Namespace", "Package", "Class", "Method", "Property",
-    "Field", "Constructor", "Enum", "Interface", "Function", "Variable",
-    "Constant", "String", "Number", "Boolean", "Array", "Object", "Key", "Null",
-    "EnumMember", "Struct", "Event", "Operator", "TypeParameter"
+-- tag states for statusline
+local tag_state_filter = {
+    Class     = true,
+    Function  = true,
+    Method    = true,
+    Struct    = true,
+    Enum      = true,
+    Interface = true,
+    Namespace = true,
+    Module    = true,
 }
 
 -- lsp str(kind) -> icon(kind)
@@ -40,18 +44,26 @@ local lsp_icons = {
     TypeParameter = {icon = "𝙏",    hl = "TSParameter"}
 }
 
--- local diagnostics state
-local diagnostics_state = {
-    ['local'] = {},
-    ['global'] = false
-}
+-- pos in range
+local function in_range (pos, range)
+    if pos[1] < range['start'].line or pos[1] > range['end'].line then
+        return false
+    end
+
+    if (pos[1] == range['start'].line and pos[2] < range['start'].character) or
+        (pos[1] == range['end'].line and pos[2] > range['end'].character) then
+        return false
+    end
+
+    return true
+end
 
  -- toggle diagnostics list
  local function toggle_diagnostics_list(global)
      if global then
-        if not diagnostics_state['global'] then
+        if not utils.diagnostics_state['global'] then
             vim.diagnostic.setqflist({open=false})
-            diagnostics_state['global'] = true
+            utils.diagnostics_state['global'] = true
 
             vim.cmd [[
                 belowright copen
@@ -59,56 +71,24 @@ local diagnostics_state = {
                 wincmd p
             ]]
         else
-            diagnostics_state['global'] = false
+            utils.diagnostics_state['global'] = false
             vim.cmd [[ cclose ]]
         end
      else
          local current_buf = vim.api.nvim_get_current_buf()
 
-         if not diagnostics_state['local'][current_buf] then
+         if not utils.diagnostics_state['local'][current_buf] then
              vim.diagnostic.setloclist()
-             diagnostics_state['local'][current_buf] = true
+             utils.diagnostics_state['local'][current_buf] = true
 
              vim.opt_local.statusline = require('statusline').StatusLine('Diagnostics')
              vim.cmd [[ wincmd p ]]
          else
-             diagnostics_state['local'][current_buf] = false
+             utils.diagnostics_state['local'][current_buf] = false
              vim.cmd [[ lclose ]]
          end
      end
  end
-
--- print lsp diagnostics in CMD line
-local function cmd_line_diagnostics()
-    local line_number = vim.api.nvim_win_get_cursor(0)[1] - 1
-    local line_diagnostics = vim.diagnostic.get(0, {lnum = line_number})
-    local line_diagnostic = line_diagnostics[#line_diagnostics]
-
-    if line_diagnostic then
-        local message = line_diagnostic.message
-        local severity_level = line_diagnostic.severity
-
-        local severity = 'seperator'
-        if severity_level == 4 then severity = 'hint'
-        elseif severity_level == 3 then severity = 'info'
-        elseif severity_level == 2 then severity = 'warning'
-        elseif severity_level == 1 then severity = 'error' end
-
-        print(utils.symbol_config['indicator_' .. severity] .. ': ' .. message)
-    end
-end
-
--- tag states for statusline
-local tag_state_filter = {
-    Class     = true,
-    Function  = true,
-    Method    = true,
-    Struct    = true,
-    Enum      = true,
-    Interface = true,
-    Namespace = true,
-    Module    = true,
-}
 
 -- extract symbols from lsp results
 local function extract_symbols(items, _result)
@@ -144,12 +124,14 @@ local function extract_symbols(items, _result)
 end
 
 -- reset tag state
-local reset_tag_state = function()
-    utils.tag_state.kind = nil
-    utils.tag_state.name = nil
-    utils.tag_state.detail = nil
-    utils.tag_state.icon = nil
-    utils.tag_state.iconhl = nil
+local function reset_tag_state()
+    utils.tag_state = {
+        kind = nil,
+        name = nil,
+        detail = nil,
+        icon = nil,
+        iconhl = nil
+    }
 end
 
 -- update tag_state async
@@ -173,7 +155,7 @@ local function refresh_tag_state()
             for position = #symbols, 1, -1 do
                 local current = symbols[position]
 
-                if current.range and core.in_range(hovered_line, current.range) then
+                if current.range and in_range(hovered_line, current.range) then
                     utils.tag_state.kind = current.kind
                     utils.tag_state.name = current.name
                     utils.tag_state.detail = current.detail
@@ -186,16 +168,10 @@ local function refresh_tag_state()
         end)
 end
 
--- setup statusline icon highlights
-local function setup_lsp_icon_highlights()
-end
-
 return {
     lsp_icons = lsp_icons,
     toggle_diagnostics_list = toggle_diagnostics_list,
-    cmd_line_diagnostics = cmd_line_diagnostics,
     reset_tag_state = reset_tag_state,
     refresh_tag_state = refresh_tag_state,
-    setup_lsp_icon_highlights = setup_lsp_icon_highlights
 }
 

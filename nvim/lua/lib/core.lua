@@ -1,7 +1,3 @@
--- optimization
--- from: https://stackoverflow.com/questions/1252539/most-efficient-way-to-determine-if-a-lua-table-is-empty-contains-no-entries
-local next = next
-
 -- apply f to all elements in table
 local function foreach(tbl, f)
     if not tbl then return nil end
@@ -45,20 +41,6 @@ local function table_contains(table, target_value)
     end
 
     return nil
-end
-
--- pos in range
-local function in_range (pos, range)
-    if pos[1] < range['start'].line or pos[1] > range['end'].line then
-        return false
-    end
-
-    if (pos[1] == range['start'].line and pos[2] < range['start'].character) or
-        (pos[1] == range['end'].line and pos[2] > range['end'].character) then
-        return false
-    end
-
-    return true
 end
 
 -- run shell command and get output lines as lua table
@@ -114,9 +96,10 @@ return {
     filter = filter,
     list_concat = list_concat,
     table_contains = table_contains,
-    in_range = in_range,
+
     lua_systemlist = lua_systemlist,
     lua_system = lua_system,
+
     get_python = get_python,
     get_username = get_username,
     get_homedir = get_homedir,

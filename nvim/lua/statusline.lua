@@ -2,10 +2,34 @@ local utils = require('utils')
 local symbol_config = utils.symbol_config
 local colors = utils.statusline_colors
 
+-- abbrev -> mode mapping
+local modes = {
+    ['n']  = 'Normal',
+    ['no'] = 'N-Pending',
+    ['v']  = 'Visual',
+    ['V']  = 'V-Line',
+    [''] = 'V-Block',
+    ['s']  = 'Select',
+    ['S']  = 'S-Line',
+    [''] = 'S-Block',
+    ['i']  = 'Insert',
+    ['ic'] = 'Insert',
+    ['R']  = 'Replace',
+    ['Rv'] = 'V-Replace',
+    ['c']  = 'Command',
+    ['cv'] = 'Vim-Ex ',
+    ['ce'] = 'Ex',
+    ['r']  = 'Prompt',
+    ['rm'] = 'More',
+    ['r?'] = 'Confirm',
+    ['!']  = 'Shell',
+    ['t']  = 'Terminal'
+}
+
 -- get the display name for current mode
 local function get_current_mode()
     local current_mode = vim.api.nvim_get_mode().mode
-    return string.format(' %s ', utils.modes[current_mode]):upper()
+    return string.format(' %s ', modes[current_mode]):upper()
 end
 
 -- get git information of current file

@@ -39,16 +39,14 @@ local function qf_populate(lines, mode, statusline)
     end
 end
 
--- randomize colorscheme
-local function random_colors()
-    local colorschemes = require('colorscheme').preferred
-    local target = colorschemes[math.random(1, #colorschemes)]
-
-    if type(target) == 'function' then
-        target()
-    else
-        vim.cmd(string.format('colorscheme %s\ncolorscheme', target))
+-- notify using current  notifications setup
+local function notify(content, type, opts, force)
+    if force and packer_plugins['nvim-notify'] ~= nil and packer_plugins['nvim-notify'].loaded then
+        require('notify')(content, type, opts)
+        return
     end
+
+    vim.notify(content, type, opts)
 end
 
 -- is buffer horizontally truncated
@@ -63,59 +61,8 @@ local function is_vtruncated(height)
     return current_height < height
 end
 
--- diagnostics symbol config
-local symbol_config = {
-    indicator_seperator = '',
-    indicator_hint      = '[@]',
-    indicator_info      = '[i]',
-    indicator_warning   = '[!]',
-    indicator_error     = '[x]',
-
-    sign_hint      = '@',
-    sign_info      = 'i',
-    sign_warning   = '!',
-    sign_error     = 'x'
-}
-
--- mode display name table
-local modes = {
-    ['n']  = 'Normal',
-    ['no'] = 'N-Pending',
-    ['v']  = 'Visual',
-    ['V']  = 'V-Line',
-    [''] = 'V-Block',
-    ['s']  = 'Select',
-    ['S']  = 'S-Line',
-    [''] = 'S-Block',
-    ['i']  = 'Insert',
-    ['ic'] = 'Insert',
-    ['R']  = 'Replace',
-    ['Rv'] = 'V-Replace',
-    ['c']  = 'Command',
-    ['cv'] = 'Vim-Ex ',
-    ['ce'] = 'Ex',
-    ['r']  = 'Prompt',
-    ['rm'] = 'More',
-    ['r?'] = 'Confirm',
-    ['!']  = 'Shell',
-    ['t']  = 'Terminal'
-}
-
--- statusline colors
-local statusline_colors = {
-    active      = '%#StatusLine#',
-    inactive    = '%#StatusLineNC#',
-    mode        = '%#PmenuSel#',
-    git         = '%#Pmenu#',
-    diagnostics = '%#PmenuSbar#',
-    file        = '%#CursorLine#',
-    tagname     = '%#PmenuSbar#',
-    line_col    = '%#CursorLine#',
-    percentage  = '%#CursorLine#',
-    filetype    = '%#PmenuSel#',
-}
-
--- current tag_state [updated async]
+--- {{{ global states
+-- lsp+ts: current tag_state [updated async]
 local tag_state = {
     name = nil,
     detail = nil,
@@ -124,11 +71,23 @@ local tag_state = {
     iconhl = nil
 }
 
--- current run_config [updated elsewhere]
+-- terminal: current run_config [updated elsewhere]
 local run_config = {
     target_terminal = nil,
     target_command = "",
 }
+
+-- diagnostics: toggle state
+local diagnostics_state = {
+    ['local'] = {},
+    ['global'] = false
+}
+
+local ui_state = {
+    thick_separators = false,
+    window_state = {}
+}
+-- }}}
 
 return {
     truncation_limit_s_terminal = 110,
@@ -139,14 +98,62 @@ return {
     map = map,
     unmap = unmap,
     qf_populate = qf_populate,
-    random_colors = random_colors,
+    notify = notify,
     is_htruncated = is_htruncated,
     is_vtruncated = is_vtruncated,
 
-    symbol_config = symbol_config,
-    modes = modes,
-    statusline_colors = statusline_colors,
+    symbol_config = {
+        -- indicators, icons
+        indicator_seperator = '',
+        indicator_hint      = '[@]',
+        indicator_info      = '[i]',
+        indicator_warning   = '[!]',
+        indicator_error     = '[x]',
+
+        -- signs
+        sign_hint      = '@',
+        sign_info      = 'i',
+        sign_warning   = '!',
+        sign_error     = 'x'
+    },
+    modes = {
+        ['n']  = 'Normal',
+        ['no'] = 'N-Pending',
+        ['v']  = 'Visual',
+        ['V']  = 'V-Line',
+        [''] = 'V-Block',
+        ['s']  = 'Select',
+        ['S']  = 'S-Line',
+        [''] = 'S-Block',
+        ['i']  = 'Insert',
+        ['ic'] = 'Insert',
+        ['R']  = 'Replace',
+        ['Rv'] = 'V-Replace',
+        ['c']  = 'Command',
+        ['cv'] = 'Vim-Ex ',
+        ['ce'] = 'Ex',
+        ['r']  = 'Prompt',
+        ['rm'] = 'More',
+        ['r?'] = 'Confirm',
+        ['!']  = 'Shell',
+        ['t']  = 'Terminal'
+    },
+    statusline_colors = {
+        active      = '%#StatusLine#',
+        inactive    = '%#StatusLineNC#',
+        mode        = '%#PmenuSel#',
+        git         = '%#Pmenu#',
+        diagnostics = '%#PmenuSbar#',
+        file        = '%#CursorLine#',
+        tagname     = '%#PmenuSbar#',
+        line_col    = '%#CursorLine#',
+        percentage  = '%#CursorLine#',
+        filetype    = '%#PmenuSel#',
+    },
+
     tag_state = tag_state,
-    run_config = run_config
+    run_config = run_config,
+    diagnostics_state = diagnostics_state,
+    ui_state = ui_state,
 }
 

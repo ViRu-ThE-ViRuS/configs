@@ -2,35 +2,12 @@ local fzf = require('fzf-lua')
 local utils = require("utils")
 local misc = require('lib/misc')
 local actions = require("fzf-lua").actions
-local plenary = require('plenary')
 
 local default_rg_options = ' --hidden --follow --no-heading --smart-case --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build,*.dSYM,tags}"'
 
--- NOTE(vir): now using nvim-notify
--- TODO(vir): figure out the bugs in harpoon
--- local function set_harpoons(lines)
---     if not lines then
---         notify('could not set harpoons', 'error',
---                { render = 'minimal' })
---         return
---     end
-
---     if #lines > 10 then
---         notify('trying to set too many harpoons: #' .. #lines, 'error',
---         { render = 'minimal' })
---         return
---     end
-
---     -- using harpoon
---     for _, line in ipairs(lines) do
---         require('harpoon.mark').add_file(line)
---     end
-
---     notify(string.format(#lines .. ' harpoons set'), 'info',
---     { render = 'minimal' })
--- end
-
+-- TODO(vir): silent this out
 fzf.register_ui_select()
+
 fzf.setup({
     winopts = {
         split = 'belowright new',
@@ -44,8 +21,6 @@ fzf.setup({
         on_create = function()
             vim.opt_local.buflisted = false
             vim.opt_local.bufhidden = 'wipe'
-            -- vim.opt_local.signcolumn = 'no'
-            -- vim.opt_local.statusline = require('statusline').StatusLine('FZF')
 
             utils.map('t', '<c-k>', '<up>', {}, 0)
             utils.map('t', '<c-j>', '<down>', {}, 0)
@@ -116,6 +91,10 @@ fzf.setup({
         }
     },
     files = { rg_opts = '--files' .. default_rg_options, },
+    blines = {
+        previewer = 'builtin',
+        actions = { ['ctrl-q'] = misc.fzf_to_qf },
+    },
     grep = {
         rg_opts = "--column --color=always" .. default_rg_options,
         rg_glob = true,
@@ -129,11 +108,7 @@ fzf.setup({
         actions = {
             ['ctrl-q'] = misc.fzf_to_qf,
             ['ctrl-g'] = actions.grep_lgrep,
-        },
-        -- fzf_opts = {
-        --     ['--with-nth'] = '3,1,2',
-        --     ['--nth'] = '3,1,..',
-        -- },
+        }
     },
     lsp = {
         actions = { ['ctrl-q'] = misc.fzf_to_qf },
@@ -165,16 +140,13 @@ utils.map("n", "<c-p>sz", function() fzf.grep({search = 'TODO|NOTE', no_esc=true
 utils.map("n", "<c-p>sP", fzf.tags_grep_cword)
 utils.map("n", "<c-p>sp", function() fzf.tags_live_grep({exec_empty_query=true}) end)
 
--- NOTE(vir): now using nvim-notify
 utils.map("n", "<f10>", function()
-    local notify = require('notify')
-
-    plenary.Job:new({
+    require('plenary').Job:new({
         command = 'ctags',
-        args = {'-R', '--excmd=combine'},
+        args = {'-R', '--excmd=combine', '--fields=+K'},
         cwd = misc.get_cwd(),
-        on_start = function() notify('generating tags', 'debug', {render = 'minimal'}) end,
-        on_exit = function() notify('tags generated', 'info', {render = 'minimal'}) end
+        on_start = function() utils.notify('generating tags', 'debug', {render = 'minimal'}, true) end,
+        on_exit = function() utils.notify('tags generated', 'info', {render = 'minimal'}, true) end
     }):start()
 end)
 

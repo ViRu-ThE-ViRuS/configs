@@ -31,9 +31,16 @@ vim.g.rasmus_italic_keywords = true
 vim.g.rasmus_italic_booleans = true
 vim.g.rasmus_italic_functions = true
 
+vim.g.srcery_italic = 1
+vim.g.srcery_italic_types = 1
+vim.g.srcery_bg_passthrough = 1
+
+vim.g.tempus_enforce_background_color = 1
+
+vim.g.embark_terminal_italics = 1
 vim.g.gruvbox_baby_background_color = 'medium'
 vim.g.vscode_style = "dark"
-vim.g.material_style = "darker"
+vim.g.material_style = "oceanic"
 
 -- {{{ material
 -- require('material').setup({
@@ -100,24 +107,42 @@ vim.g.material_style = "darker"
 -- {{{ overrides
 -- setup colorscheme overrides
 local function ui_overrides()
-    -- vim.highlight.create('Comment', {cterm = 'bold,italic', gui = 'bold,italic'}, false)
-    -- vim.highlight.create('LineNr', {cterm = 'NONE', gui = 'NONE'}, false)
+	-- vim.highlight.create('Comment', {cterm = 'bold,italic', gui = 'bold,italic'}, false)
+	-- vim.highlight.create('LineNr', {cterm = 'NONE', gui = 'NONE'}, false)
+
+    -- set normal if not set to trasparent
+    if vim.api.nvim_get_hl_by_name('Normal', true).background == nil then
+        vim.api.nvim_set_hl(0, 'Normal', { background = 0x171717 })
+    end
+
+    vim.opt.hlsearch = false
 
     -- TODO(vir): do this in lua
     -- NOTE(vir): some colorschemes aint pretty with gitsigns
     -- GitSign* highlights link to Diff* highlights for some reason despite
     -- configuring them not to. Consider linking these only when in git repos?
     vim.cmd [[
-        " Misc
-        highlight! link SignColumn LineNr
-        highlight! link VertSplit LineNr
-        highlight! link FloatBorder Normal
-        highlight! link NormalFloat Normal
+        " lsp
+        highlight! link LspReferenceRead IncSearch
+        highlight! link LspReferenceWrite IncSearch
+        highlight! clear LspReferenceText
+
+        " diagnostic
+        highlight! DiagnosticError guibg=NONE
+        highlight! DiagnosticWarn guibg=NONE
+        highlight! DiagnosticInfo guibg=NONE
+        highlight! DiagnosticHint guibg=NONE
 
         " gitsigns
         highlight! link GitSignsAdd GitGutterAdd
         highlight! link GitSignsChange GitGutterChange
         highlight! link GitSignsDelete GitGutterDelete
+
+        " misc
+        highlight! link SignColumn LineNr
+        highlight! link VertSplit LineNr
+        highlight! link FloatBorder Normal
+        highlight! link NormalFloat Normal
     ]]
 end
 -- }}}
@@ -125,7 +150,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme rose-pine ]]
+vim.cmd [[ colorscheme terafox ]]
 ui_overrides()
 
 return {
@@ -137,6 +162,7 @@ return {
         "moonfly",
         "gruvbox-material",
         "gruvbox-baby",
+        "blue-moon",
         "catppuccin",
         "rasmus",
         "adwaita",
@@ -144,14 +170,21 @@ return {
         "vscode",
         "rose-pine",
         "substrata",
-        "monokai", "monokai_pro",
+        "monokai", "monokai_pro", "monokai_ristretto",
+        "habamax",
+        "embark",
+        "tender",
+        "friffle",
+        "srcery",
+        "vice",
+        "quantum",
         "jellybeans",
         "mountain",
-        "saturnite",
         "tempus_tempest", "tempus_spring",
-        "base16-apprentice", "base16-ashes", "base16-atlas",
+        "base16-apprentice", "base16-ashes",
         "base16-monokai", "base16-atelier-sulphurpool",
-        "base16-black-metal-burzum",
+        "base16-black-metal-burzum", "base16-grayscale-dark",
+        "base16-black-metal-dark-funeral"
 
         -- NOTE(vir): light themes. Yes, sometimes, i like light themes, they
         -- remind me of the pain that exists in the world :o

@@ -15,5 +15,4 @@ notify.setup({
     on_open = function(win) vim.api.nvim_win_set_config(win, { focusable = false }) end
 })
 
--- TODO(vir): switch explicit calls to nvim-notify with vim.notify
 -- vim.notify = notify

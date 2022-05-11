@@ -97,7 +97,8 @@ local function get_output_windows(activate_last)
         local windows = vim.fn.win_findbuf(handles[#handles])
 
         if windows[#windows] then
-            vim.api .nvim_buf_set_option(handles[#handles], 'bufhidden', 'delete')
+            vim.api.nvim_buf_set_option(handles[#handles], 'bufhidden', 'delete')
+            utils.map('n', '<c-o>', '<cmd>q<cr>', {}, handles[#handles])
             vim.fn.win_gotoid(windows[#windows])
         end
     end
@@ -176,8 +177,8 @@ local function start_session()
     -- force local statusline
     require('lib/misc').toggle_global_statusline(true)
 
-    require('notify')(string.format('[prog] %s', dap.session().config.program),
-                      'debug', {title = '[dap] session started', timeout = 500})
+    utils.notify(string.format('[prog] %s', dap.session().config.program),
+                      'debug', {title = '[dap] session started', timeout = 500}, true)
 end
 
 -- terminate session: remove keymaps, close dapui, close dap repl,
@@ -190,9 +191,9 @@ local function terminate_session()
     close_internal_servers() -- close servers launched within neovim
     get_output_windows(true) -- set last output window active
 
-    require('notify')(string.format('[prog] %s', dap.session().config.program),
+    utils.notify(string.format('[prog] %s', dap.session().config.program),
                       'debug',
-                      {title = '[dap] session terminated', timeout = 500})
+                      {title = '[dap] session terminated', timeout = 500}, true)
 end
 
 -- dap events

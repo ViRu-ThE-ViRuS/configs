@@ -6,8 +6,8 @@ require('nvim-treesitter.configs').setup {
         'make', 'cuda', 'markdown', 'rust', 'vim'
     },
 
-    indent = {enable = true},
-    highlight = {enable = true, additional_vim_regex_highlighting = false, use_languagetree = true},
+    indent = {enable = true, disable={'python', 'c', 'cpp'}},
+    highlight = {enable = true, additional_vim_regex_highlighting = false},
     matchup = {enable = true, disable_virtual_text = true},
 
     incremental_selection = {

@@ -1,24 +1,24 @@
 -- hello my name is viraat chandra and i love to program
 
 -- impatient.nvim
-require('impatient')
-require('packer_compiled')
+require("impatient")
+require("packer_compiled")
 
-require('settings')
-require('colorscheme')
-require('statusline')
+require("settings")
+require("colorscheme")
+require("statusline")
 
 -- deferred execution makes the editor feel more responsive
 vim.defer_fn(function()
-    require('keymaps')
-    require('autocommands')
-    require('plugins')
+	require("keymaps")
+	require("autocommands")
+	require("plugins")
 
-    -- NOTE(vir): load this here, to keep plugins.lua clean
-    require('plug-config/vista')
+	-- NOTE(vir): load this here, to keep plugins.lua clean
+	require("plug-config/vista")
 
-    -- NOTE(vir): load project local config last
-    require('project_config').load()
+	-- NOTE(vir): load project local config last
+	require("project_config").load()
 end, 0)
 
 -- notes --

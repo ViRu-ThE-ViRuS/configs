@@ -32,10 +32,11 @@ utils.map("v", ".", ":normal! .<cr>")                       -- . motions
 utils.map("v", "@", ":normal! @")                           -- macros
 utils.map("v", "ss", ":s/")                                 -- quick subs
 utils.map("n", "ss", "s")                                   -- substitute mode
-utils.map("n", "gp", "`[v`]")                               -- last paste
 utils.map("n", "p", "p=`]")                                 -- autoformat paste
 utils.map("n", "P", "P=`]")                                 -- autoformat Paste
+utils.map("n", "gp", "`[v`]")                               -- last paste
 utils.map({"n", "v"}, "<c-b>", "<nop>")                     -- disable <c-b>
+utils.map("n", "gb", "")
 
 -- disable command history, EX mode
 utils.map({"n", "v"}, "q:", "<nop>")
@@ -69,7 +70,7 @@ utils.map({"n", "i"}, "<right>", "<nop>")
 
 -- toggles
 utils.map("n", "<leader>1", misc.toggle_window)
-utils.map("n", "<leader>2", utils.random_colors, {silent = false})
+utils.map("n", "<leader>2", misc.random_colors, {silent = false})
 utils.map("n", "<leader>t1", "<cmd>if CWordHlToggle() | set hlsearch | endif<cr>")
 utils.map("n", "<leader>t2", misc.toggle_global_statusline)
 utils.map("n", "<leader>t3", misc.toggle_thicc_separators)
