@@ -1,4 +1,4 @@
-local utils = require('utils')
+local utils = load('utils')
 local kommentary = require('kommentary.config')
 
 kommentary.configure_language("default", {

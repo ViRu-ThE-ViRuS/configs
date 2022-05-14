@@ -1,7 +1,7 @@
+local utils = load("utils")
+local misc = load('lib/misc')
 local fzf = require('fzf-lua')
-local utils = require("utils")
-local misc = require('lib/misc')
-local actions = require("fzf-lua").actions
+local actions = fzf.actions
 
 local default_rg_options = ' --hidden --follow --no-heading --smart-case --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build,*.dSYM,tags}"'
 

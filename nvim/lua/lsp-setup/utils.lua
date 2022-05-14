@@ -1,6 +1,6 @@
 local proto = require('vim.lsp.protocol')
-local utils = require('utils')
-local core = require('lib/core')
+local utils = load('utils')
+local core = load('lib/core')
 
 -- tag states for statusline
 local tag_state_filter = {
@@ -81,7 +81,7 @@ end
              vim.diagnostic.setloclist()
              utils.diagnostics_state['local'][current_buf] = true
 
-             vim.opt_local.statusline = require('statusline').StatusLine('Diagnostics')
+             vim.opt_local.statusline = load('statusline').StatusLine('Diagnostics')
              vim.cmd [[ wincmd p ]]
          else
              utils.diagnostics_state['local'][current_buf] = false

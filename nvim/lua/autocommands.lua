@@ -1,19 +1,17 @@
-local misc = require('lib/misc')
-local core = require('lib/core')
-local colorscheme = require('colorscheme')
+local misc = load('lib/misc')
+local core = load('lib/core')
+local colorscheme = load('colorscheme')
 
 vim.api.nvim_create_augroup('Misc', {clear = true})
 vim.api.nvim_create_autocmd('TextYankPost', { group = 'Misc', pattern = '*', callback = function() vim.highlight.on_yank({on_visual = true}) end })
 vim.api.nvim_create_autocmd('BufWritePre', { group = 'Misc', pattern = '*', callback = misc.strip_trailing_whitespaces })
-vim.api.nvim_create_autocmd('BufReadPost', { group = 'Misc', pattern = '*', command = 'normal `"' })
+-- vim.api.nvim_create_autocmd('BufReadPost', { group = 'Misc', pattern = '*', command = 'silent! normal `"' })
 
 -- NOTE(vir): plugin ft remaps: vista, nvimtree
 vim.api.nvim_create_autocmd('FileType', {
     group = 'Misc',
     pattern = {'vista_kind', 'vista', 'NvimTree'},
-    callback = function()
-        require('utils').map('n', '<c-o>', '<cmd>wincmd p<cr>', {}, 0)
-    end,
+    callback = function() load('utils').map('n', '<c-o>', '<cmd>wincmd p<cr>', {}, 0) end,
 })
 
 vim.api.nvim_create_augroup('UISetup', {clear = true})
@@ -34,21 +32,10 @@ vim.api.nvim_create_autocmd('TermOpen', {
     end
 })
 
+-- config reloading
 vim.api.nvim_create_augroup('Configs', {clear = true})
-vim.api.nvim_create_autocmd('BufWritePost', {
-    group = 'Configs',
-    pattern = {
-        core.get_homedir() .. '/.config/nvim/init.lua',
-        core.get_homedir() .. '/.config/nvim/lua/*.lua',
-        '.nvimrc.lua'
-    },
-    command = 'source <afile>'
-})
-vim.api.nvim_create_autocmd('BufEnter', {
-    group = 'Configs',
-    pattern = core.get_homedir() .. '/.config/kitty/kitty.conf',
-    command = 'setlocal filetype=bash'
-})
+vim.api.nvim_create_autocmd('BufWritePost', { group = 'Configs', pattern = '.nvimrc.lua', command = 'source <afile>' })
+vim.api.nvim_create_autocmd('BufWritePost', { group = 'Configs', pattern = core.get_homedir() .. '/.config/nvim/*/*.lua', command = 'source $MYVIMRC' })
 
 -- custom commands
 vim.defer_fn(function()
@@ -64,7 +51,7 @@ vim.defer_fn(function()
             setlocal updatetime=1000
 
             " echo 'highlight current word: off'
-            lua require('utils').notify('<cword> highlight deactivated', 'debug', {render='minimal'})
+            lua load('utils').notify('<cword> highlight deactivated', 'debug', {render='minimal'})
 
             return 0
           else
@@ -75,7 +62,7 @@ vim.defer_fn(function()
             setl updatetime=250
 
             " echo 'highlight current word: on'
-            lua require('utils').notify('<cword> highlight activated', 'info', {render='minimal'})
+            lua load('utils').notify('<cword> highlight activated', 'info', {render='minimal'})
 
             return 1
           endif

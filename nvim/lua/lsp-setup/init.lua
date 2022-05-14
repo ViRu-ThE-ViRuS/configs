@@ -1,8 +1,8 @@
 local lsp = require("lspconfig")
-local setup_buffer = require("lsp-setup/buffer_setup")
-local misc = require("lib/misc")
-local core = require("lib/core")
-local utils = require("utils")
+local setup_buffer = load("lsp-setup/buffer_setup")
+local misc = load("lib/misc")
+local core = load("lib/core")
+local utils = load("utils")
 
 -- setup keymaps and autocommands
 local on_attach = function(client, buffer_nr)

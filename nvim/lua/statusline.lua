@@ -1,4 +1,4 @@
-local utils = require('utils')
+local utils = load('utils')
 local symbol_config = utils.symbol_config
 local colors = utils.statusline_colors
 

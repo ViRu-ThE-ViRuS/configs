@@ -1,4 +1,4 @@
-local core = require('lib/core')
+local core = load('lib/core')
 
 -- setup keymaps
 local function map(mode, lhs, rhs, opts, buffer_nr)
@@ -41,8 +41,11 @@ end
 
 -- notify using current  notifications setup
 local function notify(content, type, opts, force)
-    if force and packer_plugins['nvim-notify'] ~= nil and packer_plugins['nvim-notify'].loaded then
-        require('notify')(content, type, opts)
+    if force then
+        -- if packer_plugins['nvim-notify'] ~= nil and packer_plugins['nvim-notify'].loaded then
+        --     require('notify')(content, type, opts)
+        -- end
+        pcall(require, 'notify', content, type, opts)
         return
     end
 

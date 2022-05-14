@@ -1,5 +1,5 @@
-local utils = require('utils')
-local lsp_utils = require('lsp-setup/utils')
+local utils = load('utils')
+local lsp_utils = load('lsp-setup/utils')
 
 -- setup lsp keymaps
 local function setup_lsp_keymaps(_, buffer_nr)
@@ -57,7 +57,7 @@ local function setup_autocmds(client, buffer_nr)
 
     if client.server_capabilities.documentSymbolProvider then
         vim.api.nvim_create_augroup('LspStates', { clear = false })
-        vim.api.nvim_create_autocmd('CursorMoved,InsertLeave,BufEnter', { group = 'LspStates', callback = lsp_utils.refresh_tag_state, buffer = buffer_nr })
+        vim.api.nvim_create_autocmd('CursorMoved', { group = 'LspStates', callback = lsp_utils.refresh_tag_state, buffer = buffer_nr })
         vim.api.nvim_create_autocmd('BufLeave', { group = 'LspStates', callback = lsp_utils.reset_tag_state, buffer = buffer_nr })
     end
 end

@@ -1,4 +1,4 @@
-local utils = require("utils")
+local utils = load("utils")
 
 require('nvim-treesitter.configs').setup {
     ensure_installed = {
@@ -60,12 +60,15 @@ ts_utils.get_node_text = vim.treesitter.query.get_node_text
 
 -- NOTE(vir): related plugin setup
 -- vim-matchup
+vim.g.matchup_matchparen_deferred = 1
+vim.g.matchup_surround_enabled = 1
 vim.g.matchup_matchparen_offscreen = {method = 'popup'}
+utils.map({'n', 'o', 'x'}, 'Q', '<plug>(matchup-%)')
 utils.map({'o', 'x'}, 'iQ', '<plug>(matchup-i%)')
 utils.map({'o', 'x'}, 'aQ', '<plug>(matchup-a%)')
 
 -- vim-sandwich
-vim.g['sandwich#recipes'] = require('lib/core').list_concat(
+vim.g['sandwich#recipes'] = load('lib/core').list_concat(
                                 vim.g['sandwich#default_recipes'], {
         {buns = {'( ', ' )'}, nesting = 1, match_syntax = 1, input = {')'}},
         {buns = {'[ ', ' ]'}, nesting = 1, match_syntax = 1, input = {']'}},

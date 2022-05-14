@@ -1,4 +1,4 @@
-local utils = require('utils')
+local utils = load('utils')
 
 -- bordered hover
 vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {border = 'rounded', focusable = false})

@@ -1,5 +1,19 @@
-local utils = require("utils")
+local utils = load("utils")
 local state = utils.run_config
+
+-- scroll target to bottom
+local function target_scroll_to_end()
+    if state.target_terminal == nil then
+        return
+    end
+
+    local win_id = vim.fn.bufwinid(state.target_terminal.buf_nr)
+    if win_id == -1 then
+        return
+    end
+
+    vim.fn.win_execute(win_id, "normal! G")
+end
 
 -- toggle target_terminal
 local function toggle_target(open)
@@ -68,7 +82,7 @@ local function set_target_terminal()
     if vim.b.terminal_job_id ~= nil then
         state.target_terminal = {
             job_id = vim.b.terminal_job_id,
-            buf_nr = vim.api.nvim_win_get_buf(0)
+            buf_nr = vim.api.nvim_win_get_buf(0),
         }
 
 		utils.notify(
@@ -107,6 +121,7 @@ end
 local function run_target_command()
     if state.target_command ~= "" then
         send_to_target(state.target_command, false)
+        target_scroll_to_end()
     else
         utils.notify('[terminal] target not set', 'warn', { render = 'minimal' }, true)
     end
@@ -115,6 +130,7 @@ end
 -- run previous command in target_terminal
 local function run_previous_command()
     send_to_target(nil, true)
+    target_scroll_to_end()
 end
 
 -- launch a terminal with the command in a split
@@ -142,5 +158,5 @@ return {
     set_target = set_target,
     run_target_command = run_target_command,
     run_previous_command = run_previous_command,
-    launch_terminal = launch_terminal
+    launch_terminal = launch_terminal,
 }

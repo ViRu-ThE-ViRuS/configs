@@ -140,6 +140,7 @@ local function ui_overrides()
 
         " misc
         highlight! link SignColumn LineNr
+        highlight! link FoldColumn LineNr
         highlight! link VertSplit LineNr
         highlight! link FloatBorder Normal
         highlight! link NormalFloat Normal
@@ -150,7 +151,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme terafox ]]
+vim.cmd [[ colorscheme nightfox ]]
 ui_overrides()
 
 return {

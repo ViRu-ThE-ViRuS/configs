@@ -1,6 +1,6 @@
-local utils = require("utils")
-local terminal = require('terminal')
-local misc = require('lib/misc')
+local utils = load("utils")
+local terminal = load('terminal')
+local misc = load('lib/misc')
 
 -- line navigation and movements
 utils.map("v", "<", "<gv")
@@ -15,8 +15,8 @@ utils.map({"n", "v"}, "X", '"_dd', {noremap=false})
 utils.map({"n", "v"}, "<a-bs>", '"_dh', {noremap=false})
 
 -- paste yanked
-utils.map({"n", "o"}, "-", '"0p')
-utils.map({"n", "o"}, "_", '"0P')
+utils.map({"n", "v"}, "-", '"0p=`]')
+utils.map({"n", "v"}, "_", '"0P=`]')
 
 -- misc
 utils.map("n", ";", ":")                                    -- swaperoo
@@ -36,11 +36,11 @@ utils.map("n", "p", "p=`]")                                 -- autoformat paste
 utils.map("n", "P", "P=`]")                                 -- autoformat Paste
 utils.map("n", "gp", "`[v`]")                               -- last paste
 utils.map({"n", "v"}, "<c-b>", "<nop>")                     -- disable <c-b>
-utils.map("n", "gb", "")
 
--- disable command history, EX mode
+-- disable command history modes
 utils.map({"n", "v"}, "q:", "<nop>")
-utils.map({"n", "v"}, "Q", "<cmd>normal %<cr>")
+-- utils.map({"n", "v"}, "q/", "<nop>")
+-- utils.map({"n", "v"}, "q?", "<nop>")
 
 -- mouse scrolling
 utils.map("n", "<ScrollWheelUp>", "<c-y>")
@@ -111,7 +111,7 @@ utils.map("n", "<leader>ca", terminal.run_previous_command)
 utils.map("n", "<leader>cS", terminal.set_target)
 utils.map("n", "<leader>cs", terminal.toggle_target)
 
--- NOTE(vir): external plugins (couldnt find a better place)
+-- NOTE(vir): Tabular and Fugitive Config could not find a better place for these configs
 utils.map("v", "<leader>=", ":Tab /")
 utils.map("n", "<leader>gD", "<cmd>G! difftool<cr>")
 

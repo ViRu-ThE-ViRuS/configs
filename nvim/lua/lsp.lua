@@ -4,10 +4,10 @@ vim.defer_fn(function()
 end, 0)
 
 -- setup lsps
-require("lsp-setup/init")
+load("lsp-setup/init")
 
 -- setup handlers and extensions
-require("lsp-setup/handlers")
+load("lsp-setup/handlers")
 require("lsp_signature").setup({
     doc_lines = 3,
     hint_prefix = "<>",
@@ -15,4 +15,4 @@ require("lsp_signature").setup({
 })
 
 -- setup diagnostic
-require('diagnostic')
+load('diagnostic')

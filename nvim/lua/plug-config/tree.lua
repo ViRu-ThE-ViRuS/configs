@@ -1,5 +1,5 @@
-local utils = require('utils')
-local core = require('lib/core')
+local utils = load('utils')
+local core = load('lib/core')
 
 local function open_in_finder(handle) core.lua_system("open -R " .. handle.absolute_path) end
 

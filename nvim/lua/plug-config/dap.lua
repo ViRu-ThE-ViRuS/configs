@@ -1,7 +1,7 @@
 local dap = require('dap')
 local dapui = require('dapui')
-local utils = require('utils')
-local core = require('lib/core')
+local utils = load('utils')
+local core = load('lib/core')
 
 -- servers launched internally in neovim
 local internal_servers = {codelldb = 'codelldb server'}
@@ -13,7 +13,7 @@ dap.adapters.python = {
     args = {'-m', 'debugpy.adapter'}
 }
 dap.adapters.codelldb = function(callback, _)
-    require('terminal').launch_terminal('codelldb', true, function()
+    load('terminal').launch_terminal('codelldb', true, function()
         vim.api.nvim_buf_set_name(0, internal_servers.codelldb)
         vim.defer_fn(function()
             callback({type = 'server', host = '127.0.0.1', port = 13000})
@@ -175,7 +175,7 @@ local function start_session()
     dapui.open()
 
     -- force local statusline
-    require('lib/misc').toggle_global_statusline(true)
+    load('lib/misc').toggle_global_statusline(true)
 
     utils.notify(string.format('[prog] %s', dap.session().config.program),
                       'debug', {title = '[dap] session started', timeout = 500}, true)
@@ -202,11 +202,11 @@ dap.listeners.before.event_terminated["dapui"] = terminate_session
 -- dap.listeners.before.event_exited["dapui"] = terminate_session
 
 -- signs
-vim.fn.sign_define("DapStopped", {text = '=>', texthl = 'DiagnosticWarn'})
-vim.fn.sign_define("DapBreakpoint", {text = '<>', texthl = 'DiagnosticInfo'})
-vim.fn.sign_define("DapBreakpointRejected", {text = '!>', texthl = 'DiagnosticError'})
-vim.fn.sign_define("DapBreakpointCondition", {text = '?>', texthl = 'DiagnosticInfo'})
-vim.fn.sign_define("DapLogPoint", {text = '.>', texthl = 'DiagnosticInfo'})
+vim.fn.sign_define("DapStopped", {text = '=>', texthl = 'DiagnosticWarn', numhl = 'DiagnosticWarn'})
+vim.fn.sign_define("DapBreakpoint", {text = '<>', texthl = 'DiagnosticInfo', numhl = 'DiagnosticInfo'})
+vim.fn.sign_define("DapBreakpointRejected", {text = '!>', texthl = 'DiagnosticError', numhl = 'DiagnosticError'})
+vim.fn.sign_define("DapBreakpointCondition", {text = '?>', texthl = 'DiagnosticInfo', numhl = 'DiagnosticInfo'})
+vim.fn.sign_define("DapLogPoint", {text = '.>', texthl = 'DiagnosticInfo', numhl = 'DiagnosticInfo'})
 
 -- general keymaps
 utils.map('n', '<m-d>b', dap.toggle_breakpoint)

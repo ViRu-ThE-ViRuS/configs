@@ -1,4 +1,4 @@
-local symbol_config = require('utils').symbol_config
+local symbol_config = load('utils').symbol_config
 local notify = require('notify')
 
 notify.setup({

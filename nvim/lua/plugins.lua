@@ -35,15 +35,14 @@ return require('packer').startup({
         }
 
         use { 'aserowy/tmux.nvim', event = 'VimEnter', config = 'require("plug-config/tmux")' }
+        use { 'famiu/bufdelete.nvim', event = 'BufReadPost' }
         use { 'b3nj5m1n/kommentary', event = 'BufReadPost', config = 'require("plug-config/kommentary")' }
         use { 'lewis6991/gitsigns.nvim', event = 'BufReadPost', config = 'require("plug-config/gitsigns")' }
-        use { 'famiu/bufdelete.nvim', event = 'BufReadPost' }
-        -- use { 'karb94/neoscroll.nvim', event = 'BufReadPost', config = 'require("plug-config/neoscroll")'}
+        use { 'akinsho/nvim-bufferline.lua', event = 'BufReadPost', config = 'require("plug-config/bufferline")' }
 
         use { 'sindrets/diffview.nvim', after = 'vim-fugitive', config = 'require("plug-config/diffview")' }
         use { 'windwp/nvim-autopairs', after = 'nvim-cmp', config = 'require("plug-config/autopairs")' }
         use { 'kyazdani42/nvim-tree.lua', after = 'nvim-web-devicons', config = 'require("plug-config/tree")' }
-        use { 'akinsho/nvim-bufferline.lua', after = 'nvim-web-devicons', config = 'require("plug-config/bufferline")' }
         use { 'ibhagwan/fzf-lua', after = 'nvim-web-devicons', config = 'require("plug-config/fzf")' }
 
         use {

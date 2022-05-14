@@ -1,4 +1,4 @@
-local utils = require('utils')
+local utils = load('utils')
 local callback = require('diffview/config').diffview_callback
 
 require('diffview').setup {
@@ -46,4 +46,4 @@ require('diffview').setup {
 
 utils.map('n', '<leader>gh', '<cmd>DiffviewOpen<cr>')
 utils.map('n', '<leader>gH', '<cmd>DiffviewFileHistory<cr>')
-
+utils.map('n', '<leader>gl', '<cmd>DiffviewFileHistory .<cr>')
