@@ -3,10 +3,9 @@ local gitsigns = require('gitsigns')
 
 -- refresh fugitive window if present
 local function refresh_fugitive()
-    -- local current_window = vim.api.nvim_get_current_win()
-    -- vim.cmd [[ windo if &ft == 'fugitive' | :edit | end ]]
-    -- vim.api.nvim_set_current_win(current_window)
-    vim.cmd [[ doautocmd Fugitive Refresh ]]
+    local current_window = vim.api.nvim_get_current_win()
+    vim.cmd [[ windo if &ft == 'fugitive' | :edit | end ]]
+    vim.api.nvim_set_current_win(current_window)
 end
 
 -- NOTE(vir): updates fugitive windows
