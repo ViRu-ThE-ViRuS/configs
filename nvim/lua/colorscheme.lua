@@ -41,6 +41,7 @@ vim.g.embark_terminal_italics = 1
 vim.g.gruvbox_baby_background_color = 'medium'
 vim.g.vscode_style = "dark"
 vim.g.material_style = "oceanic"
+vim.g.catppuccin_flavor = 'dusk'
 
 -- {{{ material
 -- require('material').setup({
@@ -151,7 +152,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme nightfox ]]
+vim.cmd [[ colorscheme gruvbox-material ]]
 ui_overrides()
 
 return {

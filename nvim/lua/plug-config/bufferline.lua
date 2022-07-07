@@ -1,6 +1,6 @@
 require('bufferline').setup {
     options = {
-        numbers = function(args) return args.id; end,
+        numbers = function(args) return tostring(args.id); end,
         diagnostics = false,
         indicator_icon = '▎',
         buffer_close_icon = 'x',

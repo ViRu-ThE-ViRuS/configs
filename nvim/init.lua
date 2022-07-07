@@ -1,9 +1,9 @@
 -- hello my name is viraat chandra and i love to program
 
 -- for hawt reloading xd
-load = function(module)
-    package.loaded[module] = nil
-    return require(module)
+load = function(mod)
+    package.loaded[mod] = nil
+    return require(mod)
 end
 
 -- impatient.nvim

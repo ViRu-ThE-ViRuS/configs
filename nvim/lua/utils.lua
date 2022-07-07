@@ -45,7 +45,8 @@ local function notify(content, type, opts, force)
         -- if packer_plugins['nvim-notify'] ~= nil and packer_plugins['nvim-notify'].loaded then
         --     require('notify')(content, type, opts)
         -- end
-        pcall(require, 'notify', content, type, opts)
+
+        require('notify')(content, type, opts)
         return
     end
 

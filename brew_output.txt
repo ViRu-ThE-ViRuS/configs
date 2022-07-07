@@ -46,6 +46,7 @@ pcre
 pcre2
 pkg-config
 postgresql
+python@3.9
 readline
 ripgrep
 rustup-init

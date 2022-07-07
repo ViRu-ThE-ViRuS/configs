@@ -59,25 +59,32 @@ dap.repl.commands = vim.tbl_extend('force', dap.repl.commands, {
 
 -- dapui setup
 dapui.setup({
-    icons = {expanded = "-", collapsed = "$"},
-    mappings = {
-        expand = "<CR>",
-        open = "o",
-        remove = "d",
-        edit = "e",
-        repl = "r",
-        toggle = 't'
-    },
-    sidebar = {
-        elements = {
-            {id = "scopes", size = 0.5}, {id = "breakpoints", size = 0.25},
-            {id = "stacks", size = 0.25}
-        },
-        size = 40,
-        position = "right"
-    },
-    tray = {elements = {"repl", "watches"}, size = 10, position = "bottom"},
-    floating = {border = "rounded", mappings = {close = {"q", "<esc>", "<c-o>"}}}
+	icons = { expanded = "-", collapsed = "$" },
+	mappings = {
+		expand = "<CR>",
+		open = "o",
+		remove = "d",
+		edit = "e",
+		repl = "r",
+		toggle = "t",
+	},
+	layouts = {
+		{
+			elements = {
+				{ id = "scopes", size = 0.5 },
+				{ id = "breakpoints", size = 0.25 },
+				{ id = "stacks", size = 0.25 },
+			},
+			size = 40,
+			position = "right",
+		},
+		{
+			elements = { "repl", "watches" },
+			size = 10,
+			position = "bottom",
+		},
+	},
+	floating = { border = "rounded", mappings = { close = { "q", "<esc>", "<c-o>" } } },
 })
 
 -- get handles of output windows
