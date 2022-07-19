@@ -1,4 +1,4 @@
-local utils = load("utils")
+local utils = require("utils")
 local state = utils.run_config
 
 -- scroll target to bottom

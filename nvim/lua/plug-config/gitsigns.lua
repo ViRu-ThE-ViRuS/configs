@@ -1,4 +1,4 @@
-local utils = load('utils')
+local utils = require('utils')
 local gitsigns = require('gitsigns')
 
 -- refresh fugitive window if present

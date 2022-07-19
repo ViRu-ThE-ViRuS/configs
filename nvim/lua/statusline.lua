@@ -1,4 +1,4 @@
-local utils = load('utils')
+local utils = require('utils')
 local symbol_config = utils.symbol_config
 local colors = utils.statusline_colors
 
@@ -56,6 +56,7 @@ local function get_tagname()
     if utils.tag_state.name == nil or
         utils.is_htruncated(utils.truncation_limit_s) or
         vim.lsp.buf_get_clients(0) == {} then return '' end
+
     return string.format(" [ %s %s ] ", utils.tag_state.icon, utils.tag_state.name)
 end
 

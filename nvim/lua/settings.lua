@@ -1,4 +1,4 @@
-local core = load("lib/core")
+local core = require("lib/core")
 
 -- disable unused providers
 vim.g.loaded_node_provider = 0
@@ -19,10 +19,6 @@ vim.defer_fn(function()
         vim.opt.shell = "bash"
     end
 end, 0)
-
--- use filetype.lua instead of filetype.vim
-vim.g.did_load_filetypes = 0
-vim.g.do_filetype_lua = 1
 
 -- global options
 vim.opt.autoread = true

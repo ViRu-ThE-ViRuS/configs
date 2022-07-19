@@ -1,5 +1,5 @@
-local utils = load("utils")
-local misc = load('lib/misc')
+local utils = require("utils")
+local misc = require('lib/misc')
 local fzf = require('fzf-lua')
 local actions = fzf.actions
 
@@ -67,7 +67,7 @@ fzf.setup({
             ['default'] = actions.file_edit,
             ['ctrl-x'] = actions.file_split,
             ['ctrl-v'] = actions.file_vsplit,
-            ['ctrl-q'] = utils.qf_populate,
+            ['ctrl-q'] = actions.file_sel_to_qf
         },
         buffers = {
             ['default'] = actions.buf_edit,
@@ -93,25 +93,25 @@ fzf.setup({
     files = { rg_opts = '--files' .. default_rg_options, },
     blines = {
         previewer = 'builtin',
-        actions = { ['ctrl-q'] = misc.fzf_to_qf },
+        actions = { ['ctrl-q'] = actions.buf_sel_to_qf },
     },
     grep = {
         rg_opts = "--column --color=always" .. default_rg_options,
         rg_glob = true,
         actions = {
-            ['ctrl-q'] = misc.fzf_to_qf,
+            ['ctrl-q'] = actions.file_sel_to_qf,
             ['ctrl-g'] = actions.grep_lgrep,
         },
     },
     tags = {
         previewer = 'bat',
         actions = {
-            ['ctrl-q'] = misc.fzf_to_qf,
+            ['ctrl-q'] = actions.file_sel_to_qf,
             ['ctrl-g'] = actions.grep_lgrep,
         }
     },
     lsp = {
-        actions = { ['ctrl-q'] = misc.fzf_to_qf },
+        actions = { ['ctrl-q'] = actions.file_sel_to_qf },
         continue_last_search = false,
         icons = {
             ['Error'] = { icon = utils.symbol_config.indicator_error, color = 'red' },

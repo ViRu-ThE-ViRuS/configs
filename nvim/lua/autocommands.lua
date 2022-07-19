@@ -1,6 +1,6 @@
-local misc = load('lib/misc')
-local core = load('lib/core')
-local colorscheme = load('colorscheme')
+local misc = require('lib/misc')
+local core = require('lib/core')
+local colorscheme = require('colorscheme')
 
 vim.api.nvim_create_augroup('Misc', {clear = true})
 vim.api.nvim_create_autocmd('TextYankPost', { group = 'Misc', pattern = '*', callback = function() vim.highlight.on_yank({on_visual = true}) end })
@@ -11,7 +11,7 @@ vim.api.nvim_create_autocmd('BufWritePre', { group = 'Misc', pattern = '*', call
 vim.api.nvim_create_autocmd('FileType', {
     group = 'Misc',
     pattern = {'vista_kind', 'vista', 'NvimTree'},
-    callback = function() load('utils').map('n', '<c-o>', '<cmd>wincmd p<cr>', {}, 0) end,
+    callback = function() require('utils').map('n', '<c-o>', '<cmd>wincmd p<cr>', {}, 0) end,
 })
 
 vim.api.nvim_create_augroup('UISetup', {clear = true})
@@ -35,7 +35,7 @@ vim.api.nvim_create_autocmd('TermOpen', {
 -- config reloading
 vim.api.nvim_create_augroup('Configs', {clear = true})
 vim.api.nvim_create_autocmd('BufWritePost', { group = 'Configs', pattern = '.nvimrc.lua', command = 'source <afile>' })
-vim.api.nvim_create_autocmd('BufWritePost', { group = 'Configs', pattern = core.get_homedir() .. '/.config/nvim/*/*.lua', command = 'source $MYVIMRC' })
+vim.api.nvim_create_autocmd('BufWritePost', { group = 'Configs', pattern = core.get_homedir() .. '/.config/nvim/*/*.lua', command = 'source <afile>' })
 
 -- custom commands
 vim.defer_fn(function()
@@ -51,7 +51,7 @@ vim.defer_fn(function()
             setlocal updatetime=1000
 
             " echo 'highlight current word: off'
-            lua load('utils').notify('<cword> highlight deactivated', 'debug', {render='minimal'})
+            lua require('utils').notify('<cword> highlight deactivated', 'debug', {render='minimal'})
 
             return 0
           else
@@ -62,7 +62,7 @@ vim.defer_fn(function()
             setl updatetime=250
 
             " echo 'highlight current word: on'
-            lua load('utils').notify('<cword> highlight activated', 'info', {render='minimal'})
+            lua require('utils').notify('<cword> highlight activated', 'info', {render='minimal'})
 
             return 1
           endif

@@ -1,5 +1,5 @@
 local ffi = require('ffi')
-local utils = load('utils')
+local utils = require('utils')
 
 ffi.cdef [[ int getuid(void); ]]
 

@@ -38,10 +38,10 @@ vim.g.srcery_bg_passthrough = 1
 vim.g.tempus_enforce_background_color = 1
 
 vim.g.embark_terminal_italics = 1
-vim.g.gruvbox_baby_background_color = 'medium'
+vim.g.gruvbox_baby_background_color = "medium"
 vim.g.vscode_style = "dark"
 vim.g.material_style = "oceanic"
-vim.g.catppuccin_flavor = 'dusk'
+vim.g.catppuccin_flavor = "macchiato"
 
 -- {{{ material
 -- require('material').setup({
@@ -68,41 +68,45 @@ vim.g.catppuccin_flavor = 'dusk'
 -- }}}
 
 -- {{{ catppuccin
--- require('catppuccin').setup({
---     term_colors = true,
---     styles = {
---         comments = "bold,italic",
---         functions = "bold,italic",
---         numbers = "underline",
---         strings = "italic",
---     },
---     integrations = {
---         cmp = true,
---         gitsigns = true,
---         bufferline = true,
---         notify = true,
---         treesitter = true,
---         native_lsp = {
---             enabled = true,
---             virtual_text = {
---                 errors = "bold,italic",
---                 hints = "italic",
---                 warnings = "italic",
---                 information = "italic",
---             },
---             underlines = {
---                 errors = "underline",
---                 hints = "underline",
---                 warnings = "underline",
---                 information = "underline",
---             },
---         },
---         nvimtree = {
---             enabled = true,
---             show_root = true,
---         },
---     }
--- })
+require("catppuccin").setup({
+	term_colors = true,
+	transparent_background = false,
+	-- compile = {
+	--     enabled = true,
+	--     path = vim.fn.stdpath("cache") .. "/catppuccin",
+	--     suffix = "_compiled",
+	-- },
+	styles = {
+		comments = { "bold", "italic" },
+		functions = { "bold", "italic" },
+		numbers = { "underline" },
+		strings = { "italic" },
+	},
+	integrations = {
+		cmp = true,
+		gitsigns = true,
+		bufferline = true,
+		notify = true,
+		treesitter = true,
+		native_lsp = {
+			enabled = true,
+			virtual_text = {
+				errors = { "bold", "italic" },
+				hints = { "italic" },
+				warnings = { "italic" },
+				information = { "italic" },
+			},
+			underlines = {
+				errors = { "underline" },
+				hints = { "underline" },
+				warnings = { "underline" },
+				information = { "underline" },
+			},
+		},
+		nvimtree = { enabled = true, show_root = true },
+		dap = { enabled = true, enable_ui = true },
+	},
+})
 -- }}}
 
 -- {{{ overrides
@@ -111,18 +115,18 @@ local function ui_overrides()
 	-- vim.highlight.create('Comment', {cterm = 'bold,italic', gui = 'bold,italic'}, false)
 	-- vim.highlight.create('LineNr', {cterm = 'NONE', gui = 'NONE'}, false)
 
-    -- set normal if not set to trasparent
-    if vim.api.nvim_get_hl_by_name('Normal', true).background == nil then
-        vim.api.nvim_set_hl(0, 'Normal', { background = 0x171717 })
-    end
+	-- set normal if not set to trasparent
+	if vim.api.nvim_get_hl_by_name("Normal", true).background == nil then
+		vim.api.nvim_set_hl(0, "Normal", { background = 0x171717 })
+	end
 
-    vim.opt.hlsearch = false
+	vim.opt.hlsearch = false
 
-    -- TODO(vir): do this in lua
-    -- NOTE(vir): some colorschemes aint pretty with gitsigns
-    -- GitSign* highlights link to Diff* highlights for some reason despite
-    -- configuring them not to. Consider linking these only when in git repos?
-    vim.cmd [[
+	-- TODO(vir): do this in lua
+	-- NOTE(vir): some colorschemes aint pretty with gitsigns
+	-- GitSign* highlights link to Diff* highlights for some reason despite
+	-- configuring them not to. Consider linking these only when in git repos?
+	vim.cmd([[
         " lsp
         highlight! link LspReferenceRead IncSearch
         highlight! link LspReferenceWrite IncSearch
@@ -145,58 +149,57 @@ local function ui_overrides()
         highlight! link VertSplit LineNr
         highlight! link FloatBorder Normal
         highlight! link NormalFloat Normal
-    ]]
+    ]])
 end
 -- }}}
 
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme gruvbox-material ]]
+vim.cmd([[ colorscheme habamax ]])
 ui_overrides()
 
 return {
-    preferred = {
-        "nightfly",
-        "nightfox", "duskfox", "nordfox", "terafox",
-        "kanagawa",
-        "material",
-        "moonfly",
-        "gruvbox-material",
-        "gruvbox-baby",
-        "blue-moon",
-        "catppuccin",
-        "rasmus",
-        "adwaita",
-        "everforest",
-        "vscode",
-        "rose-pine",
-        "substrata",
-        "monokai", "monokai_pro", "monokai_ristretto",
-        "habamax",
-        "embark",
-        "tender",
-        "friffle",
-        "srcery",
-        "vice",
-        "quantum",
-        "jellybeans",
-        "mountain",
-        "tempus_tempest", "tempus_spring",
-        "base16-apprentice", "base16-ashes",
-        "base16-monokai", "base16-atelier-sulphurpool",
-        "base16-black-metal-burzum", "base16-grayscale-dark",
-        "base16-black-metal-dark-funeral"
+	preferred = {
+		"nightfly",
+		"nightfox", "duskfox", "nordfox", "terafox",
+		"kanagawa",
+		"material",
+		"moonfly",
+		"gruvbox-material",
+		"gruvbox-baby",
+		"blue-moon",
+		"catppuccin",
+		"rasmus",
+		"adwaita",
+		"everforest",
+		"vscode",
+		"rose-pine",
+		"substrata",
+		"monokai",
+		"monokai_pro", "monokai_ristretto",
+		"habamax",
+		"embark",
+		"tender",
+		"friffle",
+		"srcery",
+		"vice",
+		"quantum",
+		"jellybeans",
+		"mountain",
+		"tempus_tempest", "tempus_spring",
+		"base16-apprentice", "base16-ashes", "base16-monokai",
+		"base16-atelier-sulphurpool", "base16-black-metal-burzum",
+		"base16-grayscale-dark", "base16-black-metal-dark-funeral",
 
-        -- NOTE(vir): light themes. Yes, sometimes, i like light themes, they
-        -- remind me of the pain that exists in the world :o
-        -- "tempus_totus",
-        -- "adwaita",
-        -- "base16-atelier-cave-light", "base16-atelier-savanna-light",
-        -- "base16-equilibrium-gray-light", "base16-equilibrium-light",
-        -- "base16-atelier-savanna-light", "base16-solarized-light",
-        -- "base16-atelier-sulphurpool-light"
-    },
-    ui_overrides = ui_overrides
+		-- NOTE(vir): light themes. Yes, sometimes, i like light themes, they
+		-- remind me of the pain that exists in the world :o
+		-- "tempus_totus",
+		-- "adwaita",
+		-- "base16-atelier-cave-light", "base16-atelier-savanna-light",
+		-- "base16-equilibrium-gray-light", "base16-equilibrium-light",
+		-- "base16-atelier-savanna-light", "base16-solarized-light",
+		-- "base16-atelier-sulphurpool-light"
+	},
+	ui_overrides = ui_overrides,
 }
-

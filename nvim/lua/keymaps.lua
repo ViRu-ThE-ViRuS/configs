@@ -1,6 +1,6 @@
-local utils = load("utils")
-local terminal = load('terminal')
-local misc = load('lib/misc')
+local utils = require("utils")
+local terminal = require('terminal')
+local misc = require('lib/misc')
 
 -- line navigation and movements
 utils.map("v", "<", "<gv")

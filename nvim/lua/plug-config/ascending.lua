@@ -1,4 +1,4 @@
-local utils = load('utils')
+local utils = require('utils')
 
 -- instructions: https://github.com/untitled-ai/jupyter_ascending.vim
 if vim.fn.expand('%f'):match('**.sync.py') ~= nil then

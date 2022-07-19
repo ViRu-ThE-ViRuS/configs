@@ -1,4 +1,4 @@
-local core = load('lib/core')
+local core = require('lib/core')
 
 -- setup keymaps
 local function map(mode, lhs, rhs, opts, buffer_nr)

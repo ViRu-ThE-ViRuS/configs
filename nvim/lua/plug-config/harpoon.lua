@@ -1,4 +1,4 @@
-local utils = load('utils')
+local utils = require('utils')
 local harpoo_ui = require('harpoon/ui')
 
 local function harpoon_mark()

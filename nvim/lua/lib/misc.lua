@@ -1,5 +1,5 @@
-local core = load("lib/core")
-local utils = load("utils")
+local core = require("lib/core")
+local utils = require("utils")
 
 -- convert fzf entry into a location item
 local function fzf_to_location(entry)
@@ -207,7 +207,7 @@ end
 
 -- randomize colorscheme
 local function random_colors()
-    local colorschemes = load('colorscheme').preferred
+    local colorschemes = require('colorscheme').preferred
     local target = colorschemes[math.random(1, #colorschemes)]
 
     if type(target) == 'function' then

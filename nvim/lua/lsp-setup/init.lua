@@ -1,8 +1,8 @@
 local lsp = require("lspconfig")
-local setup_buffer = load("lsp-setup/buffer_setup")
-local misc = load("lib/misc")
-local core = load("lib/core")
-local utils = load("utils")
+local setup_buffer = require("lsp-setup/buffer_setup")
+local misc = require("lib/misc")
+local core = require("lib/core")
+local utils = require("utils")
 
 -- setup keymaps and autocommands
 local on_attach = function(client, buffer_nr)
@@ -94,9 +94,8 @@ null_ls.setup({
         )
 
         setup_buffer.setup_formatting_keymaps(client, buffer_nr)
+        setup_buffer.setup_diagnostics_keymaps(client, buffer_nr)
         utils.map('n', 'K', vim.lsp.buf.hover, {silent = true}, buffer_nr)
-
-        -- setup_buffer.setup_diagnostics_keymaps(client, buffer_nr)
     end,
     flags = {debounce_text_changes = 150}
 })

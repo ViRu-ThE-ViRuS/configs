@@ -1,49 +1,57 @@
-local utils = load('utils')
-local callback = require('diffview/config').diffview_callback
+local utils = require("utils")
+local actions = require("diffview/actions")
 
-require('diffview').setup {
-    file_panel = { position = 'right', listing_style = 'list' },
-    key_bindings = {
-        disable_defaults = true,
-        view = {
-            ['e']          = callback('goto_file'),
-            ['<leader>gh'] = callback('toggle_files')
-        },
-        file_panel = {
-            ['j']          = callback('next_entry'),
-            ['k']          = callback('prev_entry'),
-            ['<cr>']       = callback('select_entry'),
+require("diffview").setup({
+	file_panel = { win_config = { position = "right" }, listing_style = "list" },
+	key_bindings = {
+		disable_defaults = true,
+		view = {
+			["]q"] = actions.select_next_entry,
+			["[q"] = actions.select_prev_entry,
 
-            ["]c"]         = callback("select_next_entry"),
-            ["[c"]         = callback("select_prev_entry"),
+			["e"] = actions.goto_file,
+			["<leader>gh"] = actions.toggle_files,
+		},
+		file_panel = {
+			["j"] = actions.next_entry,
+			["k"] = actions.prev_entry,
+			["<cr>"] = actions.select_entry,
 
-            ['s']          = callback('toggle_stage_entry'),
-            ['S']          = callback('stage_all'),
-            ['U']          = callback('unstage_all'),
-            ['X']          = callback('restore_entry'),
-            ['R']          = callback('refresh_files'),
+			["]q"] = actions.select_next_entry,
+			["[q"] = actions.select_prev_entry,
+			["]c"] = actions.select_next_entry,
+			["[c"] = actions.select_prev_entry,
 
-            ['e']          = callback('goto_file'),
-            ['<leader>gh'] = callback('toggle_files')
-        },
-        file_history_panel = {
-            ['zR']         = callback('open_all_folds'),
-            ['zM']         = callback('close_all_folds'),
+			["s"] = actions.toggle_stage_entry,
+			["S"] = actions.stage_all,
+			["U"] = actions.unstage_all,
+			["X"] = actions.restore_entry,
+			["R"] = actions.refresh_files,
 
-            ["]c"]         = callback("select_next_entry"),
-            ["[c"]         = callback("select_prev_entry"),
+			["e"] = actions.goto_file,
+			["<leader>gh"] = actions.toggle_files,
+		},
+		file_history_panel = {
+			["zR"] = actions.open_all_folds,
+			["zM"] = actions.close_all_folds,
 
-            ['j']          = callback('next_entry'),
-            ['k']          = callback('prev_entry'),
-            ['<cr>']       = callback('select_entry'),
+			["]q"] = actions.select_next_entry,
+			["[q"] = actions.select_prev_entry,
+			["]c"] = actions.select_next_entry,
+			["[c"] = actions.select_prev_entry,
 
-            ['e']          = callback('goto_file'),
-            ['<leader>gh'] = callback('toggle_files')
-        },
-        options_panel = { }
-    },
-}
+			["j"] = actions.next_entry,
+			["k"] = actions.prev_entry,
+			["<cr>"] = actions.select_entry,
+			["="] = actions.open_in_diffview,
 
-utils.map('n', '<leader>gh', '<cmd>DiffviewOpen<cr>')
-utils.map('n', '<leader>gH', '<cmd>DiffviewFileHistory<cr>')
-utils.map('n', '<leader>gl', '<cmd>DiffviewFileHistory .<cr>')
+			["e"] = actions.goto_file,
+			["<leader>gh"] = actions.toggle_files,
+		},
+		options_panel = {},
+	},
+})
+
+utils.map("n", "<leader>gh", "<cmd>DiffviewOpen<cr>")
+utils.map("n", "<leader>gH", "<cmd>DiffviewFileHistory .<cr>")
+utils.map("n", "<leader>gl", "<cmd>DiffviewFileHistory %<cr>")

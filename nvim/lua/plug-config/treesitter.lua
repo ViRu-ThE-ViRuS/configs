@@ -1,4 +1,4 @@
-local utils = load("utils")
+local utils = require("utils")
 
 require('nvim-treesitter.configs').setup {
     ensure_installed = {
@@ -68,8 +68,8 @@ utils.map({'o', 'x'}, 'iQ', '<plug>(matchup-i%)')
 utils.map({'o', 'x'}, 'aQ', '<plug>(matchup-a%)')
 
 -- vim-sandwich
-vim.g['sandwich#recipes'] = load('lib/core').list_concat(
-                                vim.g['sandwich#default_recipes'], {
+vim.g['sandwich#recipes'] = require('lib/core').list_concat(
+    vim.g['sandwich#default_recipes'], {
         {buns = {'( ', ' )'}, nesting = 1, match_syntax = 1, input = {')'}},
         {buns = {'[ ', ' ]'}, nesting = 1, match_syntax = 1, input = {']'}},
         {buns = {'{ ', ' }'}, nesting = 1, match_syntax = 1, input = {'}'}}

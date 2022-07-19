@@ -1,7 +1,7 @@
 local dap = require('dap')
 local dapui = require('dapui')
-local utils = load('utils')
-local core = load('lib/core')
+local utils = require('utils')
+local core = require('lib/core')
 
 -- servers launched internally in neovim
 local internal_servers = {codelldb = 'codelldb server'}
@@ -13,7 +13,7 @@ dap.adapters.python = {
     args = {'-m', 'debugpy.adapter'}
 }
 dap.adapters.codelldb = function(callback, _)
-    load('terminal').launch_terminal('codelldb', true, function()
+    require('terminal').launch_terminal('codelldb', true, function()
         vim.api.nvim_buf_set_name(0, internal_servers.codelldb)
         vim.defer_fn(function()
             callback({type = 'server', host = '127.0.0.1', port = 13000})
@@ -182,7 +182,7 @@ local function start_session()
     dapui.open()
 
     -- force local statusline
-    load('lib/misc').toggle_global_statusline(true)
+    require('lib/misc').toggle_global_statusline(true)
 
     utils.notify(string.format('[prog] %s', dap.session().config.program),
                       'debug', {title = '[dap] session started', timeout = 500}, true)

@@ -99,6 +99,7 @@ return require('packer').startup({
         use 'luisiacc/gruvbox-baby'
         use 'kyazdani42/blue-moon'
         use 'catppuccin/nvim'
+        use 'Abstract-IDE/Abstract-cs'
         use 'kvrohit/rasmus.nvim'
         use 'Mofiqul/adwaita.nvim'
         use 'sainnhe/everforest'

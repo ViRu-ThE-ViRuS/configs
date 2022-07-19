@@ -32,6 +32,7 @@ libuv
 libyaml
 luajit-openresty
 luv
+lz4
 m4
 megatools
 mpdecimal
@@ -46,7 +47,6 @@ pcre
 pcre2
 pkg-config
 postgresql
-python@3.9
 readline
 ripgrep
 rustup-init

@@ -1,30 +1,24 @@
 -- hello my name is viraat chandra and i love to program
 
--- for hawt reloading xd
-load = function(mod)
-    package.loaded[mod] = nil
-    return require(mod)
-end
-
 -- impatient.nvim
-load("impatient")
-load("packer_compiled")
+require("impatient")
+require("packer_compiled")
 
-load("settings")
-load("colorscheme")
-load("statusline")
+require("settings")
+require("colorscheme")
+require("statusline")
 
 -- deferred execution makes the editor feel more responsive
 vim.defer_fn(function()
-	load("keymaps")
-	load("autocommands")
-	load("plugins")
+	require("keymaps")
+	require("autocommands")
+	require("plugins")
 
 	-- NOTE(vir): load this here, to keep plugins.lua clean
-	load("plug-config/vista")
+	require("plug-config/vista")
 
 	-- NOTE(vir): load project local config last
-	load("project_config").load()
+	require("project_config").load()
 end, 0)
 
 -- notes --
