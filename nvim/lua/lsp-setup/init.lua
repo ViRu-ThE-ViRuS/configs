@@ -49,15 +49,11 @@ lsp["clangd"].setup {
 -- vim runtime files
 local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, 'lua/?.lua')
-table.insert(runtime_path, 'lua/?/initlua')
+table.insert(runtime_path, 'lua/?/init.lua')
 
 -- sumneko_lua location
-local sumneko_lua_root = core.get_homedir() .. "/.local/lsp/lua-language-server/"
--- local sumneko_lua_bin = sumneko_lua_root .. "bin/" .. core.get_os() .. "/lua-language-server"
-local sumneko_lua_bin = sumneko_lua_root .. "bin/lua-language-server"
 lsp["sumneko_lua"].setup {
     capabilities = capabilities,
-    cmd = {sumneko_lua_bin, "-E", sumneko_lua_root .. "main.lua"},
     settings = {
         Lua = {
             runtime = {version = "LuaJIT", path = runtime_path},
@@ -84,7 +80,6 @@ lsp['cmake'].setup {
 local null_ls = require('null-ls')
 null_ls.setup({
     sources = {
-        null_ls.builtins.formatting.stylua,
         null_ls.builtins.formatting.autopep8,
         null_ls.builtins.formatting.prettier.with({filetypes={'markdown'}}),
         null_ls.builtins.completion.spell.with({filetypes={'text', 'markdown'}}),

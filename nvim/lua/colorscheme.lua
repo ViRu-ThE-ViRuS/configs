@@ -31,12 +31,7 @@ vim.g.rasmus_italic_keywords = true
 vim.g.rasmus_italic_booleans = true
 vim.g.rasmus_italic_functions = true
 
-vim.g.srcery_italic = 1
-vim.g.srcery_italic_types = 1
-vim.g.srcery_bg_passthrough = 1
-
 vim.g.tempus_enforce_background_color = 1
-
 vim.g.embark_terminal_italics = 1
 vim.g.gruvbox_baby_background_color = "medium"
 vim.g.vscode_style = "dark"
@@ -68,45 +63,45 @@ vim.g.catppuccin_flavor = "macchiato"
 -- }}}
 
 -- {{{ catppuccin
-require("catppuccin").setup({
-	term_colors = true,
-	transparent_background = false,
-	-- compile = {
-	--     enabled = true,
-	--     path = vim.fn.stdpath("cache") .. "/catppuccin",
-	--     suffix = "_compiled",
-	-- },
-	styles = {
-		comments = { "bold", "italic" },
-		functions = { "bold", "italic" },
-		numbers = { "underline" },
-		strings = { "italic" },
-	},
-	integrations = {
-		cmp = true,
-		gitsigns = true,
-		bufferline = true,
-		notify = true,
-		treesitter = true,
-		native_lsp = {
-			enabled = true,
-			virtual_text = {
-				errors = { "bold", "italic" },
-				hints = { "italic" },
-				warnings = { "italic" },
-				information = { "italic" },
-			},
-			underlines = {
-				errors = { "underline" },
-				hints = { "underline" },
-				warnings = { "underline" },
-				information = { "underline" },
-			},
-		},
-		nvimtree = { enabled = true, show_root = true },
-		dap = { enabled = true, enable_ui = true },
-	},
-})
+-- require("catppuccin").setup({
+-- 	term_colors = true,
+-- 	transparent_background = false,
+-- 	-- compile = {
+-- 	--     enabled = true,
+-- 	--     path = vim.fn.stdpath("cache") .. "/catppuccin",
+-- 	--     suffix = "_compiled",
+-- 	-- },
+-- 	styles = {
+-- 		comments = { "bold", "italic" },
+-- 		functions = { "bold", "italic" },
+-- 		numbers = { "underline" },
+-- 		strings = { "italic" },
+-- 	},
+-- 	integrations = {
+-- 		cmp = true,
+-- 		gitsigns = true,
+-- 		bufferline = true,
+-- 		notify = true,
+-- 		treesitter = true,
+-- 		native_lsp = {
+-- 			enabled = true,
+-- 			virtual_text = {
+-- 				errors = { "bold", "italic" },
+-- 				hints = { "italic" },
+-- 				warnings = { "italic" },
+-- 				information = { "italic" },
+-- 			},
+-- 			underlines = {
+-- 				errors = { "underline" },
+-- 				hints = { "underline" },
+-- 				warnings = { "underline" },
+-- 				information = { "underline" },
+-- 			},
+-- 		},
+-- 		nvimtree = { enabled = true, show_root = true },
+-- 		dap = { enabled = true, enable_ui = true },
+-- 	},
+-- })
 -- }}}
 
 -- {{{ overrides
@@ -163,7 +158,6 @@ return {
 	preferred = {
 		"nightfly",
 		"nightfox", "duskfox", "nordfox", "terafox",
-		"kanagawa",
 		"material",
 		"moonfly",
 		"gruvbox-material",
@@ -173,34 +167,25 @@ return {
 		"rasmus",
 		"adwaita",
 		"everforest",
-        "horizon",
 		"vscode",
 		"rose-pine",
 		"substrata",
-		"monokai",
-		"monokai_pro", "monokai_ristretto",
+		"monokai", "monokai_pro", "monokai_ristretto",
 		"habamax",
 		"embark",
-		"tender",
-		"friffle",
-		"srcery",
-		"vice",
-		"quantum",
 		"jellybeans",
 		"mountain",
 		"tempus_tempest", "tempus_spring",
-		"base16-apprentice", "base16-ashes", "base16-monokai",
-		"base16-atelier-sulphurpool", "base16-black-metal-burzum",
-		"base16-grayscale-dark", "base16-black-metal-dark-funeral",
+		"base16-apprentice", "base16-ashes",
+		"base16-black-metal-burzum", "base16-grayscale-dark",
+        "base16-black-metal-dark-funeral", "base16-oceanicnext",
 
 		-- NOTE(vir): light themes. Yes, sometimes, i like light themes, they
 		-- remind me of the pain that exists in the world :o
-		-- "tempus_totus",
-		-- "adwaita",
-		-- "base16-atelier-cave-light", "base16-atelier-savanna-light",
-		-- "base16-equilibrium-gray-light", "base16-equilibrium-light",
-		-- "base16-atelier-savanna-light", "base16-solarized-light",
-		-- "base16-atelier-sulphurpool-light"
+		"tempus_totus", "adwaita",
+		"base16-atelier-cave-light", "base16-atelier-savanna-light",
+		"base16-equilibrium-gray-light", "base16-equilibrium-light",
+		"base16-atelier-savanna-light", "base16-solarized-light",
 	},
 	ui_overrides = ui_overrides,
 }

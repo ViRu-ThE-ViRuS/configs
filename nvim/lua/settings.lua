@@ -68,9 +68,9 @@ vim.opt.cursorline = true
 vim.opt.foldcolumn = 'auto:3'
 vim.opt.foldmarker = "{{{,}}}"
 vim.opt.foldmethod = "marker" -- {{{ }}}
-vim.opt.number = true
 vim.opt.signcolumn = "yes"
 vim.opt.wrap = false
+vim.opt.number = true
 
 -- spellings
 vim.opt.spelllang = 'en_us'

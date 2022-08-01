@@ -64,6 +64,9 @@ local function setup_autocmds(client, bufnr)
         vim.api.nvim_create_autocmd({'InsertLeave', 'BufEnter', 'CursorHold'}, { group = group, callback = lsp_utils.update_tags, buffer = bufnr })
         vim.api.nvim_create_autocmd({'CursorHold', 'CursorMoved'}, { group = group, callback = lsp_utils.update_context, buffer = bufnr })
         vim.api.nvim_create_autocmd('BufDelete', { group = group, callback = function() lsp_utils.clear_buffer_tags(bufnr) end, buffer = bufnr })
+
+        -- first-call
+        lsp_utils.update_tags()
     end
 end
 

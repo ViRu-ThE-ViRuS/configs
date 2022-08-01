@@ -10,9 +10,9 @@ require('bufferline').setup {
         right_trunc_marker = '>',
 
         offsets = {
-            {filetype = "NvimTree", text = "Explorer", text_align = "center"},
-            {filetype = "vista_kind", text = 'Tags', text_align = 'center'},
-            {filetype = "vista", text = 'Tags', text_align = 'center'}
+            { filetype = "NvimTree", text = "Explorer", text_align = "center" },
+            { filetype = "vista_kind", text = 'Tags', text_align = 'center' },
+            { filetype = "vista", text = 'Tags', text_align = 'center' }
         },
 
         show_tab_indicators = true,
@@ -22,6 +22,6 @@ require('bufferline').setup {
         enforce_regular_tabs = false,
         always_show_bufferline = true,
         separator_style = "thin",
+        sort_by = 'id'
     }
 }
-
