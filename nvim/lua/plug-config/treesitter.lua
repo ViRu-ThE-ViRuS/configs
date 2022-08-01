@@ -9,6 +9,7 @@ require('nvim-treesitter.configs').setup {
     indent = {enable = true, disable={'python', 'c', 'cpp'}},
     highlight = {enable = true, additional_vim_regex_highlighting = false},
     matchup = {enable = true, disable_virtual_text = true},
+    yati = {enable = true},
 
     incremental_selection = {
         enable = true,

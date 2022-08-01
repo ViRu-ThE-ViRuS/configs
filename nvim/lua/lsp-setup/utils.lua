@@ -123,55 +123,68 @@ local function extract_symbols(items, _result)
     return result
 end
 
--- reset tag state
-local function reset_tag_state()
-    utils.tag_state = {
-        kind = nil,
-        name = nil,
-        detail = nil,
-        icon = nil,
-        iconhl = nil
-    }
+-- clear buffer tags and context
+local function clear_buffer_tags(bufnr)
+    utils.tag_state.context[bufnr] = nil
+    utils.tag_state.cache[bufnr] = nil
+    utils.tag_state.req_state[bufnr] = nil
+end
+
+-- get current context
+local function update_context()
+    local bufnr = vim.fn.bufnr('%')
+    local symbols = utils.tag_state.cache[bufnr]
+    if not symbols or #symbols < 1 then return end
+
+    local hovered_line = vim.api.nvim_win_get_cursor(0)
+    for position = #symbols, 1, -1 do
+        local current = symbols[position]
+
+        if current.range and in_range(hovered_line, current.range) then
+            utils.tag_state.context[bufnr] = {
+                kind = current.kind,
+                name = current.name,
+                detail = current.detail,
+                icon = lsp_icons[current.kind].icon,
+                iconhl = lsp_icons[current.kind].hl
+            }
+
+            return
+        end
+    end
+
+    utils.tag_state.context[bufnr] = nil
 end
 
 -- update tag_state async
-local function refresh_tag_state()
-    vim.lsp.buf_request(0, 'textDocument/documentSymbol', { textDocument = vim.lsp.util.make_text_document_params() },
+local function update_tags()
+    local bufnr = vim.fn.bufnr('%')
+    if utils.tag_state.req_state[bufnr] == nil then utils.tag_state.req_state[bufnr] = { waiting = false, last_tick = 0 } end
+
+    if (not utils.tag_state.req_state[bufnr].waiting and utils.tag_state.req_state[bufnr].last_tick < vim.b.changedtick) then
+        utils.tag_state.req_state[bufnr] = { waiting = true, last_tick = vim.b.changedtick }
+    else return end
+
+    vim.lsp.buf_request(bufnr, 'textDocument/documentSymbol', { textDocument = vim.lsp.util.make_text_document_params() },
         function(_, results, _, _)
-            if results == nil or type(results) ~= 'table' then
-                reset_tag_state()
-                return
-            end
+            utils.tag_state.req_state[bufnr].waiting = false
+            if not vim.api.nvim_buf_is_valid(bufnr) then return end
+            if results == nil or type(results) ~= 'table' then return end
 
             local extracted = extract_symbols(results)
             local symbols = core.filter(extracted, function(_, value) return tag_state_filter[value.kind] end)
 
-            if not symbols or #symbols == 0 then
-                reset_tag_state()
-                return
-            end
-
-            local hovered_line = vim.api.nvim_win_get_cursor(0)
-            for position = #symbols, 1, -1 do
-                local current = symbols[position]
-
-                if current.range and in_range(hovered_line, current.range) then
-                    utils.tag_state.kind = current.kind
-                    utils.tag_state.name = current.name
-                    utils.tag_state.detail = current.detail
-                    utils.tag_state.icon = lsp_icons[utils.tag_state.kind].icon
-                    utils.tag_state.iconhl = lsp_icons[utils.tag_state.kind].hl
-
-                    return
-                end
-            end
+            if not symbols or #symbols == 0 then return end
+            utils.tag_state.cache[bufnr] = symbols
         end)
 end
 
 return {
     lsp_icons = lsp_icons,
     toggle_diagnostics_list = toggle_diagnostics_list,
-    reset_tag_state = reset_tag_state,
-    refresh_tag_state = refresh_tag_state,
+
+    update_tags = update_tags,
+    update_context = update_context,
+    clear_buffer_tags = clear_buffer_tags
 }
 

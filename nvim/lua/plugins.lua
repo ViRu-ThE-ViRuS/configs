@@ -17,17 +17,18 @@ return require('packer').startup({
 
         use { 'godlygeek/tabular', cmd = 'Tab' }
         use { 'liuchengxu/vista.vim', cmd = 'Vista' }
-        use { 'tpope/vim-eunuch', cmd = {'Delete', 'Rename', 'Chmod'} }
-        use { 'tpope/vim-fugitive', cmd = {'G', 'Gread', 'GcLog'} }
+        use { 'tpope/vim-eunuch', cmd = { 'Delete', 'Rename', 'Chmod' } }
+        use { 'tpope/vim-fugitive', cmd = { 'G', 'Gread', 'GcLog' } }
         use { 'machakann/vim-sandwich', event = 'BufRead' }
         use { 'AndrewRadev/splitjoin.vim', event = 'BufReadPost' }
 
         use {
             'nvim-treesitter/nvim-treesitter',
             requires = {
-                {'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter'},
-                {'RRethy/nvim-treesitter-textsubjects', after = 'nvim-treesitter'},
-                {'andymass/vim-matchup', after = 'nvim-treesitter'},
+                { 'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter' },
+                { 'RRethy/nvim-treesitter-textsubjects', after = 'nvim-treesitter' },
+                { 'yioneko/nvim-yati', after = 'nvim-treesitter' },
+                { 'andymass/vim-matchup', after = 'nvim-treesitter-textsubjects' },
             },
             run = ':TSUpdate',
             after = 'vim-sandwich',
@@ -48,38 +49,38 @@ return require('packer').startup({
         use {
             'hrsh7th/nvim-cmp',
             requires = {
-                {'hrsh7th/cmp-nvim-lsp', event = 'BufRead'},
-                {'onsails/lspkind-nvim', event = 'BufRead'},
-                {'L3MON4D3/LuaSnip', after = 'nvim-cmp'},
-                {'lukas-reineke/cmp-rg', after = 'nvim-cmp'},
-                {'hrsh7th/cmp-buffer', after = 'nvim-cmp'},
-                {'hrsh7th/cmp-path', after = 'nvim-cmp'},
-                {'hrsh7th/cmp-cmdline', after = 'nvim-cmp'}
+                { 'hrsh7th/cmp-nvim-lsp', event = 'BufRead' },
+                { 'onsails/lspkind-nvim', event = 'BufRead' },
+                { 'L3MON4D3/LuaSnip', after = 'nvim-cmp' },
+                { 'lukas-reineke/cmp-rg', after = 'nvim-cmp' },
+                { 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
+                { 'hrsh7th/cmp-path', after = 'nvim-cmp' },
+                { 'hrsh7th/cmp-cmdline', after = 'nvim-cmp' }
             },
-            after = {'cmp-nvim-lsp', 'lspkind-nvim'},
+            after = { 'cmp-nvim-lsp', 'lspkind-nvim' },
             config = "require('plug-config/completion')"
         }
 
         use {
             'neovim/nvim-lspconfig',
             requires = {
-                {'jose-elias-alvarez/null-ls.nvim', event = 'BufRead'},
-                {'ray-x/lsp_signature.nvim', event = 'BufRead'}
+                { 'jose-elias-alvarez/null-ls.nvim', event = 'BufRead' },
+                { 'ray-x/lsp_signature.nvim', event = 'BufRead' }
             },
-            after = {'null-ls.nvim', 'lsp_signature.nvim', 'cmp-nvim-lsp'},
+            after = { 'null-ls.nvim', 'lsp_signature.nvim', 'cmp-nvim-lsp' },
             config = 'require("lsp")'
         }
 
         use {
             'mfussenegger/nvim-dap',
-            requires = {{'rcarriga/nvim-dap-ui', ft = {'c', 'cpp', 'python'}}},
+            requires = { { 'rcarriga/nvim-dap-ui', ft = { 'c', 'cpp', 'python' } } },
             after = 'nvim-dap-ui',
             config = 'require("plug-config/dap")'
         }
 
         -- use {
         --     'ThePrimeagen/harpoon',
-        --     event = 'VimEnter',
+        --     event = 'BufEnter',
         --     config = 'require("plug-config/harpoon")'
         -- }
 
@@ -103,6 +104,7 @@ return require('packer').startup({
         use 'kvrohit/rasmus.nvim'
         use 'Mofiqul/adwaita.nvim'
         use 'sainnhe/everforest'
+        use 'LunarVim/horizon.nvim'
         use 'Mofiqul/vscode.nvim'
         use 'rose-pine/neovim'
         use 'kvrohit/substrata.nvim'
@@ -126,4 +128,3 @@ return require('packer').startup({
         display = { prompt_border = 'single' }
     }
 })
-

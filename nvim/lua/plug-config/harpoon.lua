@@ -1,5 +1,5 @@
 local utils = require('utils')
-local harpoo_ui = require('harpoon/ui')
+local harpoo_ui = require('harpoon.ui')
 
 local function harpoon_mark()
     utils.notify('harpoon set', 'info', { render = 'minimal' }, true)

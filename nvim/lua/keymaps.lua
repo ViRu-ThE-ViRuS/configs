@@ -39,8 +39,8 @@ utils.map({"n", "v"}, "<c-b>", "<nop>")                     -- disable <c-b>
 
 -- disable command history modes
 utils.map({"n", "v"}, "q:", "<nop>")
--- utils.map({"n", "v"}, "q/", "<nop>")
--- utils.map({"n", "v"}, "q?", "<nop>")
+utils.map({"n", "v"}, "q/", "<nop>")
+utils.map({"n", "v"}, "q?", "<nop>")
 
 -- mouse scrolling
 utils.map("n", "<ScrollWheelUp>", "<c-y>")
@@ -110,8 +110,9 @@ utils.map("n", "<leader>cA", terminal.run_target_command)
 utils.map("n", "<leader>ca", terminal.run_previous_command)
 utils.map("n", "<leader>cS", terminal.set_target)
 utils.map("n", "<leader>cs", terminal.toggle_target)
+utils.map("n", "<leader>cv", function() terminal.run_selection(true) end)
+utils.map("v", "<leader>cv", '<esc><cmd>lua require("terminal").run_selection(false)<cr>gv')
 
 -- NOTE(vir): Tabular and Fugitive Config could not find a better place for these configs
 utils.map("v", "<leader>=", ":Tab /")
 utils.map("n", "<leader>gD", "<cmd>G! difftool<cr>")
-

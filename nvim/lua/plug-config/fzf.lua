@@ -35,21 +35,21 @@ fzf.setup({
             }
         }
     end,
-    fzf_opts = {['--layout'] = 'default'},
+    fzf_opts = { ['--layout'] = 'default' },
     fzf_colors = {
-        ["fg"]       = { "fg", "CursorLine" },
-        ["bg"]       = { "bg", "Normal" },
-        ["hl"]       = { "fg", "Comment" },
-        ["fg+"]      = { "fg", "Normal" },
-        ["bg+"]      = { "bg", "CursorLine" },
-        ["hl+"]      = { "fg", "Statement" },
-        ["info"]     = { "fg", "PreProc" },
-        ["prompt"]   = { "fg", "Conditional" },
-        ["pointer"]  = { "fg", "Exception" },
-        ["marker"]   = { "fg", "Keyword" },
-        ["spinner"]  = { "fg", "Label" },
-        ["header"]   = { "fg", "Comment" },
-        ["gutter"]   = { "bg", "Normal" },
+        ["fg"]      = { "fg", "CursorLine" },
+        ["bg"]      = { "bg", "Normal" },
+        ["hl"]      = { "fg", "Comment" },
+        ["fg+"]     = { "fg", "Normal" },
+        ["bg+"]     = { "bg", "CursorLine" },
+        ["hl+"]     = { "fg", "Statement" },
+        ["info"]    = { "fg", "PreProc" },
+        ["prompt"]  = { "fg", "Conditional" },
+        ["pointer"] = { "fg", "Exception" },
+        ["marker"]  = { "fg", "Keyword" },
+        ["spinner"] = { "fg", "Label" },
+        ["header"]  = { "fg", "Comment" },
+        ["gutter"]  = { "bg", "Normal" },
     },
     keymap = {
         fzf = {
@@ -85,7 +85,7 @@ fzf.setup({
     buffers = {
         previewer = 'builtin',
         actions = {
-            ['ctrl-d'] = {actions.buf_del, actions.resume},
+            ['ctrl-d'] = { actions.buf_del, actions.resume },
             ['ctrl-x'] = actions.buf_split,
             ['ctrl-q'] = false
         }
@@ -130,23 +130,23 @@ else
     utils.map("n", "<c-p>P", fzf.files)
 end
 
-utils.map("n", "<c-p>f", function() fzf.live_grep({exec_empty_query=true}) end)
+utils.map("n", "<c-p>f", function() fzf.live_grep({ exec_empty_query = true }) end)
 utils.map("n", "<c-p>b", fzf.buffers)
 utils.map("n", "<c-p>ss", fzf.grep_cword)
 utils.map("n", "<c-p>sl", fzf.blines)
-utils.map("n", "<c-p>sz", function() fzf.grep({search = 'TODO|NOTE', no_esc=true}) end)
+utils.map("n", "<c-p>sz", function() fzf.grep({ search = 'TODO|NOTE', no_esc = true }) end)
 
 -- ctags interaction
 utils.map("n", "<c-p>sP", fzf.tags_grep_cword)
-utils.map("n", "<c-p>sp", function() fzf.tags_live_grep({exec_empty_query=true}) end)
+utils.map("n", "<c-p>sp", function() fzf.tags_live_grep({ exec_empty_query = true }) end)
 
 utils.map("n", "<f10>", function()
     require('plenary').Job:new({
         command = 'ctags',
-        args = {'-R', '--excmd=combine', '--fields=+K'},
+        args = { '-R', '--excmd=combine', '--fields=+K' },
         cwd = misc.get_cwd(),
-        on_start = function() utils.notify('generating tags', 'debug', {render = 'minimal'}, true) end,
-        on_exit = function() utils.notify('tags generated', 'info', {render = 'minimal'}, true) end
+        on_start = function() utils.notify('generating tags', 'debug', { render = 'minimal' }, true) end,
+        on_exit = function() utils.notify('tags generated', 'info', { render = 'minimal' }, true) end
     }):start()
 end)
 
@@ -155,7 +155,7 @@ utils.map("n", "<m-cr>", fzf.lsp_code_actions)
 utils.map("n", "<leader>us", fzf.lsp_references)
 utils.map("n", "<leader>ud", fzf.lsp_document_symbols)
 utils.map("n", "<leader>uw", fzf.lsp_live_workspace_symbols)
-utils.map("n", "<leader>d", function() fzf.lsp_definitions({sync = true, jump_to_single_result = true}) end)
+utils.map("n", "<leader>d", function() fzf.lsp_definitions({ sync = true, jump_to_single_result = true }) end)
 
 vim.api.nvim_create_user_command('Colors', fzf.colorschemes, {
     bang = false,
@@ -163,3 +163,8 @@ vim.api.nvim_create_user_command('Colors', fzf.colorschemes, {
     desc = 'FzfLua powered colorscheme picker'
 })
 
+vim.api.nvim_create_user_command("Commands", function()
+	vim.ui.select(utils.commands.keys, { prompt = "command> " }, function(key)
+		utils.commands.callbacks[key]()
+	end)
+end, { bang = false, nargs = 0, desc = "Custom Commands" })

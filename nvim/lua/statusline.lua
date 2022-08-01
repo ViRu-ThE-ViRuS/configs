@@ -26,6 +26,12 @@ local modes = {
     ['t']  = 'Terminal'
 }
 
+local function truncate_statusline(small)
+    local limit = (small and utils.truncation_limit_s) or utils.truncation_limit
+    return (utils.is_htruncated(limit) and
+        vim.api.nvim_get_option_value('laststatus', { scope = 'global' }) ~= 3)
+end
+
 -- get the display name for current mode
 local function get_current_mode()
     local current_mode = vim.api.nvim_get_mode().mode
@@ -44,25 +50,21 @@ local function get_git_status()
     meta['modified'] = gitsigns_summary['changed']
     meta['removed'] = gitsigns_summary['removed']
 
-    if utils.is_htruncated(utils.truncation_limit) then
-        return string.format(' %s ', meta['branch'])
-    end
-
+    if truncate_statusline() then return string.format(' %s ', meta['branch']) end
     return string.format(' %s | +%s ~%s -%s ', meta['branch'], meta['added'], meta['modified'], meta['removed'])
 end
 
 -- get current tag name
 local function get_tagname()
-    if utils.tag_state.name == nil or
-        utils.is_htruncated(utils.truncation_limit_s) or
-        vim.lsp.buf_get_clients(0) == {} then return '' end
+    local bufnr = vim.fn.bufnr('%')
 
-    return string.format(" [ %s %s ] ", utils.tag_state.icon, utils.tag_state.name)
+    if utils.tag_state.context[bufnr] == nil or truncate_statusline(true) then return '' end
+    return string.format(" [ %s %s ] ", utils.tag_state.context[bufnr].icon, utils.tag_state.context[bufnr].name)
 end
 
 -- get current file name
 local function get_filename()
-    if utils.is_htruncated(utils.truncation_limit_s) then return ' %t ' end
+    if truncate_statusline() then return ' %t ' end
     return ' %f '
 end
 
@@ -71,12 +73,18 @@ local function get_line_col() return ' %l:%c ' end
 
 -- get current percentage through file
 local function get_percentage()
-    if utils.is_htruncated(utils.truncation_limit) then return '' end
+    if truncate_statusline() then return '' end
     return ' %p%% '
 end
 
 -- get current file type
 local function get_filetype() return ' %y ' end
+
+-- get buffer number
+local function get_bufnr()
+    if truncate_statusline(true) then return '' end
+    return ' %n '
+end
 
 -- get current file diagnostics
 local function get_diagnostics()
@@ -89,7 +97,7 @@ local function get_diagnostics()
         table.insert(status_parts, symbol_config.indicator_error .. symbol_config.indicator_seperator .. errors)
     end
 
-    if not utils.is_htruncated(utils.truncation_limit) then
+    if not truncate_statusline(true) then
         local warnings = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })
         local hints = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.HINT })
         local infos = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.INFO })
@@ -133,11 +141,12 @@ local function statusline_normal()
     local tagname = colors.tagname .. get_tagname()
     local line_col = colors.line_col .. get_line_col()
     local percentage = colors.percentage .. get_percentage()
+    local bufnr = colors.bufnr .. get_bufnr()
     local filetype = colors.filetype .. get_filetype()
 
     return table.concat({
         colors.active, mode, git, diagnostics, truncator, filename,
-        colors.inactive, '%=% ', tagname, line_col, percentage, filetype,
+        colors.inactive, '%=% ', tagname, line_col, percentage, bufnr, filetype,
         colors.inactive
     })
 end
@@ -164,7 +173,7 @@ vim.cmd [[
 
         autocmd FileType terminal setlocal statusline=%!v:lua.StatusLine('Terminal')
         autocmd BufWinEnter quickfix setlocal statusline=%!v:lua.StatusLine('QuickFix')
-        " autocmd BufWinEnter diagnostics setlocal statusline=%!v:lua.StatusLine('Diagnostics')
+        autocmd BufWinEnter diagnostics setlocal statusline=%!v:lua.StatusLine('Diagnostics')
 
         autocmd BufWinEnter NvimTree_1 setlocal statusline=%!v:lua.StatusLine('Explorer')
         autocmd FileType fzf setlocal statusline=%!v:lua.StatusLine('FZF')

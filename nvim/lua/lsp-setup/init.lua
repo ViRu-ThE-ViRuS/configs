@@ -4,16 +4,18 @@ local misc = require("lib/misc")
 local core = require("lib/core")
 local utils = require("utils")
 
+-- vim.lsp.set_log_level("debug")
+
 -- setup keymaps and autocommands
-local on_attach = function(client, buffer_nr)
+local on_attach = function(client, bufnr)
     utils.notify(string.format("[lsp] %s\n[cwd] %s", client.name, misc.get_cwd()), "info", { title = "[lsp] Active" }, true)
 
-    setup_buffer.setup_lsp_keymaps(client, buffer_nr)
-    setup_buffer.setup_diagnostics_keymaps(client, buffer_nr)
-    setup_buffer.setup_formatting_keymaps(client, buffer_nr)
-    setup_buffer.setup_independent_keymaps(client, buffer_nr)
+    setup_buffer.setup_lsp_keymaps(client, bufnr)
+    setup_buffer.setup_diagnostics_keymaps(client, bufnr)
+    setup_buffer.setup_formatting_keymaps(client, bufnr)
+    setup_buffer.setup_independent_keymaps(client, bufnr)
 
-    setup_buffer.setup_autocmds(client, buffer_nr)
+    setup_buffer.setup_autocmds(client, bufnr)
     setup_buffer.setup_options()
     setup_buffer.setup_highlights()
 end
@@ -51,7 +53,8 @@ table.insert(runtime_path, 'lua/?/initlua')
 
 -- sumneko_lua location
 local sumneko_lua_root = core.get_homedir() .. "/.local/lsp/lua-language-server/"
-local sumneko_lua_bin = sumneko_lua_root .. "bin/" .. core.get_os() .. "/lua-language-server"
+-- local sumneko_lua_bin = sumneko_lua_root .. "bin/" .. core.get_os() .. "/lua-language-server"
+local sumneko_lua_bin = sumneko_lua_root .. "bin/lua-language-server"
 lsp["sumneko_lua"].setup {
     capabilities = capabilities,
     cmd = {sumneko_lua_bin, "-E", sumneko_lua_root .. "main.lua"},
@@ -60,7 +63,10 @@ lsp["sumneko_lua"].setup {
             runtime = {version = "LuaJIT", path = runtime_path},
             diagnostics = {globals = {"vim", "use", "packer_plugins"}},
             telemetry = {enable = false},
-            workspace = {library = vim.api.nvim_get_runtime_file('', true)}
+            workspace = {library =
+                vim.api.nvim_get_runtime_file('', true),
+                -- vim.fn.stdpath('config'),
+            }
         }
     },
     on_attach = on_attach,
@@ -85,17 +91,15 @@ null_ls.setup({
         null_ls.builtins.hover.dictionary.with({filetypes={'text', 'markdown'}}),
     },
     capabilities = capabilities,
-    on_attach = function(client, buffer_nr)
+    on_attach = function(client, bufnr)
         utils.notify(
             string.format("[lsp] %s\n[cwd] %s", client.name, misc.get_cwd()),
-            "info",
-            { title = "[lsp] Active" },
-            true
+            "info", { title = "[lsp] Active" }, true
         )
 
-        setup_buffer.setup_formatting_keymaps(client, buffer_nr)
-        setup_buffer.setup_diagnostics_keymaps(client, buffer_nr)
-        utils.map('n', 'K', vim.lsp.buf.hover, {silent = true}, buffer_nr)
+        setup_buffer.setup_formatting_keymaps(client, bufnr)
+        setup_buffer.setup_diagnostics_keymaps(client, bufnr)
+        utils.map('n', 'K', vim.lsp.buf.hover, {silent = true}, bufnr)
     end,
     flags = {debounce_text_changes = 150}
 })

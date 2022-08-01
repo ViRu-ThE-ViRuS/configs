@@ -156,7 +156,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd([[ colorscheme habamax ]])
+vim.cmd([[ colorscheme rasmus ]])
 ui_overrides()
 
 return {
@@ -173,6 +173,7 @@ return {
 		"rasmus",
 		"adwaita",
 		"everforest",
+        "horizon",
 		"vscode",
 		"rose-pine",
 		"substrata",
