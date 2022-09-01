@@ -53,5 +53,5 @@ require("diffview").setup({
 })
 
 utils.map("n", "<leader>gh", "<cmd>DiffviewOpen<cr>")
-utils.map("n", "<leader>gH", "<cmd>DiffviewFileHistory .<cr>")
-utils.map("n", "<leader>gl", "<cmd>DiffviewFileHistory %<cr>")
+utils.map("n", "<leader>gH", "<cmd>DiffviewFileHistory %<cr>")
+utils.map("n", "<leader>gl", "<cmd>DiffviewFileHistory .<cr>")

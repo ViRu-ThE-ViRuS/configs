@@ -13,7 +13,7 @@ fzf.setup({
         split = 'belowright new',
         fullscreen = false,
         preview = {
-            default = 'bat',
+            -- default = 'bat',
             horizontal = 'right:50%',
             vertical = 'up:50%',
             scrollbar = false

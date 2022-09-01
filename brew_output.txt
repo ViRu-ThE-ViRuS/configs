@@ -75,6 +75,7 @@ pcre
 pcre2
 pkg-config
 postgresql
+postgresql@14
 readline
 ripgrep
 rustup-init

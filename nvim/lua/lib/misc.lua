@@ -84,13 +84,12 @@ local function open_repo_on_github(remote)
 	if rc ~= 0 then
 		utils.notify(
 			string.format("found invalid remote url: [%s] -> %s", remote, url),
-			"error",
-			{ title = "could not open on github" },
-			true
+			"error", { title = "could not open on github" }, true
 		)
 		return
 	end
 
+    assert(url)
 	url = url:gsub("git:", "https://")
 	url = url:gsub("git@", "https://")
 	url = url:gsub("com:", "com/")
@@ -152,10 +151,10 @@ end
 local function toggle_spellings()
 	if vim.api.nvim_get_option_value("spell", { scope = "global" }) then
 		vim.opt.spell = false
-		utils.notify("spellings deactivated", "debug", { render = "minimal" }, true)
+		utils.notify("spellings deactivated", "debug", { render = "minimal" })
 	else
 		vim.opt.spell = true
-		utils.notify("spellings activated", "info", { render = "minimal" }, true)
+		utils.notify("spellings activated", "info", { render = "minimal" })
 	end
 end
 

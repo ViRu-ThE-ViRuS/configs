@@ -36,6 +36,7 @@ utils.map("n", "p", "p=`]")                                 -- autoformat paste
 utils.map("n", "P", "P=`]")                                 -- autoformat Paste
 utils.map("n", "gp", "`[v`]")                               -- last paste
 utils.map({"n", "v"}, "<c-b>", "<nop>")                     -- disable <c-b>
+utils.map('v', '//', [[y/\V<c-r>=escape(@",'/\')<cr><cr>]]) -- search for selection
 
 -- disable command history modes
 utils.map({"n", "v"}, "q:", "<nop>")

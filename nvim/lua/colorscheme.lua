@@ -151,7 +151,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd([[ colorscheme rasmus ]])
+vim.cmd([[ colorscheme oxocarbon-lua ]])
 ui_overrides()
 
 return {
@@ -164,6 +164,7 @@ return {
 		"gruvbox-baby",
 		"blue-moon",
 		"catppuccin",
+        "oxocarbon-lua",
 		"rasmus",
 		"adwaita",
 		"everforest",

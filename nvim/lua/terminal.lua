@@ -90,7 +90,7 @@ local function set_target_terminal()
             string.format(
                 "target_terminal set to: { job_id: %s, bufnr: %s }",
                 run_config.target_terminal.job_id,
-                run_config.target_terminal.bufnr
+                run_config.target_terminal.buf_nr
             ),
             "info",
             { render = "minimal" },
@@ -145,9 +145,10 @@ local function run_selection(line_mode)
 
         local lines = vim.fn.getline(l1, l2)
         payload = table.concat(core.filter(lines, function(_, value) return vim.trim(value) ~= '' end), '\n')
+        payload = payload .. '\n'
     end
 
-    send_to_target(payload .. '\n')
+    send_to_target(payload)
     target_scroll_to_end()
 end
 

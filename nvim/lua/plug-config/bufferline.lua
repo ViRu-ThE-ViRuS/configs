@@ -2,12 +2,12 @@ require('bufferline').setup {
     options = {
         -- numbers = function(args) return tostring(args.id); end,
         diagnostics = false,
-        indicator_icon = '▎',
         buffer_close_icon = 'x',
         close_icon = 'x',
         modified_icon = '~',
         left_trunc_marker = '<',
         right_trunc_marker = '>',
+        indicator = { style = 'icon', icon = '▎' },
 
         offsets = {
             { filetype = "NvimTree", text = "Explorer", text_align = "center" },

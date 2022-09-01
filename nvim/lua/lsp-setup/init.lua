@@ -61,7 +61,7 @@ lsp["sumneko_lua"].setup {
             telemetry = {enable = false},
             workspace = {library =
                 vim.api.nvim_get_runtime_file('', true),
-                -- vim.fn.stdpath('config'),
+                vim.fn.stdpath('config'),
             }
         }
     },

@@ -85,9 +85,9 @@ return require('packer').startup({
         -- }
 
         -- use {
-        --     'untitled-ai/jupyter_ascending.vim',
-        --     ft='python',
-        --     config="require('plug-config/ascending')"
+        --     'hkupty/iron.nvim',
+        --     ft = 'python',
+        --     config = 'require("plug-config/iron")'
         -- }
 
         use 'RRethy/nvim-base16'
@@ -99,6 +99,7 @@ return require('packer').startup({
         use 'luisiacc/gruvbox-baby'
         use 'kyazdani42/blue-moon'
         use 'catppuccin/nvim'
+        use 'B4mbus/oxocarbon-lua.nvim'
         use 'kvrohit/rasmus.nvim'
         use 'Mofiqul/adwaita.nvim'
         use 'sainnhe/everforest'
