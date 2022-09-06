@@ -51,7 +51,7 @@ vim.defer_fn(function()
             setlocal updatetime=1000
 
             " echo 'highlight current word: off'
-            lua require('utils').notify('<cword> highlight deactivated', 'debug', {render='minimal'})
+            lua require('utils').notify('<cword> highlight deactivated', 'debug', {render='minimal'}, true)
 
             return 0
           else
@@ -62,7 +62,7 @@ vim.defer_fn(function()
             setl updatetime=250
 
             " echo 'highlight current word: on'
-            lua require('utils').notify('<cword> highlight activated', 'info', {render='minimal'})
+            lua require('utils').notify('<cword> highlight activated', 'info', {render='minimal'}, true)
 
             return 1
           endif

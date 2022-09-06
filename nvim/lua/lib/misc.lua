@@ -151,10 +151,10 @@ end
 local function toggle_spellings()
 	if vim.api.nvim_get_option_value("spell", { scope = "global" }) then
 		vim.opt.spell = false
-		utils.notify("spellings deactivated", "debug", { render = "minimal" })
+		utils.notify("spellings deactivated", "debug", { render = "minimal" }, true)
 	else
 		vim.opt.spell = true
-		utils.notify("spellings activated", "info", { render = "minimal" })
+		utils.notify("spellings activated", "info", { render = "minimal" }, true)
 	end
 end
 

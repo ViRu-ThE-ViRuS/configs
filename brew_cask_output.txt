@@ -6,10 +6,12 @@ logitech-options
 macs-fan-control
 microsoft-teams
 nordvpn
+notion
 slack
 spotify
 tiles
 transmission
 typora
 vlc
+wireshark
 zoom

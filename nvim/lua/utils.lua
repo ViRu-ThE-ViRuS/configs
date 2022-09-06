@@ -20,11 +20,13 @@ local diagnostics_state = {
     ["global"] = false,
 }
 
+-- ui: toggles
 local ui_state = {
     thick_separators = false,
     window_state = {},
 }
 
+-- registered custom commands
 local commands = {
     keys = { },
     callbacks = { }

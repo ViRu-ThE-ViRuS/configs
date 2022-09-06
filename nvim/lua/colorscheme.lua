@@ -180,6 +180,7 @@ return {
 		"base16-apprentice", "base16-ashes",
 		"base16-black-metal-burzum", "base16-grayscale-dark",
         "base16-black-metal-dark-funeral", "base16-oceanicnext",
+        "default",
 
 		-- NOTE(vir): light themes. Yes, sometimes, i like light themes, they
 		-- remind me of the pain that exists in the world :o

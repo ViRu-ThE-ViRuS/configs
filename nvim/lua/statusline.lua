@@ -160,6 +160,7 @@ vim.cmd [[
         autocmd FileType DiffviewFiles set statusline=%!v:lua.StatusLine('DiffViewFiles')
         autocmd FileType DiffviewFileHistory set statusline=%!v:lua.StatusLine('DiffViewFileHistory')
 
+        " autocmd BufEnter \[dap-terminal\]* setlocal statusline=%!v:lua.StatusLine('Output')
         autocmd FileType dapui_watches setlocal statusline=%!v:lua.StatusLine('Watches')
         autocmd FileType dapui_stacks setlocal statusline=%!v:lua.StatusLine('Stacks')
         autocmd FileType dapui_scopes setlocal statusline=%!v:lua.StatusLine('Scopes')
