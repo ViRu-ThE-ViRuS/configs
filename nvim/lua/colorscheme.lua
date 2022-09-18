@@ -158,6 +158,7 @@ return {
 	preferred = {
 		"nightfly",
 		"nightfox", "duskfox", "nordfox", "terafox",
+        "tundra",
 		"material",
 		"moonfly",
 		"gruvbox-material",

@@ -12,6 +12,7 @@ dap.adapters.python = {
     command = 'python3',
     args = { '-m', 'debugpy.adapter' }
 }
+
 dap.adapters.codelldb = function(callback, _)
     require('terminal').launch_terminal('codelldb', true, function()
         vim.api.nvim_buf_set_name(0, internal_servers.codelldb)
@@ -27,7 +28,7 @@ dap.configurations.python = {
         type = 'python',
         request = 'launch',
         program = '${file}',
-        terminal = 'integrated',
+        terminal = 'console',
         console = 'integratedTerminal',
         pythonPath = core.get_python()
     }
@@ -71,17 +72,12 @@ dapui.setup({
     },
     layouts = {
         {
-            elements = {
-                { id = "scopes", size = 0.25 },
-                { id = "breakpoints", size = 0.25 },
-                { id = "stacks", size = 0.25 },
-                { id = "watches", size = 0.25 }
-            },
-            size = 40,
+            elements = { "scopes", "breakpoints", "stacks" },
+            size = 50,
             position = "right",
         },
         {
-            elements = { "console", "repl" },
+            elements = { "repl", "watches" },
             size = 25,
             position = "bottom",
         },
@@ -107,7 +103,12 @@ local function get_output_windows(activate_last)
 
         if windows[#windows] then
             vim.api.nvim_buf_set_option(handles[#handles], 'bufhidden', 'delete')
-            utils.map('n', '<c-o>', '<cmd>q<cr>', {}, handles[#handles])
+            utils.map('n', '<c-o>', function()
+                vim.cmd [[
+                    q
+                    tabclose
+                ]]
+            end, {}, handles[#handles])
             vim.fn.win_gotoid(windows[#windows])
         end
     end
@@ -157,6 +158,9 @@ local function setup_maps()
         remove_maps()
         dapui.close()
         dap.repl.close()
+
+        -- close session tab
+        vim.cmd('tabclose ' .. dap.session().session_target_tab)
         dap.close()
 
         close_internal_servers() -- close servers launched within neovim
@@ -166,8 +170,6 @@ local function setup_maps()
             vim.api.nvim_buf_delete(handle, { force = true })
         end)
 
-        -- close session tab
-        vim.cmd('tabclose ' .. dap.session().session_target_tab)
     end)
 
     utils.map('n', '<f4>', dapui.toggle)
@@ -198,9 +200,6 @@ local function terminate_session()
     close_internal_servers() -- close servers launched within neovim
     get_output_windows(true) -- set last output window active
 
-    -- close session tab
-    vim.cmd('tabclose ' .. dap.session().session_target_tab)
-
     utils.notify(string.format('[prog] %s', dap.session().config.program),
         'debug', { title = '[dap] session terminated', timeout = 500 }, true)
 end
@@ -209,6 +208,9 @@ end
 dap.listeners.after.event_initialized["dapui"] = start_session
 dap.listeners.before.event_terminated["dapui"] = terminate_session
 -- dap.listeners.before.event_exited["dapui"] = terminate_session
+
+dap.defaults.fallback.focus_terminal = false
+dap.defaults.fallback.terminal_win_cmd = '25split new'
 
 -- signs
 vim.fn.sign_define("DapStopped", { text = '=>', texthl = 'DiagnosticWarn', numhl = 'DiagnosticWarn' })

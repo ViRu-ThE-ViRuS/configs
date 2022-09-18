@@ -93,6 +93,7 @@ return require('packer').startup({
         use 'RRethy/nvim-base16'
         use 'bluz71/vim-nightfly-guicolors'
         use 'EdenEast/nightfox.nvim'
+        use 'sam4llis/nvim-tundra'
         use 'marko-cerovac/material.nvim'
         use 'bluz71/vim-moonfly-colors'
         use 'sainnhe/gruvbox-material'
@@ -120,3 +121,4 @@ return require('packer').startup({
         display = { prompt_border = 'single' }
     }
 })
+

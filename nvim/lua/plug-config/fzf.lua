@@ -13,7 +13,7 @@ fzf.setup({
         split = 'belowright new',
         fullscreen = false,
         preview = {
-            -- default = 'bat',
+            default = 'bat',
             horizontal = 'right:50%',
             vertical = 'up:50%',
             scrollbar = false
@@ -83,7 +83,7 @@ fzf.setup({
         }
     },
     buffers = {
-        previewer = 'builtin',
+        previewer = 'bat',
         actions = {
             ['ctrl-d'] = { actions.buf_del, actions.resume },
             ['ctrl-x'] = actions.buf_split,
@@ -92,7 +92,7 @@ fzf.setup({
     },
     files = { rg_opts = '--files' .. default_rg_options, },
     blines = {
-        previewer = 'builtin',
+        previewer = 'bat',
         actions = { ['ctrl-q'] = actions.buf_sel_to_qf },
     },
     grep = {

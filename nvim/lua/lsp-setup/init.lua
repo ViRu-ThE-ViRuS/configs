@@ -59,9 +59,13 @@ lsp["sumneko_lua"].setup {
             runtime = {version = "LuaJIT", path = runtime_path},
             diagnostics = {globals = {"vim", "use", "packer_plugins"}},
             telemetry = {enable = false},
-            workspace = {library =
-                vim.api.nvim_get_runtime_file('', true),
-                vim.fn.stdpath('config'),
+            workspace = {
+                library = {
+                    vim.api.nvim_get_runtime_file('', true),
+                    -- { vim.fn.stdpath('config') },
+                },
+                maxPreload = 1000,
+                preloadFileSize = 150
             }
         }
     },

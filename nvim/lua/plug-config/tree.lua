@@ -21,6 +21,7 @@ require('nvim-tree').setup({
                 { key = "<c-v>", action = "vsplit" },
                 { key = "<c-x>", action = "split" },
                 { key = "<bs>", action = "close_node" },
+                { key = "J", action = "parent_node" },
                 { key = "[c", action = "prev_git_item" },
                 { key = "]c", action = "next_git_item" },
                 { key = "I", action = "toggle_dotfiles" },
@@ -34,7 +35,7 @@ require('nvim-tree').setup({
                 { key = "<leader>d", action = "remove" },
                 { key = "<leader>r", action = "rename" },
                 { key = "OO", action = "open_in_finder", action_cb = open_in_finder },
-                { key = "<leader>Q", action = "<nop>" }
+                { key = "<leader>Q", action = "<nop>" },
             }
         }
     },
