@@ -27,7 +27,7 @@ set -g status-right '#[fg=#999999]{#[fg=#10c891,bold]vir#[fg=#999999]@#(whoami)}
 
 # background window tab
 set-window-option -g window-status-style none
-set-window-option -g window-status-format '#[fg=#999999,bg=#383838] #W #[default]'
+set-window-option -g window-status-format '#[fg=#999999,bg=#383838] #{window_id}_#W #[default]'
 
 # foreground window tab
 set-window-option -g window-status-current-style none

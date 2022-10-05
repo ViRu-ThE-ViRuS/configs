@@ -5,7 +5,7 @@ local actions = fzf.actions
 
 local default_rg_options = ' --hidden --follow --no-heading --smart-case --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build,*.dSYM,tags}"'
 
--- TODO(vir): silent this out
+-- fzf.deregister_ui_select()
 fzf.register_ui_select()
 
 fzf.setup({
@@ -135,10 +135,12 @@ utils.map("n", "<c-p>b", fzf.buffers)
 utils.map("n", "<c-p>ss", fzf.grep_cword)
 utils.map("n", "<c-p>sl", fzf.blines)
 utils.map("n", "<c-p>sz", function() fzf.grep({ search = 'TODO|NOTE', no_esc = true }) end)
+utils.map("v", "<c-p>ss", fzf.grep_visual)
 
 -- ctags interaction
 utils.map("n", "<c-p>sP", fzf.tags_grep_cword)
 utils.map("n", "<c-p>sp", function() fzf.tags_live_grep({ exec_empty_query = true }) end)
+utils.map("v", "<c-p>sp", fzf.tags_grep_visual)
 
 utils.map("n", "<f10>", function()
     require('plenary').Job:new({

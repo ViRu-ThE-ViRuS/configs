@@ -6,7 +6,7 @@ require('nvim-treesitter.configs').setup {
         'make', 'cuda', 'markdown', 'rust', 'vim'
     },
 
-    indent = {enable = true, disable={'python', 'c', 'cpp'}},
+    indent = {enable = true}, -- disable={'python', 'c', 'cpp'}},
     highlight = {enable = true, additional_vim_regex_highlighting = false},
     matchup = {enable = true, disable_virtual_text = true},
     yati = {enable = true},
@@ -14,10 +14,10 @@ require('nvim-treesitter.configs').setup {
     incremental_selection = {
         enable = true,
         keymaps = {
-            init_selection = 'ge=',
-            node_incremental = 'ge=',
-            node_decremental = 'ge-',
-            scope_incremental = 'ge+'
+            init_selection = '<m-=>',
+            node_incremental = '<m-=>',
+            node_decremental = '<m-->',
+            -- scope_incremental = '<m-0>'
         }
     },
 

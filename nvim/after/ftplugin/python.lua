@@ -1,6 +1,11 @@
 local terminal = require("terminal")
 local utils = require('utils')
 
+-- options
+vim.opt_local.shiftwidth = 4
+vim.opt_local.tabstop = 4
+vim.opt_local.softtabstop = 4
+
 local repl_session = {
     job_id = nil,
     bufnr = nil

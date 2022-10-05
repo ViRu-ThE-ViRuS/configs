@@ -151,7 +151,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd([[ colorscheme oxocarbon-lua ]])
+vim.cmd([[ colorscheme rose-pine ]])
 ui_overrides()
 
 return {

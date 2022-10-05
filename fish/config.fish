@@ -1,4 +1,5 @@
-alias vim='nvim'
+# vim:  commentstring=#%s
+alias vim='SUDO_ASKPASS=~/.config/system/pw.sh nvim'
 alias rmd='rm -rf'
 alias cat='bat --theme=Coldark-Dark'
 
@@ -12,11 +13,11 @@ set FZF_DEFAULT_OPTS        '--reverse --height 50%'
 set FZF_CTRL_T_COMMAND      $FZF_DEFAULT_COMMAND
 set FZF_CTRL_T_OPTS         '--preview "bat --style=numbers,changes --color always --theme Coldark-Dark --line-range :500 {}"'
 
-# macos
+# macos : viraat-t2t
 set fish_user_paths         $fish_user_paths "/opt/homebrew/bin/"
 set fish_user_paths         $fish_user_paths "/opt/homebrew/opt/llvm/bin"
 set fish_user_paths         $fish_user_paths "/Users/viraat-chandra/Library/Python/3.8/bin"
-set -xg SUDO_ASKPASS        ~/.config/system/pw.sh
+# set -xg SUDO_ASKPASS        ~/.config/system/pw.sh # make this nvim specific
 
 # rust setup
 set -xg CARGO_HOME          ~/.rust/cargo/
@@ -24,8 +25,6 @@ set -xg RUSTUP_HOME         ~/.rust/rustup/
 set fish_user_paths         $fish_user_paths ~/.rust/cargo/bin/
 
 function setup_fish_colors
-    # set -U fish_greeting   Stars\x20\x3a\x29
-
     set -U fish_greeting              " Stars :)"
     set -U fish_color_command         eee8d5
     set -U fish_color_autosuggestion  586e75

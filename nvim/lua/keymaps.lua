@@ -15,8 +15,8 @@ utils.map({"n", "v"}, "X", '"_dd', {noremap=false})
 utils.map({"n", "v"}, "<a-bs>", '"_dh', {noremap=false})
 
 -- paste yanked
-utils.map({"n", "v"}, "-", '"0p=`]')
-utils.map({"n", "v"}, "_", '"0P=`]')
+utils.map({"n", "v"}, "0", '"0p=`]')
+utils.map({"n", "v"}, ")", '"0P=`]')
 
 -- misc
 utils.map("n", ";", ":")                                    -- swaperoo
@@ -117,3 +117,6 @@ utils.map("v", "<leader>cv", '<esc><cmd>lua require("terminal").run_selection(fa
 -- NOTE(vir): Tabular and Fugitive Config could not find a better place for these configs
 utils.map("v", "<leader>=", ":Tab /")
 utils.map("n", "<leader>gD", "<cmd>G! difftool<cr>")
+
+-- NOTE(vir): tricks
+--  cmd mode: <c-f> edit commands in vim mode

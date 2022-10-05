@@ -24,7 +24,7 @@ local function setup_formatting_keymaps(client, bufnr)
     end
 
     if client.server_capabilities.documentRangeFormattingProvider then
-        utils.map('v', '<c-f>', '<esc><cmd>lua vim.lsp.buf.range_formatting()<cr>', {silent = true}, bufnr)
+        utils.map('v', '<c-f>', function() vim.lsp.buf.format({async=true}) end, {silent = true}, bufnr)
     end
 end
 
@@ -41,6 +41,7 @@ end
 local function setup_options()
     vim.opt_local.omnifunc = 'v:lua.vim.lsp.omnifunc'
     vim.opt_local.formatoptions = "cqnjlr"
+    vim.opt_local.formatexpr = 'v:lua.vim.lsp.formatexpr()'
 end
 
 -- setup buffer autocommands
