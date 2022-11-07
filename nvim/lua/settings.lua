@@ -71,6 +71,7 @@ vim.opt.foldmethod = "marker" -- {{{ }}}
 vim.opt.signcolumn = "yes"
 vim.opt.wrap = false
 vim.opt.number = true
+-- vim.opt.relativenumber = true
 
 -- spellings
 vim.opt.spelllang = 'en_us'

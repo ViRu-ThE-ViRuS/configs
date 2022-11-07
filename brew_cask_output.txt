@@ -2,8 +2,6 @@ appcleaner
 discord
 google-drive
 kitty
-logitech-options
-macs-fan-control
 microsoft-teams
 nordvpn
 notion
@@ -15,3 +13,4 @@ typora
 vlc
 wireshark
 zoom
+zotero

@@ -2,6 +2,8 @@ local utils = require("utils")
 local terminal = require('terminal')
 local misc = require('lib/misc')
 
+-- NOTE(vir): <c-v> in insert mode, to get key code
+
 -- line navigation and movements
 utils.map("v", "<", "<gv")
 utils.map("v", ">", ">gv")
@@ -9,10 +11,10 @@ utils.map({"n", "v", "o"}, "H", "^")
 utils.map({"n", "v", "o"}, "L", "$")
 
 -- delete without yank
--- NOTE(vir): <c-v> in insert mode, to get key code
 utils.map({"n", "v"}, "x", '"_d', {noremap=false})
 utils.map({"n", "v"}, "X", '"_dd', {noremap=false})
 utils.map({"n", "v"}, "<a-bs>", '"_dh', {noremap=false})
+utils.map({"n", "v"}, "<c-bs>", '"_dl', {noremap=false})
 
 -- paste yanked
 utils.map({"n", "v"}, "0", '"0p=`]')
@@ -104,6 +106,12 @@ utils.map("t", "<c-h>", "<c-\\><c-w>h")
 utils.map("t", "<c-j>", "<c-\\><c-w>j")
 utils.map("t", "<c-k>", "<c-\\><c-w>k")
 utils.map("t", "<c-l>", "<c-\\><c-w>l")
+
+-- move lines
+-- utils.map('n', '<a-k>', ':move .-2<CR>==', { silent = true })
+-- utils.map('n', '<a-j>', ':move .+1<CR>==', { silent = true })
+utils.map('v', '<a-j>', ":move '>+1<CR>gv=gv", { silent = true })
+utils.map('v', '<a-k>', ":move '<-2<CR>gv=gv", { silent = true })
 
 -- terminal setup
 utils.map("n", "<leader>s", "<cmd>vsp term://" .. vim.o.shell .. "<cr>")

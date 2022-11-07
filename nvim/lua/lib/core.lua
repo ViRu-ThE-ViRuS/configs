@@ -53,9 +53,9 @@ local function lua_systemlist(cmd)
         for line in handle:lines() do stdout[#stdout + 1] = line end
         rc = tonumber(stdout[#stdout])
         stdout[#stdout] = nil
+        handle:close()
     end
 
-    handle:close()
     return stdout, rc
 end
 

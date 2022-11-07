@@ -20,7 +20,7 @@ local on_attach = function(client, bufnr)
     setup_buffer.setup_highlights()
 end
 
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 capabilities.offsetEncoding = {'utf-16'}
 
 -- pyright setup
@@ -88,6 +88,7 @@ null_ls.setup({
         null_ls.builtins.formatting.prettier.with({filetypes={'markdown'}}),
         null_ls.builtins.completion.spell.with({filetypes={'text', 'markdown'}}),
         null_ls.builtins.hover.dictionary.with({filetypes={'text', 'markdown'}}),
+        null_ls.builtins.diagnostics.cppcheck
     },
     capabilities = capabilities,
     on_attach = function(client, bufnr)

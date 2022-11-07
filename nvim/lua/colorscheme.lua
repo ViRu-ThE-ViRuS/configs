@@ -27,16 +27,34 @@ vim.g.substrata_italic_booleans = true
 vim.g.substrata_italic_functions = true
 vim.g.substrata_variant = "default"
 
+vim.g.barstrata_italic_keywords = true
+vim.g.barstrata_italic_booleans = true
+vim.g.barstrata_italic_functions = true
+vim.g.barstrata_variant = "default"
+
 vim.g.rasmus_italic_keywords = true
 vim.g.rasmus_italic_booleans = true
 vim.g.rasmus_italic_functions = true
+
+vim.g.mellow_italic_keywords = true
+vim.g.mellow_italic_booleans = true
+vim.g.mellow_italic_functions = true
+vim.g.mellow_bold_functions = true
+vim.g.mellow_bold_comments = true
+
+vim.g.oh_lucy_italic_keywords = true
+vim.g.oh_lucy_italic_booleans = true
+vim.g.oh_lucy_italic_functions = true
+vim.g.oh_lucy_evening_italic_keywords = true
+vim.g.oh_lucy_evening_italic_booleans = true
+vim.g.oh_lucy_evening_italic_functions = true
 
 vim.g.tempus_enforce_background_color = 1
 vim.g.embark_terminal_italics = 1
 vim.g.gruvbox_baby_background_color = "medium"
 vim.g.vscode_style = "dark"
 vim.g.material_style = "oceanic"
-vim.g.catppuccin_flavor = "macchiato"
+vim.g.catppuccin_flavour = "mocha"
 
 -- {{{ material
 -- require('material').setup({
@@ -66,11 +84,6 @@ vim.g.catppuccin_flavor = "macchiato"
 -- require("catppuccin").setup({
 -- 	term_colors = true,
 -- 	transparent_background = false,
--- 	-- compile = {
--- 	--     enabled = true,
--- 	--     path = vim.fn.stdpath("cache") .. "/catppuccin",
--- 	--     suffix = "_compiled",
--- 	-- },
 -- 	styles = {
 -- 		comments = { "bold", "italic" },
 -- 		functions = { "bold", "italic" },
@@ -127,11 +140,15 @@ local function ui_overrides()
         highlight! link LspReferenceWrite IncSearch
         highlight! clear LspReferenceText
 
-        " diagnostic
+        " diagnostics
         highlight! DiagnosticError guibg=NONE
         highlight! DiagnosticWarn guibg=NONE
         highlight! DiagnosticInfo guibg=NONE
         highlight! DiagnosticHint guibg=NONE
+        highlight! DiagnosticUnderlineError gui=bold,underline
+        highlight! DiagnosticUnderlineWarn gui=bold,underline
+        highlight! DiagnosticUnderlineInfo gui=bold,underline
+        highlight! DiagnosticUnderlineHint gui=bold,underline
 
         " gitsigns
         highlight! link GitSignsAdd GitGutterAdd
@@ -151,13 +168,13 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd([[ colorscheme rose-pine ]])
+vim.cmd([[ colorscheme oh-lucy-evening ]])
 ui_overrides()
 
 return {
 	preferred = {
 		"nightfly",
-		"nightfox", "duskfox", "nordfox", "terafox",
+		"nightfox", "duskfox", "nordfox", "terafox", "carbonfox",
         "tundra",
 		"material",
 		"moonfly",
@@ -165,12 +182,15 @@ return {
 		"gruvbox-baby",
 		"blue-moon",
 		"catppuccin",
+        "mellow",
         "oxocarbon-lua",
 		"rasmus",
 		"adwaita",
 		"everforest",
 		"vscode",
+        "oh-lucy", "oh-lucy-evening",
 		"rose-pine",
+        "barstrata",
 		"substrata",
 		"monokai", "monokai_pro", "monokai_ristretto",
 		"habamax",
@@ -179,8 +199,9 @@ return {
 		"mountain",
 		"tempus_tempest", "tempus_spring",
 		"base16-apprentice", "base16-ashes",
-		"base16-black-metal-burzum", "base16-grayscale-dark",
-        "base16-black-metal-dark-funeral", "base16-oceanicnext",
+        "base16-gruvbox-dark-hard", "base16-black-metal-burzum",
+        "base16-grayscale-dark", "base16-black-metal-dark-funeral",
+        "base16-oceanicnext",
         "default",
 
 		-- NOTE(vir): light themes. Yes, sometimes, i like light themes, they

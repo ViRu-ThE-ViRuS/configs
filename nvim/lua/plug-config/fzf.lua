@@ -60,6 +60,10 @@ fzf.setup({
             ['ctrl-o'] = 'end-of-line',
             ['ctrl-d'] = 'abort',
             -- ['ctrl-i'] = 'clear-query'
+
+            -- preview (bat)
+            ['shift-down'] = 'preview-page-down',
+            ['shift-up'] = 'preview-page-up'
         }
     },
     actions = {
@@ -67,12 +71,15 @@ fzf.setup({
             ['default'] = actions.file_edit,
             ['ctrl-x'] = actions.file_split,
             ['ctrl-v'] = actions.file_vsplit,
+            ['ctrl-t'] = actions.file_tabedit,
             ['ctrl-q'] = actions.file_sel_to_qf
         },
         buffers = {
             ['default'] = actions.buf_edit,
             ['ctrl-x'] = actions.buf_split,
-            ['ctrl-v'] = actions.buf_vsplit
+            ['ctrl-v'] = actions.buf_vsplit,
+            ['ctrl-t'] = actions.buf_tabedit,
+            ['ctrl-q'] = actions.buf_sel_to_qf
         }
     },
     previewers = {
@@ -86,32 +93,25 @@ fzf.setup({
         previewer = 'bat',
         actions = {
             ['ctrl-d'] = { actions.buf_del, actions.resume },
-            ['ctrl-x'] = actions.buf_split,
-            ['ctrl-q'] = false
+            ['ctrl-x'] = actions.buf_split,         -- disable default
+            ['ctrl-q'] = false                      -- disable default
         }
     },
-    files = { rg_opts = '--files' .. default_rg_options, },
+    files = { rg_opts = '--files' .. default_rg_options },
     blines = {
         previewer = 'bat',
-        actions = { ['ctrl-q'] = actions.buf_sel_to_qf },
+        actions = { ['ctrl-q'] = actions.buf_sel_to_qf }
     },
     grep = {
-        rg_opts = "--column --color=always" .. default_rg_options,
         rg_glob = true,
-        actions = {
-            ['ctrl-q'] = actions.file_sel_to_qf,
-            ['ctrl-g'] = actions.grep_lgrep,
-        },
+        rg_opts = "--column --color=always" .. default_rg_options,
+        actions = { ['ctrl-g'] = actions.grep_lgrep }
     },
     tags = {
         previewer = 'bat',
-        actions = {
-            ['ctrl-q'] = actions.file_sel_to_qf,
-            ['ctrl-g'] = actions.grep_lgrep,
-        }
+        actions = { ['ctrl-g'] = actions.grep_lgrep }
     },
     lsp = {
-        actions = { ['ctrl-q'] = actions.file_sel_to_qf },
         continue_last_search = false,
         icons = {
             ['Error'] = { icon = utils.symbol_config.indicator_error, color = 'red' },
@@ -131,6 +131,7 @@ else
 end
 
 utils.map("n", "<c-p>f", function() fzf.live_grep({ exec_empty_query = true }) end)
+utils.map("n", "<c-p>F", function() fzf.live_grep({ continue_last_search = true }) end)
 utils.map("n", "<c-p>b", fzf.buffers)
 utils.map("n", "<c-p>ss", fzf.grep_cword)
 utils.map("n", "<c-p>sl", fzf.blines)
@@ -156,8 +157,9 @@ end)
 utils.map("n", "<m-cr>", fzf.lsp_code_actions)
 utils.map("n", "<leader>us", fzf.lsp_references)
 utils.map("n", "<leader>ud", fzf.lsp_document_symbols)
-utils.map("n", "<leader>uw", fzf.lsp_live_workspace_symbols)
+utils.map("n", "<leader>uD", fzf.lsp_live_workspace_symbols)
 utils.map("n", "<leader>d", function() fzf.lsp_definitions({ sync = true, jump_to_single_result = true }) end)
+utils.map("n", "<leader>D", function() fzf.lsp_definitions({ sync = true, jump_to_single_result = true, jump_to_single_result_action = actions.file_vsplit }) end)
 
 vim.api.nvim_create_user_command('Colors', fzf.colorschemes, {
     bang = false,

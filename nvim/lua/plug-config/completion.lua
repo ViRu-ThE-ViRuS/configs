@@ -12,9 +12,12 @@ cmp.setup({
     },
     mapping = {
         ["<c-space>"] = cmp.mapping.complete(),
-        ["<c-e>"] = cmp.mapping.close(),
         ["<c-n>"] = cmp.mapping(cmp.mapping.select_next_item(), {"i"}),
         ["<c-p>"] = cmp.mapping(cmp.mapping.select_prev_item(), {"i"}),
+
+        ["<c-e>"] = cmp.mapping.abort(),
+        ["<c-b>"] = cmp.mapping.scroll_docs(-4),
+        ["<c-f>"] = cmp.mapping.scroll_docs(4),
         ["<cr>"] = cmp.mapping.confirm({
             behavior = cmp.ConfirmBehavior.Replace,
             select = false,
@@ -81,7 +84,7 @@ cmp.setup.cmdline(":", {
     mapping = cmp.mapping.preset.cmdline({}),
     sources = {{name="path"}, {name="cmdline", keyword_length=2}}
 })
-cmp.setup.cmdline("/", {
+cmp.setup.cmdline({"/", "?"}, {
     mapping = cmp.mapping.preset.cmdline({}),
     sources = {{name="buffer"}}
 })

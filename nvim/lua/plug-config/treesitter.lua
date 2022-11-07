@@ -3,11 +3,13 @@ local utils = require("utils")
 require('nvim-treesitter.configs').setup {
     ensure_installed = {
         'lua', 'python', 'c', 'cpp', 'java', 'go', 'bash', 'fish', 'cmake',
-        'make', 'cuda', 'markdown', 'rust', 'vim'
+        'make', 'cuda', 'rust', 'vim', 'markdown'
     },
 
-    indent = {enable = true}, -- disable={'python', 'c', 'cpp'}},
-    highlight = {enable = true, additional_vim_regex_highlighting = false},
+    -- indent = {enable = true},
+    indent = {enable = true, disable={'python', 'c', 'cpp', 'lua'}},
+
+    highlight = {enable = true, additional_vim_regex_highlighting = {'markdown'}},
     matchup = {enable = true, disable_virtual_text = true},
     yati = {enable = true},
 
@@ -35,10 +37,7 @@ require('nvim-treesitter.configs').setup {
         move = {
             enable = true,
             set_jumps = true,
-
-            -- NOTE(vir): doing this manually below
-            -- goto_previous_start = { ['[f'] = '@function.outer' },
-            -- goto_next_start = { [']f'] = '@function.outer' }
+            -- NOTE(vir): remaps done manually below
         }
     },
 
@@ -54,10 +53,8 @@ require('nvim-treesitter.configs').setup {
 -- text-subjects : move + center
 utils.map('n', ']f', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@function.outer")<CR>zz')
 utils.map('n', '[f', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@function.outer")<CR>zz')
-
--- treesitter api updates
-local ts_utils = require("nvim-treesitter.ts_utils")
-ts_utils.get_node_text = vim.treesitter.query.get_node_text
+utils.map('n', ']F', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@block.outer")<CR>zz')
+utils.map('n', '[F', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@block.outer")<CR>zz')
 
 -- NOTE(vir): related plugin setup
 -- vim-matchup
