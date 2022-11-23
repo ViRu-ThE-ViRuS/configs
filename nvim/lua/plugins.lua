@@ -27,8 +27,12 @@ return require('packer').startup({
             requires = {
                 { 'nvim-treesitter/nvim-treesitter-textobjects', after = 'nvim-treesitter' },
                 { 'RRethy/nvim-treesitter-textsubjects', after = 'nvim-treesitter' },
+                { 'JoosepAlviste/nvim-ts-context-commentstring', after = 'nvim-treesitter' },
                 { 'yioneko/nvim-yati', after = 'nvim-treesitter' },
                 { 'andymass/vim-matchup', after = 'nvim-treesitter-textsubjects' },
+
+                -- TODO(vir): do i need this
+                { 'Dkendal/nvim-treeclimber', after = 'nvim-treesitter', config='require("plug-config/treeclimber")' },
             },
             run = ':TSUpdate',
             after = 'vim-sandwich',
@@ -55,7 +59,8 @@ return require('packer').startup({
                 { 'lukas-reineke/cmp-rg', after = 'nvim-cmp' },
                 { 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
                 { 'hrsh7th/cmp-path', after = 'nvim-cmp' },
-                { 'hrsh7th/cmp-cmdline', after = 'nvim-cmp' }
+                { 'hrsh7th/cmp-cmdline', after = 'nvim-cmp' },
+                -- { 'hrsh7th/cmp-nvim-lsp-signature-help', after = 'nvim-cmp' },
             },
             after = { 'cmp-nvim-lsp', 'lspkind-nvim' },
             config = "require('plug-config/completion')"
@@ -73,8 +78,12 @@ return require('packer').startup({
 
         use {
             'mfussenegger/nvim-dap',
-            requires = { { 'rcarriga/nvim-dap-ui', ft = { 'c', 'cpp', 'python' } } },
-            after = 'nvim-dap-ui',
+            requires = {
+                { 'rcarriga/nvim-dap-ui', ft = { 'c', 'cpp', 'python', 'rust', 'javascript' } },
+                { 'theHamsta/nvim-dap-virtual-text', ft = { 'c', 'cpp', 'python', 'rust', 'javascript' } },
+                { 'mxsdev/nvim-dap-vscode-js', ft = 'javascript' }
+            },
+            after = { 'nvim-dap-ui', 'nvim-dap-virtual-text' },
             config = 'require("plug-config/dap")'
         }
 
@@ -90,7 +99,6 @@ return require('packer').startup({
         --     config = 'require("plug-config/iron")'
         -- }
 
-        use 'RRethy/nvim-base16'
         use 'bluz71/vim-nightfly-guicolors'
         use 'EdenEast/nightfox.nvim'
         use 'sam4llis/nvim-tundra'
@@ -98,10 +106,9 @@ return require('packer').startup({
         use 'bluz71/vim-moonfly-colors'
         use 'sainnhe/gruvbox-material'
         use 'luisiacc/gruvbox-baby'
-        use 'kyazdani42/blue-moon'
         use 'catppuccin/nvim'
-        use 'B4mbus/oxocarbon-lua.nvim'
         use 'kvrohit/mellow.nvim'
+        use 'B4mbus/oxocarbon-lua.nvim'
         use 'kvrohit/rasmus.nvim'
         use 'Mofiqul/adwaita.nvim'
         use 'sainnhe/everforest'
@@ -111,10 +118,10 @@ return require('packer').startup({
         use 'w3barsi/barstrata.nvim'
         use 'kvrohit/substrata.nvim'
         use 'tanvirtin/monokai.nvim'
-        use 'habamax/vim-habamax'
-        use 'embark-theme/vim'
-        use 'nanotech/jellybeans.vim'
         use 'thepogsupreme/mountain.nvim'
+        use 'habamax/vim-habamax'
+        use 'chiendo97/intellij.vim'
+        use 'JaySandhu/xcode-vim'
         use 'https://gitlab.com/protesilaos/tempus-themes-vim.git'
 
         use { 'tweekmonster/startuptime.vim', cmd = 'StartupTime' }

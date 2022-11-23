@@ -137,20 +137,27 @@ local function update_context()
     if not symbols or #symbols < 1 then return end
 
     local hovered_line = vim.api.nvim_win_get_cursor(0)
+    local contexts = {}
+
     for position = #symbols, 1, -1 do
         local current = symbols[position]
 
         if current.range and in_range(hovered_line, current.range) then
-            utils.tag_state.context[bufnr] = {
-                kind = current.kind,
-                name = current.name,
-                detail = current.detail,
-                icon = lsp_icons[current.kind].icon,
-                iconhl = lsp_icons[current.kind].hl
-            }
-
-            return
+            table.insert(contexts, {
+                    kind = current.kind,
+                    name = current.name,
+                    detail = current.detail,
+                    range = current.range,
+                    icon = lsp_icons[current.kind].icon,
+                    iconhl = lsp_icons[current.kind].hl
+            })
         end
+    end
+
+    if #contexts > 0 then
+        table.sort(contexts, function(a, b) return a.range['end'].line > b.range['end'].line or b.range['end'].character > b.range['end'].character end)
+        utils.tag_state.context[bufnr] = contexts
+        return
     end
 
     utils.tag_state.context[bufnr] = nil

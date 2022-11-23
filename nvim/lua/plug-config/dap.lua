@@ -22,12 +22,18 @@ dap.adapters.codelldb = function(callback, _)
     end)
 end
 
+require('dap-vscode-js').setup({
+    adapters = {'pwa-node'},
+    debugger_path = core.get_homedir() .. '/.local/vscode-js-debug',
+})
+
 -- language configurations
 dap.configurations.python = {
     {
         type = 'python',
         request = 'launch',
         program = '${file}',
+        cwd = '${workspaceFolder}',
         terminal = 'console',
         console = 'integratedTerminal',
         pythonPath = core.get_python()
@@ -49,6 +55,16 @@ dap.configurations.c = {
 }
 dap.configurations.cpp = dap.configurations.c
 dap.configurations.rust = dap.configurations.cpp
+
+dap.configurations.javascript = {
+    {
+        type = 'pwa-node',
+        request = 'launch',
+        program = '${file}',
+        sourceMaps = true,
+        cwd = '${workspaceFolder}'
+    }
+}
 
 -- repl setup
 dap.repl.commands = vim.tbl_extend('force', dap.repl.commands, {
@@ -78,42 +94,59 @@ dapui.setup({
         },
         {
             elements = { "repl", "watches" },
-            size = 25,
+            size = 10,
             position = "bottom",
         },
     },
+    controls = { enabled = false },
     floating = { border = "rounded", mappings = { close = { "q", "<esc>", "<c-o>" } } },
 })
 
--- get handles of output windows
-local function get_output_windows(activate_last)
-    local target_regex = vim.regex('\\v^.*/python3|codelldb$')
-    local handles = {}
+-- virtual text setup
+require('nvim-dap-virtual-text').setup({})
 
+-- get handles of output windows
+local function get_output_windows(session, activate_last)
+    local target_handle = nil
+    local target_regex = nil
+
+    if session.config.type == 'pwa-node' then
+        target_regex = vim.regex('\\v^.*/.*dap-repl.*$')
+        dap.repl.open()
+    else
+        target_regex = vim.regex('\\v^.*/python3|codelldb$')
+    end
+
+    -- get buffer handle for output window
     for _, handle in ipairs(vim.api.nvim_list_bufs()) do
         if target_regex:match_str(vim.api.nvim_buf_get_name(handle)) and
             vim.api.nvim_buf_is_loaded(handle) then
-            table.insert(handles, handle)
+            target_handle =  handle
+            break
         end
     end
 
     -- make last output buffer active, if visible
-    if activate_last and handles[#handles] then
-        local windows = vim.fn.win_findbuf(handles[#handles])
-
-        if windows[#windows] then
-            vim.api.nvim_buf_set_option(handles[#handles], 'bufhidden', 'delete')
-            utils.map('n', '<c-o>', function()
-                vim.cmd [[
-                    q
+    if activate_last and target_handle then
+        vim.api.nvim_buf_set_option(target_handle, 'bufhidden', 'delete')
+        utils.map('n', '<c-o>', function()
+            vim.cmd [[
+                    q!
                     tabclose
                 ]]
-            end, {}, handles[#handles])
+        end, {}, target_handle)
+
+        local windows = vim.fn.win_findbuf(target_handle)
+        if windows[#windows] then
+            -- activate it if visible
             vim.fn.win_gotoid(windows[#windows])
+        else
+            -- split it otherwise
+            vim.cmd('25split #' .. target_handle)
         end
     end
 
-    return handles
+    return target_handle
 end
 
 -- close servers launched within neovim
@@ -131,7 +164,6 @@ end
 
 -- remove debugging keymaps
 local function remove_maps()
-    utils.unmap('n', '<m-d>B')
     utils.unmap({ 'n', 'v' }, '<m-d>k')
     utils.unmap('n', '<m-1>')
     utils.unmap('n', '<m-2>')
@@ -142,11 +174,6 @@ end
 
 -- setup debugging keymaps
 local function setup_maps()
-    utils.map('n', '<m-d>B', function()
-        local condition = vim.fn.input('breakpoint condition: ')
-        if condition then dap.set_breakpoint(condition) end
-    end)
-
     utils.map({ 'n', 'v' }, '<m-d>k', dapui.eval)
     utils.map('n', '<m-1>', dap.step_over)
     utils.map('n', '<m-2>', dap.step_into)
@@ -160,7 +187,7 @@ local function setup_maps()
         dap.repl.close()
 
         -- close session tab
-        vim.cmd('tabclose ' .. dap.session().session_target_tab)
+        vim.cmd('silent! tabclose ' .. dap.session().session_target_tab)
         dap.close()
 
         close_internal_servers() -- close servers launched within neovim
@@ -169,16 +196,15 @@ local function setup_maps()
         core.foreach(get_output_windows(), function(handle)
             vim.api.nvim_buf_delete(handle, { force = true })
         end)
-
     end)
 
     utils.map('n', '<f4>', dapui.toggle)
 end
 
 -- start session: setup keymaps, open dapui
-local function start_session()
-    -- set session tab
-    dap.session().session_target_tab = vim.fn.tabpagenr()
+local function start_session(session, _)
+    if session.config.program == nil then return end
+    session.session_target_tab = vim.fn.tabpagenr()
 
     setup_maps()
     dapui.open()
@@ -186,31 +212,41 @@ local function start_session()
     -- force local statusline
     require('lib/misc').toggle_global_statusline(true)
 
-    utils.notify(string.format('[prog] %s', dap.session().config.program),
+    utils.notify(string.format('[prog] %s', session.config.program),
         'debug', { title = '[dap] session started', timeout = 500 }, true)
 end
 
 -- terminate session: remove keymaps, close dapui, close dap repl,
 -- close internal_servers, set last output buffer active
-local function terminate_session()
+local function terminate_session(session, _)
+    if session.config.program == nil then return end
+
     remove_maps()
     dapui.close()
     dap.repl.close()
 
     close_internal_servers() -- close servers launched within neovim
-    get_output_windows(true) -- set last output window active
+    get_output_windows(session, true) -- set last output window active
 
-    utils.notify(string.format('[prog] %s', dap.session().config.program),
+    utils.notify(string.format('[prog] %s', session.config.program),
         'debug', { title = '[dap] session terminated', timeout = 500 }, true)
 end
 
 -- dap events
-dap.listeners.after.event_initialized["dapui"] = start_session
+dap.listeners.before.event_initialized["dapui"] = start_session
 dap.listeners.before.event_terminated["dapui"] = terminate_session
--- dap.listeners.before.event_exited["dapui"] = terminate_session
+dap.listeners.before.event_exited["dapui"] = terminate_session
 
 dap.defaults.fallback.focus_terminal = false
-dap.defaults.fallback.terminal_win_cmd = '25split new'
+dap.defaults.fallback.terminal_win_cmd = '10split new'
+
+-- autocmds
+vim.api.nvim_create_augroup('DAPConfig', { clear = true })
+vim.api.nvim_create_autocmd('FileType', {
+    group = 'DAPConfig',
+    pattern = 'dap-repl',
+    callback = function() require('dap.ext.autocompl').attach() end
+})
 
 -- signs
 vim.fn.sign_define("DapStopped", { text = '=>', texthl = 'DiagnosticWarn', numhl = 'DiagnosticWarn' })
@@ -221,6 +257,11 @@ vim.fn.sign_define("DapLogPoint", { text = '.>', texthl = 'DiagnosticInfo', numh
 
 -- general keymaps
 utils.map('n', '<m-d>b', dap.toggle_breakpoint)
+utils.map('n', '<m-d>B', function()
+    local condition = vim.fn.input('breakpoint condition: ')
+    if condition then dap.set_breakpoint(condition) end
+end)
+
 utils.map('n', '<f5>', function()
     -- create session tab if needed
     if dap.session() == nil then

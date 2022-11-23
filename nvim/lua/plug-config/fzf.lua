@@ -3,7 +3,7 @@ local misc = require('lib/misc')
 local fzf = require('fzf-lua')
 local actions = fzf.actions
 
-local default_rg_options = ' --hidden --follow --no-heading --smart-case --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build,*.dSYM,tags}"'
+local default_rg_options = ' --hidden --follow --no-heading --smart-case --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build,*.dSYM,tags,node_modules,Pods}"'
 
 -- fzf.deregister_ui_select()
 fzf.register_ui_select()
@@ -13,7 +13,7 @@ fzf.setup({
         split = 'belowright new',
         fullscreen = false,
         preview = {
-            default = 'bat',
+            -- default = 'bat',
             horizontal = 'right:50%',
             vertical = 'up:50%',
             scrollbar = false

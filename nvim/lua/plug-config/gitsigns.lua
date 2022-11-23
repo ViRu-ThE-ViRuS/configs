@@ -15,17 +15,21 @@ require('gitsigns').setup {
     preview_config = {border = 'rounded'},
     on_attach = function(bufnr)
         -- hunk navigation
-        utils.map('n', ']c', function()
-            if vim.wo.diff then return ']c' end
-            vim.schedule(gitsigns.next_hunk)
-            return '<Ignore>'
-        end, {expr = true, silent = true}, bufnr)
+        utils.map('n', '[c', gitsigns.prev_hunk, { silent = true }, bufnr)
+        utils.map('n', ']c', gitsigns.next_hunk, { silent = true }, bufnr)
 
-        utils.map('n', '[c', function()
-            if vim.wo.diff then return '[c' end
-            vim.schedule(gitsigns.prev_hunk)
-            return '<Ignore>'
-        end, {expr = true, silent = true}, bufnr)
+        -- NOTE(vir): what are these for?
+        -- utils.map('n', ']c', function()
+        --     if vim.wo.diff then return ']c' end
+        --     vim.schedule(gitsigns.next_hunk)
+        --     return '<Ignore>'
+        -- end, {expr = true, silent = true}, bufnr)
+
+        -- utils.map('n', '[c', function()
+        --     if vim.wo.diff then return '[c' end
+        --     vim.schedule(gitsigns.prev_hunk)
+        --     return '<Ignore>'
+        -- end, {expr = true, silent = true}, bufnr)
 
         -- git actions
         utils.map('n', '<leader>gp', gitsigns.preview_hunk, {silent = true}, bufnr)

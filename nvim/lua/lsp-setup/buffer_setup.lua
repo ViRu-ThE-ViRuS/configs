@@ -34,6 +34,14 @@ local function setup_independent_keymaps(client, bufnr)
         utils.map('n', '<f9>', '<cmd>ClangdSwitchSourceHeader<cr>', {}, bufnr)
     elseif client.name == 'pyright' then
         utils.map('n', '<f9>', '<cmd>PyrightOrganizeImports<cr>', {}, bufnr)
+    elseif client.name == 'tsserver' then
+        utils.map('n', '<f9>', function()
+            vim.lsp.buf.execute_command({
+                command = "_typescript.organizeImports",
+                arguments = { vim.api.nvim_buf_get_name(0) },
+                title = ""
+            })
+        end, {}, bufnr)
     end
 end
 
@@ -51,7 +59,7 @@ local function setup_autocmds(client, bufnr)
     vim.api.nvim_create_autocmd('CursorHold', { group = 'LspPopups', callback = vim.diagnostic.open_float, buffer = bufnr })
 
     if client.server_capabilities.documentHighlightProvider then
-        local group = vim.api.nvim_create_augroup('LspHighlights', { clear = false })
+        local group = vim.api.nvim_create_augroup('LspHighlights', { clear = true })
         vim.api.nvim_clear_autocmds({ buffer = bufnr, group = group })
 
         vim.api.nvim_create_autocmd('CursorHold', { group = group, callback = vim.lsp.buf.document_highlight, buffer = bufnr })
@@ -59,7 +67,7 @@ local function setup_autocmds(client, bufnr)
     end
 
     if client.server_capabilities.documentSymbolProvider then
-        local group = vim.api.nvim_create_augroup('LspStates', { clear = false })
+        local group = vim.api.nvim_create_augroup('LspStates', { clear = true })
 		vim.api.nvim_clear_autocmds({ buffer = bufnr, group = group })
 
         vim.api.nvim_create_autocmd({'InsertLeave', 'BufEnter', 'CursorHold'}, { group = group, callback = lsp_utils.update_tags, buffer = bufnr })

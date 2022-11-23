@@ -26,11 +26,10 @@ vim.opt.autowrite = false
 vim.opt.backup = false
 vim.opt.clipboard = "unnamed,unnamedplus"
 vim.opt.completeopt = "menu,menuone,noinsert"
-vim.opt.diffopt = "internal,filler,vertical"
+vim.opt.diffopt = "internal,filler,vertical,linematch:50"
 vim.opt.display = "lastline,msgsep"
 vim.opt.equalalways = true
 vim.opt.fillchars = vim.opt.fillchars + 'diff:╱' + 'fold: '
-vim.opt.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20'
 vim.opt.hidden = true
 vim.opt.history = 100
 vim.opt.hlsearch = false
@@ -61,6 +60,8 @@ vim.opt.updatetime = 1000
 vim.opt.visualbell = false
 vim.opt.wildmode = "full"
 vim.opt.writebackup = false
+vim.opt.guicursor = 'n-v-c-sm:block-Cursor,i-ci-ve:ver25-Cursor,r-cr-o:hor20-Cursor'
+-- vim.opt.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20' # old, does not work with light themes
 
 -- window local
 vim.opt.colorcolumn = "+1"

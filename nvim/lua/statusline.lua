@@ -1,4 +1,5 @@
 local utils = require('utils')
+local core = require('lib/core')
 local symbol_config = utils.symbol_config
 local colors = utils.statusline_colors
 
@@ -35,7 +36,12 @@ local function get_tagname()
     local bufnr = vim.fn.bufnr('%')
     if utils.tag_state.context[bufnr] == nil or truncate_statusline(true) then return '' end
 
-    return string.format("[ %s %s ] ", utils.tag_state.context[bufnr].icon, utils.tag_state.context[bufnr].name)
+    if truncate_statusline() then
+        return string.format("[ %s %s ] ", utils.tag_state.context[bufnr][1].icon, utils.tag_state.context[bufnr][1].name)
+    else
+        local context_tree = table.concat(core.foreach(utils.tag_state.context[bufnr], function(arg) return arg.icon .. ' ' .. arg.name end), " > ")
+        return string.format('[ %s ]', context_tree)
+    end
 end
 
 -- get current file name
@@ -95,15 +101,15 @@ end
 
 -- inactive statusline
 local function statusline_inactive()
-    local filename = colors.file .. get_filename()
-    local line_col = colors.line_col .. get_line_col()
-    local percentage = colors.percentage .. get_percentage()
-    local filetype = colors.filetype .. get_filetype()
+    local filename = colors.file .. ' %t '
+    local line_col = colors.line_col .. ' %l:%c '
+    local bufnr = colors.bufnr .. ' %n '
+    local filetype = colors.filetype .. ' %y '
 
     return table.concat({
         colors.active, filename, colors.inactive,
         '%=% ',
-        line_col, percentage, filetype, colors.inactive
+        line_col, bufnr, filetype, colors.inactive
     })
 end
 
@@ -134,7 +140,7 @@ StatusLine = function(mode)
 end
 
 -- generate inactive statusline
-StatusLineInactive = function() return statusline_inactive() end
+StatusLineInactive = statusline_inactive
 
 -- NOTE(vir): consider moving to lua
 vim.cmd [[

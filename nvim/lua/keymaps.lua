@@ -39,6 +39,8 @@ utils.map("n", "P", "P=`]")                                 -- autoformat Paste
 utils.map("n", "gp", "`[v`]")                               -- last paste
 utils.map({"n", "v"}, "<c-b>", "<nop>")                     -- disable <c-b>
 utils.map('v', '//', [[y/\V<c-r>=escape(@",'/\')<cr><cr>]]) -- search for selection
+utils.map('v', 'sS', [[:s/<c-r>//]])                        -- replace last search
+utils.map('v', '<m-/>', '<esc>/\\%V')                       -- search within selection
 
 -- disable command history modes
 utils.map({"n", "v"}, "q:", "<nop>")
@@ -128,3 +130,4 @@ utils.map("n", "<leader>gD", "<cmd>G! difftool<cr>")
 
 -- NOTE(vir): tricks
 --  cmd mode: <c-f> edit commands in vim mode
+--  normal: @: execute last command

@@ -3,14 +3,15 @@ local utils = require("utils")
 require('nvim-treesitter.configs').setup {
     ensure_installed = {
         'lua', 'python', 'c', 'cpp', 'java', 'go', 'bash', 'fish', 'cmake',
-        'make', 'cuda', 'rust', 'vim', 'markdown'
+        'make', 'cuda', 'rust', 'vim', 'markdown', 'javascript', 'typescript', 'tsx'
     },
 
     -- indent = {enable = true},
-    indent = {enable = true, disable={'python', 'c', 'cpp', 'lua'}},
+    indent = {enable = true, disable={'python', 'c', 'cpp', 'lua', 'javascript', 'javascriptreact', 'typescript', 'tsx'}},
 
     highlight = {enable = true, additional_vim_regex_highlighting = {'markdown'}},
     matchup = {enable = true, disable_virtual_text = true},
+    context_commentstring = {enable = true, enable_autocmd = false},
     yati = {enable = true},
 
     incremental_selection = {
@@ -50,11 +51,19 @@ require('nvim-treesitter.configs').setup {
     }
 }
 
+-- go to parent
+-- utils.map('n', '[[', function()
+--     local ts = require('nvim-treesitter/ts_utils')
+--     ts.goto_node(ts.get_node_at_cursor(0):parent())
+-- end)
+
 -- text-subjects : move + center
+utils.map('n', ']F', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@class.outer")<CR>zz')
+utils.map('n', '[F', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@class.outer")<CR>zz')
 utils.map('n', ']f', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@function.outer")<CR>zz')
 utils.map('n', '[f', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@function.outer")<CR>zz')
-utils.map('n', ']F', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@block.outer")<CR>zz')
-utils.map('n', '[F', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@block.outer")<CR>zz')
+utils.map('n', ']]', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@block.outer")<CR>zz')
+utils.map('n', '[[', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@block.outer")<CR>zz')
 
 -- NOTE(vir): related plugin setup
 -- vim-matchup

@@ -39,8 +39,8 @@ require("diffview").setup({
 			["<leader>gh"] = actions.toggle_files,
 		},
 		file_history_panel = {
-			["zR"] = actions.open_all_folds,
-			["zM"] = actions.close_all_folds,
+			["zr"] = actions.open_all_folds,
+			["zm"] = actions.close_all_folds,
 
 			["]q"] = actions.select_next_entry,
 			["[q"] = actions.select_prev_entry,

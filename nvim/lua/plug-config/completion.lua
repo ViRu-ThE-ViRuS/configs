@@ -55,6 +55,7 @@ cmp.setup({
         {name = "luasnip"},
         {name = "path"},
         {name = 'rg', keyword_length = 4},
+        -- {name = 'nvim_lsp_signature_help'}
         -- {name = "buffer", keyword_length = 5}
     },
     experimental = {

@@ -8,11 +8,6 @@ require("lsp-setup/init")
 
 -- setup handlers and extensions
 require("lsp-setup/handlers")
-require("lsp_signature").setup({
-    doc_lines = 3,
-    hint_prefix = "<>",
-    handler_opts = {border = 'rounded'}
-})
 
 -- setup diagnostic
 require('diagnostic')

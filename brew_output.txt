@@ -5,6 +5,7 @@ c-ares
 ca-certificates
 clang-format
 cmake
+cocoapods
 cppcheck
 fish
 fzf
@@ -54,6 +55,7 @@ pcre2
 pkg-config
 readline
 ripgrep
+ruby
 rustup-init
 tinyxml2
 tmux

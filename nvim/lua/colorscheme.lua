@@ -120,21 +120,22 @@ vim.g.catppuccin_flavour = "mocha"
 -- {{{ overrides
 -- setup colorscheme overrides
 local function ui_overrides()
-	-- vim.highlight.create('Comment', {cterm = 'bold,italic', gui = 'bold,italic'}, false)
-	-- vim.highlight.create('LineNr', {cterm = 'NONE', gui = 'NONE'}, false)
+    -- vim.highlight.create('Comment', { cterm = 'bold,italic', gui = 'bold,italic' }, false)
+    -- vim.highlight.create('LineNr', { cterm = 'NONE', gui = 'NONE' }, false)
 
-	-- set normal if not set to trasparent
-	if vim.api.nvim_get_hl_by_name("Normal", true).background == nil then
-		vim.api.nvim_set_hl(0, "Normal", { background = 0x171717 })
-	end
+    -- set normal if not set to trasparent
+    if vim.api.nvim_get_hl_by_name("Normal", true).background == nil then
+        vim.api.nvim_set_hl(0, "Normal", { background = 0x171717 })
+    end
 
-	vim.opt.hlsearch = false
+    vim.opt.hlsearch = false
+    vim.opt.guicursor = 'n-v-c-sm:block-Cursor,i-ci-ve:ver25-Cursor,r-cr-o:hor20-Cursor'
 
-	-- TODO(vir): do this in lua
-	-- NOTE(vir): some colorschemes aint pretty with gitsigns
-	-- GitSign* highlights link to Diff* highlights for some reason despite
-	-- configuring them not to. Consider linking these only when in git repos?
-	vim.cmd([[
+    -- TODO(vir): do this in lua
+    -- NOTE(vir): some colorschemes aint pretty with gitsigns
+    -- GitSign* highlights link to Diff* highlights for some reason despite
+    -- configuring them not to. Consider linking these only when in git repos?
+    vim.cmd([[
         " lsp
         highlight! link LspReferenceRead IncSearch
         highlight! link LspReferenceWrite IncSearch
@@ -163,53 +164,51 @@ local function ui_overrides()
         highlight! link NormalFloat Normal
     ]])
 end
+
 -- }}}
 
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd([[ colorscheme oh-lucy-evening ]])
+vim.cmd [[ colorscheme mellow ]]
 ui_overrides()
 
 return {
-	preferred = {
-		"nightfly",
-		"nightfox", "duskfox", "nordfox", "terafox", "carbonfox",
+    preferred = {
+        "nightfly",
+        "nightfox", "duskfox", "nordfox", "terafox", "carbonfox",
         "tundra",
-		"material",
-		"moonfly",
-		"gruvbox-material",
-		"gruvbox-baby",
-		"blue-moon",
-		"catppuccin",
+        "material",
+        "moonfly",
+        "gruvbox-material",
+        "gruvbox-baby",
+        "catppuccin",
         "mellow",
         "oxocarbon-lua",
-		"rasmus",
-		"adwaita",
-		"everforest",
-		"vscode",
+        "rasmus",
+        "adwaita",
+        "everforest",
+        "vscode",
         "oh-lucy", "oh-lucy-evening",
-		"rose-pine",
+        "rose-pine",
         "barstrata",
-		"substrata",
-		"monokai", "monokai_pro", "monokai_ristretto",
-		"habamax",
-		"embark",
-		"jellybeans",
-		"mountain",
-		"tempus_tempest", "tempus_spring",
-		"base16-apprentice", "base16-ashes",
-        "base16-gruvbox-dark-hard", "base16-black-metal-burzum",
-        "base16-grayscale-dark", "base16-black-metal-dark-funeral",
-        "base16-oceanicnext",
+        "substrata",
+        "monokai", "monokai_pro", "monokai_ristretto",
+        "mountain",
+        "habamax",
+        "tempus_tempest", "tempus_spring",
+        -- "base16-apprentice", "base16-ashes",
+        -- "base16-gruvbox-dark-hard", "base16-black-metal-burzum",
+        -- "base16-grayscale-dark", "base16-black-metal-dark-funeral",
+        -- "base16-oceanicnext",
         "default",
 
-		-- NOTE(vir): light themes. Yes, sometimes, i like light themes, they
-		-- remind me of the pain that exists in the world :o
-		"tempus_totus", "adwaita",
-		"base16-atelier-cave-light", "base16-atelier-savanna-light",
-		"base16-equilibrium-gray-light", "base16-equilibrium-light",
-		"base16-atelier-savanna-light", "base16-solarized-light",
-	},
-	ui_overrides = ui_overrides,
+        -- NOTE(vir): light themes. Yes, sometimes, i like light themes, they
+        -- remind me of the pain that exists in the world :o
+        "tempus_totus", "adwaita", "xcode", "intellij",
+        -- "base16-atelier-cave-light", "base16-atelier-savanna-light",
+        -- "base16-equilibrium-gray-light", "base16-equilibrium-light",
+        -- "base16-atelier-savanna-light", "base16-solarized-light",
+    },
+    ui_overrides = ui_overrides,
 }
