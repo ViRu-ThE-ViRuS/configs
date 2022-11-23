@@ -34,8 +34,8 @@ utils.map("v", ".", ":normal! .<cr>")                       -- . motions
 utils.map("v", "@", ":normal! @")                           -- macros
 utils.map("v", "ss", ":s/")                                 -- quick subs
 utils.map("n", "ss", "s")                                   -- substitute mode
-utils.map("n", "p", "p`[=`]")                                 -- autoformat paste
-utils.map("n", "P", "P`[=`]")                                 -- autoformat Paste
+utils.map("n", "p", "p`[=`]")                               -- autoformat paste
+utils.map("n", "P", "P`[=`]")                               -- autoformat Paste
 utils.map("n", "gp", "`[v`]")                               -- last paste
 utils.map({"n", "v"}, "<c-b>", "<nop>")                     -- disable <c-b>
 utils.map('v', '//', [[y/\V<c-r>=escape(@",'/\')<cr><cr>]]) -- search for selection
