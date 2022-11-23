@@ -65,11 +65,8 @@ end
             vim.diagnostic.setqflist({open=false})
             utils.diagnostics_state['global'] = true
 
-            vim.cmd [[
-                belowright copen
-                setlocal statusline=%!v:lua.StatusLine('Workspace\ Diagnostics')
-                wincmd p
-            ]]
+            vim.cmd(string.format("belowright copen\n%s\nwincmd p",
+                require('statusline').set_statusline_cmd('Workspace Diagnostics')))
         else
             utils.diagnostics_state['global'] = false
             vim.cmd [[ cclose ]]
@@ -81,7 +78,7 @@ end
              vim.diagnostic.setloclist()
              utils.diagnostics_state['local'][current_buf] = true
 
-             vim.opt_local.statusline = require('statusline').StatusLine('Diagnostics')
+             require('statusline').set_statusline_func('Diagnostics')()
              vim.cmd [[ wincmd p ]]
          else
              utils.diagnostics_state['local'][current_buf] = false

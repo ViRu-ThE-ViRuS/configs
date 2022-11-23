@@ -172,3 +172,4 @@ vim.api.nvim_create_user_command("Commands", function()
 		utils.commands.callbacks[key]()
 	end)
 end, { bang = false, nargs = 0, desc = "Custom Commands" })
+

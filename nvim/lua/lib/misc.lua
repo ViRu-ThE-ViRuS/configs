@@ -187,7 +187,7 @@ local function show_messages()
 		table.insert(entries, { text = line })
 	end
 
-	utils.qf_populate(entries, "r", "setlocal statusline=%!v:lua.StatusLine('Messages')")
+    utils.qf_populate(entries, "r", "Messages")
 end
 
 -- send :command output to qflist
@@ -201,7 +201,7 @@ local function show_command(command)
 		table.insert(entries, { text = line })
 	end
 
-    utils.qf_populate(entries, "r", "setlocal statusline=%!v:lua.StatusLine('Command\\ Output')")
+    utils.qf_populate(entries, "r", "Command Output")
 end
 
 -- randomize colorscheme

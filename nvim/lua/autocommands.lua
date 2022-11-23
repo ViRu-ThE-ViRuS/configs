@@ -2,18 +2,6 @@ local misc = require('lib/misc')
 local core = require('lib/core')
 local colorscheme = require('colorscheme')
 
-vim.api.nvim_create_augroup('Misc', {clear = true})
-vim.api.nvim_create_autocmd('TextYankPost', { group = 'Misc', pattern = '*', callback = function() vim.highlight.on_yank({on_visual = true}) end })
-vim.api.nvim_create_autocmd('BufWritePre', { group = 'Misc', pattern = '*', callback = misc.strip_trailing_whitespaces })
--- vim.api.nvim_create_autocmd('BufReadPost', { group = 'Misc', pattern = '*', command = 'silent! normal `"' })
-
--- NOTE(vir): plugin ft remaps: vista, nvimtree
-vim.api.nvim_create_autocmd('FileType', {
-    group = 'Misc',
-    pattern = {'vista_kind', 'vista', 'NvimTree'},
-    callback = function() require('utils').map('n', '<c-o>', '<cmd>wincmd p<cr>', {}, 0) end,
-})
-
 vim.api.nvim_create_augroup('UISetup', {clear = true})
 vim.api.nvim_create_autocmd('ColorScheme', {
     group = 'UISetup',
@@ -21,24 +9,35 @@ vim.api.nvim_create_autocmd('ColorScheme', {
     callback = colorscheme.ui_overrides,
 })
 
-vim.api.nvim_create_augroup('TerminalSetup', {clear = true})
-vim.api.nvim_create_autocmd('TermOpen', {
-    group = 'TerminalSetup',
-    pattern = '*',
-    callback = function()
-        vim.opt_local.filetype = 'terminal'
-        vim.opt_local.number = false
-        vim.opt_local.signcolumn = 'no'
-    end
-})
-
--- config reloading
-vim.api.nvim_create_augroup('Configs', {clear = true})
-vim.api.nvim_create_autocmd('BufWritePost', { group = 'Configs', pattern = '.nvimrc.lua', command = 'source <afile>' })
-vim.api.nvim_create_autocmd('BufWritePost', { group = 'Configs', pattern = core.get_homedir() .. '/.config/nvim/*/*.lua', command = 'source <afile>' })
-
--- custom commands
 vim.defer_fn(function()
+    vim.api.nvim_create_augroup('Misc', {clear = true})
+    vim.api.nvim_create_autocmd('TextYankPost', { group = 'Misc', pattern = '*', callback = function() vim.highlight.on_yank({on_visual = true}) end })
+    vim.api.nvim_create_autocmd('BufWritePre', { group = 'Misc', pattern = '*', callback = misc.strip_trailing_whitespaces })
+    -- vim.api.nvim_create_autocmd('BufReadPost', { group = 'Misc', pattern = '*', command = 'silent! normal `"' })
+
+    -- NOTE(vir): plugin ft remaps: vista, nvimtree
+    vim.api.nvim_create_autocmd('FileType', {
+        group = 'Misc',
+        pattern = {'vista_kind', 'vista', 'NvimTree'},
+        callback = function() require('utils').map('n', '<c-o>', '<cmd>wincmd p<cr>', {}, 0) end,
+    })
+
+    -- terminal setup
+    vim.api.nvim_create_augroup('TerminalSetup', {clear = true})
+    vim.api.nvim_create_autocmd('TermOpen', {
+        group = 'TerminalSetup',
+        pattern = '*',
+        callback = function()
+            vim.opt_local.filetype = 'terminal'
+            vim.opt_local.number = false
+            vim.opt_local.signcolumn = 'no'
+        end
+    })
+
+    -- config reloading
+    vim.api.nvim_create_augroup('Configs', {clear = true})
+    vim.api.nvim_create_autocmd('BufWritePost', { group = 'Configs', pattern = '.nvimrc.lua', command = 'source <afile>' })
+    vim.api.nvim_create_autocmd('BufWritePost', { group = 'Configs', pattern = core.get_homedir() .. '/.config/nvim/*/*.lua', command = 'source <afile>' })
 
     -- TODO(vir): do this in lua
     -- <cword> highlight toggle

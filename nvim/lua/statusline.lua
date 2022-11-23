@@ -39,7 +39,8 @@ local function get_tagname()
     if truncate_statusline() then
         return string.format("[ %s %s ] ", utils.tag_state.context[bufnr][1].icon, utils.tag_state.context[bufnr][1].name)
     else
-        local context_tree = table.concat(core.foreach(utils.tag_state.context[bufnr], function(arg) return arg.icon .. ' ' .. arg.name end), " > ")
+        local context = core.foreach(utils.tag_state.context[bufnr], function(arg) return arg.icon .. ' ' .. arg.name end) or {}
+        local context_tree = table.concat(context, " > ")
         return string.format('[ %s ]', context_tree)
     end
 end
@@ -99,21 +100,7 @@ local function statusline_special(mode)
     return colors.active .. ' ' .. mode .. ' ' .. colors.inactive
 end
 
--- inactive statusline
-local function statusline_inactive()
-    local filename = colors.file .. ' %t '
-    local line_col = colors.line_col .. ' %l:%c '
-    local bufnr = colors.bufnr .. ' %n '
-    local filetype = colors.filetype .. ' %y '
-
-    return table.concat({
-        colors.active, filename, colors.inactive,
-        '%=% ',
-        line_col, bufnr, filetype, colors.inactive
-    })
-end
-
--- active statusline
+-- normal statusline
 local function statusline_normal()
     local mode = colors.mode .. get_current_mode()
     local git = colors.git .. get_git_status()
@@ -133,45 +120,81 @@ local function statusline_normal()
     })
 end
 
--- generate statusline
-StatusLine = function(mode)
+-- active statusline
+local statusline = function(mode)
     if mode then return statusline_special(mode) end
     return statusline_normal()
 end
 
--- generate inactive statusline
-StatusLineInactive = statusline_inactive
+-- inactive statusline
+local function statusline_inactive()
+    local filename = colors.file .. ' %t '
+    local line_col = colors.line_col .. ' %l:%c '
+    local bufnr = colors.bufnr .. ' %n '
+    local filetype = colors.filetype .. ' %y '
 
--- NOTE(vir): consider moving to lua
-vim.cmd [[
-    let g:statusline_blacklist = ['terminal', 'vista_kind', 'vista', 'fugitive', 'diagnostics', 'qf', 'fzf', 'gitcommit', 'NvimTree',
-                                \ 'DiffviewFiles', 'DiffviewFileHistory',
-                                \ 'dapui_watches', 'dapui_stacks', 'dapui_scopes', 'dapui_breakpoints', 'dap-repl']
+    return table.concat({
+        colors.active, filename, colors.inactive,
+        '%=% ',
+        line_col, bufnr, filetype, colors.inactive
+    })
+end
 
-    augroup StatusLine
-        autocmd!
-        autocmd WinEnter,BufEnter * if index(statusline_blacklist, &ft) < 0 | setlocal statusline=%!v:lua.StatusLine() | endif
-        autocmd WinLeave,BufLeave * if index(statusline_blacklist, &ft) < 0 | setlocal statusline=%!v:lua.StatusLineInactive() | endif
+-- do not set default behavior on thesefile types
+local statusline_blacklist = {
+    'terminal', 'diagnostics', 'qf',
+    'vista_kind', 'vista', 'fugitive', 'gitcommit','fzf', 'NvimTree',
+    'DiffviewFiles', 'DiffviewFileHistory', 'dapui_watches', 'dapui_stacks', 'dapui_scopes', 'dapui_breakpoints', 'dap-repl'
+}
 
-        autocmd FileType terminal setlocal statusline=%!v:lua.StatusLine('Terminal')
-        autocmd BufWinEnter quickfix setlocal statusline=%!v:lua.StatusLine('QuickFix')
-        autocmd BufWinEnter diagnostics setlocal statusline=%!v:lua.StatusLine('Diagnostics')
+-- get a function which sets statusline option when called
+local function set_statusline_func(title, non_local)
+    -- NOTE(vir): opt vs opt_local?
+    -- some dont work {DiffviewFiles, DiffviewFileHistory} with opt_local
+    -- side effects of using global opt?
+    if non_local then return function() vim.opt.statusline =  "%!luaeval(\"require('statusline').statusline('" .. title .. "')\")" end
+    else return function() vim.opt_local.statusline =  "%!luaeval(\"require('statusline').statusline('" .. title .. "')\")" end end
+end
 
-        autocmd BufWinEnter NvimTree_1 setlocal statusline=%!v:lua.StatusLine('Explorer')
-        autocmd FileType fzf setlocal statusline=%!v:lua.StatusLine('FZF')
-        autocmd FileType vista_kind,vista setlocal statusline=%!v:lua.StatusLine('Tags')
-        autocmd FileType fugitive setlocal statusline=%!v:lua.StatusLine('Git')
-        autocmd FileType gitcommit setlocal statusline=%!v:lua.StatusLine('GitCommit')
+-- get a string which can be used to set statusline in vimscript
+local function set_statusline_cmd(title)
+    -- NOTE(vir): setlocal vs set?
+    return 'setlocal statusline=%!luaeval(\'require(\\"statusline\\").statusline(\\"' .. vim.fn.escape(title, ' ') .. '\\")\')'
+end
 
-        autocmd FileType DiffviewFiles set statusline=%!v:lua.StatusLine('DiffViewFiles')
-        autocmd FileType DiffviewFileHistory set statusline=%!v:lua.StatusLine('DiffViewFileHistory')
+-- setup
+vim.api.nvim_create_augroup('StatusLine', {clear = true})
+vim.api.nvim_create_autocmd({'BufEnter', 'WinEnter'}, {group='StatusLine', pattern='*', callback = function()
+    local ft = vim.api.nvim_get_option_value('ft', {scope = 'local'})
+    if not core.table_contains(statusline_blacklist, ft) then vim.opt_local.statusline = "%!luaeval(\"require('statusline').statusline()\")" end
+end})
+vim.api.nvim_create_autocmd({'BufLeave', 'WinLeave'}, {group='StatusLine', pattern='*', callback = function()
+    local ft = vim.api.nvim_get_option_value('ft', {scope = 'local'})
+    if not core.table_contains(statusline_blacklist, ft) then vim.opt_local.statusline = "%!luaeval(\"require('statusline').statusline_inactive()\")" end
+end})
 
-        autocmd FileType dapui_watches setlocal statusline=%!v:lua.StatusLine('Watches')
-        autocmd FileType dapui_stacks setlocal statusline=%!v:lua.StatusLine('Stacks')
-        autocmd FileType dapui_scopes setlocal statusline=%!v:lua.StatusLine('Scopes')
-        autocmd FileType dapui_breakpoints setlocal statusline=%!v:lua.StatusLine('Breaks')
-        autocmd FileType dap-repl setlocal statusline=%!v:lua.StatusLine('Repl')
-    augroup end
-]]
+vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern='terminal', callback = set_statusline_func('Terminal')})
+vim.api.nvim_create_autocmd('BufWinEnter', {group='StatusLine', pattern='quickfix', callback = set_statusline_func('QuickFix')})
+vim.api.nvim_create_autocmd('BufWinEnter', {group='StatusLine', pattern='diagnostics', callback = set_statusline_func('Diagnostics')})
 
-return {StatusLine = StatusLine, StatusLineInactive = StatusLineInactive}
+vim.api.nvim_create_autocmd('BufWinEnter', {group='StatusLine', pattern='NvimTree_1', callback = set_statusline_func('Explorer')})
+vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern='fzf', callback = set_statusline_func('FZF')})
+vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern={'vista_kind', 'vista'}, callback = set_statusline_func('Outline')})
+vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern={'fugitive', 'git'}, callback = set_statusline_func('Git')})
+vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern='gitcommit', callback = set_statusline_func('GitCommit')})
+vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern='DiffviewFiles', callback = set_statusline_func('DiffViewFiles', true)})
+vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern='DiffviewFileHistory', callback = set_statusline_func('DiffViewFileHistory', true)})
+
+vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern='dapui_watches', callback=set_statusline_func('Watches')})
+vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern='dapui_stacks', callback=set_statusline_func('Stacks')})
+vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern='dapui_scopes', callback=set_statusline_func('Scopes')})
+vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern='dapui_breakpoints', callback=set_statusline_func('Breaks')})
+vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern='dap-repl', callback=set_statusline_func('Repl')})
+
+return {
+    statusline = statusline,
+    statusline_inactive = statusline_inactive,
+    set_statusline_func = set_statusline_func,
+    set_statusline_cmd = set_statusline_cmd,
+    statusline_blacklist = statusline_blacklist
+}

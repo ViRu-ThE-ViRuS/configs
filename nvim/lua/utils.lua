@@ -51,7 +51,7 @@ local function unmap(mode, lhs, bufnr)
 end
 
 -- set qflist and open
-local function qf_populate(lines, mode, statusline)
+local function qf_populate(lines, mode, title)
 	if mode == nil or type(mode) == "table" then
 		lines = core.foreach(lines, function(item) return { filename = item, lnum = 1, col = 1, text = item } end)
 		mode = "r"
@@ -59,13 +59,14 @@ local function qf_populate(lines, mode, statusline)
 
 	vim.fn.setqflist(lines, mode)
 
-	if not statusline then
+	if not title then
 		vim.cmd([[
             belowright copen
             wincmd p
         ]])
 	else
-		vim.cmd(string.format("belowright copen\n%s\nwincmd p", statusline))
+        vim.cmd(string.format("belowright copen\n%s\nwincmd p",
+            require('statusline').set_statusline_cmd(title)))
 	end
 end
 
