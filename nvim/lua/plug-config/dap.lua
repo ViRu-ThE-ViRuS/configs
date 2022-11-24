@@ -255,12 +255,12 @@ vim.fn.sign_define("DapBreakpointRejected", { text = '!>', texthl = 'DiagnosticE
 vim.fn.sign_define("DapBreakpointCondition", { text = '?>', texthl = 'DiagnosticInfo', numhl = 'DiagnosticInfo' })
 vim.fn.sign_define("DapLogPoint", { text = '.>', texthl = 'DiagnosticInfo', numhl = 'DiagnosticInfo' })
 
--- general keymaps
+-- general keymaps and commands
 utils.map('n', '<m-d>b', dap.toggle_breakpoint)
-utils.map('n', '<m-d>B', function()
+utils.add_command('[DAP] debug: add conditional breakpoint', function()
     local condition = vim.fn.input('breakpoint condition: ')
     if condition then dap.set_breakpoint(condition) end
-end)
+end, nil, true)
 
 utils.map('n', '<f5>', function()
     -- create session tab if needed

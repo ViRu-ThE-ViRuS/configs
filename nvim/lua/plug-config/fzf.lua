@@ -161,15 +161,8 @@ utils.map("n", "<leader>uD", fzf.lsp_live_workspace_symbols)
 utils.map("n", "<leader>d", function() fzf.lsp_definitions({ sync = true, jump_to_single_result = true }) end)
 utils.map("n", "<leader>D", function() fzf.lsp_definitions({ sync = true, jump_to_single_result = true, jump_to_single_result_action = actions.file_vsplit }) end)
 
-vim.api.nvim_create_user_command('Colors', fzf.colorschemes, {
+utils.add_command('Colors', fzf.colorschemes, {
     bang = false,
     nargs = 0,
     desc = 'FzfLua powered colorscheme picker'
-})
-
-vim.api.nvim_create_user_command("Commands", function()
-	vim.ui.select(utils.commands.keys, { prompt = "command> " }, function(key)
-		utils.commands.callbacks[key]()
-	end)
-end, { bang = false, nargs = 0, desc = "Custom Commands" })
-
+}, true)

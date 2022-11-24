@@ -3,10 +3,11 @@ local core = require('lib/core')
 local symbol_config = utils.symbol_config
 local colors = utils.statusline_colors
 
+-- is statusline supposed to be truncated
 local function truncate_statusline(small)
     local limit = (small and utils.truncation_limit_s) or utils.truncation_limit
-    return (utils.is_htruncated(limit) and
-        vim.api.nvim_get_option_value('laststatus', { scope = 'global' }) ~= 3)
+    local get_global = vim.api.nvim_get_option_value('laststatus', { scope = 'global' }) == 3
+    return utils.is_htruncated(limit, get_global)
 end
 
 -- get the display name for current mode
@@ -15,8 +16,8 @@ local function get_current_mode()
     return string.format(' %s ', utils.modes[current_mode]):upper()
 end
 
--- get git information of current file
 -- NOTE(vir): release gitsigns dependencies?
+-- get git information of current file
 local function get_git_status()
     local meta = {}
     local gitsigns_summary = vim.b.gitsigns_status_dict
@@ -71,16 +72,13 @@ end
 
 -- get current file diagnostics
 local function get_diagnostics()
-    if #vim.lsp.get_active_clients({bufnr=0}) == 0 then return '' end
+    if #vim.lsp.get_active_clients({bufnr=0}) == 0 or truncate_statusline(true) then return '' end
 
     local status_parts = {}
     local errors = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
+    if errors > 0 then table.insert(status_parts, symbol_config.indicator_error .. symbol_config.indicator_seperator .. errors) end
 
-    if errors > 0 then
-        table.insert(status_parts, symbol_config.indicator_error .. symbol_config.indicator_seperator .. errors)
-    end
-
-    if not truncate_statusline(true) then
+    if not truncate_statusline() then
         local warnings = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })
         local hints = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.HINT })
         local infos = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.INFO })

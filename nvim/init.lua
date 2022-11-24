@@ -11,7 +11,7 @@ require("statusline")
 -- deferred execution makes the editor feel more responsive
 vim.defer_fn(function()
 	require("keymaps")
-	require("autocommands")
+	require("commands")
 	require("plugins")
 
 	-- NOTE(vir): load this here, to keep plugins.lua clean

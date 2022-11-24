@@ -11,7 +11,7 @@ local repl_session = {
     bufnr = nil
 }
 
-utils.add_command("[REPL] launch ipython", function()
+utils.add_command("[MISC] REPL: launch ipython", function()
     if repl_session.bufnr ~= nil and vim.fn.bufname(repl_session.bufnr) ~= "" then
         utils.notify(
             string.format(
@@ -42,5 +42,5 @@ utils.add_command("[REPL] launch ipython", function()
             "debug", { title = "[repl] ipython session" }, true
         )
     end)
-end)
+end, nil, true)
 

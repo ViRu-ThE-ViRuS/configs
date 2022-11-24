@@ -5,7 +5,7 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
     vim.cmd [[ packadd packer.nvim ]]
 end
 
-vim.api.nvim_create_user_command('Ps', 'PackerSync', { bang = true, nargs = 0, desc = 'Packer Sync' })
+require('utils').add_command('Ps', 'PackerSync', { bang = true, nargs = 0, desc = 'Packer Sync' })
 return require('packer').startup({
     function()
         use 'nvim-lua/plenary.nvim'

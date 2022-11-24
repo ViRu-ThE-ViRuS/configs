@@ -85,27 +85,40 @@ local function notify(content, type, opts, force)
 end
 
 -- is buffer horizontally truncated
-local function is_htruncated(width)
-	local current_width = vim.api.nvim_win_get_width(0)
-	return current_width < width
+local function is_htruncated(width, global)
+    local current_width = (global and vim.api.nvim_get_option_value('columns', { scope = 'global'})) or vim.api.nvim_win_get_width(0)
+	return current_width <= width
 end
 
 -- is buffer vertical truncated
-local function is_vtruncated(height)
-	local current_height = vim.api.nvim_win_get_height(0)
-	return current_height < height
+local function is_vtruncated(height, global)
+	local current_height = (global and vim.api.nvim_get_option_value('lines', { scope = 'global' })) or vim.api.nvim_win_get_height(0)
+	return current_height <= height
 end
 
 -- add custom command
-local function add_command(key, callback)
-    if commands.callbacks[key] == nil then table.insert(commands.keys, key) end
-    commands.callbacks[key] = callback
+local function add_command(key, callback, cmd_opts, also_custom)
+    -- opts defined, create user command
+    if cmd_opts and next(cmd_opts) then
+        vim.api.nvim_create_user_command(key, callback, cmd_opts)
+    end
+
+    -- create custom command
+    if also_custom then
+
+        -- assert opts not defined, or 0 args
+        assert((not cmd_opts) or (not cmd_opts.nargs) or cmd_opts.nargs == 0)
+        if commands.callbacks[key] == nil then table.insert(commands.keys, key) end
+
+        if type(callback) == 'function' then commands.callbacks[key] = callback
+        else commands.callbacks[key] = function() vim.api.nvim_command(callback) end end
+    end
 end
 
 return {
 	truncation_limit_s_terminal = 110,
 	truncation_limit_s = 80,
-	truncation_limit = 120,
+	truncation_limit = 100,
 	truncation_limit_l = 160,
 
 	map = map,

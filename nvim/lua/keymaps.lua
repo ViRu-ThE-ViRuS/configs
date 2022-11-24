@@ -76,10 +76,10 @@ utils.map({"n", "i"}, "<right>", "<nop>")
 -- toggles
 utils.map("n", "<leader>1", misc.toggle_window)
 utils.map("n", "<leader>2", misc.random_colors, {silent = false})
-utils.map("n", "<leader>t1", "<cmd>if CWordHlToggle() | set hlsearch | endif<cr>")
-utils.map("n", "<leader>t2", misc.toggle_global_statusline)
-utils.map("n", "<leader>t3", misc.toggle_thicc_separators)
-utils.map("n", "<leader>t4", misc.toggle_spellings)
+utils.map("n", "<leader>3", misc.toggle_global_statusline)
+-- utils.map("n", "<leader>t1", "<cmd>if CWordHlToggle() | set hlsearch | endif<cr>")
+-- utils.map("n", "<leader>t2", misc.toggle_thicc_separators)
+-- utils.map("n", "<leader>t3", misc.toggle_spellings)
 
 -- qflist navigation & toggle
 utils.map("n", "[q", "<cmd>try | cprev | catch | silent! clast | catch | endtry<cr>")
@@ -123,6 +123,9 @@ utils.map("n", "<leader>cS", terminal.set_target)
 utils.map("n", "<leader>cs", terminal.toggle_target)
 utils.map("n", "<leader>cv", function() terminal.run_selection(true) end)
 utils.map("v", "<leader>cv", '<esc><cmd>lua require("terminal").run_selection(false)<cr>gv')
+
+-- commands
+utils.map('n', '<c-cr>', '<cmd>Commands<cr>', {})
 
 -- NOTE(vir): Tabular and Fugitive Config could not find a better place for these configs
 utils.map("v", "<leader>=", ":Tab /")

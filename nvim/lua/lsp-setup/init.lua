@@ -26,6 +26,7 @@ local on_attach = function(client, bufnr)
     setup_buffer.setup_highlights()
 end
 
+-- workaround to some weird bug
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 capabilities.offsetEncoding = {'utf-16'}
 
@@ -133,11 +134,11 @@ lsp['tsserver'].setup {
 local null_ls = require('null-ls')
 null_ls.setup({
     sources = {
+        null_ls.builtins.completion.spell.with({filetypes={'text', 'markdown'}}),
+        null_ls.builtins.diagnostics.cppcheck,
         null_ls.builtins.formatting.autopep8,
         null_ls.builtins.formatting.prettier.with({filetypes={'markdown', 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact', 'typescript.tsx'}}),
-        null_ls.builtins.completion.spell.with({filetypes={'text', 'markdown'}}),
         null_ls.builtins.hover.dictionary.with({filetypes={'text', 'markdown'}}),
-        null_ls.builtins.diagnostics.cppcheck
     },
     capabilities = capabilities,
     on_attach = function(client, bufnr)

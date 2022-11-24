@@ -4,15 +4,10 @@ local core = require('lib/core')
 
 -- scroll target to bottom
 local function target_scroll_to_end()
-    if run_config.target_terminal == nil then
-        return
-    end
-
+    if run_config.target_terminal == nil then return end
     local win_id = vim.fn.bufwinid(run_config.target_terminal.bufnr)
-    if win_id == -1 then
-        return
-    end
 
+    if win_id == -1 then return end
     vim.fn.win_execute(win_id, "normal! G")
 end
 

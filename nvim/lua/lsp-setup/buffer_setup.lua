@@ -29,19 +29,19 @@ local function setup_formatting_keymaps(client, bufnr)
 end
 
 -- setup independent keymaps
-local function setup_independent_keymaps(client, bufnr)
+local function setup_independent_keymaps(client, _)
     if client.name == 'clangd' then
-        utils.map('n', '<f9>', '<cmd>ClangdSwitchSourceHeader<cr>', {}, bufnr)
+        utils.add_command('[LSP] clangd: Switch Source Header', 'ClangdSwitchSourceHeader', nil, true)
     elseif client.name == 'pyright' then
-        utils.map('n', '<f9>', '<cmd>PyrightOrganizeImports<cr>', {}, bufnr)
+        utils.add_command('[LSP] pyright: Organize Imports', 'PyrightOrganizeImports', nil, true)
     elseif client.name == 'tsserver' then
-        utils.map('n', '<f9>', function()
+        utils.add_command('[LSP] tsserver: Organize Imports', function()
             vim.lsp.buf.execute_command({
                 command = "_typescript.organizeImports",
                 arguments = { vim.api.nvim_buf_get_name(0) },
                 title = ""
             })
-        end, {}, bufnr)
+        end, nil, true)
     end
 end
 

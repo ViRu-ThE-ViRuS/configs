@@ -46,7 +46,7 @@ end
 -- run shell command and get output lines as lua table
 -- from: https://github.com/ibhagwan/fzf-lua/blob/main/lua/fzf-lua/utils.lua
 local function lua_systemlist(cmd)
-    local stdout, rc = {}, 0
+    local stdout, rc = {}, nil
     local handle = io.popen(cmd .. ' 2>&1 ; echo $?', 'r')
 
     if handle then

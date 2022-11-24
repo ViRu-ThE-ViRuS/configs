@@ -170,7 +170,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme mellow ]]
+vim.cmd [[ colorscheme oxocarbon-lua ]]
 ui_overrides()
 
 return {
