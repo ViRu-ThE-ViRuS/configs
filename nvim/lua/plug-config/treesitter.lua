@@ -32,7 +32,7 @@ require('nvim-treesitter.configs').setup {
                 ['af'] = '@function.outer',
                 ['if'] = '@function.inner',
                 ['ac'] = '@block.outer',
-                ['ic'] = '@block.inner'
+                ['ic'] = '@block.inner',
             }
         },
         move = {
@@ -48,6 +48,10 @@ require('nvim-treesitter.configs').setup {
             [';'] = 'textsubjects-smart',
             -- [';'] = 'textsubjects-container-outer',
         },
+    },
+
+    playground = {
+        enable = true,
     }
 }
 
@@ -58,12 +62,12 @@ require('nvim-treesitter.configs').setup {
 -- end)
 
 -- text-subjects : move + center
-utils.map('n', ']F', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@class.outer")<CR>zz')
-utils.map('n', '[F', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@class.outer")<CR>zz')
-utils.map('n', ']f', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@function.outer")<CR>zz')
-utils.map('n', '[f', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@function.outer")<CR>zz')
-utils.map('n', ']]', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@block.outer")<CR>zz')
-utils.map('n', '[[', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@block.outer")<CR>zz')
+utils.map({'n', 'o', 'x'}, ']F', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@class.outer")<CR>zz')
+utils.map({'n', 'o', 'x'}, '[F', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@class.outer")<CR>zz')
+utils.map({'n', 'o', 'x'}, ']f', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@function.outer")<CR>zz')
+utils.map({'n', 'o', 'x'}, '[f', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@function.outer")<CR>zz')
+utils.map({'n', 'o', 'x'}, ']]', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@block.outer")<CR>zz')
+utils.map({'n', 'o', 'x'}, '[[', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@block.outer")<CR>zz')
 
 -- NOTE(vir): related plugin setup
 -- vim-matchup

@@ -127,9 +127,11 @@ utils.map("v", "<leader>cv", '<esc><cmd>lua require("terminal").run_selection(fa
 -- commands
 utils.map('n', '<c-cr>', '<cmd>Commands<cr>', {})
 
--- NOTE(vir): Tabular and Fugitive Config could not find a better place for these configs
+-- NOTE(vir): these cmds are loaded on demand, so configure keymaps here
+-- tabular, fugitive, vista
 utils.map("v", "<leader>=", ":Tab /")
 utils.map("n", "<leader>gD", "<cmd>G! difftool<cr>")
+utils.map('n', '<leader>k', '<cmd>Vista!!<cr>')
 
 -- NOTE(vir): tricks
 --  cmd mode: <c-f> edit commands in vim mode

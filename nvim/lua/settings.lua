@@ -121,3 +121,5 @@ for _, plugin in ipairs(disabled_plugins) do
     vim.g['loaded_' .. plugin] = 1
 end
 
+-- remove ft maps
+vim.g.no_plugin_maps = 1

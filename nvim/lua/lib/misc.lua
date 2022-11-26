@@ -2,6 +2,8 @@ local core = require("lib/core")
 local utils = require("utils")
 
 -- convert fzf entry into a location item
+-- NOTE(vir): deprecated
+-- TODO(vir): consider removing
 local function fzf_to_location(entry)
     local split = vim.split(entry, ":")
 
@@ -28,6 +30,8 @@ local function fzf_to_location(entry)
 end
 
 -- populate qflist with fzf items
+-- NOTE(vir): deprecated
+-- TODO(vir): consider removing
 local function fzf_to_qf(lines)
 	local items = vim.lsp.util.locations_to_items(core.foreach(lines, fzf_to_location), "utf-16")
 	utils.qf_populate(items, "r")

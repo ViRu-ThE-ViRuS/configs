@@ -14,9 +14,6 @@ vim.defer_fn(function()
 	require("commands")
 	require("plugins")
 
-	-- NOTE(vir): load this here, to keep plugins.lua clean
-	require("plug-config/vista")
-
 	-- NOTE(vir): load project local config last
 	require("project_config").load()
 end, 0)

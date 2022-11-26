@@ -16,11 +16,13 @@ return require('packer').startup({
         use { 'rcarriga/nvim-notify', event = 'VimEnter', config = 'require("plug-config/notifications")' }
 
         use { 'godlygeek/tabular', cmd = 'Tab' }
-        use { 'liuchengxu/vista.vim', cmd = 'Vista' }
         use { 'tpope/vim-eunuch', cmd = { 'Delete', 'Rename', 'Chmod' } }
         use { 'tpope/vim-fugitive', cmd = { 'G', 'Gread', 'GcLog' } }
+        use { 'liuchengxu/vista.vim', cmd = 'Vista', config = 'require("plug-config/vista")' }
         use { 'machakann/vim-sandwich', event = 'BufRead' }
-        use { 'AndrewRadev/splitjoin.vim', event = 'BufReadPost' }
+
+        -- NOTE(vir): replace / enhance this
+        -- use { 'AndrewRadev/splitjoin.vim', event = 'BufReadPost' }
 
         use {
             'nvim-treesitter/nvim-treesitter',
@@ -31,7 +33,10 @@ return require('packer').startup({
                 { 'yioneko/nvim-yati', after = 'nvim-treesitter' },
                 { 'andymass/vim-matchup', after = 'nvim-treesitter-textsubjects' },
 
-                -- TODO(vir): do i need this
+                { 'nvim-treesitter/playground', after = 'nvim-treesitter' },
+
+                -- TODO(vir): do i need these
+                { 'Wansmer/treesj', after = 'nvim-treesitter', config='require("plug-config/treesj")' },
                 { 'Dkendal/nvim-treeclimber', after = 'nvim-treesitter', config='require("plug-config/treeclimber")' },
             },
             run = ':TSUpdate',
@@ -60,7 +65,6 @@ return require('packer').startup({
                 { 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
                 { 'hrsh7th/cmp-path', after = 'nvim-cmp' },
                 { 'hrsh7th/cmp-cmdline', after = 'nvim-cmp' },
-                -- { 'hrsh7th/cmp-nvim-lsp-signature-help', after = 'nvim-cmp' },
             },
             after = { 'cmp-nvim-lsp', 'lspkind-nvim' },
             config = "require('plug-config/completion')"
@@ -70,7 +74,7 @@ return require('packer').startup({
             'neovim/nvim-lspconfig',
             requires = {
                 { 'jose-elias-alvarez/null-ls.nvim', event = 'BufRead' },
-                { 'ray-x/lsp_signature.nvim', event = 'BufRead' }
+                { 'ray-x/lsp_signature.nvim', event = 'BufRead' },
             },
             after = { 'null-ls.nvim', 'lsp_signature.nvim', 'cmp-nvim-lsp' },
             config = 'require("lsp")'
@@ -104,9 +108,9 @@ return require('packer').startup({
         use 'sam4llis/nvim-tundra'
         use 'marko-cerovac/material.nvim'
         use 'bluz71/vim-moonfly-colors'
+        use 'olivercederborg/poimandres.nvim'
         use 'sainnhe/gruvbox-material'
         use 'luisiacc/gruvbox-baby'
-        use 'catppuccin/nvim'
         use 'kvrohit/mellow.nvim'
         use 'B4mbus/oxocarbon-lua.nvim'
         use 'kvrohit/rasmus.nvim'
@@ -114,15 +118,16 @@ return require('packer').startup({
         use 'sainnhe/everforest'
         use 'Mofiqul/vscode.nvim'
         use 'Yazeed1s/oh-lucy.nvim'
-        use 'rose-pine/neovim'
         use 'w3barsi/barstrata.nvim'
         use 'kvrohit/substrata.nvim'
         use 'tanvirtin/monokai.nvim'
         use 'thepogsupreme/mountain.nvim'
+        use { 'catppuccin/nvim', as = 'cappuccin' }
+        use { 'rose-pine/neovim', as = 'rose-pine' }
         use 'habamax/vim-habamax'
         use 'chiendo97/intellij.vim'
         use 'JaySandhu/xcode-vim'
-        use 'https://gitlab.com/protesilaos/tempus-themes-vim.git'
+        use 'protesilaos/tempus-themes-vim'
 
         use { 'tweekmonster/startuptime.vim', cmd = 'StartupTime' }
     end,

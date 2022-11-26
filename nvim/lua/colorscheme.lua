@@ -54,7 +54,6 @@ vim.g.embark_terminal_italics = 1
 vim.g.gruvbox_baby_background_color = "medium"
 vim.g.vscode_style = "dark"
 vim.g.material_style = "oceanic"
-vim.g.catppuccin_flavour = "mocha"
 
 -- {{{ material
 -- require('material').setup({
@@ -82,6 +81,7 @@ vim.g.catppuccin_flavour = "mocha"
 
 -- {{{ catppuccin
 -- require("catppuccin").setup({
+--  flavor = "mocha",
 -- 	term_colors = true,
 -- 	transparent_background = false,
 -- 	styles = {
@@ -170,7 +170,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme oxocarbon-lua ]]
+vim.cmd [[ colorscheme moonfly ]]
 ui_overrides()
 
 return {
@@ -180,9 +180,9 @@ return {
         "tundra",
         "material",
         "moonfly",
+        "poimandres.nvim",
         "gruvbox-material",
         "gruvbox-baby",
-        "catppuccin",
         "mellow",
         "oxocarbon-lua",
         "rasmus",
@@ -190,25 +190,19 @@ return {
         "everforest",
         "vscode",
         "oh-lucy", "oh-lucy-evening",
-        "rose-pine",
         "barstrata",
         "substrata",
-        "monokai", "monokai_pro", "monokai_ristretto",
+        "monokai_pro", "monokai_ristretto",
         "mountain",
+        "catppuccin", "catppuccin-macchiato",
+        "rose-pine",
         "habamax",
-        "tempus_tempest", "tempus_spring",
-        -- "base16-apprentice", "base16-ashes",
-        -- "base16-gruvbox-dark-hard", "base16-black-metal-burzum",
-        -- "base16-grayscale-dark", "base16-black-metal-dark-funeral",
-        -- "base16-oceanicnext",
+        "tempus_tempest",
         "default",
 
         -- NOTE(vir): light themes. Yes, sometimes, i like light themes, they
         -- remind me of the pain that exists in the world :o
         "tempus_totus", "adwaita", "xcode", "intellij",
-        -- "base16-atelier-cave-light", "base16-atelier-savanna-light",
-        -- "base16-equilibrium-gray-light", "base16-equilibrium-light",
-        -- "base16-atelier-savanna-light", "base16-solarized-light",
     },
     ui_overrides = ui_overrides,
 }

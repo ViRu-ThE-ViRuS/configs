@@ -10,11 +10,7 @@ local on_attach = function(client, bufnr)
     utils.notify(string.format("[lsp] %s\n[cwd] %s", client.name, misc.get_cwd()), "info", { title = "[lsp] Active" }, true)
 
     -- NOTE(vir): lsp_signature setup
-    require('lsp_signature').on_attach({
-        doc_lines = 3,
-        hint_prefix = "<>",
-        handler_opts = { border = 'rounded' }
-    }, bufnr)
+    require('lsp_signature').on_attach({ doc_lines = 3, hint_prefix = "<>", handler_opts = { border = 'rounded' } }, bufnr)
 
     setup_buffer.setup_lsp_keymaps(client, bufnr)
     setup_buffer.setup_diagnostics_keymaps(client, bufnr)
