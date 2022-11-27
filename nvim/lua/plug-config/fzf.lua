@@ -166,3 +166,4 @@ utils.add_command('Colors', fzf.colorschemes, {
     nargs = 0,
     desc = 'FzfLua powered colorscheme picker'
 }, true)
+

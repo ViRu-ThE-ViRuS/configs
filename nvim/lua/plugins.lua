@@ -21,9 +21,6 @@ return require('packer').startup({
         use { 'liuchengxu/vista.vim', cmd = 'Vista', config = 'require("plug-config/vista")' }
         use { 'machakann/vim-sandwich', event = 'BufRead' }
 
-        -- NOTE(vir): replace / enhance this
-        -- use { 'AndrewRadev/splitjoin.vim', event = 'BufReadPost' }
-
         use {
             'nvim-treesitter/nvim-treesitter',
             requires = {
@@ -61,9 +58,10 @@ return require('packer').startup({
                 { 'hrsh7th/cmp-nvim-lsp', event = 'BufRead' },
                 { 'onsails/lspkind-nvim', event = 'BufRead' },
                 { 'L3MON4D3/LuaSnip', after = 'nvim-cmp' },
+                { 'hrsh7th/cmp-nvim-lua', after = 'nvim-cmp'},
+                { 'hrsh7th/cmp-path', after = 'nvim-cmp' },
                 { 'lukas-reineke/cmp-rg', after = 'nvim-cmp' },
                 { 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
-                { 'hrsh7th/cmp-path', after = 'nvim-cmp' },
                 { 'hrsh7th/cmp-cmdline', after = 'nvim-cmp' },
             },
             after = { 'cmp-nvim-lsp', 'lspkind-nvim' },

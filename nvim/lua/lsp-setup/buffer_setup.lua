@@ -43,6 +43,9 @@ local function setup_independent_keymaps(client, _)
             })
         end, nil, true)
     end
+
+    utils.add_command('[LSP] Incoming Calls', vim.lsp.buf.incoming_calls, nil, true)
+    utils.add_command('[LSP] Outgoing Calls', vim.lsp.buf.outgoing_calls, nil, true)
 end
 
 -- setup buffer options

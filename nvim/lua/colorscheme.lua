@@ -170,7 +170,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd [[ colorscheme moonfly ]]
+vim.cmd [[ colorscheme rose-pine ]]
 ui_overrides()
 
 return {
@@ -180,7 +180,7 @@ return {
         "tundra",
         "material",
         "moonfly",
-        "poimandres.nvim",
+        "poimandres",
         "gruvbox-material",
         "gruvbox-baby",
         "mellow",
