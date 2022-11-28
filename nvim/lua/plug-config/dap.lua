@@ -3,6 +3,7 @@ local dapui = require('dapui')
 local utils = require('utils')
 local core = require('lib/core')
 
+-- {{{ adapters
 -- servers launched internally in neovim
 local internal_servers = { codelldb = 'codelldb server' }
 
@@ -26,8 +27,9 @@ require('dap-vscode-js').setup({
     adapters = {'pwa-node'},
     debugger_path = core.get_homedir() .. '/.local/vscode-js-debug',
 })
+-- }}}
 
--- language configurations
+-- {{{ language configurations
 dap.configurations.python = {
     {
         type = 'python',
@@ -65,7 +67,9 @@ dap.configurations.javascript = {
         cwd = '${workspaceFolder}'
     }
 }
+--- }}}
 
+-- {{{ ui setup
 -- repl setup
 dap.repl.commands = vim.tbl_extend('force', dap.repl.commands, {
     exit = { 'q', 'exit' },
@@ -77,34 +81,46 @@ dap.repl.commands = vim.tbl_extend('force', dap.repl.commands, {
 
 -- dapui setup
 dapui.setup({
-    icons = { expanded = "-", collapsed = "$" },
     mappings = {
         expand = "<CR>",
         open = "o",
-        remove = "d",
+        remove = "D",
         edit = "e",
         repl = "r",
         toggle = "t",
     },
     layouts = {
-        {
-            elements = { "scopes", "breakpoints", "stacks" },
-            size = 50,
-            position = "right",
-        },
-        {
-            elements = { "repl", "watches" },
-            size = 10,
-            position = "bottom",
-        },
+        { elements = { "scopes", "breakpoints", "stacks" }, size = 0.33, position = "right" },
+        { elements = { "repl", "watches" }, size = 0.27, position = "bottom" },
     },
+    icons = { expanded = "-", collapsed = "$" },
     controls = { enabled = false },
     floating = { border = "rounded", mappings = { close = { "q", "<esc>", "<c-o>" } } },
 })
 
+-- autocmds
+vim.api.nvim_create_augroup('DAPConfig', { clear = true })
+vim.api.nvim_create_autocmd('FileType', {
+    group = 'DAPConfig',
+    pattern = 'dap-repl',
+    callback = function() require('dap.ext.autocompl').attach() end
+})
+
+-- signs
+vim.fn.sign_define("DapStopped", { text = '=>', texthl = 'DiagnosticWarn', numhl = 'DiagnosticWarn' })
+vim.fn.sign_define("DapBreakpoint", { text = '<>', texthl = 'DiagnosticInfo', numhl = 'DiagnosticInfo' })
+vim.fn.sign_define("DapBreakpointRejected", { text = '!>', texthl = 'DiagnosticError', numhl = 'DiagnosticError' })
+vim.fn.sign_define("DapBreakpointCondition", { text = '?>', texthl = 'DiagnosticInfo', numhl = 'DiagnosticInfo' })
+vim.fn.sign_define("DapLogPoint", { text = '.>', texthl = 'DiagnosticInfo', numhl = 'DiagnosticInfo' })
+
+dap.defaults.fallback.focus_terminal = false
+dap.defaults.fallback.terminal_win_cmd = '10split new'
+
 -- virtual text setup
 require('nvim-dap-virtual-text').setup({})
+-- }}}
 
+-- {{{ helpers
 -- get handles of output windows
 local function get_output_windows(session, activate_last)
     local target_handle = nil
@@ -161,7 +177,9 @@ local function close_internal_servers()
         end
     end)
 end
+-- }}}
 
+-- {{{ dap keymaps
 -- remove debugging keymaps
 local function remove_maps()
     utils.unmap({ 'n', 'v' }, '<m-d>k')
@@ -200,7 +218,9 @@ local function setup_maps()
 
     utils.map('n', '<f4>', dapui.toggle)
 end
+-- }}}
 
+-- {{{ session management
 -- start session: setup keymaps, open dapui
 local function start_session(session, _)
     if session.config.program == nil then return end
@@ -236,40 +256,23 @@ end
 dap.listeners.before.event_initialized["dapui"] = start_session
 dap.listeners.before.event_terminated["dapui"] = terminate_session
 dap.listeners.before.event_exited["dapui"] = terminate_session
-
-dap.defaults.fallback.focus_terminal = false
-dap.defaults.fallback.terminal_win_cmd = '10split new'
-
--- autocmds
-vim.api.nvim_create_augroup('DAPConfig', { clear = true })
-vim.api.nvim_create_autocmd('FileType', {
-    group = 'DAPConfig',
-    pattern = 'dap-repl',
-    callback = function() require('dap.ext.autocompl').attach() end
-})
-
--- signs
-vim.fn.sign_define("DapStopped", { text = '=>', texthl = 'DiagnosticWarn', numhl = 'DiagnosticWarn' })
-vim.fn.sign_define("DapBreakpoint", { text = '<>', texthl = 'DiagnosticInfo', numhl = 'DiagnosticInfo' })
-vim.fn.sign_define("DapBreakpointRejected", { text = '!>', texthl = 'DiagnosticError', numhl = 'DiagnosticError' })
-vim.fn.sign_define("DapBreakpointCondition", { text = '?>', texthl = 'DiagnosticInfo', numhl = 'DiagnosticInfo' })
-vim.fn.sign_define("DapLogPoint", { text = '.>', texthl = 'DiagnosticInfo', numhl = 'DiagnosticInfo' })
+-- }}}
 
 -- general keymaps and commands
 utils.map('n', '<m-d>b', dap.toggle_breakpoint)
 utils.add_command('[DAP] debug: add conditional breakpoint', function()
-    local condition = vim.fn.input('breakpoint condition: ')
-    if condition then dap.set_breakpoint(condition) end
+    vim.ui.input({
+        prompt = 'breakpoint condition> ',
+        completion = 'tag'
+    }, function(condition)
+        dap.set_breakpoint(condition)
+    end)
 end, nil, true)
 
 utils.map('n', '<f5>', function()
     -- create session tab if needed
-    if dap.session() == nil then
-        vim.cmd('tab sb ' .. vim.api.nvim_win_get_buf(0))
-    else
-        vim.cmd('normal ' .. dap.session().session_target_tab .. 'gt')
-    end
-
+    if dap.session() == nil then vim.cmd('tab sb ' .. vim.api.nvim_win_get_buf(0))
+    else vim.cmd('normal ' .. dap.session().session_target_tab .. 'gt') end
     dap.continue()
 end)
 

@@ -7,6 +7,10 @@ treesj.setup({
     use_default_keymaps = false,
     notify = true,
     langs = {
+        lua = {
+            function_call = { target_nodes = { 'arguments' } },
+            return_statement = { target_nodes = { 'table_constructor' } }
+        },
         cpp = {
             parameter_list = treesj_utils.set_preset_for_args(),
             argument_list = treesj_utils.set_preset_for_args(),

@@ -36,7 +36,7 @@ local function toggle_target(open)
         end
 
         -- open in split
-        if not pcall(vim.cmd, split_dir .. "split #" .. run_config.target_terminal.bufnr) then
+        if not pcall(vim.cmd, split_dir .. 'split #' .. run_config.target_terminal.bufnr) then
             utils.notify('[terminal] target exited, resetting state', 'debug', { render = 'minimal' }, true)
             run_config.target_terminal = nil
             return
@@ -54,7 +54,7 @@ local function send_to_target(payload, repeat_last)
                     return
                 end
             else
-                if pcall(vim.api.nvim_chan_send, run_config.target_terminal.job_id, payload .. "\n") then
+                if pcall(vim.api.nvim_chan_send, run_config.target_terminal.job_id, payload .. '\n') then
                     toggle_target(true)
                     return
                 end
@@ -85,7 +85,7 @@ local function set_target_terminal()
             string.format(
                 "target_terminal set to: { job_id: %s, bufnr: %s }",
                 run_config.target_terminal.job_id,
-                run_config.target_terminal.buf_nr
+                run_config.target_terminal.bufnr
             ),
             "info",
             { render = "minimal" },
@@ -98,7 +98,7 @@ end
 
 -- setup target_command
 local function set_target_command()
-    run_config.target_command = vim.fn.input("[terminal] target_command: ", "")
+    run_config.target_command = vim.fn.input('[terminal] target_command: ', '', 'shellcmd')
 end
 
 -- set target_terminal/target_command
