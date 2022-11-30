@@ -3,10 +3,18 @@ local lsp_utils = require('lsp-setup/utils')
 
 -- setup lsp keymaps
 local function setup_lsp_keymaps(_, bufnr)
-    -- NOTE(vir): now using fzf-lua
     utils.map("n", "<leader>uS", vim.lsp.buf.references, {silent = true}, bufnr)
     utils.map('n', '<leader>r', vim.lsp.buf.rename, {silent = true}, bufnr)
     utils.map('n', 'K', vim.lsp.buf.hover, {silent = true}, bufnr)
+
+    -- NOTE(vir): now using fzf-lua
+    local fzf = require('fzf-lua')
+    utils.map("n", "<m-cr>", fzf.lsp_code_actions)
+    utils.map("n", "<leader>us", fzf.lsp_references)
+    utils.map("n", "<leader>ud", fzf.lsp_document_symbols)
+    utils.map("n", "<leader>uD", fzf.lsp_live_workspace_symbols)
+    utils.map("n", "<leader>d", function() fzf.lsp_definitions({ sync = true, jump_to_single_result = true }) end)
+    utils.map("n", "<leader>D", function() fzf.lsp_definitions({ sync = true, jump_to_single_result = true, jump_to_single_result_action = fzf.actions.file_vsplit }) end)
 end
 
 -- setup diagnostic keymaps

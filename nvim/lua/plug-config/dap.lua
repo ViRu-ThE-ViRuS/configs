@@ -15,6 +15,7 @@ dap.adapters.python = {
 }
 
 dap.adapters.codelldb = function(callback, _)
+    -- NOTE(vir): consider using vim jobstart api
     require('terminal').launch_terminal('codelldb', true, function()
         vim.api.nvim_buf_set_name(0, internal_servers.codelldb)
         vim.defer_fn(function()

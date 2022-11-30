@@ -21,7 +21,9 @@ vim.defer_fn(function()
     vim.api.nvim_create_autocmd('FileType', {
         group = 'Misc',
         pattern = {'vista_kind', 'vista', 'NvimTree'},
-        callback = function() require('utils').map('n', '<c-o>', '<cmd>wincmd p<cr>', {}, 0) end,
+        callback = function()
+            utils.map('n', '<c-o>', '<cmd>wincmd p<cr>', {}, 0)
+        end,
     })
 
     -- terminal setup
@@ -39,7 +41,11 @@ vim.defer_fn(function()
     -- config reloading
     vim.api.nvim_create_augroup('Configs', {clear = true})
     vim.api.nvim_create_autocmd('BufWritePost', { group = 'Configs', pattern = '.nvimrc.lua', command = 'source <afile>' })
-    vim.api.nvim_create_autocmd('BufWritePost', { group = 'Configs', pattern = core.get_homedir() .. '/.config/nvim/*/*.lua', command = 'source <afile>' })
+    vim.api.nvim_create_autocmd('BufWritePost', {
+        group = 'Configs',
+        pattern = { core.get_homedir() .. '/.config/nvim/init.lua', core.get_homedir() .. '/.config/nvim/*/*.lua', },
+        command = 'source <afile>',
+    })
 
     -- custom commands
     utils.add_command("Commands", function()
@@ -123,9 +129,20 @@ vim.defer_fn(function()
         endfunction
     ]]
 
+    -- generate tags
+    utils.add_command('[MISC] Generate Tags', function()
+        require('plenary').Job:new({
+            command = 'ctags',
+            args = { '-R', '--excmd=combine', '--fields=+K' },
+            cwd = misc.get_cwd(),
+            on_start = function() utils.notify('generating tags', 'debug', { render = 'minimal' }, true) end,
+            on_exit = function() utils.notify('tags generated', 'info', { render = 'minimal' }, true) end
+        }):start()
+    end, nil, true)
+
     -- toggles
-    utils.add_command('Toggle CWordHlToggle', 'if CWordHlToggle() | set hlsearch | endif', nil, true)
-    utils.add_command('Toggle ThiccSeperators', misc.toggle_thicc_separators, nil, true)
+    utils.add_command('Toggle CWord Highlights', 'if CWordHlToggle() | set hlsearch | endif', nil, true)
+    utils.add_command('Toggle Thicc Seperators', misc.toggle_thicc_separators, nil, true)
     utils.add_command('Toggle Spellings', misc.toggle_spellings, nil, true)
 end, 0)
 

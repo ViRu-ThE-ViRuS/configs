@@ -22,11 +22,10 @@ local on_attach = function(client, bufnr)
     setup_buffer.setup_highlights()
 end
 
--- workaround to some weird bug
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-capabilities.offsetEncoding = {'utf-16'}
+capabilities.offsetEncoding = {'utf-16'} -- workaround to some weird bug
 
--- pyright setup
+-- {{{ pyright setup
 lsp["pyright"].setup {
     capabilities = capabilities,
     settings = {
@@ -41,8 +40,9 @@ lsp["pyright"].setup {
     on_attach = on_attach,
     flags = {debounce_text_changes = 150}
 }
+-- }}}
 
--- clangd setup
+-- {{{ clangd setup
 lsp["clangd"].setup {
     capabilities = capabilities,
     cmd = {
@@ -63,8 +63,9 @@ lsp["clangd"].setup {
     on_attach = on_attach,
     flags = {debounce_text_changes = 150}
 }
+-- }}}
 
--- sumneko_lua setup
+-- {{{ sumneko_lua setup
 -- vim runtime files
 local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, 'lua/?.lua')
@@ -94,15 +95,17 @@ lsp["sumneko_lua"].setup {
     on_attach = on_attach,
     flags = {debounce_text_changes = 150}
 }
+-- }}}
 
--- cmake setup
+-- {{{ cmake setup
 lsp['cmake'].setup {
     capabilities = capabilities,
     on_attach = on_attach,
     flags = {debounce_text_changes = 150}
 }
+-- }}}
 
--- js/ts setup
+-- {{{ js/ts setup
 lsp['tsserver'].setup {
     capabilities = capabilities,
     on_attach = function(client, bufnr)
@@ -112,20 +115,11 @@ lsp['tsserver'].setup {
 
         on_attach(client, bufnr)
     end,
-    flags = {debounce_text_changes = 150},
-    commands = {
-        OrganizeImports = { function()
-            local params = {
-                command = "_typescript.organizeImports",
-                arguments = { vim.api.nvim_buf_get_name(0) },
-                title = ""
-            }
-            vim.lsp.buf.execute_command(params)
-        end, description = "Organize Imports" }
-    }
+    flags = {debounce_text_changes = 150}
 }
+-- }}}
 
--- null-ls setup
+-- {{{ null-ls setup
 -- NOTE(vir): extension null-ls
 local null_ls = require('null-ls')
 null_ls.setup({
@@ -133,7 +127,7 @@ null_ls.setup({
         null_ls.builtins.completion.spell.with({filetypes={'text', 'markdown'}}),
         null_ls.builtins.diagnostics.cppcheck,
         null_ls.builtins.formatting.autopep8,
-        null_ls.builtins.formatting.prettier.with({filetypes={'markdown', 'javascript', 'javascriptreact', 'javascript.jsx', 'typescript', 'typescriptreact', 'typescript.tsx'}}),
+        null_ls.builtins.formatting.prettier.with({filetypes={'markdown', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact'}}),
         null_ls.builtins.hover.dictionary.with({filetypes={'text', 'markdown'}}),
     },
     capabilities = capabilities,
@@ -149,4 +143,4 @@ null_ls.setup({
     end,
     flags = {debounce_text_changes = 150}
 })
-
+-- }}}

@@ -3,6 +3,11 @@ local misc = require('lib/misc')
 local fzf = require('fzf-lua')
 local actions = fzf.actions
 
+-- NOTE(vir):
+-- using fzf-lua functionality in buffer setup (lsp)
+-- this works because lsp is loaded on BufEnter event
+-- fzf-lua is loaded VimEnter event
+
 local default_rg_options = ' --hidden --follow --no-heading --smart-case --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build,*.dSYM,tags,node_modules,Pods}"'
 
 -- fzf.deregister_ui_select()
@@ -139,27 +144,10 @@ utils.map("n", "<c-p>sz", function() fzf.grep({ search = 'TODO|NOTE', no_esc = t
 utils.map("v", "<c-p>ss", fzf.grep_visual)
 
 -- ctags interaction
+-- independent of lsp
 utils.map("n", "<c-p>sP", fzf.tags_grep_cword)
 utils.map("n", "<c-p>sp", function() fzf.tags_live_grep({ exec_empty_query = true }) end)
 utils.map("v", "<c-p>sp", fzf.tags_grep_visual)
-
-utils.map("n", "<f10>", function()
-    require('plenary').Job:new({
-        command = 'ctags',
-        args = { '-R', '--excmd=combine', '--fields=+K' },
-        cwd = misc.get_cwd(),
-        on_start = function() utils.notify('generating tags', 'debug', { render = 'minimal' }, true) end,
-        on_exit = function() utils.notify('tags generated', 'info', { render = 'minimal' }, true) end
-    }):start()
-end)
-
--- NOTE(vir): present even in non-lsp files, consider moving to lsp setup code
-utils.map("n", "<m-cr>", fzf.lsp_code_actions)
-utils.map("n", "<leader>us", fzf.lsp_references)
-utils.map("n", "<leader>ud", fzf.lsp_document_symbols)
-utils.map("n", "<leader>uD", fzf.lsp_live_workspace_symbols)
-utils.map("n", "<leader>d", function() fzf.lsp_definitions({ sync = true, jump_to_single_result = true }) end)
-utils.map("n", "<leader>D", function() fzf.lsp_definitions({ sync = true, jump_to_single_result = true, jump_to_single_result_action = actions.file_vsplit }) end)
 
 utils.add_command('Colors', fzf.colorschemes, {
     bang = false,

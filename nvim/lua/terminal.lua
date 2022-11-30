@@ -97,16 +97,21 @@ local function set_target_terminal()
 end
 
 -- setup target_command
-local function set_target_command()
-    run_config.target_command = vim.fn.input('[terminal] target_command: ', '', 'shellcmd')
+local function set_target_command(default)
+    if not default then
+        run_config.target_command = vim.fn.input('[terminal] target_command: ', '', 'shellcmd')
+    else
+        run_config.target_command = default
+    end
 end
 
 -- set target_terminal/target_command
-local function set_target()
+local function set_target(default)
     if vim.b.terminal_job_id ~= nil then
+        assert(not default)
         set_target_terminal()
     else
-        set_target_command()
+        set_target_command(default)
     end
 end
 

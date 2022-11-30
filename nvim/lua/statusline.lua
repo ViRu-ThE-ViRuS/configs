@@ -32,13 +32,14 @@ local function get_git_status()
     return string.format(' %s | +%s ~%s -%s ', meta['branch'], meta['added'], meta['modified'], meta['removed'])
 end
 
--- get current tag name
-local function get_tagname()
+-- get current context / tag
+local function get_context()
     local bufnr = vim.fn.bufnr('%')
     if utils.tag_state.context[bufnr] == nil or truncate_statusline(true) then return '' end
 
-    if truncate_statusline() then
-        return string.format("[ %s %s ] ", utils.tag_state.context[bufnr][1].icon, utils.tag_state.context[bufnr][1].name)
+    if truncate_statusline(true) then
+        local context = utils.tag_state.context[bufnr]
+        return string.format("[ %s %s ] ", context[#context].icon, context[#context].name)
     else
         local context = core.foreach(utils.tag_state.context[bufnr], function(arg) return arg.icon .. ' ' .. arg.name end) or {}
         local context_tree = table.concat(context, " > ")
@@ -105,7 +106,7 @@ local function statusline_normal()
     local diagnostics = colors.diagnostics .. get_diagnostics()
     local truncator = '%<'
     local filename = colors.file .. get_filename()
-    local tagname = colors.tagname .. get_tagname()
+    local tagname = colors.tagname .. get_context()
     local line_col = colors.line_col .. get_line_col()
     local percentage = colors.percentage .. get_percentage()
     local bufnr = colors.bufnr .. get_bufnr()

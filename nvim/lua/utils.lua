@@ -60,10 +60,10 @@ local function qf_populate(lines, mode, title)
 	vim.fn.setqflist(lines, mode)
 
 	if not title then
-		vim.cmd([[
+		vim.cmd [[
             belowright copen
             wincmd p
-        ]])
+        ]]
 	else
         vim.cmd(string.format("belowright copen\n%s\nwincmd p",
             require('statusline').set_statusline_cmd(title)))

@@ -81,25 +81,13 @@ return require('packer').startup({
         use {
             'mfussenegger/nvim-dap',
             requires = {
-                { 'rcarriga/nvim-dap-ui', ft = { 'c', 'cpp', 'python', 'rust', 'javascript' } },
-                { 'theHamsta/nvim-dap-virtual-text', ft = { 'c', 'cpp', 'python', 'rust', 'javascript' } },
-                { 'mxsdev/nvim-dap-vscode-js', ft = 'javascript' }
+                { 'rcarriga/nvim-dap-ui', ft = { 'c', 'cpp', 'rust', 'python', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' } },
+                { 'theHamsta/nvim-dap-virtual-text', after = 'nvim-dap-ui' },
+                { 'mxsdev/nvim-dap-vscode-js', ft = {'javascript', 'javascriptreact', 'typescript', 'typescriptreact'} }
             },
-            after = { 'nvim-dap-ui', 'nvim-dap-virtual-text' },
+            after = 'nvim-dap-virtual-text',
             config = 'require("plug-config/dap")'
         }
-
-        -- use {
-        --     'ThePrimeagen/harpoon',
-        --     event = 'BufEnter',
-        --     config = 'require("plug-config/harpoon")'
-        -- }
-
-        -- use {
-        --     'hkupty/iron.nvim',
-        --     ft = 'python',
-        --     config = 'require("plug-config/iron")'
-        -- }
 
         use 'bluz71/vim-nightfly-guicolors'
         use 'EdenEast/nightfox.nvim'

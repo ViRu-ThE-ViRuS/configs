@@ -176,9 +176,9 @@ end
 -- quickfix: toggle qflist
 local function toggle_qflist()
 	if vim.fn.empty(vim.fn.filter(vim.fn.getwininfo(), "v:val.quickfix")) == 1 then
-		vim.cmd([[ belowright copen ]])
+		vim.cmd [[ belowright copen ]]
 	else
-		vim.cmd([[ cclose ]])
+		vim.cmd [[ cclose ]]
 	end
 end
 
@@ -216,7 +216,7 @@ local function random_colors()
     if type(target) == 'function' then
         target()
     else
-        vim.cmd(string.format('colorscheme %s\ncolorscheme', target))
+        vim.cmd.colorscheme(target)
     end
 end
 

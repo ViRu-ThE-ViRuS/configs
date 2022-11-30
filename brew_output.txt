@@ -5,7 +5,6 @@ c-ares
 ca-certificates
 clang-format
 cmake
-cocoapods
 cppcheck
 fish
 fzf
