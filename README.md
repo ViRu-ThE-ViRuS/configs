@@ -17,58 +17,50 @@ something in my workflow. ive spent a lot of time optimizing for:
 
 - speed (startup time ~5ms, lazy loading almost everything)
 - no bloat (only features i use regularly)
-- custom implementation instead of pulling in new plugins for everything
-- making plugins work nicely together (eg: gitsigns and fugitive interactions)
+- custom tooling (to avoid bloat)
+- making plugins work nicely together
 
-some things i decided to implement on my own:
+some of the "big" things i decided to implement on my own:
 
-- notifications (for lsp, dap, +more)
 - statusline (with lsp, git, diagnostics, outline, truncation, +more)
-- lsp handlers (quickfix list, notifications, multi-file rename, +more)
-- terminal setup (send commands, toggle, run last, notifications, +more)
-- functionality to open file in `Finder`, repository in `GitHub`
-- custom project local lua settings functionality, lazy loading local config
-- lua utilities library with things like map, filter, shell commands, +more
-- dap configurations: launch/stop servers, control ui, close outputs
-  automatically etc
-- small utilities like highlight current word, switch bw preferred
-  colorschemes, collect all TODOs, toggle maximize buffer, etc
+- lsp handlers (qf-list, notifications, multi-file rename, +more)
+- terminal api (send commands, toggle, run last, notifications, +more)
+- functionality like `OpenInGithub`, open file in `Finder`, toggle buffer maximize +more
+- project local settings and commands
+- a lua utility library
+- custom dap configurations to control servers, ui, keymaps +more
 
-i recommend using `neovim HEAD` (or at least 0.6+) to keep up with latest
-config changes.
+i recommend using `neovim HEAD` (or at least 0.8+) to keep up with latest
+changes.
 
 **NOTE**: this config can be a little difficult to bootstrap because of all the
 weird lazy loading optimizations i have made, for example the colorscheme is
-not downloaded on first open, so i recommend after cloing the repo and running
+not downloaded on first open, so i recommend after cloning the repo and running
 the `update_config.sh` script, directly open the `lua/plugins.lua` file, ignore
-errors and source it with `:luafile %`, and relaunch. most issues should be
-fixed
+errors and source it with `:luafile %`. most issues should be fixed after this step.
 
-##### LSP
+##### External Dependencies
 
 you will need to install lsp(s) manually:
 
-- **lua**: sumneko (${HOME}/.local/lsp/lua-language-server/)
-- **cmake**: cmake-language-server
+- **lua**: sumneko (@`${HOME}/.local/lsp/lua-language-server/`)
 - **python**: pyright
-- **c/c++**: clangd, clang-format, clang-tidy
-- **general**: null-ls (lua_format, autopep8, prettier, flake8),
-  universal-ctags
+- **c/c++/rust**: clangd, clang-format, clang-tidy, cppcheck
+- **js/ts/react**: tsserver
+- **general**: null-ls (autopep8, prettier), universal-ctags, fzf, rg
 
-##### DAP
-
-for my dap setup to work, you will need to install adapters manually
+for dap setup to work, you will need to install adapters manually:
 
 - **python**: debugpy
-- **c/c++/rust**: codelldb (${HOME}/.local/codelldb/)
+- **c/c++/rust**: codelldb (@`${HOME}/.local/codelldb/`)
 
 ##### Project Setup
 
-- see colors: `so $VIMRUNTIME/syntax/hitest.vim`
 - **.clang-format**: clang-format config
 - **.clang-tidy**: clang-tidy config
 - **.flake8**: autopep8/flake8 config
 - **pyrightconfig.json**: pyright config
+- **.nvimrc.lua**: project local settings
 
 ### Reproduce
 
@@ -77,9 +69,8 @@ for my dap setup to work, you will need to install adapters manually
 
 ### Notes
 
-- tmux: setup terminfo profile using `tic -x ~/.config/tmux/terminfo`
-- brew: packages in `brew_output.txt` & `brew_cask_output.txt`
-- kitty: setup fonts according to `kitty/kitty.conf`
-- nvim: use `LuaCacheClear` from impatient.nvim, if startup seems weirdly slow
-- periodically use `brew cleanup --prune 5; brew autoremove; brew doctor`
-
+- **tmux**: setup terminfo profile using `tic -x ${HOME}/.config/tmux/terminfo`
+- **brew**: packages in `brew_output.txt` & `brew_cask_output.txt`
+- **kitty**: setup fonts according to `kitty/kitty.conf`
+- **nvim**: use `LuaCacheClear` from impatient.nvim, if startup seems weirdly slow
+- **colors**: see `so $VIMRUNTIME/syntax/hitest.vim`
