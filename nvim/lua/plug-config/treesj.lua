@@ -45,6 +45,9 @@ treesj.setup({
     },
 })
 
+-- utils.map('n', 'gS', '<cmd>TSJSplit<cr>')
+-- utils.map('n', 'gJ', '<cmd>TSJJoin<cr>')
+
 utils.map('n', 'gS', '<cmd>silent! TSJSplit<cr>')
 utils.map('n', 'gJ', '<cmd>silent! TSJJoin<cr>')
 

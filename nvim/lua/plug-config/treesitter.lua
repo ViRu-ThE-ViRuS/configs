@@ -7,12 +7,12 @@ require('nvim-treesitter.configs').setup {
     },
 
     -- indent = {enable = true},
-    indent = {enable = true, disable={'python', 'c', 'cpp', 'lua', 'javascript', 'javascriptreact', 'typescript', 'tsx'}},
+    indent = {enable = true, }, --  disable={'python', 'c', 'cpp', 'lua', 'javascript', 'javascriptreact', 'typescript', 'tsx'}},
 
     highlight = {enable = true, additional_vim_regex_highlighting = {'markdown'}},
     matchup = {enable = true, disable_virtual_text = true},
     context_commentstring = {enable = true, enable_autocmd = false},
-    yati = {enable = true},
+    yati = {enable = true, disable = {'lua', 'python', 'cpp', 'c'}},
 
     incremental_selection = {
         enable = true,

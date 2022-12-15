@@ -181,7 +181,7 @@ return {
         git         = "%#Pmenu#",
         diagnostics = "%#PmenuSbar#",
         file        = "%#CursorLine#",
-        tagname     = "%#PmenuSbar#",
+        context     = "%#PmenuSbar#",
         line_col    = "%#CursorLine#",
         percentage  = "%#CursorLine#",
         bufnr       = "%#PmenuSbar#",

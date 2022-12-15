@@ -135,7 +135,7 @@ local function ui_overrides()
     -- NOTE(vir): some colorschemes aint pretty with gitsigns
     -- GitSign* highlights link to Diff* highlights for some reason despite
     -- configuring them not to. Consider linking these only when in git repos?
-    vim.cmd([[
+    vim.cmd [[
         " lsp
         highlight! link LspReferenceRead IncSearch
         highlight! link LspReferenceWrite IncSearch
@@ -162,7 +162,28 @@ local function ui_overrides()
         highlight! link VertSplit LineNr
         highlight! link FloatBorder Normal
         highlight! link NormalFloat Normal
-    ]])
+    ]]
+
+    -- set statusline highlights
+    -- NOTE(vir): defer this because weird behavior for some colorschemes + ts highlights
+    --  - maybe they load slow?
+    vim.defer_fn(function()
+        local lsp_icons = require('lsp-setup/utils').lsp_icons
+        local target_id = vim.api.nvim_get_hl_id_by_name(string.sub(require('utils').statusline_colors.context, 3, -2))
+        local target_hl = vim.api.nvim_get_hl_by_id(target_id, true)
+
+        for _, value in pairs(lsp_icons) do
+            local name = string.sub(value.hl, 3, -2)
+            local ts_name = string.sub(name, 5, -1)
+            local ts_id = vim.api.nvim_get_hl_id_by_name(ts_name)
+            local hl = vim.api.nvim_get_hl_by_id(ts_id, true)
+
+            vim.api.nvim_set_hl(0, name, {
+                foreground = hl.foreground,
+                background = target_hl.background
+            })
+        end
+    end, 0)
 end
 
 -- }}}
@@ -170,7 +191,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd.colorscheme('vscode')
+vim.cmd.colorscheme('mountain')
 ui_overrides()
 
 return {

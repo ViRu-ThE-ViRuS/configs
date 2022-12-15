@@ -24,10 +24,12 @@ dap.adapters.codelldb = function(callback, _)
     end)
 end
 
-require('dap-vscode-js').setup({
-    adapters = {'pwa-node'},
-    debugger_path = core.get_homedir() .. '/.local/vscode-js-debug',
-})
+if packer_plugins['nvim-dap-vscode-js'].loaded then
+    require('dap-vscode-js').setup({
+        adapters = {'pwa-node'},
+        debugger_path = core.get_homedir() .. '/.local/vscode-js-debug',
+    })
+end
 -- }}}
 
 -- {{{ language configurations
@@ -104,7 +106,7 @@ vim.api.nvim_create_augroup('DAPConfig', { clear = true })
 vim.api.nvim_create_autocmd('FileType', {
     group = 'DAPConfig',
     pattern = 'dap-repl',
-    callback = function() require('dap.ext.autocompl').attach() end
+    callback = require('dap.ext.autocompl').attach
 })
 
 -- signs

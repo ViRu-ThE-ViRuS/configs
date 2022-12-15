@@ -41,7 +41,11 @@ local function get_context(bufnr)
         local context = utils.tag_state.context[bufnr]
         return string.format("[ %s %s ] ", context[#context].icon, context[#context].name)
     else
-        local context = core.foreach(utils.tag_state.context[bufnr], function(arg) return arg.icon .. ' ' .. arg.name end) or {}
+        local context = core.foreach(utils.tag_state.context[bufnr], function(arg)
+            return arg.iconhl .. arg.icon .. ' ' .. colors.context .. arg.name
+        end) or {}
+
+        -- local context = core.foreach(utils.tag_state.context[bufnr], function(arg) return arg.icon .. ' ' .. arg.name end) or {}
         local context_tree = table.concat(context, " > ")
         return string.format('[ %s ]', context_tree)
     end
@@ -106,7 +110,7 @@ local function statusline_normal()
     local diagnostics = colors.diagnostics .. get_diagnostics()
     local truncator = '%<'
     local filename = colors.file .. get_filename()
-    local tagname = colors.tagname .. get_context()
+    local context = colors.context .. get_context()
     local line_col = colors.line_col .. get_line_col()
     local percentage = colors.percentage .. get_percentage()
     local bufnr = colors.bufnr .. get_bufnr()
@@ -114,7 +118,7 @@ local function statusline_normal()
 
     return table.concat({
         colors.active, mode, git, diagnostics, truncator, filename,
-        colors.inactive, '%=% ', tagname, line_col, percentage, bufnr, filetype,
+        colors.inactive, '%=% ', context, line_col, percentage, bufnr, filetype,
         colors.inactive
     })
 end
