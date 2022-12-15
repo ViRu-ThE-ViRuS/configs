@@ -39,6 +39,11 @@ require('nvim-treesitter.configs').setup {
             enable = true,
             set_jumps = true,
             -- NOTE(vir): remaps done manually below
+        },
+        swap = {
+            enable = true,
+            swap_next = { [']p'] = "@parameter.inner" },
+            swap_previous = { ['[p'] = "@parameter.inner" }
         }
     },
 

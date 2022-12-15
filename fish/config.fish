@@ -2,6 +2,9 @@
 alias vim='SUDO_ASKPASS=~/.config/system/pw.sh nvim'
 alias rmd='rm -rf'
 alias cat='bat --theme=Coldark-Dark'
+alias icat='kitty +kitten icat'
+alias ssh='kitty +kitten ssh'
+alias pip='pip3'
 
 set -xg EDITOR              nvim
 set -xg LANG                en_US.UTF-8
@@ -15,8 +18,8 @@ set FZF_CTRL_T_OPTS         '--preview "bat --style=numbers,changes --color alwa
 
 # macos : viraat-t2t
 set fish_user_paths         $fish_user_paths "/opt/homebrew/bin/"
-set fish_user_paths         $fish_user_paths "/opt/homebrew/opt/llvm/bin"
-set fish_user_paths         $fish_user_paths "/Users/viraat-chandra/Library/Python/3.8/bin"
+set fish_user_paths         $fish_user_paths "/Users/viraat-chandra/Library/Python/3.9/bin"
+# set fish_user_paths         $fish_user_paths "/opt/homebrew/opt/llvm/bin"
 # set -xg SUDO_ASKPASS        ~/.config/system/pw.sh # make this nvim specific
 
 # rust setup
@@ -81,10 +84,10 @@ function codelldb --description 'launch codelldb with custom config'
 end
 
 function python --description 'launch python'
-    if test -e "$VIRTUAL_ENV"
-       command python3 $argv
-       return
-    end
+    # if test -e "$VIRTUAL_ENV"
+    #    command python3 $argv
+    #    return
+    # end
 
     if command -sq 'ipython'
         command ipython $argv

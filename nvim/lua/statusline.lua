@@ -33,8 +33,8 @@ local function get_git_status()
 end
 
 -- get current context / tag
-local function get_context()
-    local bufnr = vim.fn.bufnr('%')
+local function get_context(bufnr)
+    bufnr = bufnr or vim.api.nvim_get_current_buf()
     if utils.tag_state.context[bufnr] == nil or truncate_statusline(true) then return '' end
 
     if truncate_statusline(true) then
@@ -195,5 +195,7 @@ return {
     statusline_inactive = statusline_inactive,
     set_statusline_func = set_statusline_func,
     set_statusline_cmd = set_statusline_cmd,
-    statusline_blacklist = statusline_blacklist
+    statusline_blacklist = statusline_blacklist,
+
+    get_context = get_context
 }

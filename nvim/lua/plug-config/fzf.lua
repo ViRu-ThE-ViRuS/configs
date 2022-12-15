@@ -27,9 +27,9 @@ fzf.setup({
             vim.opt_local.buflisted = false
             vim.opt_local.bufhidden = 'wipe'
 
-            utils.map('t', '<c-k>', '<up>', {}, 0)
-            utils.map('t', '<c-j>', '<down>', {}, 0)
-            utils.map('t', '<esc>', '<cmd>quit<cr>', {}, 0)
+            utils.map('t', '<c-k>', '<up>', { buffer = 0 })
+            utils.map('t', '<c-j>', '<down>', { buffer = 0 })
+            utils.map('t', '<esc>', '<cmd>quit<cr>', { buffer = 0 })
         end,
     },
     winopts_fn = function()

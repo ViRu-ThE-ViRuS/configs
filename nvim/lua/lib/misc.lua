@@ -49,6 +49,14 @@ local function strip_trailing_whitespaces()
 	vim.api.nvim_win_set_cursor(0, cursor)
 end
 
+-- calculate indent spaces in string
+local function calculate_indent(str, get)
+    local s, e = string.find(str, '^%s*')
+    local indent_size = e - s + 1
+    if not get then return indent_size end
+    return string.rep(' ', indent_size)
+end
+
 -- get vim cwd
 local function get_cwd()
 	return vim.fn.getcwd()
@@ -224,6 +232,7 @@ return {
 	fzf_to_qf = fzf_to_qf,
 	strip_fname = strip_fname,
 	strip_trailing_whitespaces = strip_trailing_whitespaces,
+    calculate_indent = calculate_indent,
 
 	get_cwd = get_cwd,
 	get_git_root = get_git_root,

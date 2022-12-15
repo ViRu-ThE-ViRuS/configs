@@ -22,9 +22,7 @@ jansson
 libevent
 libffi
 libidn2
-liblinear
 libnghttp2
-libssh2
 libtasn1
 libtermkey
 libtool
@@ -34,7 +32,6 @@ libvterm
 libyaml
 lua
 lua-language-server
-lua@5.3
 luajit
 luarocks
 luv
@@ -45,7 +42,6 @@ ncurses
 neovim
 nettle
 ninja
-nmap
 node
 openssl@1.1
 p11-kit
@@ -54,7 +50,6 @@ pcre2
 pkg-config
 readline
 ripgrep
-ruby
 rustup-init
 tinyxml2
 tmux

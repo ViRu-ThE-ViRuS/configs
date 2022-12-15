@@ -53,14 +53,14 @@ vim.g.tempus_enforce_background_color = 1
 vim.g.embark_terminal_italics = 1
 vim.g.gruvbox_baby_background_color = "medium"
 vim.g.vscode_style = "dark"
-vim.g.material_style = "oceanic"
+vim.g.material_style = "darker"
 
 -- {{{ material
 -- require('material').setup({
---     italics = {
---         comments = true,
---         functions = true,
---         strings = true
+--     styles = {
+--         comments = { italic = true },
+--         functions = { italic = true },
+--         strings = { italic = true }
 --     }
 -- })
 -- }}}

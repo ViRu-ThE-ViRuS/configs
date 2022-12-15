@@ -7,7 +7,7 @@ local utils = require("utils")
 
 -- setup keymaps and autocommands
 local on_attach = function(client, bufnr)
-    utils.notify(string.format("[lsp] %s\n[cwd] %s", client.name, misc.get_cwd()), "info", { title = "[lsp] Active" }, true)
+    -- utils.notify(string.format("[lsp] %s\n[cwd] %s", client.name, misc.get_cwd()), "info", { title = "[lsp] Active" }, true)
 
     -- NOTE(vir): lsp_signature setup
     require('lsp_signature').on_attach({ doc_lines = 3, hint_prefix = "<>", handler_opts = { border = 'rounded' } }, bufnr)
@@ -15,7 +15,7 @@ local on_attach = function(client, bufnr)
     setup_buffer.setup_lsp_keymaps(client, bufnr)
     setup_buffer.setup_diagnostics_keymaps(client, bufnr)
     setup_buffer.setup_formatting_keymaps(client, bufnr)
-    setup_buffer.setup_independent_keymaps(client, bufnr)
+    setup_buffer.setup_commands(client, bufnr)
 
     setup_buffer.setup_autocmds(client, bufnr)
     setup_buffer.setup_options()
@@ -97,14 +97,6 @@ lsp["sumneko_lua"].setup {
 }
 -- }}}
 
--- {{{ cmake setup
-lsp['cmake'].setup {
-    capabilities = capabilities,
-    on_attach = on_attach,
-    flags = {debounce_text_changes = 150}
-}
--- }}}
-
 -- {{{ js/ts setup
 lsp['tsserver'].setup {
     capabilities = capabilities,
@@ -132,14 +124,11 @@ null_ls.setup({
     },
     capabilities = capabilities,
     on_attach = function(client, bufnr)
-        utils.notify(
-            string.format("[lsp] %s\n[cwd] %s", client.name, misc.get_cwd()),
-            "info", { title = "[lsp] Active" }, true
-        )
+        -- utils.notify(string.format("[lsp] %s\n[cwd] %s", client.name, misc.get_cwd()), "info", { title = "[lsp] Active" }, true)
 
-        setup_buffer.setup_formatting_keymaps(client, bufnr)
+        utils.map('n', 'K', vim.lsp.buf.hover, {silent = true, buffer = bufnr})
         setup_buffer.setup_diagnostics_keymaps(client, bufnr)
-        utils.map('n', 'K', vim.lsp.buf.hover, {silent = true}, bufnr)
+        setup_buffer.setup_formatting_keymaps(client, bufnr)
     end,
     flags = {debounce_text_changes = 150}
 })

@@ -41,7 +41,7 @@ vim.opt.joinspaces = false
 vim.opt.laststatus = 3
 vim.opt.lazyredraw = true
 vim.opt.modelines = 0
-vim.opt.mouse = "a"
+vim.opt.mouse = "" -- "a"
 vim.opt.path = vim.opt.path + "**/*"
 vim.opt.pumblend = 10
 vim.opt.pumheight = 10
@@ -92,6 +92,7 @@ vim.opt.swapfile = false
 vim.opt.tabstop = 4
 vim.opt.textwidth = 79
 vim.opt.undofile = true
+-- vim.opt.winbar = '%=[%f] '
 
 -- disable builtin plugins
 local disabled_plugins = {

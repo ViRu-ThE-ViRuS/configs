@@ -40,7 +40,6 @@ utils.map("n", "gp", "`[v`]")                               -- last paste
 utils.map("n", '@"', ":<c-f>")                              -- cmd line edit mode
 utils.map({"n", "v"}, "<c-b>", "<nop>")                     -- disable <c-b>
 utils.map('v', '//', [[y/\V<c-r>=escape(@",'/\')<cr><cr>]]) -- search for selection
-utils.map('v', 'sS', [[:s/<c-r>//]])                        -- replace last search
 utils.map('v', '<m-/>', '<esc>/\\%V')                       -- search within selection
 
 -- disable command history modes
@@ -122,8 +121,8 @@ utils.map("n", "<leader>cA", terminal.run_target_command)
 utils.map("n", "<leader>ca", terminal.run_previous_command)
 utils.map("n", "<leader>cS", terminal.set_target)
 utils.map("n", "<leader>cs", terminal.toggle_target)
-utils.map("n", "<leader>cv", function() terminal.run_selection(true) end)
-utils.map("v", "<leader>cv", '<esc><cmd>lua require("terminal").run_selection(false)<cr>gv')
+utils.map("n", "<leader>cv", terminal.run_selection)
+utils.map("v", "<leader>cv", '<esc><cmd>lua require("terminal").run_selection(true)<cr>gv')
 
 -- commands
 utils.map('n', '<c-cr>', '<cmd>Commands<cr>', {})

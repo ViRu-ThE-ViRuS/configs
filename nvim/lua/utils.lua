@@ -31,20 +31,29 @@ local commands = {
     keys = { },
     callbacks = { }
 }
+
+-- project config
+local project_config = {
+    debug_print_fmt = {
+        lua = 'print("%s:", vim.inspect(%s))',
+        c = 'printf("%s: %%s", %s);',
+        cpp = 'std::cout << "%s:" << %s << std::endl;',
+        python = 'print(f"%s: {str(%s)}")',
+    },
+    debug_print_postfix = '__DEBUG_PRINT__'
+}
 -- }}}
 
 -- setup keymaps
-local function map(mode, lhs, rhs, opts, bufnr)
+local function map(mode, lhs, rhs, opts)
 	local options = { noremap = true }
 	if opts then options = vim.tbl_extend("force", options, opts) end
-	if bufnr then options["buffer"] = bufnr end
 	vim.keymap.set(mode, lhs, rhs, options)
 end
 
 -- remove keymaps
-local function unmap(mode, lhs, bufnr)
-	local options = {}
-	if bufnr then options["buffer"] = bufnr end
+local function unmap(mode, lhs, options)
+	options = options or {}
 
 	-- vim.keymap.del(mode, lhs, options)
 	pcall(vim.keymap.del, mode, lhs, options)
@@ -183,5 +192,6 @@ return {
     run_config = run_config,
     diagnostics_state = diagnostics_state,
     ui_state = ui_state,
-    commands = commands
+    commands = commands,
+    project_config = project_config
 }

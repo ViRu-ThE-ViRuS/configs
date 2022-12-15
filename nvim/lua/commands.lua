@@ -22,7 +22,7 @@ vim.defer_fn(function()
         group = 'Misc',
         pattern = {'vista_kind', 'vista', 'NvimTree'},
         callback = function()
-            utils.map('n', '<c-o>', '<cmd>wincmd p<cr>', {}, 0)
+            utils.map('n', '<c-o>', '<cmd>wincmd p<cr>', { buffer = 0 })
         end,
     })
 

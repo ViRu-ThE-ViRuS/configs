@@ -151,7 +151,7 @@ local function get_output_windows(session, activate_last)
                     q!
                     tabclose
                 ]]
-        end, {}, target_handle)
+        end, { buffer = target_handle })
 
         local windows = vim.fn.win_findbuf(target_handle)
         if windows[#windows] then

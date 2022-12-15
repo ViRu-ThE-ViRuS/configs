@@ -54,7 +54,7 @@ local function send_to_target(payload, repeat_last)
                     return
                 end
             else
-                if pcall(vim.api.nvim_chan_send, run_config.target_terminal.job_id, payload .. '\n') then
+                if pcall(vim.api.nvim_chan_send, run_config.target_terminal.job_id, payload .. "\n") then
                     toggle_target(true)
                     return
                 end
@@ -132,13 +132,10 @@ local function run_previous_command()
 end
 
 -- send visually selected lines to target_terminal
-local function run_selection(line_mode)
+local function run_selection(visual_mode)
     local payload = nil
 
-    if line_mode then
-        local line = vim.api.nvim_win_get_cursor(0)[1]
-        payload = vim.trim(vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1])
-    else
+    if visual_mode then
         local l1 = vim.api.nvim_buf_get_mark(0, "<")[1]
         local l2 = vim.api.nvim_buf_get_mark(0, ">")[1]
         if l1 > l2 then l1, l2 = l2, l1 end
@@ -146,6 +143,10 @@ local function run_selection(line_mode)
         local lines = vim.fn.getline(l1, l2)
         payload = table.concat(core.filter(lines, function(_, value) return vim.trim(value) ~= '' end), '\n')
         payload = payload .. '\n'
+
+    elseif visual_mode then
+        local line = vim.api.nvim_win_get_cursor(0)[1]
+        payload = vim.trim(vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1])
     end
 
     send_to_target(payload)
@@ -175,6 +176,8 @@ return {
     -- run-config
     toggle_target = toggle_target,
     set_target = set_target,
+    send_to_target = send_to_target,
+    target_scroll_to_end = target_scroll_to_end,
     run_target_command = run_target_command,
     run_previous_command = run_previous_command,
     run_selection = run_selection,

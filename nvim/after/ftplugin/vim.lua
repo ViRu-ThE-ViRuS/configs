@@ -6,8 +6,8 @@ local function setup_cmd_edit_buf()
     local bufname = path[#path]
 
     if bufname == '[Command Line]' then
-        utils.map('n', '<c-o>', "G<cr>", {}, 0)
-        utils.map('n', '<c-k>', "G<cr>", {}, 0)
+        utils.map('n', '<c-o>', "G<cr>", { buffer = 0 })
+        utils.map('n', '<c-k>', "G<cr>", { buffer = 0 })
     end
 end
 
