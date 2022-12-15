@@ -43,7 +43,7 @@ errors and source it with `:luafile %`. most issues should be fixed after this s
 
 you will need to install lsp(s) manually:
 
-- **lua**: sumneko (@`${HOME}/.local/lsp/lua-language-server/`)
+- **lua**: sumneko-lua
 - **python**: pyright
 - **c/c++/rust**: clangd, clang-format, clang-tidy, cppcheck
 - **js/ts/react**: tsserver
@@ -53,6 +53,7 @@ for dap setup to work, you will need to install adapters manually:
 
 - **python**: debugpy
 - **c/c++/rust**: codelldb (@`${HOME}/.local/codelldb/`)
+- **js/ts/react**: vscode-js-debug (@`${HOME}/.local/lsp/lua-language-server/`)
 
 ##### Project Setup
 
