@@ -169,7 +169,7 @@ local function ui_overrides()
     --  - maybe they load slow?
     vim.defer_fn(function()
         local lsp_icons = require('lsp-setup/utils').lsp_icons
-        local target_id = vim.api.nvim_get_hl_id_by_name(string.sub(require('utils').statusline_colors.context, 3, -2))
+        local target_id = vim.api.nvim_get_hl_id_by_name(string.sub(require('statusline').statusline_colors.context, 3, -2))
         local target_hl = vim.api.nvim_get_hl_by_id(target_id, true)
 
         for _, value in pairs(lsp_icons) do
@@ -191,7 +191,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd.colorscheme('mellow')
+vim.cmd.colorscheme('habamax')
 ui_overrides()
 
 return {
@@ -210,7 +210,6 @@ return {
         "adwaita",
         "everforest",
         "vscode",
-        "oh-lucy", "oh-lucy-evening",
         "barstrata",
         "substrata",
         "monokai_pro", "monokai_ristretto",

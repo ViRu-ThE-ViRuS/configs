@@ -1,6 +1,6 @@
 -- hello my name is viraat chandra and i love to program
 
--- impatient.nvim
+-- NOTE(vir): impatient.nvim
 require("impatient")
 require("packer_compiled")
 
@@ -11,8 +11,8 @@ require("statusline")
 -- deferred execution makes the editor feel more responsive
 vim.defer_fn(function()
 	require("keymaps")
-	require("commands")
-	require("plugins")
+    require("commands")
+    require("plugins")
 
 	-- NOTE(vir): load project local config last
 	require("project_config").load()

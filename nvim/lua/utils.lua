@@ -1,46 +1,78 @@
 local core = require("lib/core")
 
 --- {{{ global states
--- lsp+ts: current tag_state [updated async]
-local tag_state = {
-    cache = {},
-    context = {},
-    req_state = {}
+-- editor config and state
+local editor_config = {
+    -- state: current contexts using lsp+ts, update from lsp autocmds
+    tag_state = {
+        cache = {},
+        context = {},
+        req_state = {}
+    },
+
+    -- state: ui toggles
+    ui_state = {
+        thick_separators = false,
+        window_state = {},
+
+        -- state: diagnostics toggle
+        diagnostics_state = {
+            ["local"] = {},
+            ["global"] = false,
+        },
+
+        -- set context in winbar
+        -- use corresponding toggle to set this on
+        context_winbar = false,
+    },
+
+    -- config: separator map
+    symbol_config = {
+        -- indicators, icons
+        indicator_seperator = "",
+        indicator_hint = "[@]",
+        indicator_info = "[i]",
+        indicator_warning = "[!]",
+        indicator_error = "[x]",
+
+        -- signs
+        sign_hint = "@",
+        sign_info = "i",
+        sign_warning = "!",
+        sign_error = "x",
+    },
+
+    -- truncation levels
+    truncation = {
+        truncation_limit_s_terminal = 110,
+        truncation_limit_s = 80,
+        truncation_limit = 100,
+        truncation_limit_l = 160,
+    }
 }
 
--- terminal: current run_config [updated elsewhere]
-local run_config = {
-    target_terminal = nil,
-    target_command = "",
-}
-
--- diagnostics: toggle state
-local diagnostics_state = {
-    ["local"] = {},
-    ["global"] = false,
-}
-
--- ui: toggles
-local ui_state = {
-    thick_separators = false,
-    window_state = {},
-}
-
--- registered custom commands
-local commands = {
-    keys = { },
-    callbacks = { }
-}
-
--- project config
+-- project config and state
 local project_config = {
+    -- state: current run_config, works with terminal.lua api
+    run_config = {
+        target_terminal = nil,
+        target_command = "",
+    },
+
+    -- registered custom commands
+    commands = {
+        keys = { },
+        callbacks = { }
+    },
+
+    -- debug print setup
+    debug_print_postfix = '__DEBUG_PRINT__',
     debug_print_fmt = {
         lua = 'print("%s:", vim.inspect(%s))',
         c = 'printf("%s: %%s", %s);',
         cpp = 'std::cout << "%s:" << %s << std::endl;',
         python = 'print(f"%s: {str(%s)}")',
     },
-    debug_print_postfix = '__DEBUG_PRINT__'
 }
 -- }}}
 
@@ -60,7 +92,7 @@ local function unmap(mode, lhs, options)
 end
 
 -- set qflist and open
-local function qf_populate(lines, mode, title)
+local function qf_populate(lines, mode, title, scroll_to_end)
 	if mode == nil or type(mode) == "table" then
 		lines = core.foreach(lines, function(item) return { filename = item, lnum = 1, col = 1, text = item } end)
 		mode = "r"
@@ -69,13 +101,18 @@ local function qf_populate(lines, mode, title)
 	vim.fn.setqflist(lines, mode)
 
 	if not title then
-		vim.cmd [[
-            belowright copen
-            wincmd p
-        ]]
+		vim.cmd [[ belowright copen ]]
+        if scroll_to_end then vim.cmd [[ normal! G ]] end
+        vim.cmd [[ wincmd p ]]
 	else
-        vim.cmd(string.format("belowright copen\n%s\nwincmd p",
-            require('statusline').set_statusline_cmd(title)))
+        local commands = {
+            'belowright copen',
+            require('statusline').set_statusline_cmd(title),
+            (scroll_to_end and 'normal! G') or "",
+            'wincmd p',
+        }
+
+        vim.cmd(table.concat(commands, '\n'))
 	end
 end
 
@@ -117,19 +154,15 @@ local function add_command(key, callback, cmd_opts, also_custom)
 
         -- assert opts not defined, or 0 args
         assert((not cmd_opts) or (not cmd_opts.nargs) or cmd_opts.nargs == 0)
-        if commands.callbacks[key] == nil then table.insert(commands.keys, key) end
+        if project_config.commands.callbacks[key] == nil then table.insert(project_config.commands.keys, key) end
 
-        if type(callback) == 'function' then commands.callbacks[key] = callback
-        else commands.callbacks[key] = function() vim.api.nvim_command(callback) end end
+        if type(callback) == 'function' then project_config.commands.callbacks[key] = callback
+        else project_config.commands.callbacks[key] = function() vim.api.nvim_command(callback) end end
     end
 end
 
 return {
-	truncation_limit_s_terminal = 110,
-	truncation_limit_s = 80,
-	truncation_limit = 100,
-	truncation_limit_l = 160,
-
+    -- utils
 	map = map,
 	unmap = unmap,
 	qf_populate = qf_populate,
@@ -138,60 +171,7 @@ return {
 	is_vtruncated = is_vtruncated,
     add_command = add_command,
 
-	symbol_config = {
-		-- indicators, icons
-		indicator_seperator = "",
-		indicator_hint = "[@]",
-		indicator_info = "[i]",
-		indicator_warning = "[!]",
-		indicator_error = "[x]",
-
-		-- signs
-		sign_hint = "@",
-		sign_info = "i",
-		sign_warning = "!",
-		sign_error = "x",
-	},
-	modes = {
-		["n"]  = "Normal",
-		["no"] = "N-Pending",
-		["v"]  = "Visual",
-		["V"]  = "V-Line",
-		[""] = "V-Block",
-		["s"]  = "Select",
-		["S"]  = "S-Line",
-		[""] = "S-Block",
-		["i"]  = "Insert",
-		["ic"] = "Insert",
-		["R"]  = "Replace",
-		["Rv"] = "V-Replace",
-		["c"]  = "Command",
-		["cv"] = "Vim-Ex ",
-		["ce"] = "Ex",
-        ["r"]  = "Prompt",
-        ["rm"] = "More",
-        ["r?"] = "Confirm",
-        ["!"]  = "Shell",
-        ["t"]  = "Terminal",
-    },
-    statusline_colors = {
-        active      = "%#StatusLine#",
-        inactive    = "%#StatusLineNC#",
-        mode        = "%#PmenuSel#",
-        git         = "%#Pmenu#",
-        diagnostics = "%#PmenuSbar#",
-        file        = "%#CursorLine#",
-        context     = "%#PmenuSbar#",
-        line_col    = "%#CursorLine#",
-        percentage  = "%#CursorLine#",
-        bufnr       = "%#PmenuSbar#",
-        filetype    = "%#PmenuSel#",
-    },
-
-    tag_state = tag_state,
-    run_config = run_config,
-    diagnostics_state = diagnostics_state,
-    ui_state = ui_state,
-    commands = commands,
+    -- config and states
+    editor_config = editor_config,
     project_config = project_config
 }

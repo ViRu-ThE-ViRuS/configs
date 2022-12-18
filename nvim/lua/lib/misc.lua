@@ -1,6 +1,8 @@
 local core = require("lib/core")
 local utils = require("utils")
 
+local ui_state = utils.editor_config.ui_state
+
 -- convert fzf entry into a location item
 -- NOTE(vir): deprecated
 -- TODO(vir): consider removing
@@ -57,14 +59,9 @@ local function calculate_indent(str, get)
     return string.rep(' ', indent_size)
 end
 
--- get vim cwd
-local function get_cwd()
-	return vim.fn.getcwd()
-end
-
 -- get git repo root dir (or nil)
 local function get_git_root()
-	local git_cmd = "git -C " .. get_cwd() .. " rev-parse --show-toplevel"
+	local git_cmd = "git -C " .. vim.fn.getcwd() .. " rev-parse --show-toplevel"
 	local root, rc = core.lua_systemlist(git_cmd)
 
 	if rc == 0 then
@@ -84,6 +81,7 @@ local function get_git_remotes()
 end
 
 -- open repository on github
+-- TODO(vir): make this universal (just works with github right now)
 local function open_repo_on_github(remote)
 	if get_git_root() == nil then
 		utils.notify("not in a git repository", "error", { title = "could not open on github" }, true)
@@ -115,22 +113,45 @@ local function toggle_window()
 	if vim.fn.winnr("$") > 1 then
 		local original = vim.fn.win_getid()
 		vim.cmd("tab sp")
-		utils.ui_state.window_state[vim.fn.win_getid()] = original
+		ui_state.window_state[vim.fn.win_getid()] = original
 	else
 		local maximized = vim.fn.win_getid()
-		local original = utils.ui_state.window_state[maximized]
+		local original = ui_state.window_state[maximized]
 
 		if original ~= nil then
 			vim.cmd("tabclose")
 			vim.fn.win_gotoid(original)
-			utils.ui_state.window_state[maximized] = nil
+			ui_state.window_state[maximized] = nil
 		end
 	end
 end
 
+-- winbar: toggle context winbar in all windows
+local function toggle_context_winbar()
+    local callback = nil
+    if ui_state.context_winbar then
+        callback = function(bufnr)
+            vim.api.nvim_buf_call(
+                bufnr,
+                function() vim.opt_local.winbar = nil end
+            )
+        end
+    else
+        callback = function(bufnr)
+            vim.api.nvim_buf_call(
+                bufnr,
+                function() vim.opt_local.winbar = "%!luaeval(\"require('lsp-setup/utils').get_context_winbar(" .. bufnr .. ")\")" end
+            )
+        end
+    end
+
+    core.foreach(vim.api.nvim_list_bufs(), callback)
+    ui_state.context_winbar = not ui_state.context_winbar
+end
+
 -- separator: toggle buffer separators (thick <-> default)
 local function toggle_thicc_separators()
-	if utils.ui_state.thick_separators == true then
+	if ui_state.thick_separators == true then
 		vim.opt.fillchars = {
 			horiz = nil,
 			horizup = nil,
@@ -141,7 +162,7 @@ local function toggle_thicc_separators()
 			verthoriz = nil,
 		}
 
-        utils.ui_state.thick_separators = false
+        ui_state.thick_separators = false
 		utils.notify("thiccness dectivated", "debug", { render = "minimal" })
 	else
 		vim.opt.fillchars = {
@@ -154,7 +175,7 @@ local function toggle_thicc_separators()
 			verthoriz = "╋",
 		}
 
-        utils.ui_state.thick_separators = true
+        ui_state.thick_separators = true
 		utils.notify("thiccness activated", "info", { render = "minimal" })
 	end
 end
@@ -199,7 +220,7 @@ local function show_messages()
 		table.insert(entries, { text = line })
 	end
 
-    utils.qf_populate(entries, "r", "Messages")
+    utils.qf_populate(entries, "r", "Messages", true)
 end
 
 -- send :command output to qflist
@@ -234,12 +255,12 @@ return {
 	strip_trailing_whitespaces = strip_trailing_whitespaces,
     calculate_indent = calculate_indent,
 
-	get_cwd = get_cwd,
 	get_git_root = get_git_root,
 	get_git_remotes = get_git_remotes,
 	open_repo_on_github = open_repo_on_github,
 
 	toggle_window = toggle_window,
+    toggle_context_winbar = toggle_context_winbar,
 	toggle_thicc_separators = toggle_thicc_separators,
 	toggle_spellings = toggle_spellings,
 	toggle_global_statusline = toggle_global_statusline,

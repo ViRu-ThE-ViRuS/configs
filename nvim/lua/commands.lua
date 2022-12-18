@@ -2,6 +2,7 @@ local misc = require('lib/misc')
 local core = require('lib/core')
 local colorscheme = require('colorscheme')
 local utils = require('utils')
+local plenary = require('plenary')
 
 vim.api.nvim_create_augroup('UISetup', {clear = true})
 vim.api.nvim_create_autocmd('ColorScheme', {
@@ -44,13 +45,59 @@ vim.defer_fn(function()
     vim.api.nvim_create_autocmd('BufWritePost', {
         group = 'Configs',
         pattern = { core.get_homedir() .. '/.config/nvim/init.lua', core.get_homedir() .. '/.config/nvim/*/*.lua', },
-        command = 'source <afile>',
+        -- command = 'source $MYVIMRC',
+
+        -- NOTE(vir): this works just some plugins are not hot reloadable
+        -- like treesitter. maybe? idk
+        callback = function()
+            local src_file = vim.fn.expand('<afile>')
+            local rc_file = vim.fn.expand('$MYVIMRC')
+            local rc_path = vim.fs.dirname(rc_file)
+            local lua_path = plenary.Path.new(rc_path) .. '/lua/'
+
+            -- make this true to get complete reloading
+            local skip_lsp_restart = string.find(src_file, 'lsp.*[setup/]*') == nil
+
+            -- ret val is the table of all reloaded packages
+            local to_reload = core.foreach(
+                vim.split(vim.fn.globpath(rc_path, '**/**.lua'), "\n"),
+                function(full_path)
+                    local path_obj = plenary.Path.new(full_path)
+                    local rel_path = vim.fn.fnamemodify(path_obj:make_relative(lua_path), ':r')
+
+                    -- skip all files already unloaded
+                    if not core.table_contains(package.loaded, rel_path) then return end
+
+                    -- NOTE(vir): worth investigating
+                    -- reloading treesj config too many times causes slow down for some reason
+                    if string.find(rel_path, 'treesj') then return end
+                    if skip_lsp_restart and string.find(rel_path, 'lsp.*[setup/]*') then return end
+
+                    -- unload all lua files
+                    package.loaded[rel_path] = nil
+                    return rel_path
+                end
+            )
+
+            -- load all files
+            core.foreach(to_reload, function(mod)
+                print("mod:", vim.inspect(mod)) -- __DEBUG_PRINT__
+                require(mod)
+            end)
+
+            -- special cases
+            -- NOTE(vir): reload treesj only when updating it
+            if string.find(src_file, 'treesj') then vim.cmd [[ source <afile> ]]  end
+            if src_file == 'init.lua' then vim.cmd [[ source $MYVIMRC ]]  end
+
+            utils.notify('[CONFIG] config reloaded', 'debug', {render='minimal'}, true)
+        end
     })
 
     -- custom commands
     utils.add_command("Commands", function()
-        vim.ui.select(utils.commands.keys, { prompt = "command> " }, function(key)
-            utils.commands.callbacks[key]()
+        vim.ui.select(utils.project_config.commands.keys, { prompt = "command> " }, function(key)
+            utils.project_config.commands.callbacks[key]()
         end)
     end, {
         bang = false,
@@ -134,7 +181,7 @@ vim.defer_fn(function()
         require('plenary').Job:new({
             command = 'ctags',
             args = { '-R', '--excmd=combine', '--fields=+K' },
-            cwd = misc.get_cwd(),
+            cwd = vim.fn.getcwd(),
             on_start = function() utils.notify('generating tags', 'debug', { render = 'minimal' }, true) end,
             on_exit = function() utils.notify('tags generated', 'info', { render = 'minimal' }, true) end
         }):start()
@@ -144,5 +191,6 @@ vim.defer_fn(function()
     utils.add_command('Toggle CWord Highlights', 'if CWordHlToggle() | set hlsearch | endif', nil, true)
     utils.add_command('Toggle Thicc Seperators', misc.toggle_thicc_separators, nil, true)
     utils.add_command('Toggle Spellings', misc.toggle_spellings, nil, true)
+    utils.add_command('Toggle Context Winbar', misc.toggle_context_winbar, nil, true)
 end, 0)
 

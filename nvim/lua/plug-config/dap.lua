@@ -67,6 +67,7 @@ dap.configurations.c = {
         console = 'integratedTerminal',
         stopOnEntry = false,
         program = function()
+            -- want it in cmdline, without callback. so fn.input better than ui.input
             return vim.fn.input('executable: ', vim.fn.getcwd() .. '/', 'file')
         end
     }

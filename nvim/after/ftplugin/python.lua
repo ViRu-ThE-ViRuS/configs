@@ -13,7 +13,7 @@ local repl_session = {
 }
 
 utils.add_command("[MISC] REPL: launch ipython", function()
-    if repl_session.bufnr ~= nil and vim.fn.bufname(repl_session.bufnr) ~= "" then
+    if repl_session.bufnr ~= nil and vim.api.nvim_buf_get_name(repl_session.bufnr) ~= "" then
         utils.notify(
             string.format(
                 "previous repl session closed { job_id %s, bufnr: %s }",

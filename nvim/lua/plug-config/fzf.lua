@@ -1,6 +1,9 @@
 local utils = require("utils")
 local misc = require('lib/misc')
 local fzf = require('fzf-lua')
+
+local symbol_config = utils.editor_config.symbol_config
+local truncation = utils.editor_config.truncation
 local actions = fzf.actions
 
 -- NOTE(vir):
@@ -11,7 +14,9 @@ local actions = fzf.actions
 local default_rg_options = ' --hidden --follow --no-heading --smart-case --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build,*.dSYM,tags,node_modules,Pods}"'
 
 -- fzf.deregister_ui_select()
-fzf.register_ui_select()
+if vim.ui.select ~= require('fzf-lua.providers.ui_select').ui_select then
+    fzf.register_ui_select()
+end
 
 fzf.setup({
     winopts = {
@@ -36,7 +41,7 @@ fzf.setup({
         return {
             preview = {
                 layout = vim.api.nvim_win_get_width(0) <
-                    utils.truncation_limit_s_terminal and 'vertical' or 'horizontal'
+                    truncation.truncation_limit_s_terminal and 'vertical' or 'horizontal'
             }
         }
     end,
@@ -119,10 +124,10 @@ fzf.setup({
     lsp = {
         continue_last_search = false,
         icons = {
-            ['Error'] = { icon = utils.symbol_config.indicator_error, color = 'red' },
-            ['Warning'] = { icon = utils.symbol_config.indicator_warning, color = 'yellow' },
-            ['Information'] = { icon = utils.symbol_config.indicator_info, color = 'blue' },
-            ['Hint'] = { icon = utils.symbol_config.indicator_hint, color = 'magenta' }
+            ['Error'] = { icon = symbol_config.indicator_error, color = 'red' },
+            ['Warning'] = { icon = symbol_config.indicator_warning, color = 'yellow' },
+            ['Information'] = { icon = symbol_config.indicator_info, color = 'blue' },
+            ['Hint'] = { icon = symbol_config.indicator_hint, color = 'magenta' }
         }
     }
 })

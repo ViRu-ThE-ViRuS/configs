@@ -2,8 +2,7 @@ local utils = require('utils')
 
 -- easily exit cmd edit mode from <cmd><c-f>
 local function setup_cmd_edit_buf()
-    local path = vim.split(vim.api.nvim_buf_get_name(0), '/')
-    local bufname = path[#path]
+    local bufname = require('lib/misc').strip_fname(vim.api.nvim_buf_get_name(0))
 
     if bufname == '[Command Line]' then
         utils.map('n', '<c-o>', "G<cr>", { buffer = 0 })
@@ -14,3 +13,4 @@ end
 
 -- setup easy exit
 setup_cmd_edit_buf()
+

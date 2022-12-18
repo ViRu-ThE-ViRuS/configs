@@ -1,9 +1,9 @@
-local symbol_config = require('utils').symbol_config
+local symbol_config = require('utils').editor_config.symbol_config
 local notify = require('notify')
 
 notify.setup({
     stages = 'fade',
-    timeout = 250,
+    timeout = 150,
     level = 'DEBUG',
     icons = {
         ERROR = symbol_config.indicator_error,

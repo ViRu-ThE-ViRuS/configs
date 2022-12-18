@@ -1,7 +1,12 @@
 local proto = require('vim.lsp.protocol')
-local utils = require('utils')
 local core = require('lib/core')
+local utils = require('utils')
 
+local tag_state = utils.editor_config.tag_state
+local diagnostics_state = utils.editor_config.ui_state.diagnostics_state
+local truncation = utils.editor_config.truncation
+
+-- {{{ configs
 -- tag states for statusline
 local tag_state_filter = {
     Class     = true,
@@ -43,6 +48,7 @@ local lsp_icons = {
     Operator      = { icon = "+", hl = "%#SLTSOperator#" },
     TypeParameter = { icon = "𝙏", hl = "%#SLTSParameter#" }
 }
+-- }}}
 
 -- pos in range
 local function in_range(pos, range)
@@ -61,27 +67,27 @@ end
 -- toggle diagnostics list
 local function toggle_diagnostics_list(global)
     if global then
-        if not utils.diagnostics_state['global'] then
+        if not diagnostics_state['global'] then
             vim.diagnostic.setqflist({ open = false })
-            utils.diagnostics_state['global'] = true
+            diagnostics_state['global'] = true
 
             vim.cmd(string.format("belowright copen\n%s\nwincmd p",
                 require('statusline').set_statusline_cmd('Workspace Diagnostics')))
         else
-            utils.diagnostics_state['global'] = false
+            diagnostics_state['global'] = false
             vim.cmd [[ cclose ]]
         end
     else
         local current_buf = vim.api.nvim_get_current_buf()
 
-        if not utils.diagnostics_state['local'][current_buf] then
+        if not diagnostics_state['local'][current_buf] then
             vim.diagnostic.setloclist()
-            utils.diagnostics_state['local'][current_buf] = true
+            diagnostics_state['local'][current_buf] = true
 
             require('statusline').set_statusline_func('Diagnostics')()
             vim.cmd [[ wincmd p ]]
         else
-            utils.diagnostics_state['local'][current_buf] = false
+            diagnostics_state['local'][current_buf] = false
             vim.cmd [[ lclose ]]
         end
     end
@@ -122,15 +128,15 @@ end
 
 -- clear buffer tags and context
 local function clear_buffer_tags(bufnr)
-    utils.tag_state.context[bufnr] = nil
-    utils.tag_state.cache[bufnr] = nil
-    utils.tag_state.req_state[bufnr] = nil
+    tag_state.context[bufnr] = nil
+    tag_state.cache[bufnr] = nil
+    tag_state.req_state[bufnr] = nil
 end
 
 -- get current context
 local function update_context()
     local bufnr = vim.fn.bufnr('%')
-    local symbols = utils.tag_state.cache[bufnr]
+    local symbols = tag_state.cache[bufnr]
     if not symbols or #symbols < 1 then return end
 
     local hovered_line = vim.api.nvim_win_get_cursor(0)
@@ -156,28 +162,28 @@ local function update_context()
             function(a, b) return a.range['end'].line > b.range['end'].line or
                 b.range['end'].character > b.range['end'].character
             end)
-        utils.tag_state.context[bufnr] = contexts
+        tag_state.context[bufnr] = contexts
         return
     end
 
-    utils.tag_state.context[bufnr] = nil
+    tag_state.context[bufnr] = nil
 end
 
 -- update tag_state async
 local function update_tags()
     local bufnr = vim.fn.bufnr('%')
-    if utils.tag_state.req_state[bufnr] == nil then utils.tag_state.req_state[bufnr] = { waiting = false, last_tick = 0 } end
+    if tag_state.req_state[bufnr] == nil then tag_state.req_state[bufnr] = { waiting = false, last_tick = 0 } end
 
-    if (not utils.tag_state.req_state[bufnr].waiting and utils.tag_state.req_state[bufnr].last_tick < vim.b.changedtick) then
-        utils.tag_state.req_state[bufnr] = { waiting = true, last_tick = vim.b.changedtick }
+    if (not tag_state.req_state[bufnr].waiting and tag_state.req_state[bufnr].last_tick < vim.b.changedtick) then
+        tag_state.req_state[bufnr] = { waiting = true, last_tick = vim.b.changedtick }
     else return end
 
     vim.lsp.buf_request(bufnr, 'textDocument/documentSymbol', { textDocument = vim.lsp.util.make_text_document_params() },
         function(_, results, _, _)
             -- buffer might have closed by the time this request completed
-            if not utils.tag_state.req_state[bufnr] then return end
+            if not tag_state.req_state[bufnr] then return end
 
-            utils.tag_state.req_state[bufnr].waiting = false
+            tag_state.req_state[bufnr].waiting = false
             if not vim.api.nvim_buf_is_valid(bufnr) then return end
             if results == nil or type(results) ~= 'table' then return end
 
@@ -185,8 +191,35 @@ local function update_tags()
             local symbols = core.filter(extracted, function(_, value) return tag_state_filter[value.kind] end)
 
             if not symbols or #symbols == 0 then return end
-            utils.tag_state.cache[bufnr] = symbols
+            tag_state.cache[bufnr] = symbols
         end)
+end
+
+-- get context with formatting
+local function get_context(bufnr, to_string_func)
+    bufnr = bufnr or vim.api.nvim_get_current_buf()
+    to_string_func = to_string_func or (function() end)
+
+    if tag_state.context[bufnr] == nil then return to_string_func({ }) end
+    return to_string_func(tag_state.context[bufnr])
+end
+
+
+-- format winbar
+local function get_context_winbar(bufnr, colors)
+    bufnr = bufnr or vim.api.nvim_get_current_buf()
+    colors = colors or { background = "%#Winbar#" }
+
+    local filename = (utils.is_htruncated(truncation.truncation_limit, true) and ' [ %t ] ') or ' [ %f ] '
+    local context = get_context(bufnr, function(context_tbl)
+        local context = core.foreach(context_tbl, function(arg)
+            return arg.iconhl .. arg.icon .. ' ' .. colors.background .. arg.name
+        end) or {}
+
+        return table.concat(context, " -> ")
+    end)
+
+    return ' ' .. context .. ' ' .. '%=%' .. filename
 end
 
 -- custom refactoring functionality
@@ -197,7 +230,7 @@ local function debug_print(visual)
 
     -- NOTE(vir): no error handling, to remind me that i need to add missing config
     local ft = vim.api.nvim_get_option_value('filetype', { scope = 'local' })
-    local template = require('utils').project_config.debug_print_fmt[ft]
+    local template = utils.project_config.debug_print_fmt[ft]
     local postfix_raw = utils.project_config.debug_print_postfix
     local postfix = ' ' .. vim.api.nvim_get_option_value('commentstring', { scope = 'local' })
         :format(postfix_raw)
@@ -237,12 +270,13 @@ local function debug_print(visual)
 
     -- toggle print if already present
     local current_line = vim.api.nvim_buf_get_lines(0, target_line, target_line + 1, true)[1]
-    local next_line = vim.api.nvim_buf_get_lines(0, target_line + 1, target_line + 2, true)[1]
-    if next_line:find(postfix_raw) then
+    local next_line = vim.api.nvim_buf_get_lines(0, target_line + 1, target_line + 2, false)[1]
+
+    if next_line and next_line:find(postfix_raw) then
         vim.api.nvim_buf_set_lines(0, target_line + 1, target_line + 2, true, {})
         return
     end
-    if current_line:find(postfix_raw) then
+    if next_line and current_line:find(postfix_raw) then
         vim.api.nvim_buf_set_lines(0, target_line, target_line + 1, true, {})
         return
     end
@@ -256,9 +290,13 @@ return {
     lsp_icons = lsp_icons,
     toggle_diagnostics_list = toggle_diagnostics_list,
 
+    -- context api
     update_tags = update_tags,
     update_context = update_context,
     clear_buffer_tags = clear_buffer_tags,
 
+    -- utils
+    get_context = get_context,
+    get_context_winbar = get_context_winbar,
     debug_print = debug_print
 }

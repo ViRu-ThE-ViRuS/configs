@@ -38,6 +38,7 @@ end
 local function table_contains(table, target_value)
     for key, value in pairs(table) do
         if value == target_value then return key end
+        if key == target_value then return value end
     end
 
     return nil

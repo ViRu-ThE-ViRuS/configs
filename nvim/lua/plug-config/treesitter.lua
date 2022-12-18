@@ -26,13 +26,16 @@ require('nvim-treesitter.configs').setup {
 
     textobjects = {
         select = {
-            enable = true,
             lookahead = true,
+            enable = true,
             keymaps = {
                 ['af'] = '@function.outer',
                 ['if'] = '@function.inner',
                 ['ac'] = '@block.outer',
                 ['ic'] = '@block.inner',
+                ['aP'] = '@parameter.outer',
+                ['aC'] = '@parameter.outer',
+                ['iP'] = '@parameter.inner',
             }
         },
         move = {

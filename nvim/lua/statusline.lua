@@ -1,19 +1,68 @@
 local utils = require('utils')
 local core = require('lib/core')
-local symbol_config = utils.symbol_config
-local colors = utils.statusline_colors
+
+local tag_state = utils.editor_config.tag_state
+local symbol_config = utils.editor_config.symbol_config
+local truncation = utils.editor_config.truncation
+
+-- statusline colors
+local colors = {
+    active      = "%#StatusLine#",
+    inactive    = "%#StatusLineNC#",
+    mode        = "%#PmenuSel#",
+    git         = "%#Pmenu#",
+    diagnostics = "%#PmenuSbar#",
+    file        = "%#CursorLine#",
+    context     = "%#Winbar#",
+    line_col    = "%#CursorLine#",
+    percentage  = "%#CursorLine#",
+    bufnr       = "%#PmenuSbar#",
+    filetype    = "%#PmenuSel#",
+}
+
+-- mode map
+local modes = {
+    ["n"]  = "Normal",
+    ["no"] = "N-Pending",
+    ["v"]  = "Visual",
+    ["V"]  = "V-Line",
+    [""] = "V-Block",
+    ["s"]  = "Select",
+    ["S"]  = "S-Line",
+    [""] = "S-Block",
+    ["i"]  = "Insert",
+    ["ic"] = "Insert",
+    ["R"]  = "Replace",
+    ["Rv"] = "V-Replace",
+    ["c"]  = "Command",
+    ["cv"] = "Vim-Ex ",
+    ["ce"] = "Ex",
+    ["r"]  = "Prompt",
+    ["rm"] = "More",
+    ["r?"] = "Confirm",
+    ["!"]  = "Shell",
+    ["t"]  = "Terminal",
+}
+
+-- do not set default behavior on thesefile types
+local statusline_blacklist = {
+    'terminal', 'diagnostics', 'qf',
+    'vista_kind', 'vista', 'fugitive', 'gitcommit','fzf', 'NvimTree',
+    'DiffviewFiles', 'DiffviewFileHistory', 'dapui_watches', 'dapui_stacks', 'dapui_scopes', 'dapui_breakpoints', 'dap-repl'
+}
 
 -- is statusline supposed to be truncated
 local function truncate_statusline(small)
-    local limit = (small and utils.truncation_limit_s) or utils.truncation_limit
+    local limit = (small and truncation.truncation_limit_s) or truncation.truncation_limit
     local get_global = vim.api.nvim_get_option_value('laststatus', { scope = 'global' }) == 3
     return utils.is_htruncated(limit, get_global)
 end
 
+-- {{{ providers
 -- get the display name for current mode
 local function get_current_mode()
     local current_mode = vim.api.nvim_get_mode().mode
-    return string.format(' %s ', utils.modes[current_mode]):upper()
+    return string.format(' %s ', modes[current_mode]):upper()
 end
 
 -- NOTE(vir): release gitsigns dependencies?
@@ -33,19 +82,25 @@ local function get_git_status()
 end
 
 -- get current context / tag
-local function get_context(bufnr)
+local function get_statusline_context(bufnr)
     bufnr = bufnr or vim.api.nvim_get_current_buf()
-    if utils.tag_state.context[bufnr] == nil or truncate_statusline(true) then return '' end
+    if tag_state.context[bufnr] == nil or truncate_statusline(true) then return '' end
 
     if truncate_statusline(true) then
-        local context = utils.tag_state.context[bufnr]
-        return string.format("[ %s %s ] ", context[#context].icon, context[#context].name)
+        local context = tag_state.context[bufnr]
+        return string.format(
+            "[ %s%s %s%s ] ",
+            context[#context].iconhl,
+            context[#context].icon,
+            context[#context].colors.context,
+            context[#context].name
+        )
     else
-        local context = core.foreach(utils.tag_state.context[bufnr], function(arg)
+        local context = core.foreach(tag_state.context[bufnr], function(arg)
             return arg.iconhl .. arg.icon .. ' ' .. colors.context .. arg.name
         end) or {}
 
-        -- local context = core.foreach(utils.tag_state.context[bufnr], function(arg) return arg.icon .. ' ' .. arg.name end) or {}
+        -- local context = core.foreach(tag_state.context[bufnr], function(arg) return arg.icon .. ' ' .. arg.name end) or {}
         local context_tree = table.concat(context, " > ")
         return string.format('[ %s ]', context_tree)
     end
@@ -97,7 +152,9 @@ local function get_diagnostics()
     if status_diagnostics ~= '' then return ' ' .. status_diagnostics .. ' ' end
     return ''
 end
+-- }}}
 
+-- {{{ statuslines
 -- special statusline
 local function statusline_special(mode)
     return colors.active .. ' ' .. mode .. ' ' .. colors.inactive
@@ -110,7 +167,7 @@ local function statusline_normal()
     local diagnostics = colors.diagnostics .. get_diagnostics()
     local truncator = '%<'
     local filename = colors.file .. get_filename()
-    local context = colors.context .. get_context()
+    local context = colors.context .. get_statusline_context()
     local line_col = colors.line_col .. get_line_col()
     local percentage = colors.percentage .. get_percentage()
     local bufnr = colors.bufnr .. get_bufnr()
@@ -142,14 +199,9 @@ local function statusline_inactive()
         line_col, bufnr, filetype, colors.inactive
     })
 end
+-- }}}
 
--- do not set default behavior on thesefile types
-local statusline_blacklist = {
-    'terminal', 'diagnostics', 'qf',
-    'vista_kind', 'vista', 'fugitive', 'gitcommit','fzf', 'NvimTree',
-    'DiffviewFiles', 'DiffviewFileHistory', 'dapui_watches', 'dapui_stacks', 'dapui_scopes', 'dapui_breakpoints', 'dap-repl'
-}
-
+-- {{{ set statusline api
 -- get a function which sets statusline option when called
 local function set_statusline_func(title, non_local)
     -- NOTE(vir): opt vs opt_local?
@@ -164,8 +216,10 @@ local function set_statusline_cmd(title)
     -- NOTE(vir): setlocal vs set?
     return 'setlocal statusline=%!luaeval(\'require(\\"statusline\\").statusline(\\"' .. vim.fn.escape(title, ' ') .. '\\")\')'
 end
+-- }}}
 
--- setup
+-- {{{ statusline setup
+-- setup defaults
 vim.api.nvim_create_augroup('StatusLine', {clear = true})
 vim.api.nvim_create_autocmd({'BufEnter', 'WinEnter'}, {group='StatusLine', pattern='*', callback = function()
     local ft = vim.api.nvim_get_option_value('ft', {scope = 'local'})
@@ -176,10 +230,12 @@ vim.api.nvim_create_autocmd({'BufLeave', 'WinLeave'}, {group='StatusLine', patte
     if not core.table_contains(statusline_blacklist, ft) then vim.opt_local.statusline = "%!luaeval(\"require('statusline').statusline_inactive()\")" end
 end})
 
+-- setup builtins
 vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern='terminal', callback = set_statusline_func('Terminal')})
 vim.api.nvim_create_autocmd('BufWinEnter', {group='StatusLine', pattern='quickfix', callback = set_statusline_func('QuickFix')})
 vim.api.nvim_create_autocmd('BufWinEnter', {group='StatusLine', pattern='diagnostics', callback = set_statusline_func('Diagnostics')})
 
+-- setup plugins
 vim.api.nvim_create_autocmd('BufWinEnter', {group='StatusLine', pattern='NvimTree_1', callback = set_statusline_func('Explorer')})
 vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern='fzf', callback = set_statusline_func('FZF')})
 vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern={'vista_kind', 'vista'}, callback = set_statusline_func('Outline')})
@@ -193,13 +249,13 @@ vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern='dapui_stac
 vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern='dapui_scopes', callback=set_statusline_func('Scopes')})
 vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern='dapui_breakpoints', callback=set_statusline_func('Breaks')})
 vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern='dap-repl', callback=set_statusline_func('Repl')})
+-- }}}
 
 return {
     statusline = statusline,
     statusline_inactive = statusline_inactive,
+    statusline_colors = colors,
+
     set_statusline_func = set_statusline_func,
     set_statusline_cmd = set_statusline_cmd,
-    statusline_blacklist = statusline_blacklist,
-
-    get_context = get_context
 }

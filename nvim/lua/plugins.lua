@@ -29,12 +29,12 @@ return require('packer').startup({
                 { 'JoosepAlviste/nvim-ts-context-commentstring', after = 'nvim-treesitter' },
                 { 'yioneko/nvim-yati', after = 'nvim-treesitter' },
                 { 'andymass/vim-matchup', after = 'nvim-treesitter-textsubjects' },
-
-                -- NOTE(vir): just config development
                 { 'Wansmer/treesj', after = 'nvim-treesitter', config='require("plug-config/treesj")' },
 
-                -- TODO(vir): do i need these anymore
+                -- NOTE(vir): just config development
                 { 'nvim-treesitter/playground', after = 'nvim-treesitter' },
+
+                -- TODO(vir): do i need these anymore
                 { 'Dkendal/nvim-treeclimber', after = 'nvim-treesitter', config='require("plug-config/treeclimber")' },
             },
             run = ':TSUpdate',

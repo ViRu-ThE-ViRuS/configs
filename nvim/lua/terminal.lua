@@ -1,6 +1,8 @@
 local utils = require("utils")
-local run_config = utils.run_config
 local core = require('lib/core')
+
+local run_config = utils.project_config.run_config
+local truncation = utils.editor_config.truncation
 
 -- scroll target to bottom
 local function target_scroll_to_end()
@@ -31,7 +33,7 @@ local function toggle_target(open)
         end
     else
         local split_dir = "v"
-        if utils.is_htruncated(utils.truncation_limit_s_terminal) then
+        if utils.is_htruncated(truncation.truncation_limit_s_terminal) then
             split_dir = ""
         end
 
@@ -47,7 +49,7 @@ end
 -- send payload to target_terminal
 local function send_to_target(payload, repeat_last)
     if run_config.target_terminal ~= nil then
-        if vim.fn.bufname(run_config.target_terminal.bufnr) ~= "" then
+        if vim.api.nvim_buf_get_name(run_config.target_terminal.bufnr) ~= "" then
             if repeat_last then
                 if pcall(vim.cmd, "call chansend(" .. run_config.target_terminal.job_id .. ', "\x1b\x5b\x41\\<cr>")') then
                     toggle_target(true)

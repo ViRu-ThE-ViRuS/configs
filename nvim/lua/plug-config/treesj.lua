@@ -9,7 +9,7 @@ treesj.setup({
     langs = {
         lua = {
             function_call = { target_nodes = { 'arguments' } },
-            return_statement = { target_nodes = { 'table_constructor' } }
+            return_statement = { target_nodes = { 'table_constructor' } },
         },
         cpp = {
             parameter_list = treesj_utils.set_preset_for_args(),
@@ -45,8 +45,9 @@ treesj.setup({
     },
 })
 
-utils.map('n', 'gS', '<cmd>TSJSplit<cr>')
-utils.map('n', 'gJ', '<cmd>TSJJoin<cr>')
+-- utils.map('n', 'gS', '<cmd>TSJSplit<cr>')
+-- utils.map('n', 'gJ', '<cmd>TSJJoin<cr>')
 
--- utils.map('n', 'gS', '<cmd>silent! TSJSplit<cr>')
--- utils.map('n', 'gJ', '<cmd>silent! TSJJoin<cr>')
+utils.map('n', 'gS', '<cmd>silent! TSJSplit<cr>')
+utils.map('n', 'gJ', '<cmd>silent! TSJJoin<cr>')
+

@@ -69,15 +69,16 @@ local function setup_commands(client, _)
 end
 
 -- setup buffer options
-local function setup_options()
+local function setup_options(_, bufnr)
     vim.opt_local.omnifunc = 'v:lua.vim.lsp.omnifunc'
     vim.opt_local.tagfunc = 'v:lua.vim.lsp.tagfunc'
     vim.opt_local.formatoptions = "cqnjlr"
     vim.opt_local.formatexpr = 'v:lua.vim.lsp.formatexpr()'
 
     -- set context in winbar
-    -- local bufnr = vim.api.nvim_get_current_buf()
-    -- vim.opt_local.winbar = "%!luaeval(\"require('statusline').get_context(" .. bufnr .. ")\")"
+    if utils.editor_config.ui_state.context_winbar then
+        vim.opt_local.winbar = "%!luaeval(\"require('lsp-setup/utils').get_context_winbar(" .. bufnr .. ")\")"
+    end
 end
 
 -- setup buffer autocommands
@@ -107,10 +108,6 @@ local function setup_autocmds(client, bufnr)
     end
 end
 
--- setup buffer highlights
-local function setup_highlights()
-end
-
 return {
     setup_lsp_keymaps = setup_lsp_keymaps,
     setup_diagnostics_keymaps = setup_diagnostics_keymaps,
@@ -119,5 +116,4 @@ return {
     setup_commands = setup_commands,
     setup_options = setup_options,
     setup_autocmds = setup_autocmds,
-    setup_highlights = setup_highlights
 }
