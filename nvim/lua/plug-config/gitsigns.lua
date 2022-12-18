@@ -9,7 +9,7 @@ local function refresh_fugitive()
 end
 
 -- NOTE(vir): updates fugitive windows
-require('gitsigns').setup {
+gitsigns.setup {
     numhl = false,
     linehl = false,
     preview_config = {border = 'rounded'},

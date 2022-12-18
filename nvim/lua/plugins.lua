@@ -30,6 +30,7 @@ return require('packer').startup({
                 { 'yioneko/nvim-yati', after = 'nvim-treesitter' },
                 { 'andymass/vim-matchup', after = 'nvim-treesitter-textsubjects' },
 
+                -- NOTE(vir): just config development
                 { 'Wansmer/treesj', after = 'nvim-treesitter', config='require("plug-config/treesj")' },
 
                 -- TODO(vir): do i need these anymore
@@ -81,11 +82,10 @@ return require('packer').startup({
         use {
             'mfussenegger/nvim-dap',
             requires = {
-                { 'rcarriga/nvim-dap-ui', ft = { 'c', 'cpp', 'rust', 'python', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' } },
-                { 'mxsdev/nvim-dap-vscode-js', ft = {'javascript', 'javascriptreact', 'typescript', 'typescriptreact'} },
+                { 'rcarriga/nvim-dap-ui', ft = { 'c', 'cpp', 'rust', 'python' } },
                 { 'theHamsta/nvim-dap-virtual-text', after = 'nvim-dap-ui' },
             },
-            after = 'nvim-dap-virtual-text',
+            after = {'nvim-dap-virtual-text', 'nvim-dap-ui'},
             config = 'require("plug-config/dap")'
         }
 

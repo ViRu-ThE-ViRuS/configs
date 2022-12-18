@@ -2,8 +2,6 @@ local utils = require("utils")
 local terminal = require('terminal')
 local misc = require('lib/misc')
 
--- NOTE(vir): <c-v> in insert mode, to get key code
-
 -- line navigation and movements
 utils.map("v", "<", "<gv")
 utils.map("v", ">", ">gv")
@@ -21,31 +19,34 @@ utils.map({"n", "v"}, "0", '"0p=`]')
 utils.map({"n", "v"}, ")", '"0P=`]')
 
 -- misc
-utils.map("n", ";", ":")                                    -- swaperoo
-utils.map("n", ":", ";")                                    -- swaperoo
-utils.map("i", "jj", "<esc>")                               -- home-row escape
-utils.map("n", "U", "<c-r>")                                -- undo
-utils.map('n', 'Y', 'yy')                                   -- yank full line
-utils.map("n", "<space>", "za")                             -- toggle folds
-utils.map("n", "/", "ms/")                                  -- mark search start
-utils.map("n", "?", "ms?")                                  -- mark search start
-utils.map("v", "&", ":&&<cr>")                              -- substitutions
-utils.map("v", ".", ":normal! .<cr>")                       -- . motions
-utils.map("v", "@", ":normal! @")                           -- macros
-utils.map("v", "ss", ":s/")                                 -- quick subs
-utils.map("n", "ss", "s")                                   -- substitute mode
-utils.map("n", "p", "p`[=`]")                               -- autoformat paste
-utils.map("n", "P", "P`[=`]")                               -- autoformat Paste
-utils.map("n", "gp", "`[v`]")                               -- last paste
-utils.map("n", '@"', ":<c-f>")                              -- cmd line edit mode
-utils.map({"n", "v"}, "<c-b>", "<nop>")                     -- disable <c-b>
-utils.map('v', '//', [[y/\V<c-r>=escape(@",'/\')<cr><cr>]]) -- search for selection
-utils.map('v', '<m-/>', '<esc>/\\%V')                       -- search within selection
+utils.map("n", ";", ":")                                        -- swaperoo
+utils.map("n", ":", ";")                                        -- swaperoo
+utils.map("i", "jj", "<esc>")                                   -- home-row escape
+utils.map("n", "U", "<c-r>")                                    -- undo
+utils.map('n', 'Y', 'yy')                                       -- yank full line
+utils.map("n", "<space>", "za")                                 -- toggle folds
+utils.map("n", "gp", "`[v`]")                                   -- last paste
+utils.map("n", "p", "p`[=`]")                                   -- autoformat paste
+utils.map("n", "P", "P`[=`]")                                   -- autoformat Paste
+utils.map({"n", "v"}, "<c-b>", "<nop>")                         -- disable <c-b>
+utils.map("n", "/", "ms/")                                      -- mark search start
+utils.map("n", "?", "ms?")                                      -- mark search start
+utils.map("v", "&", ":&&<cr>")                                  -- visual execute last substitution
+utils.map("v", ".", ":normal! .<cr>")                           -- visual execute .
+utils.map("v", "@", ":normal! @")                               -- visual execute macro
+utils.map("n", "ss", "s")                                       -- substitute mode
+utils.map("v", "ss", ":s/")                                     -- substitute in visual
+utils.map("v", "s/", ":s/\\<<C-r><C-w>\\>/")                    -- substitute cword in selection
+utils.map('v', '//', [[y/\V<c-r>=escape(@",'/\')<cr><cr>]])     -- search for selection
+utils.map('v', '<m-/>', '<esc>/\\%V')                           -- search within selection
+-- utils.map('n', '<m-/>', ':%s/<c-r><c-w>//gc<left><left><left>') -- replace current word
 
--- disable command history modes
-utils.map({"n", "v"}, "q:", "<nop>")
-utils.map({"n", "v"}, "q/", "<nop>")
-utils.map({"n", "v"}, "q?", "<nop>")
+-- command edit modes
+-- utils.map({"n", "v"}, "q:", "<nop>")
+-- utils.map({"n", "v"}, "q/", "<nop>")
+-- utils.map({"n", "v"}, "q?", "<nop>")
+utils.map("n", '@"', "@:", { noremap = false })
+utils.map("n", '@:', "q:")
 
 -- mouse scrolling
 utils.map("n", "<ScrollWheelUp>", "<c-y>")
@@ -125,14 +126,15 @@ utils.map("n", "<leader>cv", terminal.run_selection)
 utils.map("v", "<leader>cv", '<esc><cmd>lua require("terminal").run_selection(true)<cr>gv')
 
 -- commands
-utils.map('n', '<c-cr>', '<cmd>Commands<cr>', {})
+utils.map('n', '<c-cr>', vim.cmd.Commands)
 
 -- NOTE(vir): these cmds are loaded on demand, so configure keymaps here
 -- tabular, fugitive, vista
 utils.map("v", "<leader>=", ":Tab /")
-utils.map("n", "<leader>gD", "<cmd>G! difftool<cr>")
-utils.map('n', '<leader>k', '<cmd>Vista!!<cr>')
+utils.map("n", "<leader>gD", function() vim.cmd.G({ bang = true, args = { 'difftool' } }) end)
+utils.map('n', '<leader>k', function() vim.cmd.Vista({ bang = true, args = { '!' } }) end)
 
 -- NOTE(vir): tricks
---  cmd mode: <c-f> edit commands in vim mode
---  normal: @: execute last command
+--  ins mode: <c-v> to get key code
+--  cmd mode: edit commands in vim mode
+--  normal: @: execute last command, mapped to @"

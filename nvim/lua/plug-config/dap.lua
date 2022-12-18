@@ -24,12 +24,25 @@ dap.adapters.codelldb = function(callback, _)
     end)
 end
 
-if packer_plugins['nvim-dap-vscode-js'].loaded then
-    require('dap-vscode-js').setup({
-        adapters = {'pwa-node'},
-        debugger_path = core.get_homedir() .. '/.local/vscode-js-debug',
-    })
-end
+-- TODO(vir): js/ts config not perfect yet
+-- load extra js/ts dependencies
+-- _ = (function()
+--     local ft = vim.api.nvim_get_option_value('ft', { scope = 'local' })
+--     local targets = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' }
+
+--     if not core.table_contains(targets, ft) then return end
+
+--     -- load if needed and not already present
+--     -- this is to get around packer messing up ordering
+--     if not packer_plugins['nvim-dap-vscode-js'].loaded then
+--         require('packer').loader('nvim-dap-vscode-js')
+--     end
+
+--     require('dap-vscode-js').setup({
+--         adapters = { 'pwa-node' },
+--         debugger_path = core.get_homedir() .. '/.local/vscode-js-debug',
+--     })
+-- end)()
 -- }}}
 
 -- {{{ language configurations
@@ -61,15 +74,37 @@ dap.configurations.c = {
 dap.configurations.cpp = dap.configurations.c
 dap.configurations.rust = dap.configurations.cpp
 
-dap.configurations.javascript = {
-    {
-        type = 'pwa-node',
-        request = 'launch',
-        program = '${file}',
-        sourceMaps = true,
-        cwd = '${workspaceFolder}'
-    }
-}
+-- TODO(vir): fix config and uncomment
+-- dap.configurations.javascript = {
+--     {
+--         type = 'pwa-node',
+--         request = 'launch',
+--         name = 'launch',
+--         program = '${file}',
+--         sourceMaps = true,
+--         cwd = '${workspaceFolder}',
+--         rootPath = '${workspaceFolder}',
+--         skipFiles = { '<node_internals>/**' },
+--         protocol = 'inspector',
+--         console = 'integratedTerminal',
+--         resolveSourceMapLocations = {
+--             "${workspaceFolder}/dist/**/*.js",
+--             "${workspaceFolder}/**",
+--             "!**/node_modules/**",
+--         },
+--     },
+--     {
+--         type = 'pwa-node',
+--         request = 'attach',
+--         name = 'attach',
+--         processId = require('dap/utils').pick_process,
+--         cwd = '${workspaceFolder}'
+
+--     }
+-- }
+-- dap.configurations.typescript = dap.configurations.javascript
+-- dap.configurations.javascriptreact = dap.configurations.javascript
+-- dap.configurations.typescriptreact = dap.configurations.javascript
 --- }}}
 
 -- {{{ ui setup
@@ -102,12 +137,12 @@ dapui.setup({
 })
 
 -- autocmds
-vim.api.nvim_create_augroup('DAPConfig', { clear = true })
-vim.api.nvim_create_autocmd('FileType', {
-    group = 'DAPConfig',
-    pattern = 'dap-repl',
-    callback = require('dap.ext.autocompl').attach
-})
+-- vim.api.nvim_create_augroup('DAPConfig', { clear = true })
+-- vim.api.nvim_create_autocmd('FileType', {
+--     group = 'DAPConfig',
+--     pattern = 'dap-repl',
+--     callback = require('dap.ext.autocompl').attach
+-- })
 
 -- signs
 vim.fn.sign_define("DapStopped", { text = '=>', texthl = 'DiagnosticWarn', numhl = 'DiagnosticWarn' })

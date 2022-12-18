@@ -6,13 +6,13 @@ require('nvim-treesitter.configs').setup {
         'make', 'cuda', 'rust', 'vim', 'markdown', 'javascript', 'typescript', 'tsx'
     },
 
-    -- indent = {enable = true},
-    indent = {enable = true, }, --  disable={'python', 'c', 'cpp', 'lua', 'javascript', 'javascriptreact', 'typescript', 'tsx'}},
+    -- NOTE(vir): nvim-yati is really good for python for now, havent noticed need for other file types yet
+    indent = {enable = true, disable={'python'}},
+    yati = {enable = true, disable = {'lua', 'cpp', 'c', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact'}},
 
     highlight = {enable = true, additional_vim_regex_highlighting = {'markdown'}},
     matchup = {enable = true, disable_virtual_text = true},
     context_commentstring = {enable = true, enable_autocmd = false},
-    yati = {enable = true, disable = {'lua', 'python', 'cpp', 'c'}},
 
     incremental_selection = {
         enable = true,

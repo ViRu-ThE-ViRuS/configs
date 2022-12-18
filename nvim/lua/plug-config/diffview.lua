@@ -29,11 +29,11 @@ require("diffview").setup({
 			["R"] = actions.refresh_files,
 
             -- merge tool
-            ['<leader>co'] = actions.conflict_choose('ours'),
-            ['<leader>ct'] = actions.conflict_choose('theirs'),
-            ['<leader>cb'] = actions.conflict_choose('base'),
-            ['<leader>ca'] = actions.conflict_choose('all'),
-            ['<leader>cX'] = actions.conflict_choose('none'),
+            ['co'] = actions.conflict_choose('ours'),
+            ['ct'] = actions.conflict_choose('theirs'),
+            ['cb'] = actions.conflict_choose('base'),
+            ['ca'] = actions.conflict_choose('all'),
+            ['cX'] = actions.conflict_choose('none'),
 
 			["e"] = actions.goto_file,
 			["<leader>gh"] = actions.toggle_files,
