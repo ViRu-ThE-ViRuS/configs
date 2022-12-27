@@ -173,6 +173,15 @@ local function toggle_global_statusline(force_local)
 	end
 end
 
+-- toggle between dark/light mode
+local function toggle_night_mode()
+    if vim.api.nvim_get_option_value('background', { scope = 'global' }) == 'dark' then
+        vim.api.nvim_set_option_value('background', 'light', { scope = 'global' })
+    else
+        vim.api.nvim_set_option_value('background', 'dark', { scope = 'global' })
+    end
+end
+
 -- quickfix: toggle qflist
 local function toggle_qflist()
     if vim.tbl_isempty(core.filter(vim.fn.getwininfo(), function(_, win) return win.quickfix == 1 end)) then
@@ -210,8 +219,10 @@ end
 
 -- randomize colorscheme
 local function random_colors()
-    local colorschemes = require('colorscheme').preferred
-    local target = colorschemes[math.random(1, #colorschemes)]
+    local mode = vim.api.nvim_get_option_value('background', { scope = 'local' })
+    local choices = require('colorscheme').preferred[mode]
+
+    local target = choices[math.random(1, #choices)]
 
     if type(target) == 'function' then
         target()
@@ -238,6 +249,7 @@ return {
 	toggle_thicc_separators = toggle_thicc_separators,
 	toggle_spellings = toggle_spellings,
 	toggle_global_statusline = toggle_global_statusline,
+    toggle_night_mode = toggle_night_mode,
 	toggle_qflist = toggle_qflist,
 
     -- misc

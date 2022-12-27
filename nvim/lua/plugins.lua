@@ -13,7 +13,7 @@ return require('packer').startup({
         use { 'wbthomason/packer.nvim', event = 'VimEnter' }
 
         use { 'kyazdani42/nvim-web-devicons', event = 'VimEnter' }
-        use { 'rcarriga/nvim-notify', event = 'VimEnter', config = 'require("plug-config/notifications")' }
+        use { 'rcarriga/nvim-notify', event = 'VimEnter', config = 'require("plug-config/notify")' }
         use { 'aserowy/tmux.nvim', event = 'VimEnter', config = 'require("plug-config/tmux")' }
 
         use { 'tpope/vim-eunuch', cmd = { 'Delete', 'Rename', 'Chmod' } }
@@ -30,6 +30,16 @@ return require('packer').startup({
             setup = function() require('utils').map('n', '<leader>k', function() vim.cmd.Vista({ bang = true, args = { '!' } }) end) end
         }
 
+        use { 'machakann/vim-sandwich', event = 'BufReadPost', config = 'require("plug-config/sandwich")' }
+        use { 'b3nj5m1n/kommentary', event = 'BufReadPost', config = 'require("plug-config/kommentary")' }
+        use { 'lewis6991/gitsigns.nvim', event = 'BufReadPost', config = 'require("plug-config/gitsigns")' }
+        use { 'akinsho/nvim-bufferline.lua', event = 'BufReadPost', config = 'require("plug-config/bufferline")' }
+        use {
+            'famiu/bufdelete.nvim',
+            module = 'bufdelete',
+            setup = function() require('utils').map("n", "<leader>q", function() require('bufdelete').bufdelete(0, true) end) end,
+        }
+
         use {
             'nvim-treesitter/nvim-treesitter',
             requires = {
@@ -37,22 +47,23 @@ return require('packer').startup({
                 { 'RRethy/nvim-treesitter-textsubjects', after = 'nvim-treesitter' },
                 { 'JoosepAlviste/nvim-ts-context-commentstring', after = 'nvim-treesitter' },
                 { 'yioneko/nvim-yati', after = 'nvim-treesitter' },
-                { 'andymass/vim-matchup', after = 'nvim-treesitter-textsubjects' },
+                { 'andymass/vim-matchup', after = 'nvim-treesitter' },
+
                 { 'Wansmer/treesj', after = 'nvim-treesitter', config = 'require("plug-config/treesj")' },
                 { 'Dkendal/nvim-treeclimber', after = 'nvim-treesitter', config = 'require("plug-config/treeclimber")' },
 
                 { 'nvim-treesitter/playground', after = 'nvim-treesitter' },
             },
             run = ':TSUpdate',
-            after = 'vim-sandwich',
+            event = 'VimEnter',
             config = 'require("plug-config/treesitter")'
         }
 
         use {
             'hrsh7th/nvim-cmp',
             requires = {
-                { 'hrsh7th/cmp-nvim-lsp', event = 'BufReadPost' },
-                { 'onsails/lspkind-nvim', event = 'BufReadPost' },
+                { 'hrsh7th/cmp-nvim-lsp', module = 'cmp_nvim_lsp' },
+                { 'onsails/lspkind-nvim', module = 'lspkind' },
 
                 { 'L3MON4D3/LuaSnip', after = 'nvim-cmp' },
                 { 'hrsh7th/cmp-nvim-lua', after = 'nvim-cmp' },
@@ -61,35 +72,29 @@ return require('packer').startup({
                 { 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
                 { 'hrsh7th/cmp-cmdline', after = 'nvim-cmp' },
             },
-            after = { 'cmp-nvim-lsp', 'lspkind-nvim' },
-            config = "require('plug-config/completion')"
+            event = 'BufReadPost',
+            config = "require('plug-config/cmp')"
         }
 
         use {
             'neovim/nvim-lspconfig',
             requires = {
-                { 'jose-elias-alvarez/null-ls.nvim', event = 'BufReadPost' },
-                { 'ray-x/lsp_signature.nvim', event = 'BufReadPost' },
+                { 'jose-elias-alvarez/null-ls.nvim', module = 'null-ls' },
+                { 'ray-x/lsp_signature.nvim', module = 'lsp_signature' },
             },
-            after = { 'null-ls.nvim', 'lsp_signature.nvim', 'cmp-nvim-lsp' },
+            event = 'BufReadPost',
             config = 'require("lsp")'
         }
 
         use {
             'mfussenegger/nvim-dap',
             requires = {
-                { 'rcarriga/nvim-dap-ui', ft = { 'c', 'cpp', 'rust', 'python' } },
-                { 'theHamsta/nvim-dap-virtual-text', after = 'nvim-dap-ui' },
+                { 'rcarriga/nvim-dap-ui', module = 'dapui' },
+                { 'theHamsta/nvim-dap-virtual-text', module = 'nvim-dap-virtual-text' },
             },
-            after = { 'nvim-dap-virtual-text', 'nvim-dap-ui' },
+            ft = { 'c', 'cpp', 'rust', 'python' },
             config = 'require("plug-config/dap")'
         }
-
-        use { 'famiu/bufdelete.nvim', event = 'BufReadPost' }
-        use { 'machakann/vim-sandwich', event = 'BufReadPost' }
-        use { 'b3nj5m1n/kommentary', event = 'BufReadPost', config = 'require("plug-config/kommentary")' }
-        use { 'lewis6991/gitsigns.nvim', event = 'BufReadPost', config = 'require("plug-config/gitsigns")' }
-        use { 'akinsho/nvim-bufferline.lua', event = 'BufReadPost', config = 'require("plug-config/bufferline")' }
 
         use { 'kyazdani42/nvim-tree.lua', after = 'nvim-web-devicons', config = 'require("plug-config/tree")' }
         use { 'ibhagwan/fzf-lua', after = 'nvim-web-devicons', config = 'require("plug-config/fzf")' }
@@ -105,6 +110,7 @@ return require('packer').startup({
         use 'olivercederborg/poimandres.nvim'
         use 'sainnhe/gruvbox-material'
         use 'luisiacc/gruvbox-baby'
+        use 'ellisonleao/gruvbox.nvim'
         use 'kvrohit/mellow.nvim'
         use 'B4mbus/oxocarbon-lua.nvim'
         use 'kvrohit/rasmus.nvim'

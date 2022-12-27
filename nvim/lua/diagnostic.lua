@@ -1,3 +1,6 @@
+-- NOTE(vir): reloading config often leaves hanging diagnostics
+vim.diagnostic.reset()
+
 vim.diagnostic.config({
     signs = true,
     virtual_text = { spacing = 4 },

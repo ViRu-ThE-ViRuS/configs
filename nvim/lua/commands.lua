@@ -53,9 +53,6 @@ vim.defer_fn(function()
             local rc_path = vim.fs.dirname(rc_file)
             local lua_path = plenary.Path.new(rc_path) .. '/lua/'
 
-            -- only reload lsp configs when modified
-            local skip_lsp_restart = string.find(src_file, 'lsp.*[setup/]*') == nil
-
             local to_reload = core.foreach(
                 vim.split(vim.fn.globpath(rc_path, '**/**.lua'), "\n"),
                 function(full_path)
@@ -64,10 +61,8 @@ vim.defer_fn(function()
 
                     -- NOTE(vir): skip files
                     --  1. not already loaded
-                    --  2. lsp files when lsp config has not changed
-                    --  3. [investigate?] treesj slows down when reloaded too many times
+                    --  2. [investigate?] treesj slows down when reloaded too many times
                     if not core.table_contains(package.loaded, rel_path) then return end
-                    if skip_lsp_restart and string.find(rel_path, 'lsp.*[setup/]*') then return end
                     if string.find(rel_path, 'treesj') then return end
 
                     -- unload mod
@@ -76,8 +71,8 @@ vim.defer_fn(function()
                 end
             )
 
-            -- stop all servers before reloading lsp configs
-            if not skip_lsp_restart then vim.lsp.stop_client(vim.lsp.get_active_clients(), false) end
+            -- stop all servers before reloading
+            vim.lsp.stop_client(vim.lsp.get_active_clients(), false)
 
             -- reload modules
             core.foreach(to_reload, require)
@@ -184,9 +179,10 @@ vim.defer_fn(function()
     end, nil, true)
 
     -- toggles
-    utils.add_command('Toggle CWord Highlights', 'if CWordHlToggle() | set hlsearch | endif', nil, true)
+    utils.add_command('Toggle Context WinBar', misc.toggle_context_winbar, nil, true)
     utils.add_command('Toggle Thicc Seperators', misc.toggle_thicc_separators, nil, true)
     utils.add_command('Toggle Spellings', misc.toggle_spellings, nil, true)
-    utils.add_command('Toggle Context WinBar', misc.toggle_context_winbar, nil, true)
+    utils.add_command('Toggle Night Mode', misc.toggle_night_mode, nil, true)
+    utils.add_command('Toggle CWord Highlights', 'if CWordHlToggle() | set hlsearch | endif', nil, true)
 end, 0)
 

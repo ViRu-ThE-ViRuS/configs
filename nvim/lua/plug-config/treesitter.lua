@@ -112,6 +112,7 @@ end)
 --     ts.goto_node(parent)
 -- end)
 
+-- NOTE(vir): related plugin setup
 -- text-subjects : move + center
 utils.map({'n', 'o', 'x'}, ']F', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@class.outer")<CR>zz')
 utils.map({'n', 'o', 'x'}, '[F', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@class.outer")<CR>zz')
@@ -120,7 +121,8 @@ utils.map({'n', 'o', 'x'}, '[f', '<cmd>lua require"nvim-treesitter.textobjects.m
 utils.map({'n', 'o', 'x'}, ']]', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@block.outer")<CR>zz')
 utils.map({'n', 'o', 'x'}, '[[', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@block.outer")<CR>zz')
 
--- NOTE(vir): related plugin setup
+-- vim-sandwich: moved to plug-config/sandwich.lua
+
 -- vim-matchup
 vim.g.matchup_matchparen_deferred = 1
 vim.g.matchup_surround_enabled = 1
@@ -128,12 +130,3 @@ vim.g.matchup_matchparen_offscreen = {method = 'popup'}
 utils.map({'n', 'o', 'x'}, 'Q', '<plug>(matchup-%)')
 utils.map({'o', 'x'}, 'iQ', '<plug>(matchup-i%)')
 utils.map({'o', 'x'}, 'aQ', '<plug>(matchup-a%)')
-
--- vim-sandwich
-vim.g['sandwich#recipes'] = require('lib/core').list_concat(
-    vim.g['sandwich#default_recipes'], {
-        {buns = {'( ', ' )'}, nesting = 1, match_syntax = 1, input = {')'}},
-        {buns = {'[ ', ' ]'}, nesting = 1, match_syntax = 1, input = {']'}},
-        {buns = {'{ ', ' }'}, nesting = 1, match_syntax = 1, input = {'}'}},
-    })
-

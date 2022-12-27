@@ -1,6 +1,4 @@
 vim.g.gruvbox_material_background = "hard"
-vim.g.gruvbox_contrast_dark = "hard"
-vim.g.gruvbox_contrast_light = "hard"
 vim.g.gruvbox_material_ui_contrast = "high"
 vim.g.gruvbox_material_sign_column_background = "none"
 vim.g.gruvbox_material_diagnostic_virtual_text = "colored"
@@ -167,7 +165,7 @@ local function ui_overrides()
     -- set statusline highlights
     -- NOTE(vir): defer this deal with weird behavior
     -- some colorschemes + ts highlights load slow
-    vim.defer_fn(function()
+    -- vim.defer_fn(function()
         local lsp_icons = require('lsp-setup/lsp_utils').lsp_icons
         local target_id = vim.api.nvim_get_hl_id_by_name(string.sub(require('statusline').statusline_colors.context, 3, -2))
         local target_hl = vim.api.nvim_get_hl_by_id(target_id, true)
@@ -183,46 +181,57 @@ local function ui_overrides()
                 background = target_hl.background
             })
         end
-    end, 0)
+    -- end, 0)
 end
 
 -- }}}
 
 vim.opt.termguicolors = true
-vim.opt.background = "dark"
+vim.opt.background = "light"
 
-vim.cmd.colorscheme('default')
+vim.cmd.colorscheme('vscode')
 ui_overrides()
 
 return {
     preferred = {
-        "nightfly",
-        "nightfox", "duskfox", "nordfox", "terafox", "carbonfox",
-        "tundra",
-        "material",
-        "moonfly",
-        "poimandres",
-        "gruvbox-material",
-        "gruvbox-baby",
-        "mellow",
-        "oxocarbon-lua",
-        "rasmus",
-        "adwaita",
-        "everforest",
-        "vscode",
-        "barstrata",
-        "substrata",
-        "monokai_pro", "monokai_ristretto",
-        "mountain",
-        "catppuccin", "catppuccin-macchiato",
-        "rose-pine",
-        "habamax",
-        "tempus_tempest",
-        "default",
+        dark = {
+            "nightfly",
+            "nightfox", "duskfox", "nordfox", "terafox", "carbonfox",
+            "tundra",
+            "material",
+            "moonfly",
+            "poimandres",
+            "gruvbox-material",
+            "gruvbox-baby",
+            "gruvbox",
+            "mellow",
+            "oxocarbon-lua",
+            "rasmus",
+            "adwaita",
+            "everforest",
+            "vscode",
+            "barstrata",
+            "substrata",
+            "monokai_pro", "monokai_ristretto",
+            "mountain",
+            "catppuccin", "catppuccin-macchiato",
+            "rose-pine",
+            "habamax",
+            "tempus_tempest",
+            "default",
+        },
 
         -- NOTE(vir): light themes. Yes, sometimes, i like light themes, they
         -- remind me of the pain that exists in the world :o
-        "tempus_totus", "adwaita", "xcode", "intellij", "dayfox"
+        light = {
+            "dawnfox",
+            "adwaita",
+            "vscode",
+            "catppuccin-latte",
+            "xcode",
+            "intellij",
+            "shine",
+        }
     },
     ui_overrides = ui_overrides,
 }
