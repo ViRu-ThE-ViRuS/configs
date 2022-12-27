@@ -2,11 +2,11 @@
 fish/_fish_variables
 undodir/
 nvim/spell/*.spl
-nvim/plugin
 nvim/plugged
 nvim/.netrwhist
 nvim/nvim.appimage
 nvim/test*
 nvim/lua/packer_compiled.lua
+nvim/plugin/packer_compiled.lua
 nvim/tags
 
