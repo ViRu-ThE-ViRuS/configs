@@ -47,9 +47,9 @@ vim.g.oh_lucy_evening_italic_keywords = true
 vim.g.oh_lucy_evening_italic_booleans = true
 vim.g.oh_lucy_evening_italic_functions = true
 
+vim.g.gruvbox_baby_background_color = "medium"
 vim.g.tempus_enforce_background_color = 1
 vim.g.embark_terminal_italics = 1
-vim.g.gruvbox_baby_background_color = "medium"
 vim.g.vscode_style = "dark"
 vim.g.material_style = "darker"
 
@@ -163,25 +163,7 @@ local function ui_overrides()
     ]]
 
     -- set statusline highlights
-    -- NOTE(vir): defer this deal with weird behavior
-    -- some colorschemes + ts highlights load slow
-    -- vim.defer_fn(function()
-        local lsp_icons = require('lsp-setup/lsp_utils').lsp_icons
-        local target_id = vim.api.nvim_get_hl_id_by_name(string.sub(require('statusline').statusline_colors.context, 3, -2))
-        local target_hl = vim.api.nvim_get_hl_by_id(target_id, true)
-
-        for _, value in pairs(lsp_icons) do
-            local name = string.sub(value.hl, 3, -2)
-            local ts_name = string.sub(name, 5, -1)
-            local ts_id = vim.api.nvim_get_hl_id_by_name(ts_name)
-            local hl = vim.api.nvim_get_hl_by_id(ts_id, true)
-
-            vim.api.nvim_set_hl(0, name, {
-                foreground = hl.foreground,
-                background = target_hl.background
-            })
-        end
-    -- end, 0)
+    require('statusline').setup_highlights()
 end
 
 -- }}}
@@ -189,7 +171,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "light"
 
-vim.cmd.colorscheme('vscode')
+vim.cmd.colorscheme('dayfox')
 ui_overrides()
 
 return {
@@ -221,7 +203,7 @@ return {
             "default",
         },
 
-        -- NOTE(vir): light themes. Yes, sometimes, i like light themes, they
+        -- NOTE(vir): Yes, sometimes, i like light themes, they
         -- remind me of the pain that exists in the world :o
         light = {
             "dawnfox",

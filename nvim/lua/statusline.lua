@@ -58,6 +58,25 @@ local function truncate_statusline(small)
     return utils.is_htruncated(limit, get_global)
 end
 
+-- setup statusline highlights
+local function setup_highlights()
+    local lsp_icons = require('lsp-setup/lsp_utils').lsp_icons
+    local target_id = vim.api.nvim_get_hl_id_by_name(string.sub(colors.context, 3, -2))
+    local target_hl = vim.api.nvim_get_hl_by_id(target_id, true)
+
+    for _, value in pairs(lsp_icons) do
+        local name = string.sub(value.hl, 3, -2)
+        local ts_name = string.sub(name, 5, -1)
+        local ts_id = vim.api.nvim_get_hl_id_by_name(ts_name)
+        local hl = vim.api.nvim_get_hl_by_id(ts_id, true)
+
+        vim.api.nvim_set_hl(0, name, {
+            foreground = hl.foreground,
+            background = target_hl.background
+        })
+    end
+end
+
 -- {{{ providers
 -- get the display name for current mode
 local function get_current_mode()
@@ -253,7 +272,7 @@ vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern='dap-repl',
 return {
     statusline = statusline,
     statusline_inactive = statusline_inactive,
-    statusline_colors = colors,
+    setup_highlights = setup_highlights,
 
     set_statusline_func = set_statusline_func,
     set_statusline_cmd = set_statusline_cmd,

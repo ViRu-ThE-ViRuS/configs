@@ -2,17 +2,16 @@
 
 -- NOTE(vir): impatient.nvim
 require("impatient")
-require("packer_compiled")
 
 require("settings")
 require("colorscheme")
-require("statusline")
+require("plugins")
 
 -- deferred execution makes the editor feel more responsive
 vim.defer_fn(function()
+    require("statusline")
 	require("keymaps")
     require("commands")
-    require("plugins")
 
 	-- NOTE(vir): load project local config last
 	require("project_config").load()

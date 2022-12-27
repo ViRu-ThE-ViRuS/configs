@@ -1,9 +1,13 @@
--- auto install packer.nvim if not exists
-local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/opt/packer.nvim'
-if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-    vim.api.nvim_command('!git clone https://github.com/wbthomason/packer.nvim ' .. install_path)
-    vim.cmd [[ packadd packer.nvim ]]
-end
+-- bootstrap packer
+local bootstrap = (function()
+    local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/opt/packer.nvim'
+    if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
+        vim.api.nvim_command('!git clone https://github.com/wbthomason/packer.nvim ' .. install_path)
+        vim.cmd [[ packadd packer.nvim ]]
+        return true
+    end
+    return false
+end)()
 
 require('utils').add_command('Ps', 'PackerSync', { bang = true, nargs = 0, desc = 'Packer Sync' })
 return require('packer').startup({
@@ -21,13 +25,17 @@ return require('packer').startup({
         use {
             'tpope/vim-fugitive',
             cmd = { 'G', 'Gread', 'GcLog' },
-            setup = function() require('utils').map("n", "<leader>gD", function() vim.cmd.G({ bang = true, args = { 'difftool' } }) end) end,
+            setup = function()
+                require('utils').map("n", "<leader>gD", function() vim.cmd.G({ bang = true, args = { 'difftool' } }) end)
+            end,
         }
         use {
             'liuchengxu/vista.vim',
             cmd = 'Vista',
             config = 'require("plug-config/vista")',
-            setup = function() require('utils').map('n', '<leader>k', function() vim.cmd.Vista({ bang = true, args = { '!' } }) end) end
+            setup = function()
+                require('utils').map('n', '<leader>k', function() vim.cmd.Vista({ bang = true, args = { '!' } }) end)
+            end
         }
 
         use { 'machakann/vim-sandwich', event = 'BufReadPost', config = 'require("plug-config/sandwich")' }
@@ -37,7 +45,9 @@ return require('packer').startup({
         use {
             'famiu/bufdelete.nvim',
             module = 'bufdelete',
-            setup = function() require('utils').map("n", "<leader>q", function() require('bufdelete').bufdelete(0, true) end) end,
+            setup = function()
+                require('utils').map("n", "<leader>q", function() require('bufdelete').bufdelete(0, true) end)
+            end,
         }
 
         use {
@@ -130,9 +140,11 @@ return require('packer').startup({
         use 'protesilaos/tempus-themes-vim'
 
         use { 'tweekmonster/startuptime.vim', cmd = 'StartupTime' }
+
+        if bootstrap then require('packer').sync() end
     end,
     config = {
-        compile_path = vim.fn.stdpath('config') .. '/lua/packer_compiled.lua',
+        -- compile_path = vim.fn.stdpath('config') .. '/lua/packer_compiled.lua',
         display = { prompt_border = 'single' }
     }
 })
