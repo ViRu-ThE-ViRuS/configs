@@ -1,6 +1,5 @@
 local ffi = require('ffi')
 local utils = require('utils')
-
 ffi.cdef [[ int getuid(void); ]]
 
 local function file_owned_by_me(file)

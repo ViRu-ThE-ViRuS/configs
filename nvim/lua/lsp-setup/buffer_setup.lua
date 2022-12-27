@@ -1,11 +1,11 @@
 local utils = require('utils')
-local lsp_utils = require('lsp-setup/utils')
+local lsp_utils = require('lsp-setup/lsp_utils')
 
 -- setup lsp keymaps
 local function setup_lsp_keymaps(_, bufnr)
-    utils.map("n", "<leader>uS", vim.lsp.buf.references, {silent = true, buffer = bufnr})
-    utils.map('n', '<leader>r', vim.lsp.buf.rename, {silent = true, buffer = bufnr})
     utils.map('n', 'K', vim.lsp.buf.hover, {silent = true, buffer = bufnr})
+    utils.map('n', '<leader>r', vim.lsp.buf.rename, {silent = true, buffer = bufnr})
+    utils.map("n", "<leader>uS", vim.lsp.buf.references, {silent = true, buffer = bufnr})
 
     -- NOTE(vir): now using fzf-lua
     local fzf = require('fzf-lua')
@@ -13,20 +13,18 @@ local function setup_lsp_keymaps(_, bufnr)
     utils.map("n", "<leader>us", fzf.lsp_references, {silent = true, buffer = bufnr})
     utils.map("n", "<leader>ud", fzf.lsp_document_symbols, {silent = true, buffer = bufnr})
     utils.map("n", "<leader>uD", fzf.lsp_live_workspace_symbols, {silent = true, buffer = bufnr})
-    utils.map(
-        "n", "<leader>d",
+    utils.map("n", "<leader>d",
         function() fzf.lsp_definitions({ sync = true, jump_to_single_result = true }) end,
         { silent = true, buffer = bufnr }
     )
-    utils.map(
-        "n", "<leader>D",
+    utils.map("n", "<leader>D",
         function() fzf.lsp_definitions({ sync = true, jump_to_single_result = true, jump_to_single_result_action = fzf.actions.file_vsplit }) end,
         { silent = true, buffer = bufnr }
     )
 
     -- custom refactorings
     utils.map('n', 'gL', lsp_utils.debug_print, {silent = true, buffer = bufnr})
-    utils.map('v', 'gL', '<esc><cmd>lua require("lsp-setup/utils").debug_print(true)<cr>', {silent = true, buffer = bufnr})
+    utils.map('v', 'gL', '<esc><cmd>lua require("lsp-setup/lsp_utils").debug_print(true)<cr>', {silent = true, buffer = bufnr})
 end
 
 -- setup diagnostic keymaps
@@ -77,7 +75,7 @@ local function setup_options(_, bufnr)
 
     -- set context in winbar
     if utils.editor_config.ui_state.context_winbar then
-        vim.opt_local.winbar = "%!luaeval(\"require('lsp-setup/utils').get_context_winbar(" .. bufnr .. ")\")"
+        vim.opt_local.winbar = "%!luaeval(\"require('lsp-setup/lsp_utils').get_context_winbar(" .. bufnr .. ")\")"
     end
 end
 

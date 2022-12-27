@@ -165,10 +165,10 @@ local function ui_overrides()
     ]]
 
     -- set statusline highlights
-    -- NOTE(vir): defer this because weird behavior for some colorschemes + ts highlights
-    --  - maybe they load slow?
+    -- NOTE(vir): defer this deal with weird behavior
+    -- some colorschemes + ts highlights load slow
     vim.defer_fn(function()
-        local lsp_icons = require('lsp-setup/utils').lsp_icons
+        local lsp_icons = require('lsp-setup/lsp_utils').lsp_icons
         local target_id = vim.api.nvim_get_hl_id_by_name(string.sub(require('statusline').statusline_colors.context, 3, -2))
         local target_hl = vim.api.nvim_get_hl_by_id(target_id, true)
 
@@ -191,7 +191,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-vim.cmd.colorscheme('habamax')
+vim.cmd.colorscheme('default')
 ui_overrides()
 
 return {
@@ -222,7 +222,7 @@ return {
 
         -- NOTE(vir): light themes. Yes, sometimes, i like light themes, they
         -- remind me of the pain that exists in the world :o
-        "tempus_totus", "adwaita", "xcode", "intellij",
+        "tempus_totus", "adwaita", "xcode", "intellij", "dayfox"
     },
     ui_overrides = ui_overrides,
 }

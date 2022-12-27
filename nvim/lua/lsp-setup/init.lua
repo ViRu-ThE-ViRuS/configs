@@ -5,8 +5,8 @@ local utils = require("utils")
 -- vim.lsp.set_log_level("debug")
 
 -- setup keymaps and autocommands
-local on_attach = function(client, bufnr)
-    -- utils.notify(string.format("[lsp] %s\n[cwd] %s", client.name, vim.fn.getcwd()), "info", { title = "[lsp] Active" }, true)
+local function on_attach(client, bufnr)
+    -- utils.notify(string.format("[lsp] %s\n[cwd] %s", client.name, vim.loop.cwd()), "info", { title = "[lsp] Active" }, true)
 
     -- NOTE(vir): lsp_signature setup
     require('lsp_signature').on_attach({ doc_lines = 3, hint_prefix = "<>", handler_opts = { border = 'rounded' } }, bufnr)
@@ -80,10 +80,8 @@ lsp["sumneko_lua"].setup {
             workspace = {
                 library = {
                     vim.api.nvim_get_runtime_file('', true),
-
-                    -- vim.api.nvim_get_runtime_file('lua', true),
-                    -- vim.api.nvim_get_runtime_file("lua/vim/lsp", true),
-                    -- vim.fn.stdpath('config') ,
+                    -- vim.fn.stdpath('config'),
+                    -- vim.fn.stdpath('config') .. '/lua',
                 },
                 maxPreload = 1000,
                 preloadFileSize = 150
@@ -122,7 +120,7 @@ null_ls.setup({
     },
     capabilities = capabilities,
     on_attach = function(client, bufnr)
-        -- utils.notify(string.format("[lsp] %s\n[cwd] %s", client.name, vim.fn.getcwd()), "info", { title = "[lsp] Active" }, true)
+        -- utils.notify(string.format("[lsp] %s\n[cwd] %s", client.name, vim.loop.cwd()), "info", { title = "[lsp] Active" }, true)
 
         utils.map('n', 'K', vim.lsp.buf.hover, {silent = true, buffer = bufnr})
         setup_buffer.setup_diagnostics_keymaps(client, bufnr)

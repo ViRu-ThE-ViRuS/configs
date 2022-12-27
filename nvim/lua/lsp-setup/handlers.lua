@@ -48,7 +48,7 @@ local function qf_rename()
                         })
                     end
 
-                    local short_uri = string.sub(vim.uri_to_fname(uri), #vim.fn.getcwd() + 2)
+                    local short_uri = string.sub(vim.uri_to_fname(uri), #vim.loop.cwd() + 2)
                     notification = notification .. string.format('made %d change(s) in %s\n', #document.edits, short_uri)
 
                     num_updates = num_updates + #document.edits
@@ -73,7 +73,7 @@ local function qf_rename()
                         })
                     end
 
-                    local short_uri = string.sub(vim.uri_to_fname(uri), #vim.fn.getcwd() + 2)
+                    local short_uri = string.sub(vim.uri_to_fname(uri), #vim.loop.cwd() + 2)
                     notification = notification .. string.format('made %d change(s) in %s\n', #edits, short_uri)
                 end
             end

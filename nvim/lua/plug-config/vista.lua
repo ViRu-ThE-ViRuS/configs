@@ -1,4 +1,4 @@
-local lsp_icons = require('lsp-setup/utils').lsp_icons
+local lsp_icons = require('lsp-setup/lsp_utils').lsp_icons
 
 local table = {
     file          = lsp_icons['File'].icon,

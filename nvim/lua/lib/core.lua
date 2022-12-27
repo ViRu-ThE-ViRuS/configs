@@ -8,12 +8,18 @@ local function foreach(tbl, f)
 end
 
 -- filter using predicate f
-local function filter(tbl, f)
+local function filter(tbl, f, keep_keys)
     if not tbl or tbl == {} then return {} end
 
     local t = {}
+
+    local insert = function(key, value)
+        if keep_keys then t[key] = value
+        else table.insert(t, value) end
+    end
+
     for key, value in pairs(tbl) do
-        if f(key, value) then table.insert(t, value) end
+        if f(key, value) then insert(key, value) end
     end
 
     return t
@@ -23,12 +29,16 @@ end
 local function list_concat(A, B)
     local t = {}
 
-    for _, value in ipairs(A) do
-        table.insert(t, value)
+    if A then
+        for _, value in ipairs(A) do
+            table.insert(t, value)
+        end
     end
 
-    for _, value in ipairs(B) do
-        table.insert(t, value)
+    if B then
+        for _, value in ipairs(B) do
+            table.insert(t, value)
+        end
     end
 
     return t

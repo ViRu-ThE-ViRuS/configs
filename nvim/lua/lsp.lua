@@ -1,4 +1,4 @@
--- lazy loading, reload current file
+-- lazy loading, trigger lsp
 vim.defer_fn(function() vim.cmd [[ if &ft == 'packer' |  | else | silent! e % ]] end, 0)
 
 -- setup lsps

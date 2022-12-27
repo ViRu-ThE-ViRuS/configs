@@ -3,42 +3,6 @@ local utils = require("utils")
 
 local ui_state = utils.editor_config.ui_state
 
--- convert fzf entry into a location item
--- NOTE(vir): deprecated
--- TODO(vir): consider removing
-local function fzf_to_location(entry)
-    local split = vim.split(entry, ":")
-
-    local offset = split[1] == 'file' and 1 or 0
-    local file_index = 1 + offset
-    local line_index = 2 + offset
-    local character_index = 3 + offset
-
-    local _, line = pcall(tonumber, split[line_index])
-    local _, character = pcall(tonumber, split[character_index])
-
-	local uri = character and vim.uri_from_fname(vim.fn.fnamemodify(split[file_index], ":p"))
-		or vim.uri_from_bufnr(vim.api.nvim_win_get_buf(0))
-
-    line = line and line - 1
-    character = character or 0
-    character = character > 0 and (character - 1) or character
-
-    local position = { line = line, character = character }
-    return {
-        uri = uri,
-        range = { start = position, ["end"] = position },
-    }
-end
-
--- populate qflist with fzf items
--- NOTE(vir): deprecated
--- TODO(vir): consider removing
-local function fzf_to_qf(lines)
-	local items = vim.lsp.util.locations_to_items(core.foreach(lines, fzf_to_location), "utf-16")
-	utils.qf_populate(items, "r")
-end
-
 -- strip filename from full path
 local function strip_fname(path)
 	return vim.fn.fnamemodify(path, ":t:r")
@@ -59,9 +23,16 @@ local function calculate_indent(str, get)
     return string.rep(' ', indent_size)
 end
 
+-- scroll buffer to end
+local function scroll_to_end(bufnr)
+    vim.api.nvim_buf_call(bufnr, function()
+        vim.cmd [[ normal! G ]]
+    end)
+end
+
 -- get git repo root dir (or nil)
 local function get_git_root()
-	local git_cmd = "git -C " .. vim.fn.getcwd() .. " rev-parse --show-toplevel"
+	local git_cmd = "git -C " .. vim.loop.cwd() .. " rev-parse --show-toplevel"
 	local root, rc = core.lua_systemlist(git_cmd)
 
 	if rc == 0 then
@@ -99,7 +70,7 @@ local function open_repo_on_github(remote)
 		return
 	end
 
-    assert(url)
+    assert(url, 'could not get remote urls')
 	url = url:gsub("git:", "https://")
 	url = url:gsub("git@", "https://")
 	url = url:gsub("com:", "com/")
@@ -111,16 +82,16 @@ end
 -- window: toggle current window (maximum <-> original)
 local function toggle_window()
 	if vim.fn.winnr("$") > 1 then
-		local original = vim.fn.win_getid()
+		local original = vim.api.nvim_get_current_win()
 		vim.cmd("tab sp")
-		ui_state.window_state[vim.fn.win_getid()] = original
+		ui_state.window_state[vim.api.nvim_get_current_win()] = original
 	else
-		local maximized = vim.fn.win_getid()
+		local maximized = vim.api.nvim_get_current_win()
 		local original = ui_state.window_state[maximized]
 
 		if original ~= nil then
 			vim.cmd("tabclose")
-			vim.fn.win_gotoid(original)
+			vim.api.nvim_set_current_win(original)
 			ui_state.window_state[maximized] = nil
 		end
 	end
@@ -140,7 +111,7 @@ local function toggle_context_winbar()
         callback = function(bufnr)
             vim.api.nvim_buf_call(
                 bufnr,
-                function() vim.opt_local.winbar = "%!luaeval(\"require('lsp-setup/utils').get_context_winbar(" .. bufnr .. ")\")" end
+                function() vim.opt_local.winbar = "%!luaeval(\"require('lsp-setup/lsp_utils').get_context_winbar(" .. bufnr .. ")\")" end
             )
         end
     end
@@ -204,7 +175,7 @@ end
 
 -- quickfix: toggle qflist
 local function toggle_qflist()
-	if vim.fn.empty(vim.fn.filter(vim.fn.getwininfo(), "v:val.quickfix")) == 1 then
+    if vim.tbl_isempty(core.filter(vim.fn.getwininfo(), function(_, win) return win.quickfix == 1 end)) then
 		vim.cmd [[ belowright copen ]]
 	else
 		vim.cmd [[ cclose ]]
@@ -250,15 +221,18 @@ local function random_colors()
 end
 
 return {
-	fzf_to_qf = fzf_to_qf,
+    -- utils
 	strip_fname = strip_fname,
 	strip_trailing_whitespaces = strip_trailing_whitespaces,
     calculate_indent = calculate_indent,
+    scroll_to_end = scroll_to_end,
 
+    -- repo related
 	get_git_root = get_git_root,
 	get_git_remotes = get_git_remotes,
 	open_repo_on_github = open_repo_on_github,
 
+    -- toggles
 	toggle_window = toggle_window,
     toggle_context_winbar = toggle_context_winbar,
 	toggle_thicc_separators = toggle_thicc_separators,
@@ -266,8 +240,8 @@ return {
 	toggle_global_statusline = toggle_global_statusline,
 	toggle_qflist = toggle_qflist,
 
+    -- misc
 	show_messages = show_messages,
 	show_command = show_command,
-
     random_colors = random_colors,
 }

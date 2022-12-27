@@ -51,8 +51,8 @@ local editor_config = {
     }
 }
 
--- project config and state
-local project_config = {
+-- workspace config and state
+local workspace_config = {
     -- state: current run_config, works with terminal.lua api
     run_config = {
         target_terminal = nil,
@@ -100,26 +100,20 @@ local function qf_populate(lines, mode, title, scroll_to_end)
 
 	vim.fn.setqflist(lines, mode)
 
-	if not title then
-		vim.cmd [[ belowright copen ]]
-        if scroll_to_end then vim.cmd [[ normal! G ]] end
-        vim.cmd [[ wincmd p ]]
-	else
-        local commands = {
-            'belowright copen',
-            require('statusline').set_statusline_cmd(title),
-            (scroll_to_end and 'normal! G') or "",
-            'wincmd p',
-        }
+    local commands = {
+        'belowright copen',
+        (scroll_to_end and 'normal! G') or "",
+        (title and require('statusline').set_statusline_cmd(title)) or "",
+        'wincmd p'
+    }
 
-        vim.cmd(table.concat(commands, '\n'))
-	end
+    vim.cmd(table.concat(commands, '\n'))
 end
 
--- notify using current  notifications setup
+-- notify using current notifications setup
 local function notify(content, type, opts, force)
 	if force then
-		-- if packer_plugins['nvim-notify'] ~= nil and packer_plugins['nvim-notify'].loaded then
+		-- if packer_plugins['nvim-notify'].loaded then
 		--     require('notify')(content, type, opts)
 		-- end
 
@@ -154,10 +148,10 @@ local function add_command(key, callback, cmd_opts, also_custom)
 
         -- assert opts not defined, or 0 args
         assert((not cmd_opts) or (not cmd_opts.nargs) or cmd_opts.nargs == 0)
-        if project_config.commands.callbacks[key] == nil then table.insert(project_config.commands.keys, key) end
+        if workspace_config.commands.callbacks[key] == nil then table.insert(workspace_config.commands.keys, key) end
 
-        if type(callback) == 'function' then project_config.commands.callbacks[key] = callback
-        else project_config.commands.callbacks[key] = function() vim.api.nvim_command(callback) end end
+        if type(callback) == 'function' then workspace_config.commands.callbacks[key] = callback
+        else workspace_config.commands.callbacks[key] = function() vim.api.nvim_command(callback) end end
     end
 end
 
@@ -173,5 +167,5 @@ return {
 
     -- config and states
     editor_config = editor_config,
-    project_config = project_config
+    workspace_config = workspace_config
 }

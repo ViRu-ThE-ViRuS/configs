@@ -68,7 +68,7 @@ dap.configurations.c = {
         stopOnEntry = false,
         program = function()
             -- want it in cmdline, without callback. so fn.input better than ui.input
-            return vim.fn.input('executable: ', vim.fn.getcwd() .. '/', 'file')
+            return vim.fn.input('executable: ', vim.loop.cwd() .. '/', 'file')
         end
     }
 }
@@ -194,7 +194,7 @@ local function get_output_windows(session, activate_last)
         local windows = vim.fn.win_findbuf(target_handle)
         if windows[#windows] then
             -- activate it if visible
-            vim.fn.win_gotoid(windows[#windows])
+            vim.api.nvim_set_current_win(windows[#windows])
         else
             -- split it otherwise
             vim.cmd('25split #' .. target_handle)
@@ -263,7 +263,7 @@ end
 -- start session: setup keymaps, open dapui
 local function start_session(session, _)
     if session.config.program == nil then return end
-    session.session_target_tab = vim.fn.tabpagenr()
+    session.session_target_tab = vim.api.nvim_get_current_tabpage()
 
     setup_maps()
     dapui.open()
@@ -310,7 +310,7 @@ end, nil, true)
 
 utils.map('n', '<f5>', function()
     -- create session tab if needed
-    if dap.session() == nil then vim.cmd('tab sb ' .. vim.api.nvim_win_get_buf(0))
+    if dap.session() == nil then vim.cmd('tab sb ' .. vim.api.nvim_get_current_buf())
     else vim.cmd('normal ' .. dap.session().session_target_tab .. 'gt') end
     dap.continue()
 end)

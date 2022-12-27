@@ -18,6 +18,10 @@ utils.map({"n", "v"}, "<c-bs>", '"_dl', {noremap=false})
 utils.map({"n", "v"}, "0", '"0p=`]')
 utils.map({"n", "v"}, ")", '"0P=`]')
 
+-- search jumps open folds
+utils.map('n', 'n', 'nzv', {noremap=false})
+utils.map('n', 'N', 'Nzv', {noremap=false})
+
 -- misc
 utils.map("n", ";", ":")                                        -- swaperoo
 utils.map("n", ":", ";")                                        -- swaperoo
@@ -51,6 +55,12 @@ utils.map("n", '@:', "q:")
 -- mouse scrolling
 utils.map("n", "<ScrollWheelUp>", "<c-y>")
 utils.map("n", "<ScrollWheelDown>", "<c-e>")
+
+-- disable clicks
+utils.map("n", "<2-LeftMouse>", "<nop>")
+utils.map("n", "<2-RightMouse>", "<nop>")
+utils.map("n", "<LeftMouse>", "<nop>")
+utils.map("n", "<RightMouse>", "<nop>")
 
 -- sane speed scrolling
 utils.map({"n", "v"}, "{", "4k")

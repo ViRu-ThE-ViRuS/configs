@@ -13,7 +13,7 @@ local colors = {
     git         = "%#Pmenu#",
     diagnostics = "%#PmenuSbar#",
     file        = "%#CursorLine#",
-    context     = "%#Winbar#",
+    context     = "%#WinBar#",
     line_col    = "%#CursorLine#",
     percentage  = "%#CursorLine#",
     bufnr       = "%#PmenuSbar#",
@@ -100,7 +100,6 @@ local function get_statusline_context(bufnr)
             return arg.iconhl .. arg.icon .. ' ' .. colors.context .. arg.name
         end) or {}
 
-        -- local context = core.foreach(tag_state.context[bufnr], function(arg) return arg.icon .. ' ' .. arg.name end) or {}
         local context_tree = table.concat(context, " > ")
         return string.format('[ %s ]', context_tree)
     end

@@ -94,5 +94,5 @@ utils.map("n", "<leader>cc", function()
     if not payload then return end
 
     terminal.send_to_target(payload)
-    terminal.target_scroll_to_end()
+    require('lib/misc').scroll_to_end(repl_session.bufnr)
 end, { buffer = 0 })

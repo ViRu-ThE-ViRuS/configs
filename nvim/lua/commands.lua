@@ -47,15 +47,13 @@ vim.defer_fn(function()
         pattern = { core.get_homedir() .. '/.config/nvim/init.lua', core.get_homedir() .. '/.config/nvim/*/*.lua', },
         -- command = 'source $MYVIMRC',
 
-        -- NOTE(vir): this works just some plugins are not hot reloadable
-        -- like treesitter. maybe? idk
         callback = function()
             local src_file = vim.fn.expand('<afile>')
             local rc_file = vim.fn.expand('$MYVIMRC')
             local rc_path = vim.fs.dirname(rc_file)
             local lua_path = plenary.Path.new(rc_path) .. '/lua/'
 
-            -- make this true to get complete reloading
+            -- only reload and refresh lsp when editing relevant files
             local skip_lsp_restart = string.find(src_file, 'lsp.*[setup/]*') == nil
 
             -- ret val is the table of all reloaded packages
@@ -79,25 +77,33 @@ vim.defer_fn(function()
                 end
             )
 
+            -- stop all lsp servers if lsp configs have been updated
+            if not skip_lsp_restart then
+                vim.lsp.stop_client(vim.lsp.get_active_clients(), false)
+            end
+
             -- load all files
-            core.foreach(to_reload, function(mod)
-                print("mod:", vim.inspect(mod)) -- __DEBUG_PRINT__
-                require(mod)
-            end)
+            core.foreach(to_reload, require)
+
+            -- NOTE(vir): hack to refresh sumneko lua
+            -- without this, workspace symbols do not load, despite reloaded client
+            -- causes on_attach of client to be called twice
+            if not skip_lsp_restart then
+                vim.defer_fn(function() vim.cmd [[ silent! e % ]] end, 150)
+            end
 
             -- special cases
-            -- NOTE(vir): reload treesj only when updating it
-            if string.find(src_file, 'treesj') then vim.cmd [[ source <afile> ]]  end
             if src_file == 'init.lua' then vim.cmd [[ source $MYVIMRC ]]  end
+            if string.find(src_file, 'treesj') then vim.cmd [[ source <afile> ]]  end -- NOTE(vir): reload treesj only when updating it
 
-            utils.notify('[CONFIG] config reloaded', 'debug', {render='minimal'}, true)
+            utils.notify('[CONFIG] reloaded', 'info', {render='minimal'}, true)
         end
     })
 
     -- custom commands
     utils.add_command("Commands", function()
-        vim.ui.select(utils.project_config.commands.keys, { prompt = "command> " }, function(key)
-            utils.project_config.commands.callbacks[key]()
+        vim.ui.select(utils.workspace_config.commands.keys, { prompt = "command> " }, function(key)
+            utils.workspace_config.commands.callbacks[key]()
         end)
     end, {
         bang = false,
@@ -181,7 +187,7 @@ vim.defer_fn(function()
         require('plenary').Job:new({
             command = 'ctags',
             args = { '-R', '--excmd=combine', '--fields=+K' },
-            cwd = vim.fn.getcwd(),
+            cwd = vim.loop.cwd(),
             on_start = function() utils.notify('generating tags', 'debug', { render = 'minimal' }, true) end,
             on_exit = function() utils.notify('tags generated', 'info', { render = 'minimal' }, true) end
         }):start()
@@ -191,6 +197,6 @@ vim.defer_fn(function()
     utils.add_command('Toggle CWord Highlights', 'if CWordHlToggle() | set hlsearch | endif', nil, true)
     utils.add_command('Toggle Thicc Seperators', misc.toggle_thicc_separators, nil, true)
     utils.add_command('Toggle Spellings', misc.toggle_spellings, nil, true)
-    utils.add_command('Toggle Context Winbar', misc.toggle_context_winbar, nil, true)
+    utils.add_command('Toggle Context WinBar', misc.toggle_context_winbar, nil, true)
 end, 0)
 

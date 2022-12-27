@@ -1,86 +1,66 @@
-local utils = require("utils")
+local utils = require('utils')
 local core = require('lib/core')
+local misc = require('lib/misc')
 
-local run_config = utils.project_config.run_config
+local run_config = utils.workspace_config.run_config
 local truncation = utils.editor_config.truncation
 
--- scroll target to bottom
-local function target_scroll_to_end()
-    if run_config.target_terminal == nil then return end
-    local win_id = vim.fn.bufwinid(run_config.target_terminal.bufnr)
-
-    if win_id == -1 then return end
-    vim.fn.win_execute(win_id, "normal! G")
-end
-
 -- toggle target_terminal
-local function toggle_target(open)
+local function toggle_target(force_open)
     if run_config.target_terminal == nil then
-        utils.notify('[terminal] target not set', 'warn', { render = 'minimal' }, true)
+        utils.notify('[terminal] target terminal not set', 'warn', { render = 'minimal' }, true)
         return
     end
 
     local target_winid = vim.fn.bufwinid(run_config.target_terminal.bufnr)
 
     if target_winid ~= -1 and #vim.api.nvim_list_wins() ~= 1 then
+        if force_open then return end
+
         -- hide target
-        if not open then
-            if not pcall(vim.api.nvim_win_close, target_winid, false) then
-                utils.notify('[terminal] target exited, resetting state', 'debug', { render = 'minimal' }, true)
-                run_config.target_terminal = nil
-                return
-            end
+        if not pcall(vim.api.nvim_win_close, target_winid, false) then
+            utils.notify('[terminal] target exited, resetting state', 'debug', { render = 'minimal' }, true)
+            run_config.target_terminal = nil
         end
     else
-        local split_dir = "v"
-        if utils.is_htruncated(truncation.truncation_limit_s_terminal) then
-            split_dir = ""
-        end
+        local split_dir = (utils.is_htruncated(truncation.truncation_limit_s_terminal) and "") or "v"
 
         -- open in split
         if not pcall(vim.cmd, split_dir .. 'split #' .. run_config.target_terminal.bufnr) then
             utils.notify('[terminal] target exited, resetting state', 'debug', { render = 'minimal' }, true)
             run_config.target_terminal = nil
-            return
         end
     end
 end
 
 -- send payload to target_terminal
 local function send_to_target(payload, repeat_last)
-    if run_config.target_terminal ~= nil then
-        if vim.api.nvim_buf_get_name(run_config.target_terminal.bufnr) ~= "" then
-            if repeat_last then
-                if pcall(vim.cmd, "call chansend(" .. run_config.target_terminal.job_id .. ', "\x1b\x5b\x41\\<cr>")') then
-                    toggle_target(true)
-                    return
-                end
-            else
-                if pcall(vim.api.nvim_chan_send, run_config.target_terminal.job_id, payload .. "\n") then
-                    toggle_target(true)
-                    return
-                end
-            end
+    if run_config.target_terminal == nil then
+        utils.notify('[terminal] target terminal not set', 'warn', { render = 'minimal' }, true)
+        return
+    end
 
-            utils.notify('[terminal] target exited, resetting state', 'debug', { render = 'minimal' }, true)
-            run_config.target_terminal = nil
-
-            return
-        else
-            utils.notify('[terminal] target does not exist, resetting state', 'debug', { render = 'minimal' }, true)
-            run_config.target_terminal = nil
-        end
+    if vim.api.nvim_buf_is_loaded(run_config.target_terminal.bufnr) then
+        -- not using pcalls intentionally, fails successfully
+        if repeat_last then vim.cmd("call chansend(" .. run_config.target_terminal.job_id .. ', "\x1b\x5b\x41\\<cr>")')
+        else vim.api.nvim_chan_send(run_config.target_terminal.job_id, payload .. "\n") end
+        toggle_target(true)
     else
-        utils.notify('[terminal] target not set', 'warn', { render = 'minimal' }, true)
+        -- buf has been unloaded
+        utils.notify('[terminal] target terminal does not exist, resetting state', 'debug', { render = 'minimal' }, true)
+        run_config.target_terminal = nil
     end
 end
 
--- set target_terminal to this one
-local function set_target_terminal()
+-- set target_terminal/target_command
+local function set_target(default)
     if vim.b.terminal_job_id ~= nil then
+        -- default is not used within a temrinal buffer
+        assert(not default)
+
         run_config.target_terminal = {
+            bufnr = vim.api.nvim_get_current_buf(),
             job_id = vim.b.terminal_job_id,
-            bufnr = vim.api.nvim_win_get_buf(0),
         }
 
         utils.notify(
@@ -94,26 +74,7 @@ local function set_target_terminal()
             true
         )
     else
-        utils.notify('[terminal] target not set', 'warn', { render = 'minimal' }, true)
-    end
-end
-
--- setup target_command
-local function set_target_command(default)
-    if not default then
-        run_config.target_command = vim.fn.input('[terminal] target_command: ', '', 'shellcmd')
-    else
-        run_config.target_command = default
-    end
-end
-
--- set target_terminal/target_command
-local function set_target(default)
-    if vim.b.terminal_job_id ~= nil then
-        assert(not default)
-        set_target_terminal()
-    else
-        set_target_command(default)
+        run_config.target_command = default or vim.fn.input('[terminal] target_command: ', '', 'shellcmd')
     end
 end
 
@@ -121,16 +82,16 @@ end
 local function run_target_command()
     if run_config.target_command ~= "" then
         send_to_target(run_config.target_command, false)
-        target_scroll_to_end()
+        misc.scroll_to_end(run_config.target_terminal.bufnr)
     else
-        utils.notify('[terminal] target not set', 'warn', { render = 'minimal' }, true)
+        utils.notify('[terminal] target command not set', 'warn', { render = 'minimal' }, true)
     end
 end
 
 -- run previous command in target_terminal
 local function run_previous_command()
     send_to_target(nil, true)
-    target_scroll_to_end()
+    misc.scroll_to_end(run_config.target_terminal.bufnr)
 end
 
 -- send visually selected lines to target_terminal
@@ -138,48 +99,59 @@ local function run_selection(visual_mode)
     local payload = nil
 
     if visual_mode then
+        -- take last visual selection
         local l1 = vim.api.nvim_buf_get_mark(0, "<")[1]
         local l2 = vim.api.nvim_buf_get_mark(0, ">")[1]
         if l1 > l2 then l1, l2 = l2, l1 end
 
-        local lines = vim.fn.getline(l1, l2)
+        local lines = vim.api.nvim_buf_get_lines(0, l1, l2, false)
         payload = table.concat(core.filter(lines, function(_, value) return vim.trim(value) ~= '' end), '\n')
         payload = payload .. '\n'
 
-    elseif visual_mode then
+    else
+        -- take current line when called from normal mode
+        -- it makes sense to trim this before feeding input
         local line = vim.api.nvim_win_get_cursor(0)[1]
         payload = vim.trim(vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1])
     end
 
     send_to_target(payload)
-    target_scroll_to_end()
+    misc.scroll_to_end(run_config.target_terminal.bufnr)
 end
 
 -- launch a terminal with the command in a split
 local function launch_terminal(command, background, callback)
-    vim.cmd('vsp term://' .. vim.o.shell)
-    local bufnr = vim.api.nvim_get_current_buf()
+    local split_cmd = (utils.is_htruncated(truncation.truncation_limit_s_terminal) and "sp") or "vsp"
+    vim.cmd(string.format('%s term://%s', split_cmd, vim.api.nvim_get_option_value('shell', {})))
 
-    vim.defer_fn(function()
-        if pcall(vim.api.nvim_chan_send, vim.b.terminal_job_id, command .. "\n") then
-            utils.notify(command, 'info', { title = '[terminal] launched command' }, true)
-        end
+    -- terminal state
+    local term_state = {
+        bufnr = vim.api.nvim_get_current_buf(),
+        jobid = vim.b.terminal_job_id
+    }
 
+    -- close buffer if this is a background launch
+    if background then vim.api.nvim_win_close(vim.fn.bufwinid(term_state.bufnr), true) end
+
+    -- this should not crash, so pcall not needed
+    vim.api.nvim_chan_send(term_state.jobid, command .. "\n")
+    utils.notify(command, 'info', { title = '[terminal] launched command' }, true)
+
+    -- wrap up
+    vim.api.nvim_buf_call(term_state.bufnr, function()
         if callback then callback() end
+        if not background then vim.cmd [[ wincmd p ]] end
+    end)
 
-        if background then vim.cmd [[ :q ]]
-        else vim.cmd [[ wincmd p ]] end
-    end, 250)
-
-    return bufnr
+    return term_state
 end
 
 return {
-    -- run-config
+    -- run-config and setup
     toggle_target = toggle_target,
-    set_target = set_target,
     send_to_target = send_to_target,
-    target_scroll_to_end = target_scroll_to_end,
+    set_target = set_target,
+
     run_target_command = run_target_command,
     run_previous_command = run_previous_command,
     run_selection = run_selection,
@@ -187,3 +159,4 @@ return {
     -- general
     launch_terminal = launch_terminal,
 }
+
