@@ -53,48 +53,38 @@ vim.defer_fn(function()
             local rc_path = vim.fs.dirname(rc_file)
             local lua_path = plenary.Path.new(rc_path) .. '/lua/'
 
-            -- only reload and refresh lsp when editing relevant files
+            -- only reload lsp configs when modified
             local skip_lsp_restart = string.find(src_file, 'lsp.*[setup/]*') == nil
 
-            -- ret val is the table of all reloaded packages
             local to_reload = core.foreach(
                 vim.split(vim.fn.globpath(rc_path, '**/**.lua'), "\n"),
                 function(full_path)
                     local path_obj = plenary.Path.new(full_path)
                     local rel_path = vim.fn.fnamemodify(path_obj:make_relative(lua_path), ':r')
 
-                    -- skip all files already unloaded
+                    -- NOTE(vir): skip files
+                    --  1. not already loaded
+                    --  2. lsp files when lsp config has not changed
+                    --  3. [investigate?] treesj slows down when reloaded too many times
                     if not core.table_contains(package.loaded, rel_path) then return end
-
-                    -- NOTE(vir): worth investigating
-                    -- reloading treesj config too many times causes slow down for some reason
-                    if string.find(rel_path, 'treesj') then return end
                     if skip_lsp_restart and string.find(rel_path, 'lsp.*[setup/]*') then return end
+                    if string.find(rel_path, 'treesj') then return end
 
-                    -- unload all lua files
+                    -- unload mod
                     package.loaded[rel_path] = nil
                     return rel_path
                 end
             )
 
-            -- stop all lsp servers if lsp configs have been updated
-            if not skip_lsp_restart then
-                vim.lsp.stop_client(vim.lsp.get_active_clients(), false)
-            end
+            -- stop all servers before reloading lsp configs
+            if not skip_lsp_restart then vim.lsp.stop_client(vim.lsp.get_active_clients(), false) end
 
-            -- load all files
+            -- reload modules
             core.foreach(to_reload, require)
 
-            -- NOTE(vir): hack to refresh sumneko lua
-            -- without this, workspace symbols do not load, despite reloaded client
-            -- causes on_attach of client to be called twice
-            if not skip_lsp_restart then
-                vim.defer_fn(function() vim.cmd [[ silent! e % ]] end, 150)
-            end
-
-            -- special cases
+            -- NOTE(vir): special cases, only reload if modified
             if src_file == 'init.lua' then vim.cmd [[ source $MYVIMRC ]]  end
-            if string.find(src_file, 'treesj') then vim.cmd [[ source <afile> ]]  end -- NOTE(vir): reload treesj only when updating it
+            if string.find(src_file, 'treesj') then vim.cmd [[ source <afile> ]]  end
 
             utils.notify('[CONFIG] reloaded', 'info', {render='minimal'}, true)
         end

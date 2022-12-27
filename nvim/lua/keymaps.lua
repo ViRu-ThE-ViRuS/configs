@@ -15,8 +15,8 @@ utils.map({"n", "v"}, "<a-bs>", '"_dh', {noremap=false})
 utils.map({"n", "v"}, "<c-bs>", '"_dl', {noremap=false})
 
 -- paste yanked
-utils.map({"n", "v"}, "0", '"0p=`]')
-utils.map({"n", "v"}, ")", '"0P=`]')
+utils.map({"n", "v"}, "-", '"0p=`]')
+utils.map({"n", "v"}, "_", '"0P=`]')
 
 -- search jumps open folds
 utils.map('n', 'n', 'nzv', {noremap=false})
@@ -43,7 +43,6 @@ utils.map("v", "ss", ":s/")                                     -- substitute in
 utils.map("v", "s/", ":s/\\<<C-r><C-w>\\>/")                    -- substitute cword in selection
 utils.map('v', '//', [[y/\V<c-r>=escape(@",'/\')<cr><cr>]])     -- search for selection
 utils.map('v', '<m-/>', '<esc>/\\%V')                           -- search within selection
--- utils.map('n', '<m-/>', ':%s/<c-r><c-w>//gc<left><left><left>') -- replace current word
 
 -- command edit modes
 -- utils.map({"n", "v"}, "q:", "<nop>")
@@ -138,13 +137,6 @@ utils.map("v", "<leader>cv", '<esc><cmd>lua require("terminal").run_selection(tr
 -- commands
 utils.map('n', '<c-cr>', vim.cmd.Commands)
 
--- NOTE(vir): these cmds are loaded on demand, so configure keymaps here
--- tabular, fugitive, vista
-utils.map("v", "<leader>=", ":Tab /")
-utils.map("n", "<leader>gD", function() vim.cmd.G({ bang = true, args = { 'difftool' } }) end)
-utils.map('n', '<leader>k', function() vim.cmd.Vista({ bang = true, args = { '!' } }) end)
-
 -- NOTE(vir): tricks
 --  ins mode: <c-v> to get key code
---  cmd mode: edit commands in vim mode
---  normal: @: execute last command, mapped to @"
+

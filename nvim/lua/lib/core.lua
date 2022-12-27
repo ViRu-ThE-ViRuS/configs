@@ -1,6 +1,6 @@
 -- apply f to all elements in table
 local function foreach(tbl, f)
-    if not tbl then return nil end
+    if not tbl then return {} end
 
     local t = {}
     for key, value in pairs(tbl) do t[key] = f(value) end
