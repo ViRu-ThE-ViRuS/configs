@@ -3,16 +3,17 @@ local utils = require("utils")
 require('nvim-treesitter.configs').setup({
     ensure_installed = {
         'lua', 'python', 'c', 'cpp', 'java', 'go', 'bash', 'fish', 'cmake',
-        'make', 'cuda', 'rust', 'vim', 'markdown', 'javascript', 'typescript', 'tsx'
+        'make', 'cuda', 'rust', 'vim', 'markdown', 'javascript', 'typescript', 'tsx',
+        'query'
     },
 
     -- NOTE(vir): nvim-yati is really good for python for now, havent noticed need for other file types yet
-    indent = {enable = true, disable={'python', 'c', 'cpp', 'lua'}},
-    yati = {enable = true, disable = {'javascript', 'javascriptreact', 'typescript', 'typescriptreact'}},
+    indent = { enable = true, disable = { 'python', 'c', 'cpp', 'lua' } },
+    yati = { enable = true, disable = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' } },
 
-    highlight = {enable = true, additional_vim_regex_highlighting = {'markdown'}},
-    matchup = {enable = true, disable_virtual_text = true},
-    context_commentstring = {enable = true, enable_autocmd = false},
+    highlight = { enable = true, additional_vim_regex_highlighting = { 'markdown' } },
+    matchup = { enable = true, disable_virtual_text = true },
+    context_commentstring = { enable = true, enable_autocmd = false },
 
     incremental_selection = {
         enable = true,
@@ -34,7 +35,7 @@ require('nvim-treesitter.configs').setup({
                 ['ac'] = '@block.outer',
                 ['ic'] = '@block.inner',
                 ['aP'] = '@parameter.outer',
-                ['iP'] = '@parameter.inner',
+                ['iP'] = '@parameter.inner'
             }
         },
         move = {
@@ -65,7 +66,11 @@ require('nvim-treesitter.configs').setup({
     },
 
     playground = { enable = true },
-    query_linter = { enable = true }
+    query_linter = {
+        enable = true,
+        use_virtual_text = true,
+        lint_events = { "BufWrite", "CursorHold" },
+    },
 })
 
 -- populate all functions and lambdas into qflist
@@ -113,20 +118,22 @@ end)
 -- end)
 
 -- NOTE(vir): related plugin setup
--- text-subjects : move + center
-utils.map({'n', 'o', 'x'}, ']F', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@class.outer")<CR>zz')
-utils.map({'n', 'o', 'x'}, '[F', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@class.outer")<CR>zz')
-utils.map({'n', 'o', 'x'}, ']f', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@function.outer")<CR>zz')
-utils.map({'n', 'o', 'x'}, '[f', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@function.outer")<CR>zz')
-utils.map({'n', 'o', 'x'}, ']]', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@block.outer")<CR>zz')
-utils.map({'n', 'o', 'x'}, '[[', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@block.outer")<CR>zz')
-
 -- vim-sandwich: moved to plug-config/sandwich.lua
 
 -- vim-matchup
 vim.g.matchup_matchparen_deferred = 1
 vim.g.matchup_surround_enabled = 1
-vim.g.matchup_matchparen_offscreen = {method = 'popup'}
-utils.map({'n', 'o', 'x'}, 'Q', '<plug>(matchup-%)')
-utils.map({'o', 'x'}, 'iQ', '<plug>(matchup-i%)')
-utils.map({'o', 'x'}, 'aQ', '<plug>(matchup-a%)')
+vim.g.matchup_matchparen_offscreen = { method = 'popup' }
+utils.map({ 'n', 'o', 'x' }, 'Q', '<plug>(matchup-%)')
+utils.map({ 'o', 'x' }, 'iQ', '<plug>(matchup-i%)')
+utils.map({ 'o', 'x' }, 'aQ', '<plug>(matchup-a%)')
+
+-- text-subjects : move + center
+--- @format disable
+utils.map({ 'n', 'o', 'x' }, ']F', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@class.outer")<CR>zz')
+utils.map({ 'n', 'o', 'x' }, '[F', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@class.outer")<CR>zz')
+utils.map({ 'n', 'o', 'x' }, ']f', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@function.outer")<CR>zz')
+utils.map({ 'n', 'o', 'x' }, '[f', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@function.outer")<CR>zz')
+utils.map({ 'n', 'o', 'x' }, ']]', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@block.outer")<CR>zz')
+utils.map({ 'n', 'o', 'x' }, '[[', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@block.outer")<CR>zz')
+

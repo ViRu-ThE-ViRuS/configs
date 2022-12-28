@@ -1,13 +1,11 @@
 -- bootstrap packer
-local bootstrap = (function()
-    local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/opt/packer.nvim'
-    if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-        vim.api.nvim_command('!git clone https://github.com/wbthomason/packer.nvim ' .. install_path)
-        vim.cmd [[ packadd packer.nvim ]]
-        return true
-    end
-    return false
-end)()
+local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/opt/packer.nvim'
+local is_bootstrap = false
+if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
+    vim.api.nvim_command('!git clone https://github.com/wbthomason/packer.nvim ' .. install_path)
+    vim.cmd [[ packadd packer.nvim ]]
+    is_bootstrap = true
+end
 
 require('utils').add_command('Ps', 'PackerSync', { bang = true, nargs = 0, desc = 'Packer Sync' })
 return require('packer').startup({
@@ -62,7 +60,7 @@ return require('packer').startup({
                 { 'Wansmer/treesj', after = 'nvim-treesitter', config = 'require("plug-config/treesj")' },
                 { 'Dkendal/nvim-treeclimber', after = 'nvim-treesitter', config = 'require("plug-config/treeclimber")' },
 
-                { 'nvim-treesitter/playground', after = 'nvim-treesitter' },
+                { 'nvim-treesitter/playground', cmd = 'TSPlaygroundToggle' },
             },
             run = ':TSUpdate',
             event = 'VimEnter',
@@ -82,7 +80,7 @@ return require('packer').startup({
                 { 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
                 { 'hrsh7th/cmp-cmdline', after = 'nvim-cmp' },
             },
-            event = 'BufReadPost',
+            event = 'InsertEnter',
             config = "require('plug-config/cmp')"
         }
 
@@ -136,15 +134,12 @@ return require('packer').startup({
         use { 'rose-pine/neovim', as = 'rose-pine' }
         use 'habamax/vim-habamax'
         use 'chiendo97/intellij.vim'
-        use 'JaySandhu/xcode-vim'
+        use 'arzg/vim-colors-xcode'
         use 'protesilaos/tempus-themes-vim'
 
         use { 'tweekmonster/startuptime.vim', cmd = 'StartupTime' }
 
-        if bootstrap then require('packer').sync() end
+        if is_bootstrap then require('packer').sync() end
     end,
-    config = {
-        -- compile_path = vim.fn.stdpath('config') .. '/lua/packer_compiled.lua',
-        display = { prompt_border = 'single' }
-    }
+    config = { display = { prompt_border = 'single' } }
 })

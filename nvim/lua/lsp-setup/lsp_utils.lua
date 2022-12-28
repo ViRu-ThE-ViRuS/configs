@@ -205,7 +205,6 @@ local function get_context(bufnr, to_string_func)
     return to_string_func(tag_state.context[bufnr])
 end
 
-
 -- format winbar
 local function get_context_winbar(bufnr, colors)
     bufnr = bufnr or vim.api.nvim_get_current_buf()
@@ -222,6 +221,9 @@ local function get_context_winbar(bufnr, colors)
 
         return table.concat(context, " -> ")
     end)
+
+    -- context = (string.len(context) > 1 and '=> ' .. context) or context
+    -- return colors.foreground .. filename .. colors.background .. context
 
     return colors.foreground .. ' => ' .. context .. ' ' .. '%=%' .. filename
 end

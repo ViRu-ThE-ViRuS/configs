@@ -4,6 +4,7 @@ local colorscheme = require('colorscheme')
 local utils = require('utils')
 local plenary = require('plenary')
 
+-- ui setup
 vim.api.nvim_create_augroup('UISetup', {clear = true})
 vim.api.nvim_create_autocmd('ColorScheme', {
     group = 'UISetup',
@@ -31,7 +32,6 @@ vim.defer_fn(function()
     vim.api.nvim_create_augroup('TerminalSetup', {clear = true})
     vim.api.nvim_create_autocmd('TermOpen', {
         group = 'TerminalSetup',
-        pattern = '*',
         callback = function()
             vim.opt_local.filetype = 'terminal'
             vim.opt_local.number = false

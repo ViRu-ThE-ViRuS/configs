@@ -51,6 +51,7 @@ local statusline_blacklist = {
     'DiffviewFiles', 'DiffviewFileHistory', 'dapui_watches', 'dapui_stacks', 'dapui_scopes', 'dapui_breakpoints', 'dap-repl'
 }
 
+-- utils {{{
 -- is statusline supposed to be truncated
 local function truncate_statusline(small)
     local limit = (small and truncation.truncation_limit_s) or truncation.truncation_limit
@@ -76,6 +77,7 @@ local function setup_highlights()
         })
     end
 end
+-- }}}
 
 -- {{{ providers
 -- get the display name for current mode

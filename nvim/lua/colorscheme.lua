@@ -165,13 +165,12 @@ local function ui_overrides()
     -- set statusline highlights
     require('statusline').setup_highlights()
 end
-
 -- }}}
 
 vim.opt.termguicolors = true
-vim.opt.background = "light"
+vim.opt.background = "dark"
 
-vim.cmd.colorscheme('dayfox')
+vim.cmd.colorscheme('catppuccin-macchiato')
 ui_overrides()
 
 return {
@@ -199,6 +198,7 @@ return {
             "catppuccin", "catppuccin-macchiato",
             "rose-pine",
             "habamax",
+            "xcodedark",
             "tempus_tempest",
             "default",
         },
@@ -207,13 +207,17 @@ return {
         -- remind me of the pain that exists in the world :o
         light = {
             "dawnfox",
+            "gruvbox",
             "adwaita",
+            "everforest",
             "vscode",
             "catppuccin-latte",
-            "xcode",
+            "rose-pine",
+            "xcodelight",
             "intellij",
             "shine",
         }
     },
     ui_overrides = ui_overrides,
 }
+
