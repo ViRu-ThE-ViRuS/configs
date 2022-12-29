@@ -3,6 +3,8 @@ local dapui = require('dapui')
 local utils = require('utils')
 local core = require('lib/core')
 
+-- NOTE(vir): use mason to install dependencies
+
 -- {{{ adapters
 -- servers launched internally in neovim
 local internal_servers = { codelldb = 'codelldb server' }
@@ -24,7 +26,7 @@ dap.adapters.codelldb = function(callback, _)
     end)
 end
 
--- TODO(vir): js/ts config not perfect yet
+-- TODO(vir): fix this
 -- load extra js/ts dependencies
 -- _ = (function()
 --     local ft = vim.api.nvim_get_option_value('ft', { scope = 'local' })
@@ -75,7 +77,7 @@ dap.configurations.c = {
 dap.configurations.cpp = dap.configurations.c
 dap.configurations.rust = dap.configurations.cpp
 
--- TODO(vir): fix config and uncomment
+-- TODO(vir): fix this
 -- dap.configurations.javascript = {
 --     {
 --         type = 'pwa-node',

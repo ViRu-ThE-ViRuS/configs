@@ -84,9 +84,9 @@ utils.map({"n", "i"}, "<left>", "<nop>")
 utils.map({"n", "i"}, "<right>", "<nop>")
 
 -- toggles
-utils.map("n", "<leader>1", misc.toggle_window)
-utils.map("n", "<leader>2", misc.random_colors, {silent = false})
-utils.map("n", "<leader>3", misc.toggle_global_statusline)
+utils.map("n", "<leader>1", misc.toggle_window, { desc = 'toggle maximize current window'})
+utils.map("n", "<leader>2", misc.random_colors, { desc = 'set a random preferred colorscheme' })
+utils.map("n", "<leader>3", misc.toggle_global_statusline, { desc = 'toggle global statusline' })
 -- utils.map("n", "<leader>t1", "<cmd>if CWordHlToggle() | set hlsearch | endif<cr>")
 -- utils.map("n", "<leader>t2", misc.toggle_thicc_separators)
 -- utils.map("n", "<leader>t3", misc.toggle_spellings)

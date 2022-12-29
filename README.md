@@ -27,27 +27,21 @@ some of the "big" things i decided to implement on my own:
 - terminal api (send commands, toggle, run last, notifications, +more)
 - functionality like `OpenInGithub`, open file in `Finder`, toggle buffer maximize +more
 - project local settings and commands
-- a lua utility library
 - custom dap configurations to control servers, ui, keymaps +more
 
 i recommend using `neovim HEAD` (or at least 0.8+) to keep up with latest
 changes.
 
-**NOTE**: this config can be a little difficult to bootstrap because of all the
-weird lazy loading optimizations i have made, for example the colorscheme is
-not downloaded on first open, so i recommend after cloning the repo and running
-the `update_config.sh` script, directly open the `lua/plugins.lua` file, ignore
-errors and source it with `:luafile %`. most issues should be fixed after this step.
+**TO Reproduce**:
+
+- run `update_config.sh` (might require sudo access), to copy over config files
+- run `nvim +Ps`, to install plugins
+- restart neovim
+
+**NOTE:** you may run into some subsequent errors due to missing programs. the
+error messages should suggest whats missing and also refer to `:checkhealth`.
 
 ##### External Dependencies
-
-you will need to install lsp(s) manually:
-
-- **lua**: sumneko-lua
-- **python**: pyright
-- **c/c++/rust**: clangd, clang-format, clang-tidy, cppcheck
-- **js/ts/react**: tsserver
-- **general**: null-ls (autopep8, prettier), universal-ctags, fzf, rg
 
 for dap setup to work, you will need to install adapters manually:
 

@@ -89,6 +89,10 @@ return require('packer').startup({
             requires = {
                 { 'jose-elias-alvarez/null-ls.nvim', module = 'null-ls' },
                 { 'ray-x/lsp_signature.nvim', module = 'lsp_signature' },
+
+                { 'williamboman/mason.nvim', module = 'mason' },
+                { 'williamboman/mason-lspconfig.nvim', module = 'mason-lspconfig' },
+                { 'jayp0521/mason-null-ls.nvim', module = 'mason-null-ls' },
             },
             event = 'BufReadPost',
             config = 'require("lsp")'

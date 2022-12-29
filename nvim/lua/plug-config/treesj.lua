@@ -2,7 +2,6 @@ local utils = require('utils')
 local treesj = require('treesj')
 local treesj_utils = require('treesj/langs/utils')
 
--- TODO(vir): disable empty cases when plugin author updates
 treesj.setup({
     use_default_keymaps = false,
     notify = true,
