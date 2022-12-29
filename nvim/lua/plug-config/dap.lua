@@ -4,6 +4,7 @@ local utils = require('utils')
 local core = require('lib/core')
 
 -- NOTE(vir): use mason to install dependencies
+-- mason is already setup by lsp config
 require('mason-nvim-dap').setup({ ensure_installed = { 'python', 'codelldb' } })
 
 -- {{{ adapters
@@ -250,6 +251,9 @@ local function setup_maps()
 
         close_internal_servers()
         activate_output_window(session)
+
+        utils.notify(string.format('[prog] %s', session.config.program),
+            'debug', { title = '[dap] session closed', timeout = 500 }, true)
     end)
 
     utils.map('n', '<f4>', dapui.toggle)
@@ -290,7 +294,7 @@ end
 
 -- dap events
 dap.listeners.before.event_initialized["dapui"] = start_session
-dap.listeners.before.event_terminated["dapui"] = terminate_session
+-- dap.listeners.before.event_terminated["dapui"] = terminate_session
 dap.listeners.before.event_exited["dapui"] = terminate_session
 -- }}}
 

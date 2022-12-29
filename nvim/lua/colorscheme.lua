@@ -167,8 +167,8 @@ end
 -- }}}
 
 vim.opt.termguicolors = true
-vim.opt.background = "light"
-local colorscheme = 'intellij'
+vim.opt.background = 'dark'
+local colorscheme = 'gruvbox'
 
 -- load default colorscheme if chosen one is not available
 if not pcall(vim.cmd.colorscheme, colorscheme) then vim.cmd.colorscheme('default') end

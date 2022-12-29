@@ -68,11 +68,12 @@ end
 local function toggle_diagnostics_list(global)
     if global then
         if not diagnostics_state['global'] then
-            vim.diagnostic.setqflist({ open = false })
+            vim.diagnostic.setqflist()
             diagnostics_state['global'] = true
 
-            vim.cmd(string.format("belowright copen\n%s\nwincmd p",
-                require('statusline').set_statusline_cmd('Workspace Diagnostics')))
+            require('statusline').set_statusline_func('Workspace Diagnostics')()
+            vim.cmd [[ wincmd p ]]
+
         else
             diagnostics_state['global'] = false
             vim.cmd [[ cclose ]]

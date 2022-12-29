@@ -1,8 +1,8 @@
 -- lazy loading, trigger lsp
 vim.defer_fn(function() vim.cmd [[ if &ft == 'packer' |  | else | silent! e % ]] end, 0)
 
--- install dependencies
-require('mason').setup()
+-- NOTE(vir): use mason to install dependencies
+require('mason').setup({ ui = { border = 'rounded' } })
 require('mason-lspconfig').setup({ ensure_installed = { 'pyright', 'clangd', 'sumneko_lua', 'tsserver' } })
 require('mason-null-ls').setup({ ensure_installed = { 'cppcheck', 'autopep8', 'prettier' } })
 
