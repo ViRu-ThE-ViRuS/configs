@@ -9,11 +9,11 @@ require("plugins")
 
 -- deferred execution makes the editor feel more responsive
 vim.defer_fn(function()
-	require("keymaps")
+    require("keymaps")
     require("commands")
 
-	-- NOTE(vir): load project local config last
-	require("project_config").load()
+    -- NOTE(vir): load project local config last
+    require("project_config").load()
 end, 0)
 
 -- notes --

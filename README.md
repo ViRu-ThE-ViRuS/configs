@@ -29,7 +29,7 @@ some of the "big" things i decided to implement on my own:
 - project local settings and commands
 - elaborate fully managed dap ui/ux setup
 
-i recommend using `neovim HEAD` (or at least 0.8+) to keep up with latest
+**NOTE:** i recommend using `neovim HEAD` (or at least 0.8+) to keep up with latest
 changes.
 
 **To Reproduce**:
@@ -39,7 +39,7 @@ changes.
 - restart neovim
 
 **NOTE:** i recommend using `checkhealth` to make sure everything is setup and
-ready to go.j
+ready to go
 
 ##### External Dependencies
 
@@ -53,10 +53,10 @@ ready to go.j
 - **pyrightconfig.json**: pyright config
 - **.nvimrc.lua**: project local settings
 
-### Reproduce
+### Scripts
 
-- run `source update_config.sh` to update local config
-- run `source update_repo.sh` to update the repo with latest local config
+- `source update_config.sh` to update local config
+- `source update_repo.sh` to update the repo with latest local config
 
 ### Notes
 
@@ -64,4 +64,3 @@ ready to go.j
 - **brew**: packages in `brew_output.txt` & `brew_cask_output.txt`
 - **kitty**: setup fonts according to `kitty/kitty.conf`
 - **nvim**: use `LuaCacheClear` from impatient.nvim, if startup seems weirdly slow
-- **colors**: see `so $VIMRUNTIME/syntax/hitest.vim`
