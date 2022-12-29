@@ -4,27 +4,26 @@ local utils = require('utils')
 local core = require('lib/core')
 
 -- NOTE(vir): use mason to install dependencies
+require('mason-nvim-dap').setup({ ensure_installed = { 'python', 'codelldb' } })
 
 -- {{{ adapters
 -- servers launched internally in neovim
-local internal_servers = { codelldb = 'codelldb server' }
+local internal_servers = {}
 
 -- adapters
 dap.adapters.python = {
     type = 'executable',
-    command = 'python3',
-    args = { '-m', 'debugpy.adapter' }
+    command = 'debugpy-adapter'
 }
 
-dap.adapters.codelldb = function(callback, _)
-    -- NOTE(vir): consider using vim jobstart api
-    require('terminal').launch_terminal('codelldb', true, function()
-        vim.api.nvim_buf_set_name(0, internal_servers.codelldb)
-        vim.defer_fn(function()
-            callback({ type = 'server', host = '127.0.0.1', port = 13000 })
-        end, 1500)
-    end)
-end
+dap.adapters.codelldb = {
+    type = 'server',
+    port = '13000',
+    executable = {
+        command = 'codelldb',
+        args = { '--port', '13000' },
+    },
+}
 
 -- TODO(vir): fix this
 -- load extra js/ts dependencies
@@ -163,10 +162,11 @@ require('nvim-dap-virtual-text').setup({})
 
 -- {{{ helpers
 -- get handles of output windows
-local function get_output_windows(session, activate_last)
+local function activate_output_window(session)
     local target_handle = nil
     local target_regex = nil
 
+    -- NOTE(vir): manually update this when new adapters are added
     if session.config.type == 'pwa-node' then
         target_regex = vim.regex('\\v^.*/.*dap-repl.*$')
         dap.repl.open()
@@ -184,7 +184,7 @@ local function get_output_windows(session, activate_last)
     end
 
     -- make last output buffer active, if visible
-    if activate_last and target_handle then
+    if target_handle then
         vim.api.nvim_buf_set_option(target_handle, 'bufhidden', 'delete')
         utils.map('n', '<c-o>', function()
             vim.cmd [[
@@ -241,20 +241,15 @@ local function setup_maps()
     -- hard terminate: remove keymaps, close dapui, close dap repl, close dap,
     -- delete output buffers, close internal_servers
     utils.map('n', '<m-q>', function()
+        local session = dap.session()
+
         remove_maps()
         dapui.close()
         dap.repl.close()
-
-        -- close session tab
-        vim.cmd('silent! tabclose ' .. dap.session().session_target_tab)
         dap.close()
 
-        close_internal_servers() -- close servers launched within neovim
-
-        -- close output windows
-        core.foreach(get_output_windows(), function(_, handle)
-            vim.api.nvim_buf_delete(handle, { force = true })
-        end)
+        close_internal_servers()
+        activate_output_window(session)
     end)
 
     utils.map('n', '<f4>', dapui.toggle)
@@ -286,8 +281,8 @@ local function terminate_session(session, _)
     dapui.close()
     dap.repl.close()
 
-    close_internal_servers() -- close servers launched within neovim
-    get_output_windows(session, true) -- set last output window active
+    close_internal_servers()
+    activate_output_window(session)
 
     utils.notify(string.format('[prog] %s', session.config.program),
         'debug', { title = '[dap] session terminated', timeout = 500 }, true)

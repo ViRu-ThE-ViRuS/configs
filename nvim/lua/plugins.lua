@@ -67,6 +67,7 @@ return require('packer').startup({
             config = 'require("plug-config/treesitter")'
         }
 
+
         use {
             'hrsh7th/nvim-cmp',
             requires = {
@@ -85,14 +86,20 @@ return require('packer').startup({
         }
 
         use {
+            'williamboman/mason.nvim',
+            requires = {
+                { 'williamboman/mason-lspconfig.nvim', module = 'mason-lspconfig' },
+                { 'jayp0521/mason-null-ls.nvim', module = 'mason-null-ls' },
+                { 'jay-babu/mason-nvim-dap.nvim', module = 'mason-nvim-dap' }
+            },
+            module = 'mason',
+        }
+
+        use {
             'neovim/nvim-lspconfig',
             requires = {
                 { 'jose-elias-alvarez/null-ls.nvim', module = 'null-ls' },
                 { 'ray-x/lsp_signature.nvim', module = 'lsp_signature' },
-
-                { 'williamboman/mason.nvim', module = 'mason' },
-                { 'williamboman/mason-lspconfig.nvim', module = 'mason-lspconfig' },
-                { 'jayp0521/mason-null-ls.nvim', module = 'mason-null-ls' },
             },
             event = 'BufReadPost',
             config = 'require("lsp")'

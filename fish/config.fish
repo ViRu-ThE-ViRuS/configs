@@ -79,10 +79,6 @@ function tree --description 'tree'
     command tree -C -I 'node_modules|venv|.git|__pycache__' $argv
 end
 
-function codelldb --description 'launch codelldb with custom config'
-    ~/.local/codelldb/adapter/codelldb --port 13000
-end
-
 function python --description 'launch python'
     # if test -e "$VIRTUAL_ENV"
     #    command python3 $argv

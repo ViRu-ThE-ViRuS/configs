@@ -27,27 +27,23 @@ some of the "big" things i decided to implement on my own:
 - terminal api (send commands, toggle, run last, notifications, +more)
 - functionality like `OpenInGithub`, open file in `Finder`, toggle buffer maximize +more
 - project local settings and commands
-- custom dap configurations to control servers, ui, keymaps +more
+- elaborate fully managed dap ui/ux setup
 
 i recommend using `neovim HEAD` (or at least 0.8+) to keep up with latest
 changes.
 
-**TO Reproduce**:
+**To Reproduce**:
 
 - run `update_config.sh` (might require sudo access), to copy over config files
 - run `nvim +Ps`, to install plugins
 - restart neovim
 
-**NOTE:** you may run into some subsequent errors due to missing programs. the
-error messages should suggest whats missing and also refer to `:checkhealth`.
+**NOTE:** i recommend using `checkhealth` to make sure everything is setup and
+ready to go.j
 
 ##### External Dependencies
 
-for dap setup to work, you will need to install adapters manually:
-
-- **python**: debugpy
-- **c/c++/rust**: codelldb (@`${HOME}/.local/codelldb/`)
-- **js/ts/react**: vscode-js-debug (@`${HOME}/.local/lsp/lua-language-server/`)
+- `cppcheck`
 
 ##### Project Setup
 
