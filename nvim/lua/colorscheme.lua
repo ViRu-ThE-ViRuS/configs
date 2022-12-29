@@ -168,9 +168,9 @@ end
 -- }}}
 
 vim.opt.termguicolors = true
-vim.opt.background = "dark"
+vim.opt.background = "light"
 
-vim.cmd.colorscheme('catppuccin-macchiato')
+vim.cmd.colorscheme('vscode')
 ui_overrides()
 
 return {

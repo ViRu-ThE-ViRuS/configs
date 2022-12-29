@@ -208,7 +208,7 @@ end
 local function close_internal_servers()
     local buffers = vim.api.nvim_list_bufs()
 
-    core.foreach(internal_servers, function(title)
+    core.foreach(internal_servers, function(_, title)
         for _, handle in ipairs(buffers) do
             if vim.api.nvim_buf_get_name(handle):match('^.*/' .. title) then
                 vim.api.nvim_buf_delete(handle, { force = true })
@@ -250,7 +250,7 @@ local function setup_maps()
         close_internal_servers() -- close servers launched within neovim
 
         -- close output windows
-        core.foreach(get_output_windows(), function(handle)
+        core.foreach(get_output_windows(), function(_, handle)
             vim.api.nvim_buf_delete(handle, { force = true })
         end)
     end)

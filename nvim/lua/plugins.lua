@@ -108,6 +108,7 @@ return require('packer').startup({
         use { 'ibhagwan/fzf-lua', after = 'nvim-web-devicons', config = 'require("plug-config/fzf")' }
         use { 'sindrets/diffview.nvim', after = 'vim-fugitive', config = 'require("plug-config/diffview")' }
         use { 'windwp/nvim-autopairs', after = 'nvim-cmp', config = 'require("plug-config/autopairs")' }
+        use { 'folke/persistence.nvim', event = 'VimEnter', module = 'persistence', config = 'require("plug-config/persistence")'}
 
         -- colorschemes
         use 'bluz71/vim-nightfly-guicolors'

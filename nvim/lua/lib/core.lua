@@ -1,9 +1,18 @@
--- apply f to all elements in table
+-- create table (key, value) -> (key, f(key, value))
 local function foreach(tbl, f)
     if not tbl then return {} end
 
     local t = {}
-    for key, value in pairs(tbl) do t[key] = f(value) end
+    for key, value in pairs(tbl) do t[key] = f(key, value) end
+    return t
+end
+
+-- create table (_, value) -> (_, f(key, value))
+local function apply(tbl, f)
+    if not tbl then return {} end
+
+    local t = {}
+    for _, value in pairs(tbl) do table.insert(t, f(value)) end
     return t
 end
 
@@ -104,6 +113,7 @@ end
 
 return {
     foreach = foreach,
+    apply = apply,
     filter = filter,
     list_concat = list_concat,
     table_contains = table_contains,

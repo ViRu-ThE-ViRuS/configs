@@ -94,7 +94,7 @@ end
 -- set qflist and open
 local function qf_populate(lines, mode, title, scroll_to_end)
 	if mode == nil or type(mode) == "table" then
-		lines = core.foreach(lines, function(item) return { filename = item, lnum = 1, col = 1, text = item } end)
+		lines = core.foreach(lines, function(_, item) return { filename = item, lnum = 1, col = 1, text = item } end)
 		mode = "r"
 	end
 

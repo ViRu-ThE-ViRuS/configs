@@ -6,7 +6,7 @@ vim.opt_local.shiftwidth = 4
 vim.opt_local.tabstop = 4
 vim.opt_local.softtabstop = 4
 
--- repl
+-- repl state
 local repl_session = {
     job_id = nil,
     bufnr = nil
@@ -53,6 +53,7 @@ local function get_current_cell()
     local parser = vim.treesitter.get_parser(bufnr, "python", {})
     local tree = parser:parse()[1]
 
+    -- get all markers
     local markers = {}
     for id, node in cell_markers:iter_captures(tree:root(), bufnr, 0, -1) do
         if cell_markers.captures[id] == 'cmt' then
@@ -60,6 +61,7 @@ local function get_current_cell()
         end
     end
 
+    -- calculate all cell ranges
     local cells = {}
     for index, range in ipairs(markers) do
         if index ~= 1 then
@@ -70,6 +72,7 @@ local function get_current_cell()
     local last_line = vim.api.nvim_buf_line_count(bufnr)
     table.insert(cells, { markers[#markers][1] + 1, last_line })
 
+    -- get contents from relevant cell
     local line = vim.api.nvim_win_get_cursor(0)[1]
     local payload = nil
     for _, range in ipairs(cells) do
@@ -92,7 +95,8 @@ utils.map("n", "<leader>cc", function()
     local payload = get_current_cell()
     if not payload then return end
 
-    -- use clipboard-paste mechanism to handle empty lines properly
+    -- NOTE(vir): using clipboard mechanism to handle empty lines
+    -- put payload into cliboard register, and paste in repl
     vim.fn.setreg('+', payload, "c")
     terminal.send_to_target('%paste')
 end, { buffer = 0 })

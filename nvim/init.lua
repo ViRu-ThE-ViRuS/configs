@@ -5,10 +5,10 @@ require("impatient")
 
 require("settings")
 require("colorscheme")
+require("plugins")
 
 -- deferred execution makes the editor feel more responsive
 vim.defer_fn(function()
-    require("plugins")
 	require("keymaps")
     require("commands")
 

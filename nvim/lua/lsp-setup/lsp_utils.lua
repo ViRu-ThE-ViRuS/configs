@@ -215,7 +215,7 @@ local function get_context_winbar(bufnr, colors)
 
     local filename = (utils.is_htruncated(truncation.truncation_limit, true) and ' [ %t ] ') or ' [ %f ] '
     local context = get_context(bufnr, function(context_tbl)
-        local context = core.foreach(context_tbl, function(arg)
+        local context = core.foreach(context_tbl, function(_, arg)
             return arg.iconhl .. arg.icon .. ' ' .. colors.background .. arg.name
         end) or {}
 

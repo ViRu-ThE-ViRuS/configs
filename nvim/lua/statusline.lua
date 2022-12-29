@@ -117,7 +117,7 @@ local function get_statusline_context(bufnr)
             context[#context].name
         )
     else
-        local context = core.foreach(tag_state.context[bufnr], function(arg)
+        local context = core.foreach(tag_state.context[bufnr], function(_, arg)
             return arg.iconhl .. arg.icon .. ' ' .. colors.context .. arg.name
         end) or {}
 
