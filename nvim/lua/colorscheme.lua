@@ -170,7 +170,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "light"
 
-vim.cmd.colorscheme('vscode')
+if not pcall(vim.cmd.colorscheme, 'vscode') then vim.cmd.colorscheme('default') end
 ui_overrides()
 
 return {

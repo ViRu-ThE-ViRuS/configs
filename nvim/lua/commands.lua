@@ -87,9 +87,9 @@ vim.defer_fn(function()
 
     -- custom commands
     utils.add_command("Commands", function()
-        vim.ui.select(utils.workspace_config.commands.keys, { prompt = "command> " }, function(key)
-            utils.workspace_config.commands.callbacks[key]()
-        end)
+        local keys = core.apply(utils.workspace_config.commands, function(key, _) return key end)
+        table.sort(keys, function(a, b) return a > b end)
+        vim.ui.select(keys, { prompt = "Commands> " }, function(key) utils.workspace_config.commands[key]() end)
     end, {
         bang = false,
         nargs = 0,
@@ -179,10 +179,10 @@ vim.defer_fn(function()
     end, nil, true)
 
     -- toggles
-    utils.add_command('Toggle Context WinBar', misc.toggle_context_winbar, nil, true)
-    utils.add_command('Toggle Thicc Seperators', misc.toggle_thicc_separators, nil, true)
-    utils.add_command('Toggle Spellings', misc.toggle_spellings, nil, true)
-    utils.add_command('Toggle Night Mode', misc.toggle_night_mode, nil, true)
-    utils.add_command('Toggle CWord Highlights', 'if CWordHlToggle() | set hlsearch | endif', nil, true)
+    utils.add_command('[UI] Toggle Context WinBar', misc.toggle_context_winbar, nil, true)
+    utils.add_command('[UI] Toggle Thicc Seperators', misc.toggle_thicc_separators, nil, true)
+    utils.add_command('[UI] Toggle Spellings', misc.toggle_spellings, nil, true)
+    utils.add_command('[UI] Toggle Night Mode', misc.toggle_night_mode, nil, true)
+    utils.add_command('[UI] Toggle CWord Highlights', 'if CWordHlToggle() | set hlsearch | endif', nil, true)
 end, 0)
 

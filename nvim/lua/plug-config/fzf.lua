@@ -11,7 +11,7 @@ local actions = fzf.actions
 -- this works because lsp is loaded on BufEnter event
 -- fzf-lua is loaded VimEnter event
 
-local default_rg_options = ' --hidden --follow --no-heading --smart-case --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build,*.dSYM,tags,node_modules,Pods}"'
+local default_rg_options = ' --hidden --follow --no-heading --smart-case --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build,*.dSYM,tags,node_modules,Pods,sessions}"'
 
 -- fzf.deregister_ui_select()
 if vim.ui.select ~= require('fzf-lua.providers.ui_select').ui_select then

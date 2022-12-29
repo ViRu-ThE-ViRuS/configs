@@ -12,7 +12,7 @@ local function apply(tbl, f)
     if not tbl then return {} end
 
     local t = {}
-    for _, value in pairs(tbl) do table.insert(t, f(value)) end
+    for key, value in pairs(tbl) do table.insert(t, f(key, value)) end
     return t
 end
 
