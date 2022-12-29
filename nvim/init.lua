@@ -3,25 +3,23 @@
 -- NOTE(vir): impatient.nvim
 require("impatient")
 
-require("settings")
-require("colorscheme")
+require("options")
+require("ui")
 require("plugins")
 
--- deferred execution makes the editor feel more responsive
-vim.defer_fn(function()
-	require("keymaps")
-    require("commands")
+-- load these after everything else is setup
+vim.api.nvim_create_autocmd("User", {
+    pattern = "VeryLazy",
+    callback = function()
+        require("keymaps")
+        require("commands")
 
-	-- NOTE(vir): load project local config last
-	require("project_config").load()
-end, 0)
+        -- NOTE(vir): load project local config last
+        require("project_config").load()
+    end
+})
 
--- notes --
--- so $VIMRUNTIME/syntax/hitest.vim : see colors
---
--- project setup:
---  .clang-format       : clang-format config
---  .clang-tidy         : clang-tidy config
---  .flake8             : autopep8 config
---  pyrightconfig.json  : pyright config
+-- NOTE(vir): tips
+--  ins mode: <c-v>                            : to get key code
+--  cmd mode: so $VIMRUNTIME/syntax/hitest.vim : to see colors
 

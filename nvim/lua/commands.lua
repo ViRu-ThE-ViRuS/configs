@@ -4,7 +4,6 @@ local colorscheme = require('colorscheme')
 local utils = require('utils')
 local plenary = require('plenary')
 
--- ui setup
 vim.api.nvim_create_augroup('UISetup', {clear = true})
 vim.api.nvim_create_autocmd('ColorScheme', {
     group = 'UISetup',
@@ -32,6 +31,7 @@ vim.defer_fn(function()
     vim.api.nvim_create_augroup('TerminalSetup', {clear = true})
     vim.api.nvim_create_autocmd('TermOpen', {
         group = 'TerminalSetup',
+        pattern = '*',
         callback = function()
             vim.opt_local.filetype = 'terminal'
             vim.opt_local.number = false
@@ -55,7 +55,7 @@ vim.defer_fn(function()
 
             local to_reload = core.foreach(
                 vim.split(vim.fn.globpath(rc_path, '**/**.lua'), "\n"),
-                function(_, full_path)
+                function(full_path)
                     local path_obj = plenary.Path.new(full_path)
                     local rel_path = vim.fn.fnamemodify(path_obj:make_relative(lua_path), ':r')
 
@@ -75,7 +75,7 @@ vim.defer_fn(function()
             vim.lsp.stop_client(vim.lsp.get_active_clients(), false)
 
             -- reload modules
-            core.foreach(to_reload, function(_, mod) require(mod) end)
+            core.foreach(to_reload, require)
 
             -- NOTE(vir): special cases, only reload if modified
             if src_file == 'init.lua' then vim.cmd [[ source $MYVIMRC ]]  end

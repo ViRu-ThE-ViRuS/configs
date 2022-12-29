@@ -7,5 +7,7 @@ require("lsp-setup/init")
 -- setup handlers and extensions
 require("lsp-setup/handlers")
 
--- setup diagnostic
+-- setup diagnostics
+-- NOTE(vir): reset diagnostics before loading/reloading
 require('diagnostic')
+

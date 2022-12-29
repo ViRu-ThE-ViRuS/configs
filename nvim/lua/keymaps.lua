@@ -135,6 +135,3 @@ utils.map("v", "<leader>cv", '<esc><cmd>lua require("terminal").run_selection(tr
 -- commands
 utils.map('n', '<c-cr>', vim.cmd.Commands)
 
--- NOTE(vir): tricks
---  ins mode: <c-v> to get key code
-

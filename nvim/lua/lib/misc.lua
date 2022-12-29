@@ -101,14 +101,14 @@ end
 local function toggle_context_winbar()
     local callback = nil
     if ui_state.context_winbar then
-        callback = function(_, bufnr)
+        callback = function(bufnr)
             vim.api.nvim_buf_call(
                 bufnr,
                 function() vim.opt_local.winbar = nil end
             )
         end
     else
-        callback = function(_, bufnr)
+        callback = function(bufnr)
             vim.api.nvim_buf_call(
                 bufnr,
                 function() vim.opt_local.winbar = "%!luaeval(\"require('lsp-setup/lsp_utils').get_context_winbar(" .. bufnr .. ")\")" end
