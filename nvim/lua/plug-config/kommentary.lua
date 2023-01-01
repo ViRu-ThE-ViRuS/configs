@@ -32,4 +32,3 @@ return {
         utils.map('n', 'gc', "<cmd>normal mCgvgc'C<cr>")
     end
 }
-
