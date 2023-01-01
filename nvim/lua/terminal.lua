@@ -140,15 +140,16 @@ local function launch_terminal(command, background, callback)
 end
 
 return {
-    -- run-config and setup
+    -- run-config api
     toggle_target = toggle_target,
     send_to_target = send_to_target,
     set_target = set_target,
 
+    -- target_terminal api
     run_target_command = run_target_command,
     run_previous_command = run_previous_command,
     run_selection = run_selection,
 
     -- general
-    launch_terminal = launch_terminal,
+    launch_terminal = launch_terminal
 }

@@ -39,10 +39,10 @@ utils.map("v", "&", ":&&<cr>")                                  -- visual execut
 utils.map("v", ".", ":normal! .<cr>")                           -- visual execute .
 utils.map("v", "@", ":normal! @")                               -- visual execute macro
 utils.map("n", "ss", "s")                                       -- substitute mode
-utils.map("v", "ss", ":s/")                                     -- substitute in visual
-utils.map("v", "s/", ":s/\\<<C-r><C-w>\\>/")                    -- substitute cword in selection
-utils.map('v', '//', [[y/\V<c-r>=escape(@",'/\')<cr><cr>]])     -- search for selection
-utils.map('v', '<m-/>', '<esc>/\\%V')                           -- search within selection
+utils.map("x", "ss", ":s/\\%V")                                 -- substitute in visual
+utils.map("x", "s/", ":s/\\<<C-r><C-w>\\>/")                    -- substitute cword in selection
+utils.map('x', '//', [[y/\V<c-r>=escape(@",'/\')<cr><cr>]])     -- search for selection
+utils.map('x', '<m-/>', '<esc>/\\%V')                           -- search within selection
 -- utils.map('x', '/', '<esc>/\\%V')                               -- search within selection
 
 -- command edit modes

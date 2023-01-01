@@ -25,7 +25,7 @@ return require('packer').startup({
             cmd = { 'G', 'Gread', 'GcLog' },
             setup = function()
                 require('utils').map("n", "<leader>gD", function() vim.cmd.G({ bang = true, args = { 'difftool' } }) end)
-            end,
+            end
         }
         use {
             'liuchengxu/vista.vim',
@@ -45,7 +45,7 @@ return require('packer').startup({
             module = 'bufdelete',
             setup = function()
                 require('utils').map("n", "<leader>q", function() require('bufdelete').bufdelete(0, true) end)
-            end,
+            end
         }
 
         use {
@@ -92,7 +92,7 @@ return require('packer').startup({
                 { 'jayp0521/mason-null-ls.nvim', module = 'mason-null-ls' },
                 { 'jay-babu/mason-nvim-dap.nvim', module = 'mason-nvim-dap' }
             },
-            module = 'mason',
+            module = 'mason'
         }
 
         use {
@@ -155,3 +155,4 @@ return require('packer').startup({
     end,
     config = { display = { prompt_border = 'single' } }
 })
+

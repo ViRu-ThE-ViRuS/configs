@@ -59,6 +59,7 @@ gitsigns.setup {
 
         utils.map('v', '<leader>gr', function()
             gitsigns.reset_hunk({vim.fn.line('.'), vim.fn.line('v')})
+            vim.schedule(refresh_fugitive)
         end, {silent = true, buffer = bufnr })
 
         -- text objects

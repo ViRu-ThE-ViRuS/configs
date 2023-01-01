@@ -92,7 +92,6 @@ vim.opt.swapfile = false
 vim.opt.tabstop = 4
 vim.opt.textwidth = 79
 vim.opt.undofile = true
--- vim.opt.winbar = '%=[%f] '
 
 -- disable builtin plugins
 local disabled_plugins = {
