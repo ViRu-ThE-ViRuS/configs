@@ -101,14 +101,14 @@ end
 local function toggle_context_winbar()
     local callback = nil
     if ui_state.context_winbar then
-        callback = function(bufnr)
+        callback = function(_, bufnr)
             vim.api.nvim_buf_call(
                 bufnr,
                 function() vim.opt_local.winbar = nil end
             )
         end
     else
-        callback = function(bufnr)
+        callback = function(_, bufnr)
             vim.api.nvim_buf_call(
                 bufnr,
                 function() vim.opt_local.winbar = "%!luaeval(\"require('lsp-setup/lsp_utils').get_context_winbar(" .. bufnr .. ")\")" end
@@ -223,6 +223,7 @@ local function random_colors()
     local choices = require('colorscheme').preferred[mode]
 
     local target = choices[math.random(1, #choices)]
+    print("colorscheme:", target)
 
     if type(target) == 'function' then
         target()

@@ -68,11 +68,12 @@ end
 local function toggle_diagnostics_list(global)
     if global then
         if not diagnostics_state['global'] then
-            vim.diagnostic.setqflist({ open = false })
+            vim.diagnostic.setqflist()
             diagnostics_state['global'] = true
 
-            vim.cmd(string.format("belowright copen\n%s\nwincmd p",
-                require('statusline').set_statusline_cmd('Workspace Diagnostics')))
+            require('statusline').set_statusline_func('Workspace Diagnostics')()
+            vim.cmd [[ wincmd p ]]
+
         else
             diagnostics_state['global'] = false
             vim.cmd [[ cclose ]]
@@ -215,7 +216,7 @@ local function get_context_winbar(bufnr, colors)
 
     local filename = (utils.is_htruncated(truncation.truncation_limit, true) and ' [ %t ] ') or ' [ %f ] '
     local context = get_context(bufnr, function(context_tbl)
-        local context = core.foreach(context_tbl, function(arg)
+        local context = core.foreach(context_tbl, function(_, arg)
             return arg.iconhl .. arg.icon .. ' ' .. colors.background .. arg.name
         end) or {}
 

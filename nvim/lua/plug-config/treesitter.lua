@@ -5,7 +5,8 @@ local function setup_treesitter()
     require('nvim-treesitter.configs').setup({
         ensure_installed = {
             'lua', 'python', 'c', 'cpp', 'java', 'go', 'bash', 'fish', 'cmake',
-            'make', 'cuda', 'rust', 'vim', 'markdown', 'javascript', 'typescript', 'tsx'
+            'make', 'cuda', 'rust', 'vim', 'markdown', 'javascript', 'typescript', 'tsx',
+            "query"
         },
 
         -- NOTE(vir): nvim-yati is really good for python for now, havent noticed need for other file types yet

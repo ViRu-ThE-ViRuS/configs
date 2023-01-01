@@ -22,4 +22,3 @@ vim.api.nvim_create_autocmd("User", {
 -- NOTE(vir): tips
 --  ins mode: <c-v>                            : to get key code
 --  cmd mode: so $VIMRUNTIME/syntax/hitest.vim : to see colors
-

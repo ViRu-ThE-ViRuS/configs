@@ -8,6 +8,9 @@ local utils = require("utils")
 local function on_attach(client, bufnr)
     -- utils.notify(string.format("[lsp] %s\n[cwd] %s", client.name, vim.loop.cwd()), "info", { title = "[lsp] Active" }, true)
 
+    -- NOTE(vir): this is what causes delay
+    -- client.server_capabilities.semanticTokensProvider = nil
+
     -- NOTE(vir): lsp_signature setup
     require('lsp_signature').on_attach({ doc_lines = 3, hint_prefix = "<>", handler_opts = { border = 'rounded' } }, bufnr)
 
@@ -129,3 +132,4 @@ null_ls.setup({
     flags = {debounce_text_changes = 150}
 })
 -- }}}
+

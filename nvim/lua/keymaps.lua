@@ -39,10 +39,11 @@ utils.map("v", "&", ":&&<cr>")                                  -- visual execut
 utils.map("v", ".", ":normal! .<cr>")                           -- visual execute .
 utils.map("v", "@", ":normal! @")                               -- visual execute macro
 utils.map("n", "ss", "s")                                       -- substitute mode
-utils.map("v", "ss", ":s/")                                     -- substitute in visual
-utils.map("v", "s/", ":s/\\<<C-r><C-w>\\>/")                    -- substitute cword in selection
-utils.map('v', '//', [[y/\V<c-r>=escape(@",'/\')<cr><cr>]])     -- search for selection
-utils.map('v', '<m-/>', '<esc>/\\%V')                           -- search within selection
+utils.map("x", "ss", ":s/\\%V")                                 -- substitute in visual
+utils.map("x", "s/", ":s/\\<<C-r><C-w>\\>/")                    -- substitute cword in selection
+utils.map('x', '//', [[y/\V<c-r>=escape(@",'/\')<cr><cr>]])     -- search for selection
+utils.map('x', '<m-/>', '<esc>/\\%V')                           -- search within selection
+-- utils.map('x', '/', '<esc>/\\%V')                               -- search within selection
 
 -- command edit modes
 -- utils.map({"n", "v"}, "q:", "<nop>")
@@ -84,9 +85,9 @@ utils.map({"n", "i"}, "<left>", "<nop>")
 utils.map({"n", "i"}, "<right>", "<nop>")
 
 -- toggles
-utils.map("n", "<leader>1", misc.toggle_window)
-utils.map("n", "<leader>2", misc.random_colors, {silent = false})
-utils.map("n", "<leader>3", misc.toggle_global_statusline)
+utils.map("n", "<leader>1", misc.toggle_window, { desc = 'toggle maximize current window'})
+utils.map("n", "<leader>2", misc.random_colors, { desc = 'set a random preferred colorscheme' })
+utils.map("n", "<leader>3", misc.toggle_global_statusline, { desc = 'toggle global statusline' })
 -- utils.map("n", "<leader>t1", "<cmd>if CWordHlToggle() | set hlsearch | endif<cr>")
 -- utils.map("n", "<leader>t2", misc.toggle_thicc_separators)
 -- utils.map("n", "<leader>t3", misc.toggle_spellings)
@@ -134,4 +135,7 @@ utils.map("v", "<leader>cv", '<esc><cmd>lua require("terminal").run_selection(tr
 
 -- commands
 utils.map('n', '<c-cr>', vim.cmd.Commands)
+
+-- NOTE(vir): tricks
+--  ins mode: <c-v> to get key code
 

@@ -27,33 +27,23 @@ some of the "big" things i decided to implement on my own:
 - terminal api (send commands, toggle, run last, notifications, +more)
 - functionality like `OpenInGithub`, open file in `Finder`, toggle buffer maximize +more
 - project local settings and commands
-- a lua utility library
-- custom dap configurations to control servers, ui, keymaps +more
+- elaborate fully managed dap ui/ux setup
 
-i recommend using `neovim HEAD` (or at least 0.8+) to keep up with latest
+**NOTE:** i recommend using `neovim HEAD` (or at least 0.8+) to keep up with latest
 changes.
 
-**NOTE**: this config can be a little difficult to bootstrap because of all the
-weird lazy loading optimizations i have made, for example the colorscheme is
-not downloaded on first open, so i recommend after cloning the repo and running
-the `update_config.sh` script, directly open the `lua/plugins.lua` file, ignore
-errors and source it with `:luafile %`. most issues should be fixed after this step.
+**To Reproduce**:
+
+- run `update_config.sh` (might require sudo access), to copy over config files
+- run `nvim +Ps`, to install plugins
+- restart neovim
+
+**NOTE:** i recommend using `checkhealth` to make sure everything is setup and
+ready to go
 
 ##### External Dependencies
 
-you will need to install lsp(s) manually:
-
-- **lua**: sumneko-lua
-- **python**: pyright
-- **c/c++/rust**: clangd, clang-format, clang-tidy, cppcheck
-- **js/ts/react**: tsserver
-- **general**: null-ls (autopep8, prettier), universal-ctags, fzf, rg
-
-for dap setup to work, you will need to install adapters manually:
-
-- **python**: debugpy
-- **c/c++/rust**: codelldb (@`${HOME}/.local/codelldb/`)
-- **js/ts/react**: vscode-js-debug (@`${HOME}/.local/lsp/lua-language-server/`)
+- `cppcheck`
 
 ##### Project Setup
 
@@ -63,10 +53,10 @@ for dap setup to work, you will need to install adapters manually:
 - **pyrightconfig.json**: pyright config
 - **.nvimrc.lua**: project local settings
 
-### Reproduce
+### Scripts
 
-- run `source update_config.sh` to update local config
-- run `source update_repo.sh` to update the repo with latest local config
+- `source update_config.sh` to update local config
+- `source update_repo.sh` to update the repo with latest local config
 
 ### Notes
 
@@ -74,4 +64,3 @@ for dap setup to work, you will need to install adapters manually:
 - **brew**: packages in `brew_output.txt` & `brew_cask_output.txt`
 - **kitty**: setup fonts according to `kitty/kitty.conf`
 - **nvim**: use `LuaCacheClear` from impatient.nvim, if startup seems weirdly slow
-- **colors**: see `so $VIMRUNTIME/syntax/hitest.vim`

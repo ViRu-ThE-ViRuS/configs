@@ -60,10 +60,7 @@ local workspace_config = {
     },
 
     -- registered custom commands
-    commands = {
-        keys = { },
-        callbacks = { }
-    },
+    commands = {},
 
     -- debug print setup
     debug_print_postfix = '__DEBUG_PRINT__',
@@ -78,27 +75,27 @@ local workspace_config = {
 
 -- setup keymaps
 local function map(mode, lhs, rhs, opts)
-	local options = { noremap = true }
-	if opts then options = vim.tbl_extend("force", options, opts) end
-	vim.keymap.set(mode, lhs, rhs, options)
+    local options = { noremap = true }
+    if opts then options = vim.tbl_extend("force", options, opts) end
+    vim.keymap.set(mode, lhs, rhs, options)
 end
 
 -- remove keymaps
 local function unmap(mode, lhs, options)
-	options = options or {}
+    options = options or {}
 
-	-- vim.keymap.del(mode, lhs, options)
-	pcall(vim.keymap.del, mode, lhs, options)
+    -- vim.keymap.del(mode, lhs, options)
+    pcall(vim.keymap.del, mode, lhs, options)
 end
 
 -- set qflist and open
 local function qf_populate(lines, mode, title, scroll_to_end)
-	if mode == nil or type(mode) == "table" then
-		lines = core.foreach(lines, function(item) return { filename = item, lnum = 1, col = 1, text = item } end)
-		mode = "r"
-	end
+    if mode == nil or type(mode) == "table" then
+        lines = core.foreach(lines, function(_, item) return { filename = item, lnum = 1, col = 1, text = item } end)
+        mode = "r"
+    end
 
-	vim.fn.setqflist(lines, mode)
+    vim.fn.setqflist(lines, mode)
 
     local commands = {
         'belowright copen',
@@ -112,28 +109,30 @@ end
 
 -- notify using current notifications setup
 local function notify(content, type, opts, force)
-	if force then
-		-- if packer_plugins['nvim-notify'].loaded then
-		--     require('notify')(content, type, opts)
-		-- end
+    if force then
+        -- if packer_plugins['nvim-notify'].loaded then
+        --     require('notify')(content, type, opts)
+        -- end
 
-		require("notify")(content, type, opts)
-		return
-	end
+        require("notify")(content, type, opts)
+        return
+    end
 
-	vim.notify(content, type, opts)
+    vim.notify(content, type, opts)
 end
 
 -- is buffer horizontally truncated
 local function is_htruncated(width, global)
-    local current_width = (global and vim.api.nvim_get_option_value('columns', { scope = 'global'})) or vim.api.nvim_win_get_width(0)
-	return current_width <= width
+    local current_width = (global and vim.api.nvim_get_option_value('columns', { scope = 'global' })) or
+        vim.api.nvim_win_get_width(0)
+    return current_width <= width
 end
 
 -- is buffer vertical truncated
 local function is_vtruncated(height, global)
-	local current_height = (global and vim.api.nvim_get_option_value('lines', { scope = 'global' })) or vim.api.nvim_win_get_height(0)
-	return current_height <= height
+    local current_height = (global and vim.api.nvim_get_option_value('lines', { scope = 'global' })) or
+        vim.api.nvim_win_get_height(0)
+    return current_height <= height
 end
 
 -- add custom command
@@ -141,6 +140,7 @@ local function add_command(key, callback, cmd_opts, also_custom)
     -- opts defined, create user command
     if cmd_opts and next(cmd_opts) then
         vim.api.nvim_create_user_command(key, callback, cmd_opts)
+        key = '[CMD] ' .. key
     end
 
     -- create custom command
@@ -148,21 +148,19 @@ local function add_command(key, callback, cmd_opts, also_custom)
 
         -- assert opts not defined, or 0 args
         assert((not cmd_opts) or (not cmd_opts.nargs) or cmd_opts.nargs == 0)
-        if workspace_config.commands.callbacks[key] == nil then table.insert(workspace_config.commands.keys, key) end
-
-        if type(callback) == 'function' then workspace_config.commands.callbacks[key] = callback
-        else workspace_config.commands.callbacks[key] = function() vim.api.nvim_command(callback) end end
+        callback = (type(callback) == 'function' and callback) or function() vim.api.nvim_command(callback) end
+        workspace_config.commands[key] = callback
     end
 end
 
 return {
     -- utils
-	map = map,
-	unmap = unmap,
-	qf_populate = qf_populate,
-	notify = notify,
-	is_htruncated = is_htruncated,
-	is_vtruncated = is_vtruncated,
+    map = map,
+    unmap = unmap,
+    qf_populate = qf_populate,
+    notify = notify,
+    is_htruncated = is_htruncated,
+    is_vtruncated = is_vtruncated,
     add_command = add_command,
 
     -- config and states

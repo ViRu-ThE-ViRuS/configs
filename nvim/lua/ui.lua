@@ -129,7 +129,6 @@ local function ui_overrides()
     vim.opt.hlsearch = false
     vim.opt.guicursor = 'n-v-c-sm:block-Cursor,i-ci-ve:ver25-Cursor,r-cr-o:hor20-Cursor'
 
-    -- TODO(vir): do this in lua
     -- NOTE(vir): some colorschemes aint pretty with gitsigns
     -- GitSign* highlights link to Diff* highlights for some reason despite
     -- configuring them not to. Consider linking these only when in git repos?
@@ -162,16 +161,17 @@ local function ui_overrides()
         highlight! link NormalFloat Normal
     ]]
 
-    -- load statusline and setup highlights
+    -- set statusline highlights
     require('statusline').setup_highlights()
 end
-
 -- }}}
 
 vim.opt.termguicolors = true
-vim.opt.background = "dark"
+vim.opt.background = 'dark'
+local colorscheme = 'gruvbox'
 
-vim.cmd.colorscheme('catppuccin')
+-- load default colorscheme if chosen one is not available
+if not pcall(vim.cmd.colorscheme, colorscheme) then vim.cmd.colorscheme('default') end
 ui_overrides()
 
 return {
@@ -204,10 +204,11 @@ return {
             "default",
         },
 
-        -- NOTE(vir): Yes, sometimes, i like light themes, they
-        -- remind me of the pain that exists in the world :o
+        -- NOTE(vir): Yes, sometimes, i use light themes,
+        -- they remind me of the pain that exists in the world :o
         light = {
             "dawnfox",
+            "gruvbox-material",
             "gruvbox",
             "adwaita",
             "everforest",
@@ -221,3 +222,4 @@ return {
     },
     ui_overrides = ui_overrides,
 }
+
