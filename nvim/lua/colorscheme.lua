@@ -118,16 +118,13 @@ vim.g.material_style = "darker"
 -- {{{ overrides
 -- setup colorscheme overrides
 local function ui_overrides()
-    -- vim.highlight.create('Comment', { cterm = 'bold,italic', gui = 'bold,italic' }, false)
-    -- vim.highlight.create('LineNr', { cterm = 'NONE', gui = 'NONE' }, false)
-
-    -- set normal if not set to trasparent
+    -- set normal to a default if not already set
     if vim.api.nvim_get_hl_by_name("Normal", true).background == nil then
         vim.api.nvim_set_hl(0, "Normal", { background = 0x171717 })
     end
 
-    vim.opt.hlsearch = false
     vim.opt.guicursor = 'n-v-c-sm:block-Cursor,i-ci-ve:ver25-Cursor,r-cr-o:hor20-Cursor'
+    vim.opt.hlsearch = false
 
     -- NOTE(vir): some colorschemes aint pretty with gitsigns
     -- GitSign* highlights link to Diff* highlights for some reason despite
@@ -137,6 +134,10 @@ local function ui_overrides()
         highlight! link LspReferenceRead IncSearch
         highlight! link LspReferenceWrite IncSearch
         highlight! clear LspReferenceText
+
+        " make comments bold, italic
+        highlight! Comment gui=bold,italic
+        highlight! link @comment Comment
 
         " diagnostics
         highlight! DiagnosticError guibg=NONE
