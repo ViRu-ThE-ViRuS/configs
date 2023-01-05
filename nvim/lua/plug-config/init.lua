@@ -12,13 +12,6 @@ return {
     },
 
     {
-        'neovim/nvim-lspconfig',
-        dependencies = { 'jose-elias-alvarez/null-ls.nvim', 'ray-x/lsp_signature.nvim' },
-        event = 'BufReadPost',
-        config = function() require("lsp") end,
-    },
-
-    {
         'tpope/vim-fugitive',
         cmd = { 'G', 'Gread', 'GcLog' },
         init = function() utils.map("n", "<leader>gD", function() vim.cmd.G({ bang = true, args = { 'difftool' } }) end) end,

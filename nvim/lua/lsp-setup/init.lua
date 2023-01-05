@@ -48,9 +48,7 @@ lsp["clangd"].setup {
     capabilities = capabilities,
     cmd = {
         "clangd",
-        "--index",
         "--background-index",
-        "--suggest-missing-includes",
         "--clang-tidy",
         "--header-insertion=iwyu",
         "--completion-style=detailed",

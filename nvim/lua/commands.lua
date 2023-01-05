@@ -62,7 +62,10 @@ vim.defer_fn(function()
                     -- NOTE(vir): skip files
                     --  1. not already loaded
                     --  2. lazy.nvim config cannot be reloaded
+                    --  3. lazy.nvim plugin specs cannot be reloaded
                     if not core.table_contains(package.loaded, rel_path) then return end
+                    if string.find(rel_path, 'plugins') then return end
+                    if string.find(rel_path, 'plug-config/') then return end
 
                     -- unload mod
                     package.loaded[rel_path] = nil
@@ -78,7 +81,6 @@ vim.defer_fn(function()
 
             -- NOTE(vir): special cases, only reload if modified
             if src_file == 'init.lua' then vim.cmd [[ source $MYVIMRC ]]  end
-
             utils.notify('[CONFIG] reloaded', 'info', {render='minimal'}, true)
         end
     })

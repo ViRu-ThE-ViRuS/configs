@@ -1,5 +1,3 @@
-local utils = require('utils')
-
 -- bootstrap lazy
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -14,7 +12,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-utils.add_command('Lz', 'Lazy', { bang = true, nargs = 0, desc = 'Lazy' })
+require('utils').add_command('Lz', 'Lazy', { bang = true, nargs = 0, desc = 'Lazy' })
 require('lazy').setup('plug-config', {
     defaults = { lazy = true },
     performance = {
