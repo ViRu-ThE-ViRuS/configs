@@ -1,8 +1,9 @@
+local function open_in_finder(handle) require('lib/core').lua_system("open -R " .. handle.absolute_path) end
+
 return {
     'kyazdani42/nvim-tree.lua',
     cmd = 'NvimTreeToggle',
     init = function() require('utils').map('n', '<leader>j', '<cmd>NvimTreeToggle<cr>') end,
-
     config = {
         update_focused_file = { enable = true, update_cwd = false },
         diagnostics = { enable = false },
@@ -34,12 +35,8 @@ return {
                     { key = "<leader>n", action = "create" },
                     { key = "<leader>d", action = "remove" },
                     { key = "<leader>r", action = "rename" },
+                    { key = "OO", action = "open_in_finder", action_cb = open_in_finder },
                     { key = "<leader>Q", action = "<nop>" },
-                    {
-                        key = "OO",
-                        action = "open_in_finder",
-                        action_cb = function(handle) require("lib/core").lua_system("open -R " .. handle.absolute_path) end,
-                    },
                 }
             }
         },
@@ -83,3 +80,4 @@ return {
         }
     }
 }
+

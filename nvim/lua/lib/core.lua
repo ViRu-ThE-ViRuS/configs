@@ -54,13 +54,23 @@ local function list_concat(A, B)
 end
 
 -- return index if table contains given value
-local function table_contains(table, target_value)
-    for key, value in pairs(table) do
+local function table_contains(tbl, target_value)
+    for key, value in pairs(tbl) do
         if value == target_value then return key end
         if key == target_value then return value end
     end
 
     return nil
+end
+
+-- return table of keys
+local function table_keys(tbl)
+    local keys = {}
+    for key, _ in pairs(tbl) do
+        table.insert(keys, key)
+    end
+
+    return keys
 end
 
 -- run shell command and get output lines as lua table
@@ -102,7 +112,7 @@ local function get_homedir() return os.getenv('HOME') end
 -- get operating system name
 -- NOTE(vir): never loose ur way enough to be using windows
 local function get_os(table)
-    if table == nil then table = {macOS = 'macOS', linux = 'Linux'} end
+    if table == nil then table = { macOS = 'macOS', linux = 'Linux' } end
 
     if os.getenv('HOME'):find('/Users') then
         return table.macOS
@@ -117,6 +127,7 @@ return {
     filter = filter,
     list_concat = list_concat,
     table_contains = table_contains,
+    table_keys = table_keys,
 
     lua_systemlist = lua_systemlist,
     lua_system = lua_system,

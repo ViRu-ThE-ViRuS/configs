@@ -1,13 +1,9 @@
 -- hello my name is viraat chandra and i love to program
 
--- NOTE(vir): impatient.nvim
-require("impatient")
-
-require("options")
-require("ui")
+require("settings")
 require("plugins")
+require("colorscheme")
 
--- load these after everything else is setup
 vim.api.nvim_create_autocmd("User", {
     pattern = "VeryLazy",
     callback = function()
@@ -19,6 +15,12 @@ vim.api.nvim_create_autocmd("User", {
     end
 })
 
--- NOTE(vir): tips
---  ins mode: <c-v>                            : to get key code
---  cmd mode: so $VIMRUNTIME/syntax/hitest.vim : to see colors
+-- notes --
+-- so $VIMRUNTIME/syntax/hitest.vim : see colors
+--
+-- project setup:
+--  .clang-format       : clang-format config
+--  .clang-tidy         : clang-tidy config
+--  .flake8             : autopep8 config
+--  pyrightconfig.json  : pyright config
+

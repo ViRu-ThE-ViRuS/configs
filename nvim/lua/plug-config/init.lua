@@ -1,98 +1,64 @@
 local utils = require('utils')
 
--- plugin setup
 return {
     'nvim-lua/plenary.nvim',
-    'lewis6991/impatient.nvim',
-
-    { 'kyazdani42/nvim-web-devicons', config = { default = true } },
-    { 'tpope/vim-eunuch', cmd = { 'Delete', 'Rename', 'Chmod' } },
+    'kyazdani42/nvim-web-devicons',
 
     {
-        'godlygeek/tabular',
-        cmd = 'Tab',
-        init = function()
-            utils.map("v", "<leader>=", ":Tab /")
-        end,
+        'williamboman/mason-lspconfig.nvim',
+        'jayp0521/mason-null-ls.nvim',
+        'jay-babu/mason-nvim-dap.nvim',
+        'williamboman/mason.nvim',
+    },
+
+    {
+        'neovim/nvim-lspconfig',
+        dependencies = { 'jose-elias-alvarez/null-ls.nvim', 'ray-x/lsp_signature.nvim' },
+        event = 'BufReadPost',
+        config = function() require("lsp") end,
     },
 
     {
         'tpope/vim-fugitive',
         cmd = { 'G', 'Gread', 'GcLog' },
-        init = function()
-            utils.map("n", "<leader>gD", function()
-                vim.cmd.G({ bang = true, args = { 'difftool' } })
-            end)
-        end,
+        init = function() utils.map("n", "<leader>gD", function() vim.cmd.G({ bang = true, args = { 'difftool' } }) end) end,
     },
 
     {
         'famiu/bufdelete.nvim',
-        init = function()
-            utils.map("n", "<leader>q", function()
-                require('bufdelete').bufdelete(0, true)
-            end)
-        end,
+        init = function() utils.map("n", "<leader>q", function() require('bufdelete').bufdelete(0, true) end) end,
     },
 
-    -- {
-    --     'neovim/nvim-lspconfig',
-    --     dependencies = {
-    --         { 'jose-elias-alvarez/null-ls.nvim' },
-    --         { 'ray-x/lsp_signature.nvim' },
-    --     },
-    --     event = 'BufReadPost',
-    --     config = 'require("lsp")'
-    -- },
-
-    -- {
-    --     'mfussenegger/nvim-dap',
-    --     dependencies = {
-    --         { 'rcarriga/nvim-dap-ui' },
-    --         { 'theHamsta/nvim-dap-virtual-text' },
-    --     },
-    --     ft = { 'c', 'cpp', 'rust', 'python' },
-    --     config = 'require("plug-config/dap")'
-    -- },
-
-    -- {
-    --     'liuchengxu/vista.vim',
-    --     cmd = 'Vista',
-    --     config = 'require("plug-config/vista")',
-    --     init = function()
-    --         require('utils').map('n', '<leader>k', function()
-    --             vim.cmd.Vista({ bang = true, args = { '!' } })
-    --         end)
-    --     end,
-    -- },
+    { 'tpope/vim-eunuch', cmd = { 'Delete', 'Rename', 'Chmod' } },
+    { 'godlygeek/tabular', cmd = 'Tab', init = function() utils.map("v", "<leader>=", ":Tab /") end },
 
     -- colorschemes
-    { 'bluz71/vim-nightfly-guicolors', lazy = false },
-    { 'EdenEast/nightfox.nvim', lazy = false },
-    { 'sam4llis/nvim-tundra', lazy = false },
-    { 'marko-cerovac/material.nvim', lazy = false },
-    { 'bluz71/vim-moonfly-colors', lazy = false },
-    { 'olivercederborg/poimandres.nvim', lazy = false },
-    { 'sainnhe/gruvbox-material', lazy = false },
-    { 'luisiacc/gruvbox-baby', lazy = false },
-    { 'ellisonleao/gruvbox.nvim', lazy = false },
-    { 'kvrohit/mellow.nvim', lazy = false },
-    { 'B4mbus/oxocarbon-lua.nvim', lazy = false },
-    { 'kvrohit/rasmus.nvim', lazy = false },
-    { 'Mofiqul/adwaita.nvim', lazy = false },
-    { 'sainnhe/everforest', lazy = false },
-    { 'Mofiqul/vscode.nvim', lazy = false },
-    { 'Yazeed1s/oh-lucy.nvim', lazy = false },
-    { 'w3barsi/barstrata.nvim', lazy = false },
-    { 'kvrohit/substrata.nvim', lazy = false },
-    { 'tanvirtin/monokai.nvim', lazy = false },
-    { 'thepogsupreme/mountain.nvim', lazy = false },
-    { 'catppuccin/nvim', lazy = false },
-    { 'rose-pine/neovim', lazy = false },
-    { 'habamax/vim-habamax', lazy = false },
-    { 'chiendo97/intellij.vim', lazy = false },
-    { 'arzg/vim-colors-xcode', lazy = false },
-    { 'protesilaos/tempus-themes-vim', lazy = false },
+    'bluz71/vim-nightfly-guicolors',
+    'EdenEast/nightfox.nvim',
+    'sam4llis/nvim-tundra',
+    'marko-cerovac/material.nvim',
+    'bluz71/vim-moonfly-colors',
+    'olivercederborg/poimandres.nvim',
+    'sainnhe/gruvbox-material',
+    'luisiacc/gruvbox-baby',
+    'ellisonleao/gruvbox.nvim',
+    'kvrohit/mellow.nvim',
+    'B4mbus/oxocarbon-lua.nvim',
+    'kvrohit/rasmus.nvim',
+    'Mofiqul/adwaita.nvim',
+    'sainnhe/everforest',
+    'Mofiqul/vscode.nvim',
+    'Yazeed1s/oh-lucy.nvim',
+    'w3barsi/barstrata.nvim',
+    'kvrohit/substrata.nvim',
+    'tanvirtin/monokai.nvim',
+    'thepogsupreme/mountain.nvim',
+    'catppuccin/nvim',
+    'rose-pine/neovim',
+    'habamax/vim-habamax',
+    'chiendo97/intellij.vim',
+    'arzg/vim-colors-xcode',
+    'protesilaos/tempus-themes-vim',
 
     { 'tweekmonster/startuptime.vim', cmd = 'StartupTime' },
 }

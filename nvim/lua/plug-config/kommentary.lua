@@ -16,7 +16,7 @@ return {
             multi_line_comment_strings = false
         })
 
-        kommentary.configure_language({ 'javascript', 'javascriptreact', 'typescriptreact' }, {
+        kommentary.configure_language({'javascript', 'javascriptreact', 'typescriptreact'}, {
             single_line_comment_string = 'auto',
             multi_line_comment_strings = 'auto',
         })
@@ -26,9 +26,10 @@ return {
         utils.map('v', '<leader>c<space>', '<plug>kommentary_visual_default', { noremap = false })
 
         -- NOTE(vir): holy shit this is amazing
-        -- `gc` toggles comments on last visual selection it,
-        -- without moving cursor position
+        -- `gc` selects the last visual selection, toggles comments on it, and returns
+        -- cursor to current position
         utils.unmap('n', 'gcc')
         utils.map('n', 'gc', "<cmd>normal mCgvgc'C<cr>")
     end
 }
+

@@ -61,9 +61,8 @@ vim.defer_fn(function()
 
                     -- NOTE(vir): skip files
                     --  1. not already loaded
-                    --  2. [investigate?] treesj slows down when reloaded too many times
+                    --  2. lazy.nvim config cannot be reloaded
                     if not core.table_contains(package.loaded, rel_path) then return end
-                    if string.find(rel_path, 'treesj') then return end
 
                     -- unload mod
                     package.loaded[rel_path] = nil
@@ -79,7 +78,6 @@ vim.defer_fn(function()
 
             -- NOTE(vir): special cases, only reload if modified
             if src_file == 'init.lua' then vim.cmd [[ source $MYVIMRC ]]  end
-            if string.find(src_file, 'treesj') then vim.cmd [[ source <afile> ]]  end
 
             utils.notify('[CONFIG] reloaded', 'info', {render='minimal'}, true)
         end

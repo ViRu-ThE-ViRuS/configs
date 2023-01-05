@@ -93,33 +93,6 @@ vim.opt.tabstop = 4
 vim.opt.textwidth = 79
 vim.opt.undofile = true
 
--- disable builtin plugins
-local disabled_plugins = {
-    "2html_plugin",
-    "getscript",
-    "getscriptPlugin",
-    "gzip",
-    "logipat",
-    "matchit",
-    "matchparen",
-    "netrw",
-    "netrwFileHandlers",
-    "netrwPlugin",
-    "netrwSettings",
-    "rrhelper",
-    "spec",
-    "spellfile_plugin",
-    "tar",
-    "tarPlugin",
-    "vimball",
-    "vimballPlugin",
-    "zip",
-    "zipPlugin"
-}
-
-for _, plugin in ipairs(disabled_plugins) do
-    vim.g['loaded_' .. plugin] = 1
-end
-
 -- remove ft maps
 vim.g.no_plugin_maps = 1
+
