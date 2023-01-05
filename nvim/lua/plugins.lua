@@ -15,7 +15,7 @@ return require('packer').startup({
         use { 'wbthomason/packer.nvim', event = 'VimEnter' }
 
         use { 'kyazdani42/nvim-web-devicons', event = 'VimEnter' }
-        use { 'rcarriga/nvim-notify', event = 'VimEnter', config = 'require("plug-config/notify")' }
+        use { 'rcarriga/nvim-notify', event = 'VimEnter', config = 'require("plug-config/notifications")' }
         use { 'aserowy/tmux.nvim', event = 'VimEnter', config = 'require("plug-config/tmux")' }
 
         use { 'tpope/vim-eunuch', cmd = { 'Delete', 'Rename', 'Chmod' } }
@@ -82,7 +82,7 @@ return require('packer').startup({
                 { 'hrsh7th/cmp-cmdline', after = 'nvim-cmp' },
             },
             event = 'InsertEnter',
-            config = "require('plug-config/cmp')"
+            config = "require('plug-config/completion')"
         }
 
         use {
