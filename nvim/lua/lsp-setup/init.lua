@@ -109,7 +109,7 @@ lsp['tsserver'].setup {
 -- }}}
 
 -- {{{ null-ls setup
--- NOTE(vir): extension null-ls
+-- NOTE(vir): plugin null-ls
 local null_ls = require('null-ls')
 null_ls.setup({
     sources = {

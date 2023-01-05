@@ -173,7 +173,7 @@ return {
             local target_handle = nil
             local target_regex = nil
 
-            -- NOTE(vir): manually update this when new adapters are added
+            -- TODO(vir): manually update this when new adapters are added
             if session.config.type == 'pwa-node' then
                 target_regex = vim.regex('\\v^.*/.*dap-repl.*$')
                 dap.repl.open()

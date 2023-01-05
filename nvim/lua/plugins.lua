@@ -39,6 +39,7 @@ require('lazy').setup('plug-config', {
                 "zip",
                 "zipPlugin",
 
+                -- NOTE(vir): people usually dont disable these
                 "health",
                 "man",
                 "nvim",

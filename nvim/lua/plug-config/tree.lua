@@ -3,7 +3,17 @@ local function open_in_finder(handle) require('lib/core').lua_system("open -R " 
 return {
     'kyazdani42/nvim-tree.lua',
     cmd = 'NvimTreeToggle',
-    init = function() require('utils').map('n', '<leader>j', '<cmd>NvimTreeToggle<cr>') end,
+    init = function()
+        local utils = require('utils')
+        utils.map('n', '<leader>j', '<cmd>NvimTreeToggle<cr>')
+
+        vim.api.nvim_create_autocmd('FileType', {
+            pattern = { 'NvimTree' },
+            callback = function()
+                utils.map('n', '<c-o>', '<cmd>wincmd p<cr>', { buffer = 0 })
+            end,
+        })
+    end,
     config = {
         update_focused_file = { enable = true, update_cwd = false },
         diagnostics = { enable = false },
@@ -80,4 +90,3 @@ return {
         }
     }
 }
-

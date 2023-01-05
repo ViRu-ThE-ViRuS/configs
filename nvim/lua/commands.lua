@@ -19,15 +19,6 @@ vim.defer_fn(function()
     vim.api.nvim_create_autocmd('BufWritePre', { group = 'Misc', pattern = '*', callback = misc.strip_trailing_whitespaces })
     -- vim.api.nvim_create_autocmd('BufReadPost', { group = 'Misc', pattern = '*', command = 'silent! normal `"' })
 
-    -- NOTE(vir): plugin ft remaps: vista, nvimtree
-    vim.api.nvim_create_autocmd('FileType', {
-        group = 'Misc',
-        pattern = {'vista_kind', 'vista', 'NvimTree'},
-        callback = function()
-            utils.map('n', '<c-o>', '<cmd>wincmd p<cr>', { buffer = 0 })
-        end,
-    })
-
     -- terminal setup
     vim.api.nvim_create_augroup('TerminalSetup', {clear = true})
     vim.api.nvim_create_autocmd('TermOpen', {
@@ -79,7 +70,7 @@ vim.defer_fn(function()
             -- reload modules
             core.foreach(to_reload, function(_, mod) require(mod) end)
 
-            -- NOTE(vir): special cases, only reload if modified
+            -- NOTE(vir): init file is only reloaded when modified
             if src_file == 'init.lua' then vim.cmd [[ source $MYVIMRC ]]  end
             utils.notify('[CONFIG] reloaded', 'info', {render='minimal'}, true)
         end

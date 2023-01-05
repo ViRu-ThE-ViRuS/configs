@@ -10,7 +10,7 @@ return {
     },
     event = 'BufReadPost',
     config = function()
-        -- NOTE(vir): use mason to install dependencies
+        -- use mason to install dependencies
         require('mason').setup({ ui = { border = 'rounded' } })
         require('mason-lspconfig').setup({ ensure_installed = { 'pyright', 'clangd', 'sumneko_lua', 'tsserver' } })
         require('mason-null-ls').setup({ ensure_installed = { 'cppcheck', 'autopep8', 'prettier' } })
@@ -21,7 +21,7 @@ return {
         -- setup handlers and extensions
         require("lsp-setup/handlers")
 
-        -- NOTE(vir): reloading config often leaves hanging diagnostics
+        -- reloading config often leaves hanging diagnostics
         vim.diagnostic.reset()
         vim.diagnostic.config({
             signs = true,
@@ -38,7 +38,6 @@ return {
             }
         })
 
-        -- custom signs
         --- @format disable
         local symbol_config = require("utils").editor_config.symbol_config
         vim.fn.sign_define("DiagnosticSignError", { text = symbol_config.sign_error, texthl = "DiagnosticError", numhl = "DiagnosticError" })

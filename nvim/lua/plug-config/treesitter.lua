@@ -21,7 +21,6 @@ return {
                     'query'
                 },
 
-                -- NOTE(vir): nvim-yati is really good for python for now, havent noticed need for other file types yet
                 indent = { enable = true, disable = { 'python', 'c', 'cpp', 'lua' } },
                 yati = { enable = true, disable = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' } },
 
@@ -55,6 +54,7 @@ return {
                     move = {
                         enable = true,
                         set_jumps = true,
+
                         -- NOTE(vir): remaps done manually below
                     },
                     swap = {
@@ -99,7 +99,7 @@ return {
                 local functions = vim.treesitter.query.parse_query(
                     ft,
 
-                    -- NOTE(vir): can add more language specific captures when needed
+                    -- TODO(vir): can add more language specific captures when needed
                     table.concat({
                         '((function_definition) @definitions)',
                         ((ft == 'lua' and '((function_declaration) @lua_declaration)') or ""),

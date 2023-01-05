@@ -12,7 +12,6 @@ return {
         local utils = require('utils')
         local gitsigns = require('gitsigns')
 
-        -- NOTE(vir): updates fugitive windows
         gitsigns.setup {
             numhl = false,
             linehl = false,

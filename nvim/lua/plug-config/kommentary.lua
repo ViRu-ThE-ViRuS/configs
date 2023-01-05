@@ -25,7 +25,7 @@ return {
         utils.map('n', '<leader>c<space>', '<plug>kommentary_line_default', { noremap = false })
         utils.map('v', '<leader>c<space>', '<plug>kommentary_visual_default', { noremap = false })
 
-        -- NOTE(vir): holy shit this is amazing
+        -- holy shit this is amazing
         -- `gc` selects the last visual selection, toggles comments on it, and returns
         -- cursor to current position
         utils.unmap('n', 'gcc')

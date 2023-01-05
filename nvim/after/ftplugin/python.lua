@@ -66,6 +66,8 @@ local function get_current_cell()
     for index, range in ipairs(markers) do
         if index ~= 1 then
             table.insert(cells, { markers[index - 1][1] + 1, range[1] })
+        else
+            table.insert(cells, { 0, range[1] })
         end
     end
 
@@ -102,5 +104,7 @@ utils.map("n", "<leader>cc", function()
 end, { buffer = 0 })
 
 -- cell navigation
-utils.map('n', ']i', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@cell-marker")<CR>zz', { buffer = 0 })
-utils.map('n', '[i', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@cell-marker")<CR>zz', { buffer = 0 })
+utils.map('n', ']i', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@cell-marker")<CR>zz',
+    { buffer = 0 })
+utils.map('n', '[i', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@cell-marker")<CR>zz',
+    { buffer = 0 })
