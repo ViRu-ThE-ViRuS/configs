@@ -1,6 +1,13 @@
 return {
     'neovim/nvim-lspconfig',
-    dependencies = { 'jose-elias-alvarez/null-ls.nvim', 'ray-x/lsp_signature.nvim' },
+    dependencies = {
+        'williamboman/mason-lspconfig.nvim',
+        'jayp0521/mason-null-ls.nvim',
+        'jay-babu/mason-nvim-dap.nvim',
+
+        'jose-elias-alvarez/null-ls.nvim',
+        'ray-x/lsp_signature.nvim',
+    },
     event = 'BufReadPost',
     config = function()
         -- NOTE(vir): use mason to install dependencies

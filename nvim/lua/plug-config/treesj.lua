@@ -38,10 +38,10 @@ return {
                         },
                     }),
 
-                    if_statement = { target_nodes = { 'compound_statement' }},
+                    if_statement = { target_nodes = { 'compound_statement' } },
                     declaration = { target_nodes = { 'parameter_list', 'argument_list', 'initializer_list' } },
-                    call_expression = { target_nodes = { 'argument_list' }},
-                    template_declaration = { target_nodes = { 'template_parameter_list' }}
+                    call_expression = { target_nodes = { 'argument_list' } },
+                    template_declaration = { target_nodes = { 'template_parameter_list' } }
                 },
                 python = {
                     parameters = treesj_utils.set_preset_for_args(),
@@ -49,7 +49,7 @@ return {
                     list = treesj_utils.set_preset_for_list(),
                     set = treesj_utils.set_preset_for_list(),
                     tuple = treesj_utils.set_preset_for_list(),
-                    dictionary = treesj_utils.set_preset_for_dict({ both = { last_separator = false }}),
+                    dictionary = treesj_utils.set_preset_for_dict({ both = { last_separator = false } }),
 
                     assignment = { target_nodes = { 'list', 'set', 'tuple', 'dictionary' } },
                     call = { target_nodes = { 'argument_list' } },
