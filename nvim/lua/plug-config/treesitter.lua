@@ -25,7 +25,7 @@ return {
                 yati = { enable = true, disable = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' } },
 
                 highlight = { enable = true, additional_vim_regex_highlighting = { 'markdown' } },
-                matchup = { enable = true, disable_virtual_text = true },
+                matchup = { enable = false, disable_virtual_text = true },
                 context_commentstring = { enable = true, enable_autocmd = false },
 
                 incremental_selection = {
@@ -144,11 +144,11 @@ return {
     {
         'andymass/vim-matchup',
         config = function()
-            local utils = require("utils")
-
             vim.g.matchup_matchparen_deferred = 1
             vim.g.matchup_surround_enabled = 1
             vim.g.matchup_matchparen_offscreen = { method = 'popup' }
+
+            local utils = require("utils")
             utils.map({ 'n', 'o', 'x' }, 'Q', '<plug>(matchup-%)')
             utils.map({ 'o', 'x' }, 'iQ', '<plug>(matchup-i%)')
             utils.map({ 'o', 'x' }, 'aQ', '<plug>(matchup-a%)')

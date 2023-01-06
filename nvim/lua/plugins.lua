@@ -15,6 +15,7 @@ vim.opt.rtp:prepend(lazypath)
 require('utils').add_command('Lz', 'Lazy', { bang = true, nargs = 0, desc = 'Lazy' })
 require('lazy').setup('plug-config', {
     defaults = { lazy = true },
+    ui = { border = 'single' },
     performance = {
         rtp = {
             disabled_plugins = {
@@ -50,6 +51,5 @@ require('lazy').setup('plug-config', {
                 "tutor"
             }
         }
-    },
-    ui = { border = 'single' }
+    }
 })

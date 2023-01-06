@@ -1,6 +1,6 @@
 return {
     'ibhagwan/fzf-lua',
-    event = 'VeryLazy',
+    event = 'UIEnter',
     config = function()
         local utils = require("utils")
         local misc = require('lib/misc')
@@ -136,16 +136,17 @@ return {
             }
         })
 
+
+        utils.map("n", "<c-p>p", fzf.files)
+        utils.map("n", "<c-p>P", fzf.git_files)
+
         -- defer this as it takes a bit to get git root
-        vim.defer_fn(function()
-            if misc.get_git_root() ~= nil then
+        vim.schedule(function()
+            if misc.get_git_root() then
                 utils.map("n", "<c-p>p", fzf.git_files)
                 utils.map("n", "<c-p>P", fzf.files)
-            else
-                utils.map("n", "<c-p>p", fzf.files)
-                utils.map("n", "<c-p>P", fzf.files)
             end
-        end, 0)
+        end)
 
         utils.map("n", "<c-p>f", function() fzf.live_grep({ exec_empty_query = true }) end)
         utils.map("n", "<c-p>F", function() fzf.live_grep({ continue_last_search = true }) end)
@@ -155,8 +156,7 @@ return {
         utils.map("n", "<c-p>sz", function() fzf.grep({ search = 'TODO|NOTE', no_esc = true }) end)
         utils.map("v", "<c-p>ss", fzf.grep_visual)
 
-        -- ctags interaction
-        -- independent of lsp
+        -- ctags, independent of lsp
         utils.map("n", "<c-p>sP", fzf.tags_grep_cword)
         utils.map("n", "<c-p>sp", function() fzf.tags_live_grep({ exec_empty_query = true }) end)
         utils.map("v", "<c-p>sp", fzf.tags_grep_visual)

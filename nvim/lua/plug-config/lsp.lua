@@ -1,9 +1,9 @@
 return {
     'neovim/nvim-lspconfig',
     dependencies = {
+        'williamboman/mason.nvim',
         'williamboman/mason-lspconfig.nvim',
         'jayp0521/mason-null-ls.nvim',
-        'jay-babu/mason-nvim-dap.nvim',
 
         'jose-elias-alvarez/null-ls.nvim',
         'ray-x/lsp_signature.nvim',

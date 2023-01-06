@@ -1,6 +1,6 @@
 return {
     'akinsho/nvim-bufferline.lua',
-    event = 'VimEnter',
+    event = 'UIEnter',
     config = {
         options = {
             -- numbers = function(args) return tostring(args.id); end,

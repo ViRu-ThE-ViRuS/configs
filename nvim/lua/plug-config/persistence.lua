@@ -1,6 +1,6 @@
 return {
     'folke/persistence.nvim',
-    event = 'VeryLazy',
+    event = 'UIEnter',
     config = function()
         local utils = require('utils')
         local persistence = require('persistence')
