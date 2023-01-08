@@ -2,7 +2,7 @@ local symbol_config = require('utils').editor_config.symbol_config
 
 return {
     'rcarriga/nvim-notify',
-    config = {
+    opts = {
         stages = 'fade',
         level = 'DEBUG',
         timeout = 150,

@@ -1,7 +1,7 @@
 return {
     'aserowy/tmux.nvim',
     event = 'UIEnter',
-    config = {
+    opts = {
         copy_sync = {
             enable = true,
             redirect_to_clipboard = false

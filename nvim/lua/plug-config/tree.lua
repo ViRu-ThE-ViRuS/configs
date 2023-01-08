@@ -14,7 +14,7 @@ return {
             end,
         })
     end,
-    config = {
+    opts = {
         update_focused_file = { enable = true, update_cwd = false },
         diagnostics = { enable = false },
         filters = {
