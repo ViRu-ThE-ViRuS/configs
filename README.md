@@ -35,8 +35,8 @@ changes.
 **To Reproduce**:
 
 - run `update_config.sh` (might require sudo access), to copy over config files
-- run `nvim +Ps`, to install plugins
-- restart neovim
+- all plugins and dependencies should be installed on next launch. restart when
+  complete
 
 **NOTE:** i recommend using `checkhealth` to make sure everything is setup and
 ready to go
