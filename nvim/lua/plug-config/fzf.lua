@@ -1,23 +1,58 @@
 return {
     'ibhagwan/fzf-lua',
-    event = 'UIEnter',
+    init = function ()
+        -- NOTE(vir): using require in each because it sets up lazy loading
+        local utils = require('utils')
+
+        utils.map("n", "<c-p>p", function() require('fzf-lua').files() end)
+        utils.map("n", "<c-p>P", function() require('fzf-lua').git_files() end)
+
+        -- defer this as it takes a bit to get git root
+        vim.schedule(function()
+            if require('lib/misc').get_git_root() then
+                utils.map("n", "<c-p>p", function() require('fzf-lua').files() end)
+                utils.map("n", "<c-p>P", function() require('fzf-lua').git_files() end)
+            else
+
+                -- unmap git_files which was set by default
+                utils.unmap('n', '<c-p>P')
+            end
+        end)
+
+        utils.map("n", "<c-p>b", function() require('fzf-lua').buffers() end)
+
+        utils.map("n", "<c-p>f", function() require('fzf-lua').live_grep({ exec_empty_query = true }) end)
+        utils.map("n", "<c-p>F", function() require('fzf-lua').live_grep({ continue_last_search = true }) end)
+
+        utils.map("n", "<c-p>ss", function() require('fzf-lua').grep_cword() end)
+        utils.map("n", "<c-p>sl", function() require('fzf-lua').blines() end)
+        utils.map("n", "<c-p>sz", function() require('fzf-lua').grep({ search = 'TODO|NOTE', no_esc = true }) end)
+        utils.map("v", "<c-p>ss", function() require('fzf-lua').grep_visual() end)
+
+        -- ctags, independent of lsp
+        utils.map("n", "<c-p>sP", function() require('fzf-lua').tags_grep_cword() end)
+        utils.map("n", "<c-p>sp", function() require('fzf-lua').tags_live_grep({ exec_empty_query = true }) end)
+        utils.map("v", "<c-p>sp", function() require('fzf-lua').tags_grep_visual() end)
+
+        -- colorscheme selector
+        utils.add_command('Colors', function() require('fzf-lua').colorschemes() end, {
+            bang = false,
+            nargs = 0,
+            desc = 'FzfLua powered colorscheme picker'
+        }, true)
+    end,
     config = function()
         local utils = require("utils")
-        local misc = require('lib/misc')
         local fzf = require('fzf-lua')
+
+        local ignore_dirs = '.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build,*.dSYM,tags,node_modules,Pods,sessions'
+        local default_rg_options = string.format(' --hidden --follow --no-heading --smart-case --no-ignore -g "!{%s}"', ignore_dirs)
 
         local symbol_config = utils.editor_config.symbol_config
         local truncation = utils.editor_config.truncation
         local actions = fzf.actions
 
-        -- NOTE(vir):
-        -- using fzf-lua functionality in buffer setup (lsp)
-        -- this works because lsp is loaded on BufEnter event
-        -- fzf-lua is loaded VimEnter event
-
-        local default_rg_options = ' --hidden --follow --no-heading --smart-case --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build,*.dSYM,tags,node_modules,Pods,sessions}"'
-
-        -- fzf.deregister_ui_select()
+        -- set fzf-lua as vim.ui.select handler
         if vim.ui.select ~= require('fzf-lua.providers.ui_select').ui_select then
             fzf.register_ui_select()
         end
@@ -135,36 +170,5 @@ return {
                 }
             }
         })
-
-
-        utils.map("n", "<c-p>p", fzf.files)
-        utils.map("n", "<c-p>P", fzf.git_files)
-
-        -- defer this as it takes a bit to get git root
-        vim.schedule(function()
-            if misc.get_git_root() then
-                utils.map("n", "<c-p>p", fzf.git_files)
-                utils.map("n", "<c-p>P", fzf.files)
-            end
-        end)
-
-        utils.map("n", "<c-p>f", function() fzf.live_grep({ exec_empty_query = true }) end)
-        utils.map("n", "<c-p>F", function() fzf.live_grep({ continue_last_search = true }) end)
-        utils.map("n", "<c-p>b", fzf.buffers)
-        utils.map("n", "<c-p>ss", fzf.grep_cword)
-        utils.map("n", "<c-p>sl", fzf.blines)
-        utils.map("n", "<c-p>sz", function() fzf.grep({ search = 'TODO|NOTE', no_esc = true }) end)
-        utils.map("v", "<c-p>ss", fzf.grep_visual)
-
-        -- ctags, independent of lsp
-        utils.map("n", "<c-p>sP", fzf.tags_grep_cword)
-        utils.map("n", "<c-p>sp", function() fzf.tags_live_grep({ exec_empty_query = true }) end)
-        utils.map("v", "<c-p>sp", fzf.tags_grep_visual)
-
-        utils.add_command('Colors', fzf.colorschemes, {
-            bang = false,
-            nargs = 0,
-            desc = 'FzfLua powered colorscheme picker'
-        }, true)
     end
 }

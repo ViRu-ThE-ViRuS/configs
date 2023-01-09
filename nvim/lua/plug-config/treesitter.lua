@@ -1,7 +1,43 @@
+-- get all functions present in current buffer in qf list entry format, using treesitter
+local function buffer_functions()
+    local ft = vim.api.nvim_get_option_value('ft', { scope = 'local' })
+    local bufnr = vim.api.nvim_get_current_buf()
+
+    local valid, parser = pcall(vim.treesitter.get_parser, bufnr, ft)
+    if not valid then return end
+
+    local tree = parser:parse()[1]
+    local functions = vim.treesitter.query.parse_query(
+        ft,
+
+        -- TODO(vir): can add more language specific captures when needed
+        table.concat({
+            '((function_definition) @definitions)',
+            ((ft == 'lua' and '((function_declaration) @lua_declaration)') or ""),
+            ((ft == 'cpp' and '((lambda_expression) @cpp_lambda)') or ""),
+            ((ft == 'python' and '((lambda) @py_lambda)') or "")
+        }, '\n')
+    )
+
+
+    local entries = {}
+    for _, node, _ in functions:iter_captures(tree:root(), bufnr) do
+        local l1, c1, _, _ = node:start()
+        table.insert(entries, {
+            bufnr = bufnr,
+            lnum = l1 + 1,
+            col = c1 + 1,
+            text = vim.split(vim.treesitter.query.get_node_text(node, bufnr), '\n')[1]
+        })
+    end
+
+    return entries
+end
+
 return {
     {
         'nvim-treesitter/nvim-treesitter',
-        event = 'BufReadPost',
+        event = 'BufReadPre',
         build = ':TSUpdate',
         dependencies = {
             'nvim-treesitter/nvim-treesitter-textobjects',
@@ -87,42 +123,6 @@ return {
                 },
             })
 
-            -- populate all functions and lambdas into qflist
-            utils.map('n', '<leader>uF', function()
-                local ft = vim.api.nvim_get_option_value('ft', { scope = 'local' })
-                local bufnr = vim.api.nvim_get_current_buf()
-
-                local valid, parser = pcall(vim.treesitter.get_parser, bufnr, ft)
-                if not valid then return end
-
-                local tree = parser:parse()[1]
-                local functions = vim.treesitter.query.parse_query(
-                    ft,
-
-                    -- TODO(vir): can add more language specific captures when needed
-                    table.concat({
-                        '((function_definition) @definitions)',
-                        ((ft == 'lua' and '((function_declaration) @lua_declaration)') or ""),
-                        ((ft == 'cpp' and '((lambda_expression) @cpp_lambda)') or ""),
-                        ((ft == 'python' and '((lambda) @py_lambda)') or "")
-                    }, '\n')
-                )
-
-
-                local qf_entries = {}
-                for _, node, _ in functions:iter_captures(tree:root(), bufnr) do
-                    local l1, c1, _, _ = node:start()
-                    table.insert(qf_entries, {
-                        bufnr = bufnr,
-                        lnum = l1 + 1,
-                        col = c1 + 1,
-                        text = vim.split(vim.treesitter.query.get_node_text(node, bufnr), '\n')[1]
-                    })
-                end
-
-                utils.qf_populate(qf_entries, 'r', 'Functions & Lambdas')
-            end)
-
             -- go to parent
             -- utils.map('n', '[{', function()
             --     local ts = require('nvim-treesitter/ts_utils')
@@ -130,6 +130,11 @@ return {
             --     local parent = current:parent()
             --     ts.goto_node(parent)
             -- end)
+
+            -- populate all functions and lambdas into qflist
+            utils.map('n', '<leader>uF', function()
+                utils.qf_populate(buffer_functions(), 'r', 'Functions & Lambdas')
+            end)
 
             -- text-subjects : move + center
             --- @format disable

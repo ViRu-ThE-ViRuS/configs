@@ -80,7 +80,9 @@ vim.defer_fn(function()
     utils.add_command("Commands", function()
         local keys = core.apply(utils.workspace_config.commands, function(key, _) return key end)
         table.sort(keys, function(a, b) return a > b end)
-        vim.ui.select(keys, { prompt = "Commands> " }, function(key) utils.workspace_config.commands[key]() end)
+        vim.ui.select(keys, { prompt = "Commands> " }, function(key)
+            if key then utils.workspace_config.commands[key]() end
+        end)
     end, {
         bang = false,
         nargs = 0,

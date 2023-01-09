@@ -8,7 +8,7 @@ return {
         'jose-elias-alvarez/null-ls.nvim',
         'ray-x/lsp_signature.nvim',
     },
-    event = 'BufReadPost',
+    event = 'BufReadPre',
     config = function()
         -- use mason to install dependencies
         require('mason').setup({ ui = { border = 'rounded' } })
@@ -18,7 +18,7 @@ return {
         -- setup lsps
         require("lsp-setup/init")
 
-        -- setup handlers and extensions
+        -- setup handlers
         require("lsp-setup/handlers")
 
         -- reloading config often leaves hanging diagnostics

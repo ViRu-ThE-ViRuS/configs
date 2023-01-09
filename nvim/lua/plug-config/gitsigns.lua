@@ -7,7 +7,7 @@ end
 
 return {
     'lewis6991/gitsigns.nvim',
-    event = 'BufReadPost',
+    event = 'BufReadPre',
     config = function()
         local utils = require('utils')
         local gitsigns = require('gitsigns')

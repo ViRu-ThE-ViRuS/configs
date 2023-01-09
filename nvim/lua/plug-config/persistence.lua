@@ -1,11 +1,12 @@
 return {
     'folke/persistence.nvim',
-    event = 'UIEnter',
-    config = function()
-        local utils = require('utils')
-        local persistence = require('persistence')
-
-        persistence.setup()
-        utils.add_command('[MISC] Restore Session for CWD', persistence.load, nil, true)
-    end
+    init = function()
+        require('utils').add_command(
+            '[MISC] Restore Session for CWD',
+            function() require('persistence').load() end,
+            nil,
+            true
+        )
+    end,
+    config = true
 }

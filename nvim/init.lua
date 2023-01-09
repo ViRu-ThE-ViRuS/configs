@@ -1,7 +1,7 @@
 -- hello my name is viraat chandra and i love to program
 
-require("settings")
 require("plugins")
+require("settings")
 require("colorscheme")
 
 vim.api.nvim_create_autocmd("User", {

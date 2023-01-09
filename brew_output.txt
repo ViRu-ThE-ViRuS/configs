@@ -30,7 +30,9 @@ libunistring
 libuv
 libvterm
 libyaml
+lua
 luajit
+luarocks
 luv
 m4
 megatools

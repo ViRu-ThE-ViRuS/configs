@@ -1,6 +1,6 @@
 return {
     'b3nj5m1n/kommentary',
-    event = 'BufReadPost',
+    event = 'BufReadPre',
     config = function()
         local utils = require('utils')
         local kommentary = require('kommentary.config')

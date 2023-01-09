@@ -8,11 +8,11 @@ local utils = require("utils")
 local function on_attach(client, bufnr)
     -- utils.notify(string.format("[lsp] %s\n[cwd] %s", client.name, vim.loop.cwd()), "info", { title = "[lsp] Active" }, true)
 
-    -- NOTE(vir): this is what causes delay
+    -- NOTE(vir): this is what causes a delayed change in highlighting
     -- client.server_capabilities.semanticTokensProvider = nil
 
     -- NOTE(vir): lsp_signature setup
-    require('lsp_signature').on_attach({ doc_lines = 3, hint_prefix = "<>", handler_opts = { border = 'rounded' } }, bufnr)
+    require('lsp_signature').on_attach({ doc_lines = 5, hint_prefix = "<>", handler_opts = { border = 'rounded' } }, bufnr)
 
     setup_buffer.setup_lsp_keymaps(client, bufnr)
     setup_buffer.setup_diagnostics_keymaps(client, bufnr)
