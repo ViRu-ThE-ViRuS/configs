@@ -19,15 +19,6 @@ vim.defer_fn(function()
     vim.api.nvim_create_autocmd('BufWritePre', { group = 'Misc', pattern = '*', callback = misc.strip_trailing_whitespaces })
     -- vim.api.nvim_create_autocmd('BufReadPost', { group = 'Misc', pattern = '*', command = 'silent! normal `"' })
 
-    -- NOTE(vir): plugin ft remaps: vista, nvimtree
-    vim.api.nvim_create_autocmd('FileType', {
-        group = 'Misc',
-        pattern = {'vista_kind', 'vista', 'NvimTree'},
-        callback = function()
-            utils.map('n', '<c-o>', '<cmd>wincmd p<cr>', { buffer = 0 })
-        end,
-    })
-
     -- terminal setup
     vim.api.nvim_create_augroup('TerminalSetup', {clear = true})
     vim.api.nvim_create_autocmd('TermOpen', {
@@ -61,9 +52,11 @@ vim.defer_fn(function()
 
                     -- NOTE(vir): skip files
                     --  1. not already loaded
-                    --  2. [investigate?] treesj slows down when reloaded too many times
+                    --  2. lazy.nvim config cannot be reloaded
+                    --  3. lazy.nvim plugin specs cannot be reloaded
                     if not core.table_contains(package.loaded, rel_path) then return end
-                    if string.find(rel_path, 'treesj') then return end
+                    if string.find(rel_path, 'plugins') then return end
+                    if string.find(rel_path, 'plug-config/') then return end
 
                     -- unload mod
                     package.loaded[rel_path] = nil
@@ -77,10 +70,8 @@ vim.defer_fn(function()
             -- reload modules
             core.foreach(to_reload, function(_, mod) require(mod) end)
 
-            -- NOTE(vir): special cases, only reload if modified
+            -- NOTE(vir): init file is only reloaded when modified
             if src_file == 'init.lua' then vim.cmd [[ source $MYVIMRC ]]  end
-            if string.find(src_file, 'treesj') then vim.cmd [[ source <afile> ]]  end
-
             utils.notify('[CONFIG] reloaded', 'info', {render='minimal'}, true)
         end
     })
@@ -89,7 +80,9 @@ vim.defer_fn(function()
     utils.add_command("Commands", function()
         local keys = core.apply(utils.workspace_config.commands, function(key, _) return key end)
         table.sort(keys, function(a, b) return a > b end)
-        vim.ui.select(keys, { prompt = "Commands> " }, function(key) utils.workspace_config.commands[key]() end)
+        vim.ui.select(keys, { prompt = "Commands> " }, function(key)
+            if key then utils.workspace_config.commands[key]() end
+        end)
     end, {
         bang = false,
         nargs = 0,

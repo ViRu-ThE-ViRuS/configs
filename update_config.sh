@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
 
 # nvim
-sudo -A cp -r nvim/* ~/.config/nvim/
+# sudo -A cp -r nvim/* ~/.config/nvim/
+cp -r nvim/* ~/.config/nvim/
 
 # tmux
 cp -r tmux/* ~/.config/tmux/
 cp tmux/.tmux.conf ~/.config/tmux/
 
 # fish
-sudo -A cp -r fish/* ~/.config/fish/
+# sudo -A cp -r fish/* ~/.config/fish/
+cp -r fish/* ~/.config/fish/
 
 # kitty
 cp -r kitty/* ~/.config/kitty/

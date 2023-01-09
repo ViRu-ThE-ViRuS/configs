@@ -1,162 +1,174 @@
-local utils = require("utils")
-local misc = require('lib/misc')
-local fzf = require('fzf-lua')
+return {
+    'ibhagwan/fzf-lua',
+    init = function ()
+        -- NOTE(vir): using require in each because it sets up lazy loading
+        local utils = require('utils')
 
-local symbol_config = utils.editor_config.symbol_config
-local truncation = utils.editor_config.truncation
-local actions = fzf.actions
+        utils.map("n", "<c-p>p", function() require('fzf-lua').files() end)
+        utils.map("n", "<c-p>P", function() require('fzf-lua').git_files() end)
 
--- NOTE(vir):
--- using fzf-lua functionality in buffer setup (lsp)
--- this works because lsp is loaded on BufEnter event
--- fzf-lua is loaded VimEnter event
+        -- defer this as it takes a bit to get git root
+        vim.schedule(function()
+            if require('lib/misc').get_git_root() then
+                utils.map("n", "<c-p>p", function() require('fzf-lua').files() end)
+                utils.map("n", "<c-p>P", function() require('fzf-lua').git_files() end)
+            else
 
-local default_rg_options = ' --hidden --follow --no-heading --smart-case --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build,*.dSYM,tags,node_modules,Pods,sessions}"'
+                -- unmap git_files which was set by default
+                utils.unmap('n', '<c-p>P')
+            end
+        end)
 
--- fzf.deregister_ui_select()
-if vim.ui.select ~= require('fzf-lua.providers.ui_select').ui_select then
-    fzf.register_ui_select()
-end
+        utils.map("n", "<c-p>b", function() require('fzf-lua').buffers() end)
 
-fzf.setup({
-    winopts = {
-        split = 'belowright new',
-        fullscreen = false,
-        preview = {
-            -- default = 'bat',
-            horizontal = 'right:50%',
-            vertical = 'up:50%',
-            scrollbar = false
-        },
-        on_create = function()
-            vim.opt_local.buflisted = false
-            vim.opt_local.bufhidden = 'wipe'
+        utils.map("n", "<c-p>f", function() require('fzf-lua').live_grep({ exec_empty_query = true }) end)
+        utils.map("n", "<c-p>F", function() require('fzf-lua').live_grep({ continue_last_search = true }) end)
 
-            utils.map('t', '<c-k>', '<up>', { buffer = 0 })
-            utils.map('t', '<c-j>', '<down>', { buffer = 0 })
-            utils.map('t', '<esc>', '<cmd>quit<cr>', { buffer = 0 })
-        end,
-    },
-    winopts_fn = function()
-        return {
-            preview = {
-                layout = vim.api.nvim_win_get_width(0) <
-                    truncation.truncation_limit_s_terminal and 'vertical' or 'horizontal'
-            }
-        }
+        utils.map("n", "<c-p>ss", function() require('fzf-lua').grep_cword() end)
+        utils.map("n", "<c-p>sl", function() require('fzf-lua').blines() end)
+        utils.map("n", "<c-p>sz", function() require('fzf-lua').grep({ search = 'TODO|NOTE', no_esc = true }) end)
+        utils.map("v", "<c-p>ss", function() require('fzf-lua').grep_visual() end)
+
+        -- ctags, independent of lsp
+        utils.map("n", "<c-p>sP", function() require('fzf-lua').tags_grep_cword() end)
+        utils.map("n", "<c-p>sp", function() require('fzf-lua').tags_live_grep({ exec_empty_query = true }) end)
+        utils.map("v", "<c-p>sp", function() require('fzf-lua').tags_grep_visual() end)
+
+        -- colorscheme selector
+        utils.add_command('Colors', function() require('fzf-lua').colorschemes() end, {
+            bang = false,
+            nargs = 0,
+            desc = 'FzfLua powered colorscheme picker'
+        }, true)
     end,
-    fzf_opts = { ['--layout'] = 'default' },
-    fzf_colors = {
-        ["fg"]      = { "fg", "CursorLine" },
-        ["bg"]      = { "bg", "Normal" },
-        ["hl"]      = { "fg", "Comment" },
-        ["fg+"]     = { "fg", "Normal" },
-        ["bg+"]     = { "bg", "CursorLine" },
-        ["hl+"]     = { "fg", "Statement" },
-        ["info"]    = { "fg", "PreProc" },
-        ["prompt"]  = { "fg", "Conditional" },
-        ["pointer"] = { "fg", "Exception" },
-        ["marker"]  = { "fg", "Keyword" },
-        ["spinner"] = { "fg", "Label" },
-        ["header"]  = { "fg", "Comment" },
-        ["gutter"]  = { "bg", "Normal" },
-    },
-    keymap = {
-        fzf = {
-            ['ctrl-a'] = 'toggle-all',
-            ['ctrl-f'] = 'half-page-down',
-            ['ctrl-b'] = 'half-page-up',
-            ['ctrl-u'] = 'beginning-of-line',
-            ['ctrl-o'] = 'end-of-line',
-            ['ctrl-d'] = 'abort',
-            -- ['ctrl-i'] = 'clear-query'
+    config = function()
+        local utils = require("utils")
+        local fzf = require('fzf-lua')
 
-            -- preview (bat)
-            ['shift-down'] = 'preview-page-down',
-            ['shift-up'] = 'preview-page-up'
-        }
-    },
-    actions = {
-        files = {
-            ['default'] = actions.file_edit,
-            ['ctrl-x'] = actions.file_split,
-            ['ctrl-v'] = actions.file_vsplit,
-            ['ctrl-t'] = actions.file_tabedit,
-            ['ctrl-q'] = actions.file_sel_to_qf
-        },
-        buffers = {
-            ['default'] = actions.buf_edit,
-            ['ctrl-x'] = actions.buf_split,
-            ['ctrl-v'] = actions.buf_vsplit,
-            ['ctrl-t'] = actions.buf_tabedit,
-            ['ctrl-q'] = actions.buf_sel_to_qf
-        }
-    },
-    previewers = {
-        bat = {
-            cmd = "bat",
-            args = "--style=numbers,changes --color always",
-            theme = 'Coldark-Dark'
-        }
-    },
-    buffers = {
-        previewer = 'bat',
-        actions = {
-            ['ctrl-d'] = { actions.buf_del, actions.resume },
-            ['ctrl-x'] = actions.buf_split,         -- disable default
-            ['ctrl-q'] = false                      -- disable default
-        }
-    },
-    files = { rg_opts = '--files' .. default_rg_options },
-    blines = {
-        previewer = 'bat',
-        actions = { ['ctrl-q'] = actions.buf_sel_to_qf }
-    },
-    grep = {
-        rg_glob = true,
-        rg_opts = "--column --color=always" .. default_rg_options,
-        actions = { ['ctrl-g'] = actions.grep_lgrep }
-    },
-    tags = {
-        previewer = 'bat',
-        actions = { ['ctrl-g'] = actions.grep_lgrep }
-    },
-    lsp = {
-        continue_last_search = false,
-        icons = {
-            ['Error'] = { icon = symbol_config.indicator_error, color = 'red' },
-            ['Warning'] = { icon = symbol_config.indicator_warning, color = 'yellow' },
-            ['Information'] = { icon = symbol_config.indicator_info, color = 'blue' },
-            ['Hint'] = { icon = symbol_config.indicator_hint, color = 'magenta' }
-        }
-    }
-})
+        local ignore_dirs = '.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build,*.dSYM,tags,node_modules,Pods,sessions'
+        local default_rg_options = string.format(' --hidden --follow --no-heading --smart-case --no-ignore -g "!{%s}"', ignore_dirs)
 
-if misc.get_git_root() ~= nil then
-    utils.map("n", "<c-p>p", fzf.git_files)
-    utils.map("n", "<c-p>P", fzf.files)
-else
-    utils.map("n", "<c-p>p", fzf.files)
-    utils.map("n", "<c-p>P", fzf.files)
-end
+        local symbol_config = utils.editor_config.symbol_config
+        local truncation = utils.editor_config.truncation
+        local actions = fzf.actions
 
-utils.map("n", "<c-p>f", function() fzf.live_grep({ exec_empty_query = true }) end)
-utils.map("n", "<c-p>F", function() fzf.live_grep({ continue_last_search = true }) end)
-utils.map("n", "<c-p>b", fzf.buffers)
-utils.map("n", "<c-p>ss", fzf.grep_cword)
-utils.map("n", "<c-p>sl", fzf.blines)
-utils.map("n", "<c-p>sz", function() fzf.grep({ search = 'TODO|NOTE', no_esc = true }) end)
-utils.map("v", "<c-p>ss", fzf.grep_visual)
+        -- set fzf-lua as vim.ui.select handler
+        if vim.ui.select ~= require('fzf-lua.providers.ui_select').ui_select then
+            fzf.register_ui_select()
+        end
 
--- ctags interaction
--- independent of lsp
-utils.map("n", "<c-p>sP", fzf.tags_grep_cword)
-utils.map("n", "<c-p>sp", function() fzf.tags_live_grep({ exec_empty_query = true }) end)
-utils.map("v", "<c-p>sp", fzf.tags_grep_visual)
+        fzf.setup({
+            winopts = {
+                split = 'belowright new',
+                fullscreen = false,
+                preview = {
+                    -- default = 'bat',
+                    horizontal = 'right:50%',
+                    vertical = 'up:50%',
+                    scrollbar = false
+                },
+                on_create = function()
+                    vim.opt_local.buflisted = false
+                    vim.opt_local.bufhidden = 'wipe'
 
-utils.add_command('Colors', fzf.colorschemes, {
-    bang = false,
-    nargs = 0,
-    desc = 'FzfLua powered colorscheme picker'
-}, true)
+                    utils.map('t', '<c-k>', '<up>', { buffer = 0 })
+                    utils.map('t', '<c-j>', '<down>', { buffer = 0 })
+                    utils.map('t', '<esc>', '<cmd>quit<cr>', { buffer = 0 })
+                end,
+            },
+            winopts_fn = function()
+                return {
+                    preview = {
+                        layout = vim.api.nvim_win_get_width(0) <
+                            truncation.truncation_limit_s_terminal and 'vertical' or 'horizontal'
+                    }
+                }
+            end,
+            fzf_opts = { ['--layout'] = 'default' },
+            fzf_colors = {
+                ["fg"]      = { "fg", "CursorLine" },
+                ["bg"]      = { "bg", "Normal" },
+                ["hl"]      = { "fg", "Comment" },
+                ["fg+"]     = { "fg", "Normal" },
+                ["bg+"]     = { "bg", "CursorLine" },
+                ["hl+"]     = { "fg", "Statement" },
+                ["info"]    = { "fg", "PreProc" },
+                ["prompt"]  = { "fg", "Conditional" },
+                ["pointer"] = { "fg", "Exception" },
+                ["marker"]  = { "fg", "Keyword" },
+                ["spinner"] = { "fg", "Label" },
+                ["header"]  = { "fg", "Comment" },
+                ["gutter"]  = { "bg", "Normal" },
+            },
+            keymap = {
+                fzf = {
+                    ['ctrl-a'] = 'toggle-all',
+                    ['ctrl-f'] = 'half-page-down',
+                    ['ctrl-b'] = 'half-page-up',
+                    ['ctrl-u'] = 'beginning-of-line',
+                    ['ctrl-o'] = 'end-of-line',
+                    ['ctrl-d'] = 'abort',
+                    -- ['ctrl-i'] = 'clear-query'
 
+                    -- preview (bat)
+                    ['shift-down'] = 'preview-page-down',
+                    ['shift-up'] = 'preview-page-up'
+                }
+            },
+            actions = {
+                files = {
+                    ['default'] = actions.file_edit,
+                    ['ctrl-x'] = actions.file_split,
+                    ['ctrl-v'] = actions.file_vsplit,
+                    ['ctrl-t'] = actions.file_tabedit,
+                    ['ctrl-q'] = actions.file_sel_to_qf
+                },
+                buffers = {
+                    ['default'] = actions.buf_edit,
+                    ['ctrl-x'] = actions.buf_split,
+                    ['ctrl-v'] = actions.buf_vsplit,
+                    ['ctrl-t'] = actions.buf_tabedit,
+                    ['ctrl-q'] = actions.buf_sel_to_qf
+                }
+            },
+            previewers = {
+                bat = {
+                    cmd = "bat",
+                    args = "--style=numbers,changes --color always",
+                    theme = 'Coldark-Dark'
+                }
+            },
+            buffers = {
+                previewer = 'bat',
+                actions = {
+                    ['ctrl-d'] = { actions.buf_del, actions.resume },
+                    ['ctrl-x'] = actions.buf_split, -- disable default
+                    ['ctrl-q'] = false -- disable default
+                }
+            },
+            files = { rg_opts = '--files' .. default_rg_options },
+            blines = {
+                previewer = 'bat',
+                actions = { ['ctrl-q'] = actions.buf_sel_to_qf }
+            },
+            grep = {
+                rg_glob = true,
+                rg_opts = "--column --color=always" .. default_rg_options,
+                actions = { ['ctrl-g'] = actions.grep_lgrep }
+            },
+            tags = {
+                previewer = 'bat',
+                actions = { ['ctrl-g'] = actions.grep_lgrep }
+            },
+            lsp = {
+                continue_last_search = false,
+                icons = {
+                    ['Error'] = { icon = symbol_config.indicator_error, color = 'red' },
+                    ['Warning'] = { icon = symbol_config.indicator_warning, color = 'yellow' },
+                    ['Information'] = { icon = symbol_config.indicator_info, color = 'blue' },
+                    ['Hint'] = { icon = symbol_config.indicator_hint, color = 'magenta' }
+                }
+            }
+        })
+    end
+}

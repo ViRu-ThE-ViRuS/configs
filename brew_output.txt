@@ -30,6 +30,7 @@ libunistring
 libuv
 libvterm
 libyaml
+lua
 luajit
 luv
 m4

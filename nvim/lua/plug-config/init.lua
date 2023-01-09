@@ -1,0 +1,33 @@
+return {
+    -- shared
+    'nvim-lua/plenary.nvim',
+    'kyazdani42/nvim-web-devicons',
+
+    -- colorschemes
+    'bluz71/vim-nightfly-guicolors',
+    'EdenEast/nightfox.nvim',
+    'sam4llis/nvim-tundra',
+    'marko-cerovac/material.nvim',
+    'bluz71/vim-moonfly-colors',
+    'olivercederborg/poimandres.nvim',
+    'sainnhe/gruvbox-material',
+    'luisiacc/gruvbox-baby',
+    'ellisonleao/gruvbox.nvim',
+    'kvrohit/mellow.nvim',
+    'B4mbus/oxocarbon-lua.nvim',
+    'kvrohit/rasmus.nvim',
+    'Mofiqul/adwaita.nvim',
+    'sainnhe/everforest',
+    'Mofiqul/vscode.nvim',
+    'Yazeed1s/oh-lucy.nvim',
+    'w3barsi/barstrata.nvim',
+    'kvrohit/substrata.nvim',
+    'tanvirtin/monokai.nvim',
+    'thepogsupreme/mountain.nvim',
+    'catppuccin/nvim',
+    'rose-pine/neovim',
+    'habamax/vim-habamax',
+    'chiendo97/intellij.vim',
+    'arzg/vim-colors-xcode',
+    'protesilaos/tempus-themes-vim',
+}

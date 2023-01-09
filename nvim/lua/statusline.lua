@@ -16,7 +16,7 @@ local colors = {
     context     = "%#WinBar#",
     line_col    = "%#CursorLine#",
     percentage  = "%#CursorLine#",
-    bufnr       = "%#PmenuSbar#",
+    bufnr       = "%#Pmenu#",
     filetype    = "%#PmenuSel#",
 }
 
