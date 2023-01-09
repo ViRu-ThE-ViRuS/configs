@@ -20,6 +20,16 @@ return {
 
                     ["e"] = actions.goto_file,
                     ["<leader>gh"] = actions.toggle_files,
+
+                    -- merge tool
+                    ['<m-2>'] = actions.conflict_choose('ours'),
+                    ['<m-3>'] = actions.conflict_choose('theirs'),
+                    ['<m-0>'] = actions.conflict_choose('base'),
+                    ['<m-a>'] = actions.conflict_choose('all'),
+                    ['<m-x>'] = actions.conflict_choose('none'),
+                    ['<m-l>'] = actions.cycle_layout,
+                    ["[x"] = actions.prev_conflict,
+                    ["]x"] = actions.next_conflict,
                 },
                 file_panel = {
                     ["j"] = actions.next_entry,
@@ -37,13 +47,6 @@ return {
                     ["U"] = actions.unstage_all,
                     ["X"] = actions.restore_entry,
                     ["R"] = actions.refresh_files,
-
-                    -- merge tool
-                    ['<m-1>'] = actions.conflict_choose('base'),
-                    ['<m-2>'] = actions.conflict_choose('ours'),
-                    ['<m-3>'] = actions.conflict_choose('theirs'),
-                    ['<m-a>'] = actions.conflict_choose('all'),
-                    ['<m-x>'] = actions.conflict_choose('none'),
 
                     ["e"] = actions.goto_file,
                     ["<leader>gh"] = actions.toggle_files,
