@@ -32,17 +32,18 @@ return {
                     ["[c"] = actions.select_prev_entry,
 
                     ["s"] = actions.toggle_stage_entry,
+                    ["u"] = actions.toggle_stage_entry,
                     ["S"] = actions.stage_all,
                     ["U"] = actions.unstage_all,
                     ["X"] = actions.restore_entry,
                     ["R"] = actions.refresh_files,
 
                     -- merge tool
-                    ['co'] = actions.conflict_choose('ours'),
-                    ['ct'] = actions.conflict_choose('theirs'),
-                    ['cb'] = actions.conflict_choose('base'),
-                    ['ca'] = actions.conflict_choose('all'),
-                    ['cX'] = actions.conflict_choose('none'),
+                    ['<m-1>'] = actions.conflict_choose('base'),
+                    ['<m-2>'] = actions.conflict_choose('ours'),
+                    ['<m-3>'] = actions.conflict_choose('theirs'),
+                    ['<m-a>'] = actions.conflict_choose('all'),
+                    ['<m-x>'] = actions.conflict_choose('none'),
 
                     ["e"] = actions.goto_file,
                     ["<leader>gh"] = actions.toggle_files,

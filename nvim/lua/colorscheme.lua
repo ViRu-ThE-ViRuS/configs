@@ -169,7 +169,7 @@ end
 
 vim.opt.termguicolors = true
 vim.opt.background = 'dark'
-local colorscheme = 'nightfox'
+local colorscheme = 'vscode'
 
 -- load default colorscheme if chosen one is not available
 if not pcall(vim.cmd.colorscheme, colorscheme) then vim.cmd.colorscheme('default') end
