@@ -17,13 +17,15 @@ return {
             linehl = false,
             preview_config = { border = 'rounded' },
             on_attach = function(bufnr)
+                local map_opts = { silent = true, buffer = bufnr }
+
                 -- hunk navigation
-                utils.map('n', '[c', gitsigns.prev_hunk, { silent = true, buffer = bufnr })
-                utils.map('n', ']c', gitsigns.next_hunk, { silent = true, buffer = bufnr })
+                utils.map('n', '[c', gitsigns.prev_hunk, map_opts)
+                utils.map('n', ']c', gitsigns.next_hunk, map_opts)
 
                 -- text objects
-                utils.map({ 'o', 'x' }, 'ig', gitsigns.select_hunk, { silent = true, buffer = bufnr })
-                utils.map({ 'o', 'x' }, 'ag', gitsigns.select_hunk, { silent = true, buffer = bufnr })
+                utils.map({ 'o', 'x' }, 'ig', gitsigns.select_hunk, map_opts)
+                utils.map({ 'o', 'x' }, 'ag', gitsigns.select_hunk, map_opts)
 
                 -- return a function, which calls func(arg) and refreshes fugitive
                 local function wrap_refresh_fugitive(func, arg)
@@ -36,20 +38,20 @@ return {
 
                 --- @format disable
                 -- keymaps
-                utils.map('n', '<leader>gp', gitsigns.preview_hunk, { silent = true, buffer = bufnr })
-                utils.map('n', '<leader>gt', gitsigns.toggle_deleted, { silent = true, buffer = bufnr })
+                utils.map('n', '<leader>gp', gitsigns.preview_hunk, map_opts)
+                utils.map('n', '<leader>gt', gitsigns.toggle_deleted, map_opts)
 
                 -- reset hunk
-                utils.map('n', '<leader>gr', gitsigns.reset_hunk, { silent = true, buffer = bufnr })
-                utils.map('v', '<leader>gr', function() gitsigns.reset_hunk({ vim.fn.line('.'), vim.fn.line('v') }) end, { silent = true, buffer = bufnr })
+                utils.map('n', '<leader>gr', gitsigns.reset_hunk, map_opts)
+                utils.map('v', '<leader>gr', function() gitsigns.reset_hunk({ vim.fn.line('.'), vim.fn.line('v') }) end, map_opts)
 
                 -- stage and refresh fugitive
-                utils.map('n', '<leader>gs', wrap_refresh_fugitive(gitsigns.stage_hunk), { silent = true, buffer = bufnr })
-                utils.map('v', '<leader>gs', wrap_refresh_fugitive(gitsigns.stage_hunk, { vim.fn.line('.'), vim.fn.line('v') }), { silent = true, buffer = bufnr })
+                utils.map('n', '<leader>gs', wrap_refresh_fugitive(gitsigns.stage_hunk), map_opts)
+                utils.map('v', '<leader>gs', wrap_refresh_fugitive(gitsigns.stage_hunk, { vim.fn.line('.'), vim.fn.line('v') }), map_opts)
 
                 -- unstage and refresh fugitive
-                utils.map('n', '<leader>gu', wrap_refresh_fugitive(gitsigns.undo_stage_hunk), { silent = true, buffer = bufnr })
-                utils.map('v', '<leader>gu', wrap_refresh_fugitive(gitsigns.undo_stage_hunk, { vim.fn.line('.'), vim.fn.line('v') }), { silent = true, buffer = bufnr })
+                utils.map('n', '<leader>gu', wrap_refresh_fugitive(gitsigns.undo_stage_hunk), map_opts)
+                utils.map('v', '<leader>gu', wrap_refresh_fugitive(gitsigns.undo_stage_hunk, { vim.fn.line('.'), vim.fn.line('v') }), map_opts)
             end
         }
     end

@@ -30,6 +30,9 @@ vim.opt.diffopt = "internal,filler,vertical,linematch:50"
 vim.opt.display = "lastline,msgsep"
 vim.opt.equalalways = true
 vim.opt.fillchars = vim.opt.fillchars + 'diff:╱' + 'fold: '
+vim.opt.foldmarker = "{{{,}}}"
+vim.opt.foldmethod = "marker" -- {{{ }}}
+vim.opt.guicursor = 'n-v-c-sm:block-Cursor,i-ci-ve:ver25-Cursor,r-cr-o:hor20-Cursor'
 vim.opt.hidden = true
 vim.opt.history = 100
 vim.opt.hlsearch = false
@@ -40,8 +43,8 @@ vim.opt.joinspaces = false
 vim.opt.joinspaces = false
 vim.opt.laststatus = 3
 vim.opt.lazyredraw = true
-vim.opt.modelines = 0
 vim.opt.mouse = "a"
+vim.opt.number = true
 vim.opt.path = vim.opt.path + vim.loop.cwd() + '**'
 vim.opt.pumblend = 10
 vim.opt.pumheight = 10
@@ -59,20 +62,15 @@ vim.opt.undodir = core.get_homedir() .. "/.config/undodir/"
 vim.opt.updatetime = 1000
 vim.opt.visualbell = false
 vim.opt.wildmode = "full"
+vim.opt.wrap = false
 vim.opt.writebackup = false
-vim.opt.guicursor = 'n-v-c-sm:block-Cursor,i-ci-ve:ver25-Cursor,r-cr-o:hor20-Cursor'
--- vim.opt.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20' # old, does not work with light themes
 
--- window local
+-- status column
 vim.opt.colorcolumn = "+1"
 vim.opt.cursorline = true
 vim.opt.foldcolumn = 'auto:3'
-vim.opt.foldmarker = "{{{,}}}"
-vim.opt.foldmethod = "marker" -- {{{ }}}
 vim.opt.signcolumn = "yes"
-vim.opt.wrap = false
-vim.opt.number = true
--- vim.opt.relativenumber = true
+-- vim.opt.statuscolumn = '%=%l%s%C' -- TODO(vir): check this out
 
 -- spellings
 vim.opt.spelllang = 'en_us'

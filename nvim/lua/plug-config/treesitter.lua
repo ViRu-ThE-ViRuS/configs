@@ -52,16 +52,16 @@ return {
 
             require('nvim-treesitter.configs').setup({
                 ensure_installed = {
-                    'lua', 'python', 'c', 'cpp', 'java', 'go', 'bash', 'fish', 'cmake',
-                    'make', 'cuda', 'rust', 'vim', 'markdown', 'javascript', 'typescript', 'tsx',
-                    'query'
+                    'lua', 'python', 'c', 'cpp', 'java', 'go', 'bash', 'fish',
+                    'cmake', 'make', 'cuda', 'rust', 'vim', 'markdown',
+                    'javascript', 'typescript', 'tsx', 'query'
                 },
 
                 indent = { enable = true, disable = { 'python', 'c', 'cpp', 'lua' } },
                 yati = { enable = true, disable = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' } },
 
                 highlight = { enable = true, additional_vim_regex_highlighting = { 'markdown' } },
-                matchup = { enable = false, disable_virtual_text = true },
+                matchup = { enable = true, disable_virtual_text = true },
                 context_commentstring = { enable = true, enable_autocmd = false },
 
                 incremental_selection = {

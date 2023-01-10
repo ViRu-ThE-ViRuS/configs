@@ -35,9 +35,9 @@ local function activate_output_window(session)
         vim.api.nvim_buf_set_option(target_handle, 'bufhidden', 'delete')
         utils.map('n', '<c-o>', function()
             vim.cmd [[
-                            q!
-                            tabclose
-                        ]]
+                q!
+                tabclose
+            ]]
         end, { buffer = target_handle })
 
         local windows = vim.fn.win_findbuf(target_handle)
@@ -178,7 +178,15 @@ local function setup_dap_ui()
     local dap = require('dap')
     local dapui = require('dapui')
 
-    -- repl setup
+    -- setup statusline
+    local statusline = require('statusline')
+    vim.api.nvim_create_autocmd('FileType', { group = statusline.autocmd_group, pattern = 'dapui_watches', callback = statusline.set_statusline_func('Watches') })
+    vim.api.nvim_create_autocmd('FileType', { group = statusline.autocmd_group, pattern = 'dapui_stacks', callback = statusline.set_statusline_func('Stacks') })
+    vim.api.nvim_create_autocmd('FileType', { group = statusline.autocmd_group, pattern = 'dapui_scopes', callback = statusline.set_statusline_func('Scopes') })
+    vim.api.nvim_create_autocmd('FileType', { group = statusline.autocmd_group, pattern = 'dapui_breakpoints', callback = statusline.set_statusline_func('Breaks') })
+    vim.api.nvim_create_autocmd('FileType', { group = statusline.autocmd_group, pattern = 'dap-repl', callback = statusline.set_statusline_func('Repl') })
+
+    -- setup repl
     dap.repl.commands = vim.tbl_extend('force', dap.repl.commands, {
         exit = { 'q', 'exit' },
         custom_commands = {
@@ -187,7 +195,14 @@ local function setup_dap_ui()
         }
     })
 
-    -- dapui setup
+    -- vim.api.nvim_create_augroup('DAPConfig', { clear = true })
+    -- vim.api.nvim_create_autocmd('FileType', {
+    --     group = 'DAPConfig',
+    --     pattern = 'dap-repl',
+    --     callback = require('dap.ext.autocompl').attach
+    -- })
+
+    -- setup dapui
     dapui.setup({
         mappings = {
             expand = "<CR>",
@@ -206,14 +221,6 @@ local function setup_dap_ui()
         floating = { border = "rounded", mappings = { close = { "q", "<esc>", "<c-o>" } } },
     })
 
-    -- repl completion
-    -- vim.api.nvim_create_augroup('DAPConfig', { clear = true })
-    -- vim.api.nvim_create_autocmd('FileType', {
-    --     group = 'DAPConfig',
-    --     pattern = 'dap-repl',
-    --     callback = require('dap.ext.autocompl').attach
-    -- })
-
     -- signs
     vim.fn.sign_define("DapStopped", { text = '=>', texthl = 'DiagnosticWarn', numhl = 'DiagnosticWarn' })
     vim.fn.sign_define("DapBreakpoint", { text = '<>', texthl = 'DiagnosticInfo', numhl = 'DiagnosticInfo' })
@@ -221,6 +228,7 @@ local function setup_dap_ui()
     vim.fn.sign_define("DapBreakpointCondition", { text = '?>', texthl = 'DiagnosticInfo', numhl = 'DiagnosticInfo' })
     vim.fn.sign_define("DapLogPoint", { text = '.>', texthl = 'DiagnosticInfo', numhl = 'DiagnosticInfo' })
 
+    -- options
     dap.defaults.fallback.focus_terminal = false
     dap.defaults.fallback.terminal_win_cmd = '10split new'
 
@@ -333,12 +341,21 @@ return {
         -- general keymaps and commands
         utils.map('n', '<m-d>b', dap.toggle_breakpoint)
 
-        utils.add_command('[DAP] debug: add conditional breakpoint', function()
+        utils.add_command('[DAP] Add conditional breakpoint', function()
             vim.ui.input({
                 prompt = 'breakpoint condition> ',
                 completion = 'tag'
             }, function(condition)
                 dap.set_breakpoint(condition)
+            end)
+        end, nil, true)
+
+        utils.add_command('[DAP] Add log point', function ()
+            vim.ui.input({
+                prompt = 'logpoint message> ',
+                completion = 'tag'
+            }, function(log_msg)
+                dap.set_breakpoint(nil, nil, log_msg)
             end)
         end, nil, true)
 

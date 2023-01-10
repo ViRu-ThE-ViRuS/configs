@@ -121,6 +121,7 @@ local function ui_overrides()
     -- set normal to a default if not already set
     if vim.api.nvim_get_hl_by_name("Normal", true).background == nil then
         vim.api.nvim_set_hl(0, "Normal", { background = 0x171717 })
+        vim.api.nvim_set_hl(0, "NormalFloat", { background = 0x171717 })
     end
 
     vim.opt.guicursor = 'n-v-c-sm:block-Cursor,i-ci-ve:ver25-Cursor,r-cr-o:hor20-Cursor'
@@ -160,6 +161,9 @@ local function ui_overrides()
         highlight! link VertSplit LineNr
         highlight! link FloatBorder Normal
         highlight! link NormalFloat Normal
+        highlight! link CursorLineNr CursorLine
+        highlight! link CursorLineFold CursorLine
+        highlight! link CursorLineSign CursorLine
     ]]
 
     -- set statusline highlights

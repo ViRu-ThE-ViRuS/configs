@@ -148,8 +148,11 @@ local function add_command(key, callback, cmd_opts, also_custom)
 
         -- assert opts not defined, or 0 args
         assert((not cmd_opts) or (not cmd_opts.nargs) or cmd_opts.nargs == 0)
-        callback = (type(callback) == 'function' and callback) or function() vim.api.nvim_command(callback) end
-        workspace_config.commands[key] = callback
+
+        local callback_fn = (type(callback) == 'function' and callback) or function()
+            vim.api.nvim_command(callback)
+        end
+        workspace_config.commands[key] = callback_fn
     end
 end
 

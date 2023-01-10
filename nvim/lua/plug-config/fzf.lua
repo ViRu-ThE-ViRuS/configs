@@ -3,19 +3,13 @@ return {
     init = function ()
         -- NOTE(vir): using require in each because it sets up lazy loading
         local utils = require('utils')
-
         utils.map("n", "<c-p>p", function() require('fzf-lua').files() end)
-        utils.map("n", "<c-p>P", function() require('fzf-lua').git_files() end)
 
         -- defer this as it takes a bit to get git root
         vim.schedule(function()
             if require('lib/misc').get_git_root() then
-                utils.map("n", "<c-p>p", function() require('fzf-lua').files() end)
-                utils.map("n", "<c-p>P", function() require('fzf-lua').git_files() end)
-            else
-
-                -- unmap git_files which was set by default
-                utils.unmap('n', '<c-p>P')
+                utils.map("n", "<c-p>p", function() require('fzf-lua').git_files() end)
+                utils.map("n", "<c-p>P", function() require('fzf-lua').files() end)
             end
         end)
 
@@ -40,6 +34,15 @@ return {
             nargs = 0,
             desc = 'FzfLua powered colorscheme picker'
         }, true)
+
+
+        -- set statusline for fzf buffers
+        local statusline = require('statusline')
+        vim.api.nvim_create_autocmd('FileType', {
+            group = statusline.autocmd_group,
+            pattern = 'fzf',
+            callback = statusline.set_statusline_func('FZF'),
+        })
     end,
     config = function()
         local utils = require("utils")
@@ -65,11 +68,15 @@ return {
                     -- default = 'bat',
                     horizontal = 'right:50%',
                     vertical = 'up:50%',
-                    scrollbar = false
+                    scrollbar = false,
+                    -- flip_columns = truncation.truncation_limit_s_terminal
                 },
                 on_create = function()
                     vim.opt_local.buflisted = false
                     vim.opt_local.bufhidden = 'wipe'
+
+                    -- TODO(vir): this dont work here, file an issue?
+                    -- vim.opt_local.statuscolumn = ''
 
                     utils.map('t', '<c-k>', '<up>', { buffer = 0 })
                     utils.map('t', '<c-j>', '<down>', { buffer = 0 })
@@ -79,6 +86,7 @@ return {
             winopts_fn = function()
                 return {
                     preview = {
+                        -- works better than flip_columns when in vsplits
                         layout = vim.api.nvim_win_get_width(0) <
                             truncation.truncation_limit_s_terminal and 'vertical' or 'horizontal'
                     }

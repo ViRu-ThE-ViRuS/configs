@@ -6,6 +6,18 @@ return {
         utils.map("n", "<leader>gh", "<cmd>DiffviewOpen<cr>")
         utils.map("n", "<leader>gH", "<cmd>DiffviewFileHistory %<cr>")
         utils.map("n", "<leader>gl", "<cmd>DiffviewFileHistory .<cr>")
+
+        local statusline = require('statusline')
+        vim.api.nvim_create_autocmd('FileType', {
+            group = statusline.autocmd_group,
+            pattern = 'DiffviewFiles',
+            callback = statusline.set_statusline_func('DiffViewFiles', true),
+        })
+        vim.api.nvim_create_autocmd('FileType', {
+            group = statusline.autocmd_group,
+            pattern = 'DiffviewFileHistory',
+            callback = statusline.set_statusline_func('DiffViewFileHistory', true),
+        })
     end,
     config = function()
         local actions = require("diffview/actions")

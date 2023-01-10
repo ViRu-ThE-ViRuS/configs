@@ -104,7 +104,5 @@ utils.map("n", "<leader>cc", function()
 end, { buffer = 0 })
 
 -- cell navigation
-utils.map('n', ']i', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@cell-marker")<CR>zz',
-    { buffer = 0 })
-utils.map('n', '[i', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@cell-marker")<CR>zz',
-    { buffer = 0 })
+utils.map('n', ']i', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@cell-marker")<CR>zz', { buffer = 0 })
+utils.map('n', '[i', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@cell-marker")<CR>zz', { buffer = 0 })

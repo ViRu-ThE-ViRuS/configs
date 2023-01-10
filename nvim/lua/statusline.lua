@@ -231,7 +231,7 @@ local function set_statusline_func(title, non_local)
     else return function() vim.opt_local.statusline =  "%!luaeval(\"require('statusline').statusline('" .. title .. "')\")" end end
 end
 
--- get a string which can be used to set statusline in vimscript
+-- get a [viml]string which can be used to set statusline, eg: using vim.cmd
 local function set_statusline_cmd(title)
     -- NOTE(vir): setlocal vs set?
     return 'setlocal statusline=%!luaeval(\'require(\\"statusline\\").statusline(\\"' .. vim.fn.escape(title, ' ') .. '\\")\')'
@@ -240,42 +240,32 @@ end
 
 -- {{{ statusline setup
 -- setup defaults
-vim.api.nvim_create_augroup('StatusLine', {clear = true})
-vim.api.nvim_create_autocmd({'BufEnter', 'WinEnter'}, {group='StatusLine', pattern='*', callback = function()
-    local ft = vim.api.nvim_get_option_value('ft', {scope = 'local'})
+local autocmd_group = vim.api.nvim_create_augroup('StatusLine', { clear = true })
+
+vim.api.nvim_create_autocmd({ 'BufEnter', 'WinEnter' }, { group = autocmd_group, pattern = '*', callback = function()
+    local ft = vim.api.nvim_get_option_value('ft', { scope = 'local' })
     if not core.table_contains(statusline_blacklist, ft) then vim.opt_local.statusline = "%!luaeval(\"require('statusline').statusline()\")" end
-end})
-vim.api.nvim_create_autocmd({'BufLeave', 'WinLeave'}, {group='StatusLine', pattern='*', callback = function()
-    local ft = vim.api.nvim_get_option_value('ft', {scope = 'local'})
+end })
+vim.api.nvim_create_autocmd({ 'BufLeave', 'WinLeave' }, { group = autocmd_group, pattern = '*', callback = function()
+    local ft = vim.api.nvim_get_option_value('ft', { scope = 'local' })
     if not core.table_contains(statusline_blacklist, ft) then vim.opt_local.statusline = "%!luaeval(\"require('statusline').statusline_inactive()\")" end
-end})
+end })
 
 -- setup builtins
-vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern='terminal', callback = set_statusline_func('Terminal')})
-vim.api.nvim_create_autocmd('BufWinEnter', {group='StatusLine', pattern='quickfix', callback = set_statusline_func('QuickFix')})
-vim.api.nvim_create_autocmd('BufWinEnter', {group='StatusLine', pattern='diagnostics', callback = set_statusline_func('Diagnostics')})
-
--- setup plugins
-vim.api.nvim_create_autocmd('BufWinEnter', {group='StatusLine', pattern='NvimTree_1', callback = set_statusline_func('Explorer')})
-vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern='fzf', callback = set_statusline_func('FZF')})
-vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern={'vista_kind', 'vista'}, callback = set_statusline_func('Outline')})
-vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern={'fugitive', 'git'}, callback = set_statusline_func('Git')})
-vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern='gitcommit', callback = set_statusline_func('GitCommit')})
-vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern='DiffviewFiles', callback = set_statusline_func('DiffViewFiles', true)})
-vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern='DiffviewFileHistory', callback = set_statusline_func('DiffViewFileHistory', true)})
-
-vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern='dapui_watches', callback=set_statusline_func('Watches')})
-vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern='dapui_stacks', callback=set_statusline_func('Stacks')})
-vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern='dapui_scopes', callback=set_statusline_func('Scopes')})
-vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern='dapui_breakpoints', callback=set_statusline_func('Breaks')})
-vim.api.nvim_create_autocmd('FileType', {group='StatusLine', pattern='dap-repl', callback=set_statusline_func('Repl')})
+vim.api.nvim_create_autocmd('FileType', { group = autocmd_group, pattern = 'terminal', callback = set_statusline_func('Terminal') })
+vim.api.nvim_create_autocmd('BufWinEnter', { group = autocmd_group, pattern = 'quickfix', callback = set_statusline_func('QuickFix') })
+vim.api.nvim_create_autocmd('BufWinEnter', { group = autocmd_group, pattern = 'diagnostics', callback = set_statusline_func('Diagnostics') })
 -- }}}
 
 return {
+    setup_highlights = setup_highlights,
+    autocmd_group = autocmd_group,
+
+    -- actual statusline
     statusline = statusline,
     statusline_inactive = statusline_inactive,
-    setup_highlights = setup_highlights,
 
+    -- api to setup statusline in buffers
     set_statusline_func = set_statusline_func,
     set_statusline_cmd = set_statusline_cmd,
 }

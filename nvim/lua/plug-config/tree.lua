@@ -13,6 +13,17 @@ return {
                 utils.map('n', '<c-o>', '<cmd>wincmd p<cr>', { buffer = 0 })
             end,
         })
+
+        -- set statusline for nvim-tree buffers
+        local statusline = require('statusline')
+        vim.api.nvim_create_autocmd('BufWinEnter', {
+            group = statusline.autocmd_group,
+            pattern = 'NvimTree_*',
+            callback = function()
+                -- vim.opt_local.statuscolumn = ''
+                statusline.set_statusline_func('Explorer')()
+            end,
+        })
     end,
     opts = {
         update_focused_file = { enable = true, update_cwd = false },

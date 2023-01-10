@@ -3,11 +3,16 @@ return {
     cmd = { 'Vista' },
     init = function()
         local utils = require('utils')
+
         utils.map('n', '<leader>k', function() vim.cmd.Vista({ bang = true, args = { '!' } }) end)
 
         vim.api.nvim_create_autocmd('FileType', {
             pattern = { 'vista', 'vista_kind' },
-            callback = function() utils.map('n', '<c-o>', '<cmd>wincmd p<cr>', { buffer = 0 }) end
+            callback = function()
+                -- vim.opt_local.statuscolumn = ' '
+                utils.map('n', '<c-o>', '<cmd>wincmd p<cr>', { buffer = 0 })
+                require('statusline').set_statusline_func('Outline')()
+            end
         })
     end,
     config = function()
@@ -24,6 +29,5 @@ return {
         vim.g.vista_fzf_preview = { 'right:50%' }
         vim.g.vista_disable_statusline = true
         -- vim.g.vista_default_executive = 'nvim_lsp'
-
     end
 }

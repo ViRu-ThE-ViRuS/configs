@@ -118,6 +118,8 @@ end
 
 -- launch a terminal with the command in a split
 local function launch_terminal(command, background, callback)
+    assert(command, "param. command must be a valid shell command")
+
     local split_cmd = (utils.is_htruncated(truncation.truncation_limit_s_terminal) and "sp") or "vsp"
     vim.cmd(string.format('%s term://%s', split_cmd, vim.api.nvim_get_option_value('shell', {})))
 

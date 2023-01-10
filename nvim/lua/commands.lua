@@ -135,28 +135,26 @@ vim.defer_fn(function()
     -- <cword> highlight toggle
     vim.cmd [[
         function! CWordHlToggle()
-          let @/ = ''
-          if exists('#auto_highlight')
-            autocmd! auto_highlight
-            augroup! auto_highlight
-            setlocal updatetime=1000
+            let @/ = ''
+            if exists('#auto_highlight')
+                autocmd! auto_highlight
+                augroup! auto_highlight
+                set updatetime=1000
 
-            " echo 'highlight current word: off'
-            lua require('utils').notify('<cword> highlight deactivated', 'debug', {render='minimal'}, true)
+                lua require('utils').notify('<cword> highlight deactivated', 'debug', {render='minimal'}, true)
 
-            return 0
-          else
-            augroup auto_highlight
-              autocmd!
-              autocmd CursorHold * let @/ = '\V\<'.escape(expand('<cword>'), '\').'\>'
-            augroup end
-            setl updatetime=250
+                return 0
+            else
+                augroup auto_highlight
+                    autocmd!
+                    autocmd CursorHold * let @/ = '\V\<'.escape(expand('<cword>'), '\').'\>'
+                augroup end
+                set updatetime=250
 
-            " echo 'highlight current word: on'
-            lua require('utils').notify('<cword> highlight activated', 'info', {render='minimal'}, true)
+                lua require('utils').notify('<cword> highlight activated', 'info', {render='minimal'}, true)
 
-            return 1
-          endif
+                return 1
+            endif
         endfunction
     ]]
 
