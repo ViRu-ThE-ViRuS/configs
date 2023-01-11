@@ -223,13 +223,15 @@ local function random_colors()
     local choices = require('colorscheme').preferred[mode]
 
     local target = choices[math.random(1, #choices)]
-    print("colorscheme:", target)
 
     if type(target) == 'function' then
-        target()
+        local name = target()
+        print("colorscheme:", name)
     else
         vim.cmd.colorscheme(target)
+        print("colorscheme:", target)
     end
+
 end
 
 return {

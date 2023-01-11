@@ -30,12 +30,14 @@ capabilities.offsetEncoding = {'utf-16'} -- workaround to some weird bug
 lsp["pyright"].setup {
     capabilities = capabilities,
     settings = {
-        pyright = {
-            typeCheckingMode = 'basic',
-            diagnosticMode = 'workspace',
-            autoSearchPaths = true,
-            autoImportCompletions = true,
-            useLibraryCodeForTypes = true,
+        python = {
+            analysis = {
+                typeCheckingMode = 'off',
+                diagnosticMode = 'workspace',
+                autoSearchPaths = true,
+                autoImportCompletions = true,
+                useLibraryCodeForTypes = true,
+            }
         }
     },
     on_attach = on_attach,

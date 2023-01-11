@@ -100,7 +100,7 @@ return {
                     },
                     lsp_interop = {
                         enable = true,
-                        border = 'single',
+                        border = 'rounded',
                         peek_definition_code = {
                             ['gP'] = '@function.outer'
                         }

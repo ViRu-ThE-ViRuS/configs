@@ -68,7 +68,7 @@ vim.opt.writebackup = false
 -- status column
 vim.opt.colorcolumn = "+1"
 vim.opt.cursorline = true
-vim.opt.foldcolumn = 'auto:3'
+vim.opt.foldcolumn = 'auto:1'
 vim.opt.signcolumn = "yes"
 -- vim.opt.statuscolumn = '%=%l%s%C' -- TODO(vir): check this out
 

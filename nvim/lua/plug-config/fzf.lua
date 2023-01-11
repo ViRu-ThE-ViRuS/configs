@@ -151,7 +151,7 @@ return {
                 actions = {
                     ['ctrl-d'] = { actions.buf_del, actions.resume },
                     ['ctrl-x'] = actions.buf_split, -- disable default
-                    ['ctrl-q'] = false -- disable default
+                    ['ctrl-q'] = false              -- disable default
                 }
             },
             files = { rg_opts = '--files' .. default_rg_options },

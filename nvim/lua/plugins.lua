@@ -15,7 +15,7 @@ vim.opt.rtp:prepend(lazypath)
 require('utils').add_command('Lz', 'Lazy', { bang = true, nargs = 0, desc = 'Lazy' })
 require('lazy').setup('plug-config', {
     defaults = { lazy = true },
-    ui = { border = 'single' },
+    ui = { border = 'rounded' },
     performance = {
         rtp = {
             disabled_plugins = {
@@ -40,7 +40,7 @@ require('lazy').setup('plug-config', {
                 "zip",
                 "zipPlugin",
 
-                -- NOTE(vir): people usually dont disable these
+                -- these are not usually disabled
                 "health",
                 "man",
                 "nvim",
@@ -49,6 +49,8 @@ require('lazy').setup('plug-config', {
                 "spellfile",
                 "tohtml",
                 "tutor"
+
+                -- "editorconfig"
             }
         }
     }

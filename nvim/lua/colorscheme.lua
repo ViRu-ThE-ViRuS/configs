@@ -20,19 +20,10 @@ vim.g.moonflyTerminalColors = 1
 vim.g.moonflyUnderlineMatchParen = 1
 vim.g.moonflyVertSplits = 1
 
-vim.g.substrata_italic_keywords = true
-vim.g.substrata_italic_booleans = true
-vim.g.substrata_italic_functions = true
-vim.g.substrata_variant = "default"
-
 vim.g.barstrata_italic_keywords = true
 vim.g.barstrata_italic_booleans = true
 vim.g.barstrata_italic_functions = true
 vim.g.barstrata_variant = "default"
-
-vim.g.rasmus_italic_keywords = true
-vim.g.rasmus_italic_booleans = true
-vim.g.rasmus_italic_functions = true
 
 vim.g.mellow_italic_keywords = true
 vim.g.mellow_italic_booleans = true
@@ -40,79 +31,100 @@ vim.g.mellow_italic_functions = true
 vim.g.mellow_bold_functions = true
 vim.g.mellow_bold_comments = true
 
-vim.g.oh_lucy_italic_keywords = true
-vim.g.oh_lucy_italic_booleans = true
-vim.g.oh_lucy_italic_functions = true
-vim.g.oh_lucy_evening_italic_keywords = true
-vim.g.oh_lucy_evening_italic_booleans = true
-vim.g.oh_lucy_evening_italic_functions = true
-
 vim.g.gruvbox_baby_background_color = "medium"
 vim.g.tempus_enforce_background_color = 1
-vim.g.embark_terminal_italics = 1
 vim.g.vscode_style = "dark"
-vim.g.material_style = "darker"
+vim.g.material_style = "oceanic"
 
--- {{{ material
--- require('material').setup({
---     styles = {
---         comments = { italic = true },
---         functions = { italic = true },
---         strings = { italic = true }
---     }
--- })
--- }}}
+-- {{{ lua configured colorscheme loaders
+local function load_material(variant)
+    return function(_)
+        require('material').setup({
+            styles = {
+                comments = { italic = true },
+                functions = { italic = true },
+                strings = { italic = true }
+            }
+        })
 
--- {{{ nightfox
--- require('nightfox').setup({
---     options = {
---         terminal_colors = true,
---         inverse = { search = true },
---         styles = {
---             comments = "bold,italic",
---             functions = "bold,italic",
---             strings = "italic",
---         }
---     }
--- })
--- }}}
+        vim.g.material_style = variant
+        vim.cmd.colorscheme('material')
+        return string.format('material [%s]', variant)
+    end
+end
 
--- {{{ catppuccin
--- require("catppuccin").setup({
---  flavor = "mocha",
--- 	term_colors = true,
--- 	transparent_background = false,
--- 	styles = {
--- 		comments = { "bold", "italic" },
--- 		functions = { "bold", "italic" },
--- 		numbers = { "underline" },
--- 		strings = { "italic" },
--- 	},
--- 	integrations = {
--- 		cmp = true,
--- 		gitsigns = true,
--- 		bufferline = true,
--- 		notify = true,
--- 		treesitter = true,
--- 		native_lsp = {
--- 			enabled = true,
--- 			virtual_text = {
--- 				errors = { "bold", "italic" },
--- 				hints = { "italic" },
--- 				warnings = { "italic" },
--- 				information = { "italic" },
--- 			},
--- 			underlines = {
--- 				errors = { "underline" },
--- 				hints = { "underline" },
--- 				warnings = { "underline" },
--- 				information = { "underline" },
--- 			},
--- 		},
--- 		nvimtree = { enabled = true, show_root = true },
--- 		dap = { enabled = true, enable_ui = true },
--- 	},
--- })
+local function load_nightfox(variant)
+    return function(_)
+        require('nightfox').setup({
+            options = {
+                terminal_colors = true,
+                inverse = { search = true },
+                styles = {
+                    comments = "bold,italic",
+                    functions = "bold,italic",
+                    strings = "italic",
+                }
+            }
+        })
+
+        vim.cmd.colorscheme(variant)
+        return string.format('nightfox [%s]', variant)
+    end
+end
+
+local function load_catppuccin(variant)
+    return function(_)
+        require("catppuccin").setup({
+            flavor = "mocha",
+            term_colors = true,
+            transparent_background = false,
+            styles = {
+                comments = { "bold", "italic" },
+                functions = { "bold", "italic" },
+                numbers = { "underline" },
+                strings = { "italic" },
+            },
+            integrations = {
+                cmp = true,
+                gitsigns = true,
+                bufferline = true,
+                notify = true,
+                treesitter = true,
+                native_lsp = {
+                    enabled = true,
+                    virtual_text = {
+                        errors = { "bold", "italic" },
+                        hints = { "italic" },
+                        warnings = { "italic" },
+                        information = { "italic" },
+                    },
+                    underlines = {
+                        errors = { "underline" },
+                        hints = { "underline" },
+                        warnings = { "underline" },
+                        information = { "underline" },
+                    },
+                },
+                nvimtree = { enabled = true, show_root = true },
+                dap = { enabled = true, enable_ui = true },
+            },
+        })
+
+        vim.cmd.colorscheme(variant)
+        return string.format('catppuccin [%s]', variant)
+    end
+end
+
+local function load_rose_pine(variant)
+    return function ()
+        require('rose-pine').setup ({
+            dark_variant = variant
+        })
+
+        vim.cmd.colorscheme('rose-pine')
+        return string.format('rose-pine [%s]', variant or 'dawn')
+    end
+end
 -- }}}
 
 -- {{{ overrides
@@ -156,11 +168,13 @@ local function ui_overrides()
         highlight! link GitSignsDelete GitGutterDelete
 
         " misc
-        highlight! link SignColumn LineNr
-        highlight! link FoldColumn LineNr
-        highlight! link VertSplit LineNr
+        highlight! link LineNr Normal
+        highlight! link SignColumn Normal
+        highlight! link FoldColumn Normal
+        highlight! link VertSplit Normal
         highlight! link FloatBorder Normal
         highlight! link NormalFloat Normal
+
         highlight! link CursorLineNr CursorLine
         highlight! link CursorLineFold CursorLine
         highlight! link CursorLineSign CursorLine
@@ -173,58 +187,71 @@ end
 
 vim.opt.termguicolors = true
 vim.opt.background = 'dark'
-local colorscheme = 'vscode'
+local colorscheme = load_catppuccin('catppuccin-mocha')
 
 -- load default colorscheme if chosen one is not available
-if not pcall(vim.cmd.colorscheme, colorscheme) then vim.cmd.colorscheme('default') end
+local set_fn = ((type(colorscheme) == 'function' and colorscheme) or vim.cmd.colorscheme)
+if not pcall(set_fn, colorscheme) then vim.cmd.colorscheme('default') end
+
+-- initial call
 ui_overrides()
 
 return {
     preferred = {
         dark = {
-            "nightfly",
-            "nightfox", "duskfox", "nordfox", "terafox", "carbonfox",
-            "tundra",
-            "material",
-            "moonfly",
-            "poimandres",
-            "gruvbox-material",
-            "gruvbox-baby",
-            "gruvbox",
-            "mellow",
-            "oxocarbon-lua",
-            "rasmus",
-            "adwaita",
-            "everforest",
-            "vscode",
             "barstrata",
-            "substrata",
-            "monokai_pro", "monokai_ristretto",
-            "mountain",
-            "catppuccin", "catppuccin-macchiato",
-            "rose-pine",
+            "everforest",
+            "gruvbox",
+            "gruvbox-baby",
+            "gruvbox-material",
             "habamax",
-            "xcodedark",
-            "tempus_tempest",
+            "mellow",
+            "monokai_pro", "monokai_ristretto",
+            "moonfly",
+            "mountain",
+            "nightfly",
+            "oxocarbon",
+            "poimandres",
+            "tempus_tempest", "tempus_dusk",
+            "tundra",
+            "vscode",
+            "xcodedarkhc",
             "default",
+
+            -- lua configured colorschemes
+            load_catppuccin('catppuccin-frappe'),
+            load_catppuccin('catppuccin-macchiato'),
+            load_catppuccin('catppuccin-mocha'),
+            load_material('darker'),
+            load_material('palenight'),
+            load_nightfox('carbonfox'),
+            load_nightfox('duskfox'),
+            load_nightfox('nightfox'),
+            load_nightfox('nordfox'),
+            load_nightfox('terafox'),
+            load_rose_pine('main'),
+            load_rose_pine('moon'),
         },
 
         -- NOTE(vir): Yes, sometimes, i use light themes,
         -- they remind me of the pain that exists in the world :o
         light = {
-            "dawnfox",
-            "gruvbox-material",
-            "gruvbox",
-            "adwaita",
             "everforest",
-            "vscode",
-            "catppuccin-latte",
-            "rose-pine",
-            "xcodelight",
+            "gruvbox",
+            "gruvbox-material",
             "intellij",
+            "oxocarbon",
+            "tempus_dawn", "tempus_totus",
+            "vscode",
+            "xcodelighthc",
             "shine",
+
+            -- lua configured colorschemes
+            load_catppuccin("catppuccin-latte"),
+            load_material('lighter'),
+            load_nightfox('dawnfox'),
+            load_rose_pine(),
         }
     },
     ui_overrides = ui_overrides,
 }
-
