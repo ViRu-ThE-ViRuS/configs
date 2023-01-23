@@ -189,7 +189,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = 'light'
 
-local colorscheme = 'gruvbox'
+local colorscheme = 'default'
 ---@cast colorscheme +string +function
 
 -- load default colorscheme if chosen one is not available
