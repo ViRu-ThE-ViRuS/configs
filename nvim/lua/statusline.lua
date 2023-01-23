@@ -261,11 +261,11 @@ return {
     setup_highlights = setup_highlights,
     autocmd_group = autocmd_group,
 
-    -- actual statusline
+    -- statusline fn
     statusline = statusline,
     statusline_inactive = statusline_inactive,
 
-    -- api to setup statusline in buffers
+    -- api to setup statusline
     set_statusline_func = set_statusline_func,
     set_statusline_cmd = set_statusline_cmd,
 }

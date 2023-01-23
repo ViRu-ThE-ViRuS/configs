@@ -45,6 +45,8 @@ end, nil, true)
 
 -- get current cell contents
 local function get_current_cell()
+    -- NOTE(vir): consider updating 'after/queries/python/textobjects.scm' when
+    -- updating this
     local cell_markers = vim.treesitter.parse_query("python", [[
         ((comment) @cmt (#eq? @cmt "###"))
     ]])
@@ -103,5 +105,5 @@ utils.map("n", "<leader>cc", function()
 end, { buffer = 0 })
 
 -- cell navigation
-utils.map('n', ']i', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@cell-marker")<CR>zz', { buffer = 0 })
+utils.map('n', ']i', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@cellmarker")<CR>zz', { buffer = 0 })
 utils.map('n', '[i', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@cell-marker")<CR>zz', { buffer = 0 })

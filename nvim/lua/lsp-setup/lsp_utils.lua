@@ -276,7 +276,7 @@ local function debug_print(visual)
 
     -- toggle print if already present
     local current_line = vim.api.nvim_buf_get_lines(0, target_line, target_line + 1, true)[1]
-    local next_line = vim.api.nvim_buf_get_lines(0, target_line + 1, target_line + 2, true)[1]
+    local next_line = vim.api.nvim_buf_get_lines(0, target_line + 1, target_line + 2, false)[1]
     if current_line and current_line:find(postfix_raw) then
         vim.api.nvim_buf_set_lines(0, target_line, target_line + 1, true, {})
         return
