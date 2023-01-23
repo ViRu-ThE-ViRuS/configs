@@ -10,7 +10,7 @@ local editor_config = {
         req_state = {}
     },
 
-    -- state: ui toggles
+    -- state: ui toggles and config
     ui_state = {
         thick_separators = false,
         window_state = {},
@@ -21,9 +21,9 @@ local editor_config = {
             ["global"] = false,
         },
 
-        -- set context in winbar
-        -- use corresponding toggle to set this on
-        context_winbar = false,
+        -- config
+        context_winbar = false,     -- set context in winbar
+        fancy_notifications = true, -- use fancy notifications
     },
 
     -- config: separator map
@@ -108,17 +108,9 @@ local function qf_populate(lines, mode, title, scroll_to_end)
 end
 
 -- notify using current notifications setup
-local function notify(content, type, opts, force)
-    if force then
-        -- if packer_plugins['nvim-notify'].loaded then
-        --     require('notify')(content, type, opts)
-        -- end
-
-        require("notify")(content, type, opts)
-        return
-    end
-
-    vim.notify(content, type, opts)
+local function notify(content, type, opts)
+    local notify_fn = (editor_config.ui_state.fancy_notifications and require('notify')) or vim.notify
+    notify_fn(content, type, opts)
 end
 
 -- is buffer horizontally truncated

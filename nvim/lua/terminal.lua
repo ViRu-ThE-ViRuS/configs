@@ -7,7 +7,7 @@ local truncation = utils.editor_config.truncation
 -- toggle target_terminal
 local function toggle_target(force_open)
     if run_config.target_terminal == nil then
-        utils.notify('[terminal] target terminal not set', 'warn', { render = 'minimal' }, true)
+        utils.notify('not set', 'warn', { title = '[TERMINAL] target', render = 'compact' })
         return
     end
 
@@ -18,7 +18,7 @@ local function toggle_target(force_open)
 
         -- hide target
         if not pcall(vim.api.nvim_win_close, target_winid, false) then
-            utils.notify('[terminal] target exited, resetting state', 'debug', { render = 'minimal' }, true)
+            utils.notify('exited, resetting state', 'debug', { title = '[TERMINAL] target', render = 'compact' })
             run_config.target_terminal = nil
         end
     else
@@ -26,7 +26,7 @@ local function toggle_target(force_open)
 
         -- open in split
         if not pcall(vim.cmd, split_dir .. 'split #' .. run_config.target_terminal.bufnr) then
-            utils.notify('[terminal] target exited, resetting state', 'debug', { render = 'minimal' }, true)
+            utils.notify('exited, resetting state', 'debug', { title = '[TERMINAL] target', render = 'compact' })
             run_config.target_terminal = nil
         end
     end
@@ -35,7 +35,7 @@ end
 -- send payload to target_terminal
 local function send_to_target(payload, repeat_last)
     if run_config.target_terminal == nil then
-        utils.notify('[terminal] target terminal not set', 'warn', { render = 'minimal' }, true)
+        utils.notify('not set', 'warn', { title = '[TERMINAL] target', render = 'compact' })
         return
     end
 
@@ -49,7 +49,7 @@ local function send_to_target(payload, repeat_last)
         misc.scroll_to_end(run_config.target_terminal.bufnr)
     else
         -- buf has been unloaded
-        utils.notify('[terminal] target terminal does not exist, resetting state', 'debug', { render = 'minimal' }, true)
+        utils.notify('does not exist, resetting state', 'debug', { title = '[TERMINAL] target', render = 'compact' })
         run_config.target_terminal = nil
     end
 end
@@ -67,16 +67,21 @@ local function set_target(default)
 
         utils.notify(
             string.format(
-                "target_terminal set to: { job_id: %s, bufnr: %s }",
+                "set to: { job_id: %s, bufnr: %s }",
                 run_config.target_terminal.job_id,
                 run_config.target_terminal.bufnr
             ),
             "info",
-            { render = "minimal" },
-            true
+            { title = '[TERMINAL] target', render = "compact" }
         )
     else
-        run_config.target_command = default or vim.fn.input('[terminal] target_command: ', '', 'shellcmd')
+        run_config.target_command = default or vim.fn.input('[terminal] target command: ', '', 'shellcmd')
+
+        utils.notify(
+            string.format("set to: %s", run_config.target_command),
+            "info",
+            { title = '[TERMINAL] command', render = "compact" }
+        )
     end
 end
 
@@ -85,7 +90,7 @@ local function run_target_command()
     if run_config.target_command ~= "" then
         send_to_target(run_config.target_command, false)
     else
-        utils.notify('[terminal] target command not set', 'warn', { render = 'minimal' }, true)
+        utils.notify('command not set', 'warn', { title = '[TERMINAL] command', render = 'compact' })
     end
 end
 
@@ -131,7 +136,7 @@ local function launch_terminal(command, background, callback)
 
     -- this should not crash, so pcall not needed
     vim.api.nvim_chan_send(term_state.job_id, command .. "\n")
-    utils.notify(command, 'info', { title = '[terminal] launched command' }, true)
+    utils.notify(command, 'info', { title = '[TERMINAL] launched command' })
 
     -- wrap up
     if callback then callback() end
@@ -142,7 +147,7 @@ local function launch_terminal(command, background, callback)
 end
 
 return {
-    -- run-config api
+    -- target_terminal config api
     toggle_target = toggle_target,
     send_to_target = send_to_target,
     set_target = set_target,

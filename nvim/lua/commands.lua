@@ -24,6 +24,7 @@ vim.defer_fn(function()
     vim.api.nvim_create_autocmd('TermOpen', {
         group = 'TerminalSetup',
         callback = function()
+            -- vim.opt_local.statuscolumn = ''
             vim.opt_local.filetype = 'terminal'
             vim.opt_local.number = false
             vim.opt_local.signcolumn = 'no'
@@ -72,22 +73,16 @@ vim.defer_fn(function()
 
             -- NOTE(vir): init file is only reloaded when modified
             if src_file == 'init.lua' then vim.cmd [[ source $MYVIMRC ]]  end
-            utils.notify('[CONFIG] reloaded', 'info', {render='minimal'}, true)
+            utils.notify(
+                string.format('from: %s', src_file),
+                'info',
+                { title = '[CONFIG] reloaded', render='compact' }
+            )
         end
     })
 
     -- custom commands
-    utils.add_command("Commands", function()
-        local keys = core.apply(utils.workspace_config.commands, function(key, _) return key end)
-        table.sort(keys, function(a, b) return a > b end)
-        vim.ui.select(keys, { prompt = "Commands> " }, function(key)
-            if key then utils.workspace_config.commands[key]() end
-        end)
-    end, {
-        bang = false,
-        nargs = 0,
-        desc = "Custom Commands",
-    })
+    -- NOTE(vir): Commands cmd setup in fzf-lua init
 
     -- open repository in github (after selecting remote)
     if misc.get_git_root() ~= nil then
@@ -141,7 +136,7 @@ vim.defer_fn(function()
                 augroup! auto_highlight
                 set updatetime=1000
 
-                lua require('utils').notify('<cword> highlight deactivated', 'debug', {render='minimal'}, true)
+                lua require('utils').notify('<cword> highlight', 'debug', { title = '[UI] deactivated', render='compact' })
 
                 return 0
             else
@@ -151,7 +146,7 @@ vim.defer_fn(function()
                 augroup end
                 set updatetime=250
 
-                lua require('utils').notify('<cword> highlight activated', 'info', {render='minimal'}, true)
+                lua require('utils').notify('<cword> highlight', 'info', { title = '[UI] activated', render='compact' })
 
                 return 1
             endif
@@ -164,8 +159,8 @@ vim.defer_fn(function()
             command = 'ctags',
             args = { '-R', '--excmd=combine', '--fields=+K' },
             cwd = vim.loop.cwd(),
-            on_start = function() utils.notify('generating tags', 'debug', { render = 'minimal' }, true) end,
-            on_exit = function() utils.notify('tags generated', 'info', { render = 'minimal' }, true) end
+            on_start = function() utils.notify('generating tags file', 'debug', { title = '[MISC] tags', render = 'compact' }) end,
+            on_exit = function() utils.notify('generated tags file', 'info', { title = '[MISC] tags', render = 'compact' }) end
         }):start()
     end, nil, true)
 
@@ -173,7 +168,7 @@ vim.defer_fn(function()
     utils.add_command('[UI] Toggle Context WinBar', misc.toggle_context_winbar, nil, true)
     utils.add_command('[UI] Toggle Thicc Seperators', misc.toggle_thicc_separators, nil, true)
     utils.add_command('[UI] Toggle Spellings', misc.toggle_spellings, nil, true)
-    utils.add_command('[UI] Toggle Night Mode', misc.toggle_night_mode, nil, true)
+    utils.add_command('[UI] Toggle Dark Mode', misc.toggle_dark_mode, nil, true)
     utils.add_command('[UI] Toggle CWord Highlights', 'if CWordHlToggle() | set hlsearch | endif', nil, true)
 end, 0)
 

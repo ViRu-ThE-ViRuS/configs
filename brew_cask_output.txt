@@ -5,7 +5,6 @@ kitty
 logi-options-plus
 microsoft-teams
 nordvpn
-notion
 slack
 spotify
 tiles

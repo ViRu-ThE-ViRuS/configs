@@ -48,9 +48,9 @@ require('lazy').setup('plug-config', {
                 "shada",
                 "spellfile",
                 "tohtml",
-                "tutor"
+                "tutor",
 
-                -- "editorconfig"
+                "editorconfig"
             }
         }
     }

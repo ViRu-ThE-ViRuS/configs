@@ -6,7 +6,12 @@ local utils = require("utils")
 
 -- setup keymaps and autocommands
 local function on_attach(client, bufnr)
-    -- utils.notify(string.format("[lsp] %s\n[cwd] %s", client.name, vim.loop.cwd()), "info", { title = "[lsp] Active" }, true)
+    -- utils.notify(
+    --     string.format("[SERVER] %s\n[CWD] %s", client.name, vim.loop.cwd()),
+    --     "info",
+    --     { title = "[LSP] active" },
+    --     true
+    -- )
 
     -- NOTE(vir): this is what causes a delayed change in highlighting
     -- client.server_capabilities.semanticTokensProvider = nil
@@ -123,7 +128,12 @@ null_ls.setup({
     },
     capabilities = capabilities,
     on_attach = function(client, bufnr)
-        -- utils.notify(string.format("[lsp] %s\n[cwd] %s", client.name, vim.loop.cwd()), "info", { title = "[lsp] Active" }, true)
+        -- utils.notify(
+        --     string.format("[SERVER] %s\n[CWD] %s", client.name, vim.loop.cwd()),
+        --     "info",
+        --     { title = "[LSP] active" },
+        --     true
+        -- )
 
         utils.map('n', 'K', vim.lsp.buf.hover, {silent = true, buffer = bufnr})
         setup_buffer.setup_diagnostics_keymaps(client, bufnr)

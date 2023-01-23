@@ -70,7 +70,7 @@ vim.opt.colorcolumn = "+1"
 vim.opt.cursorline = true
 vim.opt.foldcolumn = 'auto:1'
 vim.opt.signcolumn = "yes"
--- vim.opt.statuscolumn = '%=%l%s%C' -- TODO(vir): check this out
+-- vim.opt.statuscolumn = '%s%=%l %C ' -- TODO(vir): check this out
 
 -- spellings
 vim.opt.spelllang = 'en_us'

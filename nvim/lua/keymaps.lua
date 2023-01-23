@@ -18,9 +18,9 @@ utils.map({ "n", "v" }, "<c-bs>", '"_dl', { noremap = false })
 utils.map({ "n", "v" }, "-", '"0p=`]')
 utils.map({ "n", "v" }, "_", '"0P=`]')
 
--- search jumps open folds
-utils.map('n', 'n', 'nzv', { noremap = false })
-utils.map('n', 'N', 'Nzv', { noremap = false })
+-- search jumps open folds, this doesnt update shortmess
+-- utils.map('n', 'n', 'nzv', { noremap = false })
+-- utils.map('n', 'N', 'Nzv', { noremap = false })
 
 -- misc
 utils.map("n", ";", ":")                                    -- swaperoo

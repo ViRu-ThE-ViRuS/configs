@@ -58,6 +58,7 @@ return {
                     { key = "<leader>r", action = "rename" },
                     { key = "OO", action = "open_in_finder", action_cb = open_in_finder },
                     { key = "<leader>Q", action = "<nop>" },
+                    -- { key = "<space>", action = "open_node" },
                 }
             }
         },

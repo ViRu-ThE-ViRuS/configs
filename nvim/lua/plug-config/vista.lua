@@ -9,7 +9,7 @@ return {
         vim.api.nvim_create_autocmd('FileType', {
             pattern = { 'vista', 'vista_kind' },
             callback = function()
-                -- vim.opt_local.statuscolumn = ' '
+                -- vim.opt_local.statuscolumn = ''
                 utils.map('n', '<c-o>', '<cmd>wincmd p<cr>', { buffer = 0 })
                 require('statusline').set_statusline_func('Outline')()
             end

@@ -10,17 +10,22 @@ local function qf_rename()
 
     vim.ui.input({prompt = 'rename to> ', default = position_params.oldName}, function(input)
         if input == nil then
-            utils.notify('[lsp] aborted rename', 'warn', {render = 'minimal'}, true)
+            utils.notify(
+                'aborted',
+                'warn',
+                { title = '[LSP] rename', render = 'compact' }
+            )
             return
         end
 
         position_params.newName = input
         vim.lsp.buf_request(0, "textDocument/rename", position_params, function(err, result, ctx, config)
             if not result or (not result.documentChanges and not result.changes) then
-                utils.notify('could not perform rename', 'error', {
-                    title = string.format('[lsp] rename: %s -> %s', position_params.oldName, position_params.newName),
-                    timeout = 500
-                }, true)
+                utils.notify(
+                    string.format('could not perform rename: %s -> %s', position_params.oldName, position_params.newName),
+                    'error',
+                    { title = '[LSP] rename', timeout = 500 }
+                )
 
                 return
             end
@@ -78,10 +83,11 @@ local function qf_rename()
                 end
             end
 
-            utils.notify(notification:sub(1, -2), 'info', {
-                title = string.format('[lsp] rename: %s -> %s', position_params.oldName, position_params.newName),
-                timeout = 2500
-            }, true)
+            utils.notify(
+                notification:sub(1, -2),
+                'info',
+                { title = string.format('[LSP] rename: %s -> %s', position_params.oldName, position_params.newName), timeout = 2500 }
+            )
 
             if num_files > 1 then utils.qf_populate(entries, "r") end
         end)

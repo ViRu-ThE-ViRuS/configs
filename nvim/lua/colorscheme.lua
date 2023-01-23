@@ -1,18 +1,29 @@
-vim.g.gruvbox_material_background = "hard"
-vim.g.gruvbox_material_ui_contrast = "high"
-vim.g.gruvbox_material_sign_column_background = "none"
-vim.g.gruvbox_material_diagnostic_virtual_text = "colored"
-vim.g.gruvbox_material_diagnostic_text_highlight = 1
-vim.g.gruvbox_material_better_performance = 1
-vim.g.gruvbox_material_enable_italic = 1
+vim.g.barstrata_italic_booleans = true
+vim.g.barstrata_italic_functions = true
+vim.g.barstrata_italic_keywords = true
+vim.g.barstrata_variant = "default"
 
 vim.g.everforest_background = "hard"
-vim.g.everforest_ui_contrast = "high"
-vim.g.everforest_sign_column_background = "none"
-vim.g.everforest_diagnostic_virtual_text = "colored"
-vim.g.everforest_diagnostic_text_highlight = 1
 vim.g.everforest_better_performance = 1
+vim.g.everforest_diagnostic_text_highlight = 1
+vim.g.everforest_diagnostic_virtual_text = "colored"
 vim.g.everforest_enable_italic = 1
+vim.g.everforest_sign_column_background = "none"
+vim.g.everforest_ui_contrast = "high"
+
+vim.g.gruvbox_material_background = "hard"
+vim.g.gruvbox_material_better_performance = 1
+vim.g.gruvbox_material_diagnostic_text_highlight = 1
+vim.g.gruvbox_material_diagnostic_virtual_text = "colored"
+vim.g.gruvbox_material_enable_italic = 1
+vim.g.gruvbox_material_sign_column_background = "none"
+vim.g.gruvbox_material_ui_contrast = "high"
+
+vim.g.mellow_bold_comments = true
+vim.g.mellow_bold_functions = true
+vim.g.mellow_italic_booleans = true
+vim.g.mellow_italic_functions = true
+vim.g.mellow_italic_keywords = true
 
 vim.g.moonflyItalics = 1
 vim.g.moonflyNormalFloat = 1
@@ -20,21 +31,10 @@ vim.g.moonflyTerminalColors = 1
 vim.g.moonflyUnderlineMatchParen = 1
 vim.g.moonflyVertSplits = 1
 
-vim.g.barstrata_italic_keywords = true
-vim.g.barstrata_italic_booleans = true
-vim.g.barstrata_italic_functions = true
-vim.g.barstrata_variant = "default"
-
-vim.g.mellow_italic_keywords = true
-vim.g.mellow_italic_booleans = true
-vim.g.mellow_italic_functions = true
-vim.g.mellow_bold_functions = true
-vim.g.mellow_bold_comments = true
-
 vim.g.gruvbox_baby_background_color = "medium"
+vim.g.material_style = "oceanic"
 vim.g.tempus_enforce_background_color = 1
 vim.g.vscode_style = "dark"
-vim.g.material_style = "oceanic"
 
 -- {{{ lua configured colorscheme loaders
 local function load_material(variant)
@@ -167,17 +167,18 @@ local function ui_overrides()
         highlight! link GitSignsChange GitGutterChange
         highlight! link GitSignsDelete GitGutterDelete
 
-        " misc
+        " statuscolumn
         highlight! link LineNr Normal
         highlight! link SignColumn Normal
         highlight! link FoldColumn Normal
-        highlight! link VertSplit Normal
-        highlight! link FloatBorder Normal
-        highlight! link NormalFloat Normal
-
         highlight! link CursorLineNr CursorLine
         highlight! link CursorLineFold CursorLine
         highlight! link CursorLineSign CursorLine
+
+        " misc
+        highlight! link VertSplit Normal
+        highlight! link FloatBorder Normal
+        highlight! link NormalFloat Normal
     ]]
 
     -- set statusline highlights
@@ -186,8 +187,10 @@ end
 -- }}}
 
 vim.opt.termguicolors = true
-vim.opt.background = 'dark'
-local colorscheme = load_catppuccin('catppuccin-mocha')
+vim.opt.background = 'light'
+
+local colorscheme = 'gruvbox'
+---@cast colorscheme +string +function
 
 -- load default colorscheme if chosen one is not available
 local set_fn = ((type(colorscheme) == 'function' and colorscheme) or vim.cmd.colorscheme)
@@ -205,11 +208,14 @@ return {
             "gruvbox-baby",
             "gruvbox-material",
             "habamax",
+            "melange",
             "mellow",
             "monokai_pro", "monokai_ristretto",
             "moonfly",
             "mountain",
             "nightfly",
+            "nightsky",
+            "noctis", "noctis_bordo", "noctis_minimus", "noctis_uva",
             "oxocarbon",
             "poimandres",
             "tempus_tempest", "tempus_dusk",
@@ -255,3 +261,4 @@ return {
     },
     ui_overrides = ui_overrides,
 }
+

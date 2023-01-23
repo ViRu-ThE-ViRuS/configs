@@ -35,6 +35,24 @@ return {
             desc = 'FzfLua powered colorscheme picker'
         }, true)
 
+        -- custom commands
+        -- NOTE(vir): doing here so as to force fzf
+        utils.add_command("Commands", function()
+            local keys = require('lib/core').apply(utils.workspace_config.commands, function(key, _) return key end)
+            table.sort(keys, function(a, b) return a > b end)
+
+            -- force fzf-lua usage,
+            -- by setting fzf-lua as vim.ui.select handler
+            require('fzf-lua')
+
+            vim.ui.select(keys, { prompt = "Commands> " }, function(key)
+                if key then utils.workspace_config.commands[key]() end
+            end)
+        end, {
+            bang = false,
+            nargs = 0,
+            desc = "Custom Commands",
+        })
 
         -- set statusline for fzf buffers
         local statusline = require('statusline')
@@ -66,10 +84,13 @@ return {
                 fullscreen = false,
                 preview = {
                     -- default = 'bat',
+                    border = 'noborder',
                     horizontal = 'right:50%',
                     vertical = 'up:50%',
                     scrollbar = false,
+
                     -- flip_columns = truncation.truncation_limit_s_terminal
+                    -- winopts = { number = true, statuscolumn = '' }
                 },
                 on_create = function()
                     vim.opt_local.buflisted = false
@@ -147,7 +168,7 @@ return {
                 }
             },
             buffers = {
-                previewer = 'bat',
+                -- previewer = 'bat',
                 actions = {
                     ['ctrl-d'] = { actions.buf_del, actions.resume },
                     ['ctrl-x'] = actions.buf_split, -- disable default
@@ -156,7 +177,7 @@ return {
             },
             files = { rg_opts = '--files' .. default_rg_options },
             blines = {
-                previewer = 'bat',
+                -- previewer = 'bat',
                 actions = { ['ctrl-q'] = actions.buf_sel_to_qf }
             },
             grep = {
@@ -165,7 +186,7 @@ return {
                 actions = { ['ctrl-g'] = actions.grep_lgrep }
             },
             tags = {
-                previewer = 'bat',
+                -- previewer = 'bat',
                 actions = { ['ctrl-g'] = actions.grep_lgrep }
             },
             lsp = {

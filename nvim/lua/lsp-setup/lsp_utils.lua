@@ -68,12 +68,13 @@ end
 local function toggle_diagnostics_list(global)
     if global then
         if not diagnostics_state['global'] then
-            vim.diagnostic.setqflist()
-            diagnostics_state['global'] = true
+            if #vim.diagnostic.get(nil) > 0 then
+                vim.diagnostic.setqflist()
+                diagnostics_state['global'] = true
 
-            require('statusline').set_statusline_func('Workspace Diagnostics')()
-            vim.cmd [[ wincmd p ]]
-
+                require('statusline').set_statusline_func('Workspace Diagnostics')()
+                vim.cmd [[ wincmd p ]]
+            end
         else
             diagnostics_state['global'] = false
             vim.cmd [[ cclose ]]
@@ -82,11 +83,13 @@ local function toggle_diagnostics_list(global)
         local current_buf = vim.api.nvim_get_current_buf()
 
         if not diagnostics_state['local'][current_buf] then
-            vim.diagnostic.setloclist()
-            diagnostics_state['local'][current_buf] = true
+            if #vim.diagnostic.get(0) > 0 then
+                vim.diagnostic.setloclist()
+                diagnostics_state['local'][current_buf] = true
 
-            require('statusline').set_statusline_func('Diagnostics')()
-            vim.cmd [[ wincmd p ]]
+                require('statusline').set_statusline_func('Diagnostics')()
+                vim.cmd [[ wincmd p ]]
+            end
         else
             diagnostics_state['local'][current_buf] = false
             vim.cmd [[ lclose ]]

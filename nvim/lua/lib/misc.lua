@@ -55,7 +55,11 @@ end
 -- TODO(vir): make this universal (just works with github right now)
 local function open_repo_on_github(remote)
 	if get_git_root() == nil then
-		utils.notify("not in a git repository", "error", { title = "could not open on github" }, true)
+		utils.notify(
+            "not in a git repository",
+            "error",
+            { title = "[CMD] could not open git remote" }
+        )
 		return
     end
 
@@ -64,9 +68,10 @@ local function open_repo_on_github(remote)
 	local url, rc = core.lua_system("git config remote." .. remote .. ".url")
 	if rc ~= 0 then
 		utils.notify(
-			string.format("found invalid remote url: [%s] -> %s", remote, url),
-			"error", { title = "could not open on github" }, true
-		)
+            string.format("found invalid remote url: [%s] -> %s", remote, url),
+            "error",
+            { title = "[CMD] could not open git remote" }
+        )
 		return
 	end
 
@@ -76,7 +81,11 @@ local function open_repo_on_github(remote)
 	url = url:gsub("com:", "com/")
 	core.lua_system("open -u " .. url)
 
-	utils.notify(string.format("[%s] -> %s", remote, url), "info", { title = "opening remote in browser" }, true)
+	utils.notify(
+        string.format("[%s] -> %s", remote, url),
+        "info",
+        { title = "[CMD] open git remote in browser" }
+    )
 end
 
 -- window: toggle current window (maximum <-> original)
@@ -134,7 +143,7 @@ local function toggle_thicc_separators()
 		}
 
         ui_state.thick_separators = false
-		utils.notify("thiccness dectivated", "debug", { render = "minimal" })
+		utils.notify("thiccness", "debug", { title = '[UI] deactivated', render = "compact" })
 	else
 		vim.opt.fillchars = {
 			horiz = "━",
@@ -147,7 +156,7 @@ local function toggle_thicc_separators()
 		}
 
         ui_state.thick_separators = true
-		utils.notify("thiccness activated", "info", { render = "minimal" })
+		utils.notify("thiccness", "info", { title = '[UI] activated', render = "compact" })
 	end
 end
 
@@ -155,10 +164,10 @@ end
 local function toggle_spellings()
 	if vim.api.nvim_get_option_value("spell", { scope = "global" }) then
 		vim.opt.spell = false
-		utils.notify("spellings deactivated", "debug", { render = "minimal" }, true)
+		utils.notify("spellings", "debug", { title = '[UI] deactivated', render = "compact" })
 	else
 		vim.opt.spell = true
-		utils.notify("spellings activated", "info", { render = "minimal" }, true)
+		utils.notify("spellings", "info", { title = '[UI] activated', render = "compact" })
 	end
 end
 
@@ -166,15 +175,15 @@ end
 local function toggle_global_statusline(force_local)
 	if vim.api.nvim_get_option_value("laststatus", { scope = "global" }) == 3 or force_local then
 		vim.opt.laststatus = 2
-		utils.notify("global statusline deactivated", "debug", { render = "minimal" })
+		utils.notify("global statusline", "debug", { title = '[UI] deactivated', render = "compact" })
 	else
 		vim.opt.laststatus = 3
-		utils.notify("global statusline activated", "debug", { render = "minimal" })
+		utils.notify("global statusline", "info", { title = '[UI] activated', render = "compact" })
 	end
 end
 
 -- toggle between dark/light mode
-local function toggle_night_mode()
+local function toggle_dark_mode()
     if vim.api.nvim_get_option_value('background', { scope = 'global' }) == 'dark' then
         vim.api.nvim_set_option_value('background', 'light', { scope = 'global' })
     else
@@ -252,7 +261,7 @@ return {
 	toggle_thicc_separators = toggle_thicc_separators,
 	toggle_spellings = toggle_spellings,
 	toggle_global_statusline = toggle_global_statusline,
-    toggle_night_mode = toggle_night_mode,
+    toggle_dark_mode = toggle_dark_mode,
 	toggle_qflist = toggle_qflist,
 
     -- misc

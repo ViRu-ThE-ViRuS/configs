@@ -9,7 +9,6 @@ local internal_servers = {}
 -- get handles of output windows
 local function activate_output_window(session)
     local utils = require('utils')
-
     local target_handle = nil
     local target_regex = nil
 
@@ -243,7 +242,7 @@ local function setup_dap_events()
 
     -- remove debugging keymaps
     local function remove_maps()
-        utils.unmap({ 'n', 'v' }, '<m-d>k')
+        utils.unmap({ 'n', 'v' }, '<m-k>')
         utils.unmap('n', '<m-1>')
         utils.unmap('n', '<m-2>')
         utils.unmap('n', '<m-3>')
@@ -253,7 +252,7 @@ local function setup_dap_events()
 
     -- setup debugging keymaps
     local function setup_maps()
-        utils.map({ 'n', 'v' }, '<m-d>k', dapui.eval)
+        utils.map({ 'n', 'v' }, '<m-k>', dapui.eval)
         utils.map('n', '<m-1>', dap.step_over)
         utils.map('n', '<m-2>', dap.step_into)
         utils.map('n', '<m-3>', dap.step_out)
@@ -271,8 +270,11 @@ local function setup_dap_events()
             close_internal_servers()
             activate_output_window(session)
 
-            utils.notify(string.format('[prog] %s', session.config.program),
-                'debug', { title = '[dap] session closed', timeout = 500 }, true)
+            utils.notify(
+                string.format('[PROG] %s', session.config.program),
+                'debug',
+                { title = '[DAP] session closed', timeout = 500 }
+            )
         end)
 
         utils.map('n', '<f4>', dapui.toggle)
@@ -289,8 +291,11 @@ local function setup_dap_events()
         -- force local statusline
         require('lib/misc').toggle_global_statusline(true)
 
-        utils.notify(string.format('[prog] %s', session.config.program),
-            'debug', { title = '[dap] session started', timeout = 500 }, true)
+        utils.notify(
+            string.format('[PROG] %s', session.config.program),
+            'debug',
+            { title = '[DAP] session started', timeout = 500 }
+        )
     end
 
     -- terminate session: remove keymaps, close dapui, close dap repl,
@@ -305,8 +310,11 @@ local function setup_dap_events()
         close_internal_servers()
         activate_output_window(session)
 
-        utils.notify(string.format('[prog] %s', session.config.program),
-            'debug', { title = '[dap] session terminated', timeout = 500 }, true)
+        utils.notify(
+            string.format('[PROG] %s', session.config.program),
+            'debug',
+            { title = '[DAP] session terminated', timeout = 500 }
+        )
     end
 
     -- dap events

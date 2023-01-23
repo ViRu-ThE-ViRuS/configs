@@ -21,7 +21,7 @@ utils.add_command("[MISC] REPL: launch ipython", function()
                 repl_session.job_id,
                 repl_session.bufnr
             ),
-            "debug", { title = "[repl] ipython session" }, true
+            "debug", { title = "[REPL] ipython session" }, true
         )
 
         vim.api.nvim_buf_delete(repl_session.bufnr, { force = true })
@@ -38,7 +38,7 @@ utils.add_command("[MISC] REPL: launch ipython", function()
                 utils.workspace_config.run_config.target_terminal.bufnr
             ),
             "info",
-            { title = "[repl] ipython session" }, true
+            { title = "[REPL] ipython session" }, true
         )
     end)
 end, nil, true)
@@ -87,8 +87,7 @@ local function get_current_cell()
     -- could not find cell
     if not payload then return nil end
 
-    payload = table.concat(payload, '\n')
-    payload = payload .. '\n'
+    payload = table.concat(payload, '\n') .. '\n'
     return payload
 end
 
@@ -98,7 +97,7 @@ utils.map("n", "<leader>cc", function()
     if not payload then return end
 
     -- NOTE(vir): using clipboard mechanism to handle empty lines
-    -- put payload into cliboard register, and paste in repl
+    -- put payload into clipboard register, and paste in repl
     vim.fn.setreg('+', payload, "c")
     terminal.send_to_target('%paste')
 end, { buffer = 0 })
