@@ -7,6 +7,7 @@ clang-format
 cmake
 cppcheck
 fish
+freetype
 fzf
 gettext
 git-delta
@@ -23,6 +24,7 @@ libevent
 libffi
 libidn2
 libnghttp2
+libpng
 libtasn1
 libtermkey
 libtool

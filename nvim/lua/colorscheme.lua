@@ -116,8 +116,8 @@ local function load_catppuccin(variant)
 end
 
 local function load_rose_pine(variant)
-    return function ()
-        require('rose-pine').setup ({
+    return function()
+        require('rose-pine').setup({
             dark_variant = variant
         })
 
@@ -125,6 +125,7 @@ local function load_rose_pine(variant)
         return string.format('rose-pine [%s]', variant or 'dawn')
     end
 end
+
 -- }}}
 
 -- {{{ overrides
@@ -142,7 +143,7 @@ local function ui_overrides()
     -- NOTE(vir): some colorschemes aint pretty with gitsigns
     -- GitSign* highlights link to Diff* highlights for some reason despite
     -- configuring them not to. Consider linking these only when in git repos?
-    vim.cmd [[
+    vim.cmd([[
         " lsp
         highlight! link LspReferenceRead IncSearch
         highlight! link LspReferenceWrite IncSearch
@@ -179,17 +180,18 @@ local function ui_overrides()
         highlight! link VertSplit Normal
         highlight! link FloatBorder Normal
         highlight! link NormalFloat Normal
-    ]]
+    ]])
 
     -- set statusline highlights
     require('statusline').setup_highlights()
 end
+
 -- }}}
 
 vim.opt.termguicolors = true
 vim.opt.background = 'dark'
 
-local colorscheme = 'gruvbox'
+local colorscheme = 'default'
 ---@cast colorscheme +string +function
 
 -- load default colorscheme if chosen one is not available
@@ -217,6 +219,7 @@ return {
             "nightsky",
             "noctis", "noctis_bordo", "noctis_minimus", "noctis_uva",
             "oxocarbon",
+            "palenightfall",
             "poimandres",
             "tempus_tempest", "tempus_dusk",
             "tundra",
@@ -261,4 +264,3 @@ return {
     },
     ui_overrides = ui_overrides,
 }
-
