@@ -19,12 +19,10 @@ return {
     'bluz71/vim-nightfly-guicolors',
     'noorwachid/nvim-nightsky',
     'talha-akram/noctis.nvim',
-    'AlexvZyl/nordic.nvim',
     'nyoom-engineering/oxocarbon.nvim',
     'JoosepAlviste/palenightfall.nvim',
     'olivercederborg/poimandres.nvim',
     'protesilaos/tempus-themes-vim',
-    'sam4llis/nvim-tundra',
     'Mofiqul/vscode.nvim',
     'arzg/vim-colors-xcode',
 

@@ -191,7 +191,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = 'dark'
 
-local colorscheme = 'default'
+local colorscheme = 'gruvbox'
 ---@cast colorscheme +string +function
 
 -- load default colorscheme if chosen one is not available
@@ -222,7 +222,6 @@ return {
             "palenightfall",
             "poimandres",
             "tempus_tempest", "tempus_dusk",
-            "tundra",
             "vscode",
             "xcodedarkhc",
             "default",

@@ -24,7 +24,7 @@ vim.defer_fn(function()
     vim.api.nvim_create_autocmd('TermOpen', {
         group = 'TerminalSetup',
         callback = function()
-            -- vim.opt_local.statuscolumn = ''
+            vim.opt_local.statuscolumn = ''
             vim.opt_local.filetype = 'terminal'
             vim.opt_local.number = false
             vim.opt_local.signcolumn = 'no'

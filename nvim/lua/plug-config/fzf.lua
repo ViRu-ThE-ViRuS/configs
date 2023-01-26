@@ -96,9 +96,6 @@ return {
                     vim.opt_local.buflisted = false
                     vim.opt_local.bufhidden = 'wipe'
 
-                    -- TODO(vir): this dont work here, file an issue?
-                    -- vim.opt_local.statuscolumn = ''
-
                     utils.map('t', '<c-k>', '<up>', { buffer = 0 })
                     utils.map('t', '<c-j>', '<down>', { buffer = 0 })
                     utils.map('t', '<esc>', '<cmd>quit<cr>', { buffer = 0 })

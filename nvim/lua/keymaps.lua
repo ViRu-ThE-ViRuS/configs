@@ -122,7 +122,7 @@ utils.map('v', '<a-j>', ":move '>+1<CR>gv=gv", { silent = true })
 utils.map('v', '<a-k>', ":move '<-2<CR>gv=gv", { silent = true })
 
 -- terminal setup
-utils.map("n", "<leader>s", "<cmd>vsp term://" .. vim.opt.shell:get() .. "<cr>")
+utils.map("n", "<leader>s", "<cmd>vsp | terminal<cr>")
 utils.map("n", "<leader>cA", terminal.run_target_command)
 utils.map("n", "<leader>ca", terminal.run_previous_command)
 utils.map("n", "<leader>cS", terminal.set_target)

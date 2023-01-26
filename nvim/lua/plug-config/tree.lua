@@ -20,7 +20,7 @@ return {
             group = statusline.autocmd_group,
             pattern = 'NvimTree_*',
             callback = function()
-                -- vim.opt_local.statuscolumn = ''
+                vim.opt_local.statuscolumn = ''
                 statusline.set_statusline_func('Explorer')()
             end,
         })
