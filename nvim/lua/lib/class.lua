@@ -1,3 +1,4 @@
+-- NOTE(vir): contents of this file are referenced/taken from https://github.com/jonstoler/class.lua
 local Class = {}
 
 -- default (empty) constructor

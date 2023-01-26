@@ -15,7 +15,7 @@ function Project:init(
 end
 
 function Project:notify(content, type, opts)
-    require('utils').notify(string.format('[%s] %s', self.target, content), type, opts)
+    require('utils').notify(string.format('[%s] %s', self.name, content), type, opts)
 end
 -- }}}
 
@@ -33,6 +33,7 @@ function RemoteProject:init(
     target_user,
     target_path
 )
+    -- TODO(vir): figure out how to call parent constructor
     self.name = name
     self.host_user = host_user
     self.host_path = host_path
@@ -91,7 +92,7 @@ function RemoteProject:launch_project_session(sync)
     -- make ip updatable
     vim.ui.input({ prompt = "target gcp ip> ", default = self.target }, function(ip)
         if ip == nil then
-            self.notify(
+            self:notify(
                 string.format("invalid target ip: %s", self.target),
                 "warn",
                 { render = "minimal" }
@@ -103,11 +104,11 @@ function RemoteProject:launch_project_session(sync)
         self.target = ip
 
         -- launch sync in background
-        if use_rsync then self.launch_sync(false) end
+        if use_rsync then self:launch_sync(false) end
 
         -- launch ssh terminal
-        self.launch_ssh(true)
-        self.notify("project session launched", "info", { render = 'minimal' })
+        self:launch_ssh(true)
+        self:notify("project session launched", "info", { render = 'minimal' })
     end)
 end
 -- }}}
