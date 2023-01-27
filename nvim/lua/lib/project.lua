@@ -3,6 +3,7 @@ local terminal = require('terminal')
 
 -- Project class
 local Project = class()
+
 -- {{{ Project api
 function Project:init(
     name,
@@ -14,6 +15,7 @@ function Project:init(
     self.host_path    = host_path
 end
 
+-- send a project-scoped notification
 function Project:notify(content, type, opts)
     require('utils').notify(string.format('[%s] %s', self.name, content), type, opts)
 end
@@ -21,6 +23,7 @@ end
 
 -- RemoteProject class
 local RemoteProject = class(Project)
+
 -- {{{ RemoteProject api
 function RemoteProject:init(
     -- Project
@@ -43,6 +46,7 @@ function RemoteProject:init(
     self.target_path = target_path
 end
 
+-- launch rsync host <-> remote target
 function RemoteProject:launch_sync(reverse)
     if reverse then
         terminal.launch_terminal(
@@ -70,6 +74,7 @@ function RemoteProject:launch_sync(reverse)
     end
 end
 
+-- launch ssh session host -> remote target
 function RemoteProject:launch_ssh(set_target, path)
     path = (path or self.target_path) .. '/'
     local to_path_cmd = 'cd ' .. path
@@ -86,6 +91,7 @@ function RemoteProject:launch_ssh(set_target, path)
     )
 end
 
+-- launch a procject session: ssh and/or rsync host -> remote
 function RemoteProject:launch_project_session(sync)
     local use_rsync = sync or false
 
