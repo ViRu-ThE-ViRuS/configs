@@ -1,10 +1,11 @@
 # vim:  commentstring=#%s
+
 alias vim='SUDO_ASKPASS=~/.config/system/pw.sh nvim'
 alias rmd='rm -rf'
 alias cat='bat --theme=Coldark-Dark'
 alias icat='kitty +kitten icat'
-alias ssh='kitty +kitten ssh'
 alias pip='pip3'
+# alias ssh='kitty +kitten ssh'
 
 set -xg EDITOR              nvim
 set -xg LANG                en_US.UTF-8

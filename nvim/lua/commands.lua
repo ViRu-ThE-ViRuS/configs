@@ -36,7 +36,11 @@ vim.defer_fn(function()
     vim.api.nvim_create_autocmd('BufWritePost', { group = 'Configs', pattern = '.nvimrc.lua', command = 'source <afile>' })
     vim.api.nvim_create_autocmd('BufWritePost', {
         group = 'Configs',
-        pattern = { core.get_homedir() .. '/.config/nvim/init.lua', core.get_homedir() .. '/.config/nvim/*/*.lua', },
+        pattern = {
+            core.get_homedir() .. '/.config/nvim/init.lua',
+            core.get_homedir() .. '/.config/nvim/*/*.lua',
+            '.nvimrc.lua'
+        },
         -- command = 'source $MYVIMRC',
 
         callback = function()

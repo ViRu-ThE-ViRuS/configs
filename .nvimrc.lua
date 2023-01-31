@@ -1,4 +1,11 @@
 local utils = require('utils')
+local Project = require('lib/project').Project
+
+local project = Project:new(
+    'ViRu-ThE-ViRuS/configs',
+    require('lib/core').get_username(),
+    vim.fn.getcwd()
+)
 
 utils.add_command('UpdateRepo', function()
     vim.cmd [[
@@ -12,14 +19,17 @@ end, {
 }, true)
 
 utils.add_command('UpdateConfigs', function()
-    vim.ui.select({'yes', 'no'}, {prompt = 'Update System Config>'},
-                  function(choice)
-        if choice == 'yes' then
-            vim.cmd [[ !source update_config.sh ]]
-        else
-            require("notify")('[config] update aborted', 'debug', {render='minimal'})
+    vim.ui.select(
+        { 'yes', 'no' },
+        { prompt = 'Update System Config>' },
+        function(choice)
+            if choice == 'yes' then
+                vim.cmd [[ !source update_config.sh ]]
+            else
+                project:notify('update aborted', 'debug', { render = 'minimal' })
+            end
         end
-    end)
+    )
 end, {
     bang = true,
     nargs = 0,

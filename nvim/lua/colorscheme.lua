@@ -177,9 +177,9 @@ local function ui_overrides()
         highlight! link CursorLineSign CursorLine
 
         " misc
-        " highlight! link VertSplit Normal
-        " highlight! link FloatBorder Normal
-        " highlight! link NormalFloat Normal
+        highlight! link VertSplit Normal
+        highlight! link FloatBorder Normal
+        highlight! link NormalFloat Normal
     ]])
 
     -- set statusline highlights
@@ -191,7 +191,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = 'dark'
 
-local colorscheme = 'default'
+local colorscheme = 'poimandres'
 ---@cast colorscheme +string +function
 
 -- load default colorscheme if chosen one is not available

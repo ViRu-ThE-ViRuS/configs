@@ -22,6 +22,7 @@ return {
                 lua = {
                     function_call = { target_nodes = { 'arguments' } },
                     return_statement = { target_nodes = { 'table_constructor' } },
+                    field = { target_nodes = { 'table_constructor' } }
                 },
                 cpp = {
                     parameter_list = treesj_utils.set_preset_for_args(),

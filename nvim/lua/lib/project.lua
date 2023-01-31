@@ -10,15 +10,16 @@ function Project:init(
     host_user,
     host_path
 )
-    self.name = name
-    self.target_path  = host_user
-    self.host_path    = host_path
+    self.name      = name or "_project_"
+    self.host_user = host_user or require('lib/core').get_username()
+    self.host_path = host_path or vim.fn.getcwd()
 end
 
 -- send a project-scoped notification
 function Project:notify(content, type, opts)
     require('utils').notify(string.format('[%s] %s', self.name, content), type, opts)
 end
+
 -- }}}
 
 -- RemoteProject class
@@ -37,9 +38,9 @@ function RemoteProject:init(
     target_path
 )
     -- TODO(vir): figure out how to call parent constructor
-    self.name = name
-    self.host_user = host_user
-    self.host_path = host_path
+    self.name      = name or "_project_"
+    self.host_user = host_user or require('lib/core').get_username()
+    self.host_path = host_path or vim.fn.getcwd()
 
     self.target = target
     self.target_user = target_user
@@ -77,7 +78,7 @@ end
 -- launch ssh session host -> remote target
 function RemoteProject:launch_ssh(set_target, path)
     path = (path or self.target_path) .. '/'
-    local to_path_cmd = 'cd ' .. path
+    local to_path_cmd = 'cd ' .. path .. ' ; bash --'
 
     terminal.launch_terminal(
         string.format(
@@ -117,10 +118,10 @@ function RemoteProject:launch_project_session(sync)
         self:notify("project session launched", "info", { render = 'minimal' })
     end)
 end
+
 -- }}}
 
 return {
     Project = Project,
     RemoteProject = RemoteProject
 }
-

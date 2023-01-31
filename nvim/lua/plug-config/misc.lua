@@ -22,7 +22,7 @@ return {
                 pattern = 'gitcommit',
                 callback = statusline.set_statusline_func('GitCommit'),
             })
-        end,
+        end
     },
 
     { 'tpope/vim-eunuch', cmd = { 'Delete', 'Rename', 'Chmod' } },
