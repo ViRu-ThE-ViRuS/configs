@@ -57,10 +57,10 @@ utils.map("n", "<ScrollWheelUp>", "<c-y>")
 utils.map("n", "<ScrollWheelDown>", "<c-e>")
 
 -- disable clicks
-utils.map("n", "<2-LeftMouse>", "<nop>")
-utils.map("n", "<2-RightMouse>", "<nop>")
-utils.map("n", "<LeftMouse>", "<nop>")
+-- utils.map("n", "<LeftMouse>", "<nop>")
+-- utils.map("n", "<2-LeftMouse>", "<nop>")
 utils.map("n", "<RightMouse>", "<nop>")
+utils.map("n", "<2-RightMouse>", "<nop>")
 
 -- sane speed scrolling
 utils.map({ "n", "v" }, "{", "4k")

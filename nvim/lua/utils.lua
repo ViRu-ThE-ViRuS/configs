@@ -65,9 +65,9 @@ local workspace_config = {
     -- debug print setup
     debug_print_postfix = '__DEBUG_PRINT__',
     debug_print_fmt = {
-        lua = 'print("%s:", vim.inspect(%s))',
+        lua = 'print("%s: ", vim.inspect(%s))',
         c = 'printf("%s: %%s", %s);',
-        cpp = 'std::cout << "%s:" << %s << std::endl;',
+        cpp = 'std::cout << "%s: " << %s << std::endl;',
         python = 'print(f"%s: {str(%s)}")',
     },
 }
