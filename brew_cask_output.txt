@@ -12,5 +12,6 @@ transmission
 typora
 vlc
 wireshark
+yubico-yubikey-manager
 zoom
 zotero

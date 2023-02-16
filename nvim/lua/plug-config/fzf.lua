@@ -38,7 +38,10 @@ return {
         -- custom commands
         -- NOTE(vir): doing here so as to force fzf
         utils.add_command("Commands", function()
-            local keys = require('lib/core').apply(utils.workspace_config.commands, function(key, _) return key end)
+            local keys = require('lib/core').apply(
+                utils.workspace_config.commands,
+                function(key, _) return key end
+            )
             table.sort(keys, function(a, b) return a > b end)
 
             -- force fzf-lua usage,
@@ -147,7 +150,12 @@ return {
                     ['ctrl-x'] = actions.file_split,
                     ['ctrl-v'] = actions.file_vsplit,
                     ['ctrl-t'] = actions.file_tabedit,
-                    ['ctrl-q'] = actions.file_sel_to_qf
+                    ['ctrl-q'] = actions.file_sel_to_qf,
+                    -- ['ctrl-w'] = function (selected)
+                    --     local picker_window_id = require('window-picker').pick_window()
+                    --     picker_window_id = picker_window_id or vim.api.nvim_win_get_current_win()
+                    --     print("selected:", vim.inspect(selected)) -- __DEBUG_PRINT__
+                    -- end
                 },
                 buffers = {
                     ['default'] = actions.buf_edit,

@@ -71,14 +71,13 @@ lsp["clangd"].setup {
 }
 -- }}}
 
--- {{{ sumneko_lua setup
+-- {{{ lua_ls setup
 -- vim runtime files
 local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, 'lua/?.lua')
 table.insert(runtime_path, 'lua/?/init.lua')
 
--- sumneko_lua location
-lsp["sumneko_lua"].setup {
+lsp["lua_ls"].setup {
     capabilities = capabilities,
     settings = {
         Lua = {

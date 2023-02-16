@@ -6,6 +6,7 @@ ca-certificates
 clang-format
 cmake
 cppcheck
+curl
 fish
 freetype
 fzf
@@ -21,10 +22,10 @@ htop
 icu4c
 jansson
 libevent
-libffi
 libidn2
 libnghttp2
 libpng
+libssh2
 libtasn1
 libtermkey
 libtool
@@ -36,6 +37,7 @@ lua
 luajit
 luarocks
 luv
+lz4
 m4
 megatools
 msgpack
@@ -44,6 +46,7 @@ neovim
 nettle
 ninja
 node
+openldap
 openssl@1.1
 p11-kit
 pcre
@@ -51,6 +54,7 @@ pcre2
 pkg-config
 readline
 ripgrep
+rtmpdump
 rustup-init
 tinyxml2
 tmux
@@ -62,3 +66,5 @@ universal-ctags
 utf8proc
 watch
 wget
+xz
+zstd

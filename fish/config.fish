@@ -1,4 +1,4 @@
-# vim:  commentstring=#%s
+# vim: ft=bash
 
 alias vim='SUDO_ASKPASS=~/.config/system/pw.sh nvim'
 alias rmd='rm -rf'
@@ -6,6 +6,9 @@ alias cat='bat --theme=Coldark-Dark'
 alias icat='kitty +kitten icat'
 alias pip='pip3'
 # alias ssh='kitty +kitten ssh'
+
+alias globalproject-unload="launchctl unload /Library/LaunchAgents/com.paloaltonetworks.gp.pangp*"
+alias globalproject-load="launchctl load /Library/LaunchAgents/com.paloaltonetworks.gp.pangp*"
 
 set -xg EDITOR              nvim
 set -xg LANG                en_US.UTF-8
