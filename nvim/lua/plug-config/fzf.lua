@@ -69,7 +69,7 @@ return {
         local utils = require("utils")
         local fzf = require('fzf-lua')
 
-        local ignore_dirs = '.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build,*.dSYM,tags,node_modules,Pods,sessions'
+        local ignore_dirs = '.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build,*.dSYM,tags,node_modules,Pods,sessions,external'
         local default_rg_options = string.format(' --hidden --follow --no-heading --smart-case --no-ignore -g "!{%s}"', ignore_dirs)
 
         local symbol_config = utils.editor_config.symbol_config

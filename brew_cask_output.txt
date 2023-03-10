@@ -2,7 +2,6 @@ appcleaner
 discord
 google-drive
 kitty
-logi-options-plus
 microsoft-teams
 nordvpn
 slack

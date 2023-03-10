@@ -7,6 +7,7 @@ alias icat='kitty +kitten icat'
 alias pip='pip3'
 # alias ssh='kitty +kitten ssh'
 
+# berkeley vpn
 alias globalproject-unload="launchctl unload /Library/LaunchAgents/com.paloaltonetworks.gp.pangp*"
 alias globalproject-load="launchctl load /Library/LaunchAgents/com.paloaltonetworks.gp.pangp*"
 

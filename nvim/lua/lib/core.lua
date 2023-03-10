@@ -63,6 +63,13 @@ local function table_contains(tbl, target_value)
     return nil
 end
 
+-- return copy of table
+local function table_copy(t)
+    local u = { }
+    for k, v in pairs(t) do u[k] = v end
+    return setmetatable(u, getmetatable(t))
+end
+
 -- return table of keys
 local function table_keys(tbl)
     local keys = {}
@@ -127,6 +134,7 @@ return {
     filter = filter,
     list_concat = list_concat,
     table_contains = table_contains,
+    table_copy = table_copy,
     table_keys = table_keys,
 
     lua_systemlist = lua_systemlist,

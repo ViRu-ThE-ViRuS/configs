@@ -4,7 +4,9 @@ return {
     'kyazdani42/nvim-web-devicons',
 
     -- colorschemes
+    'FrenzyExists/aquarium-vim',
     'w3barsi/barstrata.nvim',
+    "igorgue/danger",
     'sainnhe/everforest',
     'ellisonleao/gruvbox.nvim',
     'luisiacc/gruvbox-baby',
@@ -22,6 +24,7 @@ return {
     'nyoom-engineering/oxocarbon.nvim',
     'JoosepAlviste/palenightfall.nvim',
     'olivercederborg/poimandres.nvim',
+    'NTBBloodBath/sweetie.nvim',
     'protesilaos/tempus-themes-vim',
     'Mofiqul/vscode.nvim',
     'arzg/vim-colors-xcode',

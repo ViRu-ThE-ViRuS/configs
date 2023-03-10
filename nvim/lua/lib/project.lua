@@ -13,6 +13,7 @@ function Project:init(
     self.name      = name or "_project_"
     self.host_user = host_user or require('lib/core').get_username()
     self.host_path = host_path or vim.fn.getcwd()
+
 end
 
 -- send a project-scoped notification
@@ -20,6 +21,16 @@ function Project:notify(content, type, opts)
     require('utils').notify(string.format('[%s] %s', self.name, content), type, opts)
 end
 
+-- add a project-scoped command
+function Project:add_command(name, callback, opts, also_custom)
+    require('utils').add_command(string.format('[%s] %s', self.name, name), callback, opts, also_custom)
+end
+
+-- add project-dap config
+function Project:add_dap_config(name, program, args)
+    self.dap_config = self.dap_config or { to_run = nil }
+    self.dap_config[name] = { program = program, args = args }
+end
 -- }}}
 
 -- RemoteProject class

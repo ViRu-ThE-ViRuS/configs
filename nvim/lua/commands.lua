@@ -12,8 +12,6 @@ vim.api.nvim_create_autocmd('ColorScheme', {
     callback = colorscheme.ui_overrides,
 })
 
--- defer to improve responsiveness
-vim.defer_fn(function()
     vim.api.nvim_create_augroup('Misc', {clear = true})
     vim.api.nvim_create_autocmd('TextYankPost', { group = 'Misc', pattern = '*', callback = function() vim.highlight.on_yank({on_visual = true}) end })
     vim.api.nvim_create_autocmd('BufWritePre', { group = 'Misc', pattern = '*', callback = misc.strip_trailing_whitespaces })
@@ -84,6 +82,9 @@ vim.defer_fn(function()
             )
         end
     })
+
+    -- lib/project api
+    vim.api.nvim_create_augroup('ProjectInit', { clear = true })
 
     -- custom commands
     -- NOTE(vir): Commands cmd setup in fzf-lua init
@@ -174,5 +175,4 @@ vim.defer_fn(function()
     utils.add_command('[UI] Toggle Spellings', misc.toggle_spellings, nil, true)
     utils.add_command('[UI] Toggle Dark Mode', misc.toggle_dark_mode, nil, true)
     utils.add_command('[UI] Toggle CWord Highlights', 'if CWordHlToggle() | set hlsearch | endif', nil, true)
-end, 0)
 

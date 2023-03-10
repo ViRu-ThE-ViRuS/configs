@@ -59,6 +59,9 @@ local workspace_config = {
         target_command = "",
     },
 
+    -- state: current project-config, works with lib/project
+    project = nil,
+
     -- registered custom commands
     commands = {},
 

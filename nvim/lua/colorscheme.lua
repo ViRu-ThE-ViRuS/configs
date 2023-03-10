@@ -1,3 +1,5 @@
+vim.g.aqua_bold = 1
+
 vim.g.barstrata_italic_booleans = true
 vim.g.barstrata_italic_functions = true
 vim.g.barstrata_italic_keywords = true
@@ -191,7 +193,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = 'dark'
 
-local colorscheme = 'default'
+local colorscheme = 'sweetie'
 ---@cast colorscheme +string +function
 
 -- load default colorscheme if chosen one is not available
@@ -204,7 +206,9 @@ ui_overrides()
 return {
     preferred = {
         dark = {
+            "aquarium",
             "barstrata",
+            "danger",
             "everforest",
             "gruvbox",
             "gruvbox-baby",
@@ -221,6 +225,7 @@ return {
             "oxocarbon",
             "palenightfall",
             "poimandres",
+            "sweetie",
             "tempus_tempest", "tempus_dusk",
             "vscode",
             "xcodedarkhc",
@@ -249,6 +254,7 @@ return {
             "gruvbox-material",
             "intellij",
             "oxocarbon",
+            "sweetie",
             "tempus_dawn", "tempus_totus",
             "vscode",
             "xcodelighthc",

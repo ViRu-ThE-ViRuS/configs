@@ -115,11 +115,16 @@ local function setup_dap_configurations()
         {
             type = 'python',
             request = 'launch',
-            program = '${file}',
             cwd = '${workspaceFolder}',
             terminal = 'console',
             console = 'integratedTerminal',
-            pythonPath = core.get_python()
+            pythonPath = core.get_python(),
+            program = function()
+                return vim.fn.input('program: ', vim.loop.cwd() .. '/', 'file')
+            end,
+            args = function()
+                return vim.split(vim.fn.input('args: ', '', 'file'), ' ')
+            end
         }
     }
 
@@ -132,8 +137,10 @@ local function setup_dap_configurations()
             console = 'integratedTerminal',
             stopOnEntry = false,
             program = function()
-                -- want it in cmdline, without callback. so fn.input better than ui.input
-                return vim.fn.input('executable: ', vim.loop.cwd() .. '/', 'file')
+                return vim.fn.input('program: ', vim.loop.cwd() .. '/', 'file')
+            end,
+            args = function()
+                return vim.split(vim.fn.input('args: ', '', 'file'), ' ')
             end
         }
     }
@@ -179,11 +186,31 @@ local function setup_dap_ui()
 
     -- setup statusline
     local statusline = require('statusline')
-    vim.api.nvim_create_autocmd('FileType', { group = statusline.autocmd_group, pattern = 'dapui_watches', callback = statusline.set_statusline_func('Watches') })
-    vim.api.nvim_create_autocmd('FileType', { group = statusline.autocmd_group, pattern = 'dapui_stacks', callback = statusline.set_statusline_func('Stacks') })
-    vim.api.nvim_create_autocmd('FileType', { group = statusline.autocmd_group, pattern = 'dapui_scopes', callback = statusline.set_statusline_func('Scopes') })
-    vim.api.nvim_create_autocmd('FileType', { group = statusline.autocmd_group, pattern = 'dapui_breakpoints', callback = statusline.set_statusline_func('Breaks') })
-    vim.api.nvim_create_autocmd('FileType', { group = statusline.autocmd_group, pattern = 'dap-repl', callback = statusline.set_statusline_func('Repl') })
+    vim.api.nvim_create_autocmd('FileType', {
+        group = statusline.autocmd_group,
+        pattern = 'dapui_watches',
+        callback = statusline.set_statusline_func('Watches'),
+    })
+    vim.api.nvim_create_autocmd('FileType', {
+        group = statusline.autocmd_group,
+        pattern = 'dapui_stacks',
+        callback = statusline.set_statusline_func('Stacks'),
+    })
+    vim.api.nvim_create_autocmd('FileType', {
+        group = statusline.autocmd_group,
+        pattern = 'dapui_scopes',
+        callback = statusline.set_statusline_func('Scopes'),
+    })
+    vim.api.nvim_create_autocmd('FileType', {
+        group = statusline.autocmd_group,
+        pattern = 'dapui_breakpoints',
+        callback = statusline.set_statusline_func('Breaks'),
+    })
+    vim.api.nvim_create_autocmd('FileType', {
+        group = statusline.autocmd_group,
+        pattern = 'dap-repl',
+        callback = statusline.set_statusline_func('Repl'),
+    })
 
     -- setup repl
     dap.repl.commands = vim.tbl_extend('force', dap.repl.commands, {
@@ -213,7 +240,7 @@ local function setup_dap_ui()
         },
         layouts = {
             { elements = { "scopes", "breakpoints", "stacks" }, size = 0.33, position = "right" },
-            { elements = { "repl", "watches" }, size = 0.27, position = "bottom" },
+            { elements = { "repl", "watches" },                 size = 0.27, position = "bottom" },
         },
         icons = { expanded = "-", collapsed = "$" },
         controls = { enabled = false },
@@ -358,7 +385,7 @@ return {
             end)
         end, nil, true)
 
-        utils.add_command('[DAP] Add log point', function ()
+        utils.add_command('[DAP] Add log point', function()
             vim.ui.input({
                 prompt = 'logpoint message> ',
                 completion = 'tag'
@@ -369,9 +396,44 @@ return {
 
         utils.map('n', '<f5>', function()
             -- create session tab if needed
-            if dap.session() == nil then vim.cmd('tab sb ' .. vim.api.nvim_get_current_buf())
-            else vim.cmd('normal ' .. dap.session().session_target_tab .. 'gt') end
+            if dap.session() == nil then
+                vim.cmd('tab sb ' .. vim.api.nvim_get_current_buf())
+            else
+                vim.cmd('normal ' .. dap.session().session_target_tab .. 'gt')
+            end
             dap.continue()
         end)
+
+        vim.api.nvim_create_autocmd('User', {
+            pattern = 'ProjectInit',
+            callback = function()
+                local core = require('lib/core')
+                local project = utils.workspace_config.project
+                assert(project, "project should not be nil on ProjectInit")
+
+                local launch_dap = function(config_overrides)
+                    local ft = vim.api.nvim_get_option_value('filetype', { scope = 'local' })
+                    local base = core.table_copy(dap.configurations[ft])[1]
+
+                    for key, value in pairs(config_overrides) do
+                        base[key] = value
+                    end
+
+                    dap.continue(base)
+                end
+
+                project:add_command(
+                    'run DAP config',
+                    function()
+                        local configs = project.dap_config
+                        vim.ui.select(core.table_keys(configs), { prompt = 'config> ' }, function(config)
+                            launch_dap(configs[config])
+                        end)
+                    end,
+                    nil,
+                    true
+                )
+            end
+        })
     end
 }

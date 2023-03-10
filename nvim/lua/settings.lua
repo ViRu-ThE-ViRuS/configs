@@ -83,11 +83,11 @@ vim.opt.fixendofline = false
 vim.opt.formatoptions = "cqnjlr"
 vim.opt.matchpairs = "(:),{:},[:],<:>"
 vim.opt.modelines = 5
-vim.opt.shiftwidth = 4
+vim.opt.shiftwidth = 2
 vim.opt.smartindent = true
-vim.opt.softtabstop = 4
+vim.opt.softtabstop = 2
 vim.opt.swapfile = false
-vim.opt.tabstop = 4
+vim.opt.tabstop = 2
 vim.opt.textwidth = 79
 vim.opt.undofile = true
 
