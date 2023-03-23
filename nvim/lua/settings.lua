@@ -9,15 +9,15 @@ vim.g.python_host_skip_check = 1
 
 -- set python path and shell
 vim.defer_fn(function()
-    vim.g.python3_host_prog = core.get_python()
+  vim.g.python3_host_prog = core.get_python()
 
-    if vim.fn.exists("fish") then
-        vim.opt.shell = "fish"
-    elseif vim.fn.exists("zsh") then
-        vim.opt.shell = "zsh"
-    else
-        vim.opt.shell = "bash"
-    end
+  if vim.fn.exists("fish") then
+    vim.opt.shell = "fish"
+  elseif vim.fn.exists("zsh") then
+    vim.opt.shell = "zsh"
+  else
+    vim.opt.shell = "bash"
+  end
 end, 0)
 
 -- global options
@@ -93,4 +93,3 @@ vim.opt.undofile = true
 
 -- remove ft maps
 vim.g.no_plugin_maps = 1
-

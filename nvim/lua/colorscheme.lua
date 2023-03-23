@@ -40,92 +40,92 @@ vim.g.vscode_style = "dark"
 
 -- {{{ lua configured colorscheme loaders
 local function load_material(variant)
-    return function(_)
-        require('material').setup({
-            styles = {
-                comments = { italic = true },
-                functions = { italic = true },
-                strings = { italic = true }
-            }
-        })
+  return function(_)
+    require('material').setup({
+      styles = {
+        comments = { italic = true },
+        functions = { italic = true },
+        strings = { italic = true }
+      }
+    })
 
-        vim.g.material_style = variant
-        vim.cmd.colorscheme('material')
-        return string.format('material [%s]', variant)
-    end
+    vim.g.material_style = variant
+    vim.cmd.colorscheme('material')
+    return string.format('material [%s]', variant)
+  end
 end
 
 local function load_nightfox(variant)
-    return function(_)
-        require('nightfox').setup({
-            options = {
-                terminal_colors = true,
-                inverse = { search = true },
-                styles = {
-                    comments = "bold,italic",
-                    functions = "bold,italic",
-                    strings = "italic",
-                }
-            }
-        })
+  return function(_)
+    require('nightfox').setup({
+      options = {
+        terminal_colors = true,
+        inverse = { search = true },
+        styles = {
+          comments = "bold,italic",
+          functions = "bold,italic",
+          strings = "italic",
+        }
+      }
+    })
 
-        vim.cmd.colorscheme(variant)
-        return string.format('nightfox [%s]', variant)
-    end
+    vim.cmd.colorscheme(variant)
+    return string.format('nightfox [%s]', variant)
+  end
 end
 
 local function load_catppuccin(variant)
-    return function(_)
-        require("catppuccin").setup({
-            flavor = "mocha",
-            term_colors = true,
-            transparent_background = false,
-            styles = {
-                comments = { "bold", "italic" },
-                functions = { "bold", "italic" },
-                numbers = { "underline" },
-                strings = { "italic" },
-            },
-            integrations = {
-                cmp = true,
-                gitsigns = true,
-                bufferline = true,
-                notify = true,
-                treesitter = true,
-                native_lsp = {
-                    enabled = true,
-                    virtual_text = {
-                        errors = { "bold", "italic" },
-                        hints = { "italic" },
-                        warnings = { "italic" },
-                        information = { "italic" },
-                    },
-                    underlines = {
-                        errors = { "underline" },
-                        hints = { "underline" },
-                        warnings = { "underline" },
-                        information = { "underline" },
-                    },
-                },
-                nvimtree = { enabled = true, show_root = true },
-                dap = { enabled = true, enable_ui = true },
-            },
-        })
+  return function(_)
+    require("catppuccin").setup({
+      flavor = "mocha",
+      term_colors = true,
+      transparent_background = false,
+      styles = {
+        comments = { "bold", "italic" },
+        functions = { "bold", "italic" },
+        numbers = { "underline" },
+        strings = { "italic" },
+      },
+      integrations = {
+        cmp = true,
+        gitsigns = true,
+        bufferline = true,
+        notify = true,
+        treesitter = true,
+        native_lsp = {
+          enabled = true,
+          virtual_text = {
+            errors = { "bold", "italic" },
+            hints = { "italic" },
+            warnings = { "italic" },
+            information = { "italic" },
+          },
+          underlines = {
+            errors = { "underline" },
+            hints = { "underline" },
+            warnings = { "underline" },
+            information = { "underline" },
+          },
+        },
+        nvimtree = { enabled = true, show_root = true },
+        dap = { enabled = true, enable_ui = true },
+      },
+    })
 
-        vim.cmd.colorscheme(variant)
-        return string.format('catppuccin [%s]', variant)
-    end
+    vim.cmd.colorscheme(variant)
+    return string.format('catppuccin [%s]', variant)
+  end
 end
 
 local function load_rose_pine(variant)
-    return function()
-        require('rose-pine').setup({
-            dark_variant = variant
-        })
+  return function()
+    require('rose-pine').setup({
+      dark_variant = variant
+    })
 
-        vim.cmd.colorscheme('rose-pine')
-        return string.format('rose-pine [%s]', variant or 'dawn')
-    end
+    vim.cmd.colorscheme('rose-pine')
+    return string.format('rose-pine [%s]', variant or 'dawn')
+  end
 end
 
 -- }}}
@@ -133,19 +133,19 @@ end
 -- {{{ overrides
 -- setup colorscheme overrides
 local function ui_overrides()
-    -- set normal to a default if not already set
-    if vim.api.nvim_get_hl_by_name("Normal", true).background == nil then
-        vim.api.nvim_set_hl(0, "Normal", { background = 0x171717 })
-        vim.api.nvim_set_hl(0, "NormalFloat", { background = 0x171717 })
-    end
+  -- set normal to a default if not already set
+  if vim.api.nvim_get_hl_by_name("Normal", true).background == nil then
+    vim.api.nvim_set_hl(0, "Normal", { background = 0x171717 })
+    vim.api.nvim_set_hl(0, "NormalFloat", { background = 0x171717 })
+  end
 
-    vim.opt.guicursor = 'n-v-c-sm:block-Cursor,i-ci-ve:ver25-Cursor,r-cr-o:hor20-Cursor'
-    vim.opt.hlsearch = false
+  vim.opt.guicursor = 'n-v-c-sm:block-Cursor,i-ci-ve:ver25-Cursor,r-cr-o:hor20-Cursor'
+  vim.opt.hlsearch = false
 
-    -- NOTE(vir): some colorschemes aint pretty with gitsigns
-    -- GitSign* highlights link to Diff* highlights for some reason despite
-    -- configuring them not to. Consider linking these only when in git repos?
-    vim.cmd([[
+  -- NOTE(vir): some colorschemes aint pretty with gitsigns
+  -- GitSign* highlights link to Diff* highlights for some reason despite
+  -- configuring them not to. Consider linking these only when in git repos?
+  vim.cmd([[
         " lsp
         highlight! link LspReferenceRead IncSearch
         highlight! link LspReferenceWrite IncSearch
@@ -184,8 +184,8 @@ local function ui_overrides()
         highlight! link NormalFloat Normal
     ]])
 
-    -- set statusline highlights
-    require('statusline').setup_highlights()
+  -- set statusline highlights
+  require('statusline').setup_highlights()
 end
 
 -- }}}
@@ -193,7 +193,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = 'dark'
 
-local colorscheme = 'sweetie'
+local colorscheme = 'gruvbox'
 ---@cast colorscheme +string +function
 
 -- load default colorscheme if chosen one is not available
@@ -204,68 +204,68 @@ if not pcall(set_fn, colorscheme) then vim.cmd.colorscheme('default') end
 ui_overrides()
 
 return {
-    preferred = {
-        dark = {
-            "aquarium",
-            "barstrata",
-            "danger",
-            "everforest",
-            "gruvbox",
-            "gruvbox-baby",
-            "gruvbox-material",
-            "habamax",
-            "melange",
-            "mellow",
-            "monokai_pro", "monokai_ristretto",
-            "moonfly",
-            "mountain",
-            "nightfly",
-            "nightsky",
-            "noctis", "noctis_bordo", "noctis_minimus", "noctis_uva",
-            "oxocarbon",
-            "palenightfall",
-            "poimandres",
-            "sweetie",
-            "tempus_tempest", "tempus_dusk",
-            "vscode",
-            "xcodedarkhc",
-            "default",
+  preferred = {
+    dark = {
+      "aquarium",
+      "barstrata",
+      "danger",
+      "everforest",
+      "gruvbox",
+      "gruvbox-baby",
+      "gruvbox-material",
+      "habamax",
+      "melange",
+      "mellow",
+      "monokai_pro", "monokai_ristretto",
+      "moonfly",
+      "mountain",
+      "nightfly",
+      "nightsky",
+      "noctis", "noctis_bordo", "noctis_minimus", "noctis_uva",
+      "oxocarbon",
+      "palenightfall",
+      "poimandres",
+      "sweetie",
+      "tempus_tempest", "tempus_dusk",
+      "vscode",
+      "xcodedarkhc",
+      "default",
 
-            -- lua configured colorschemes
-            load_catppuccin('catppuccin-frappe'),
-            load_catppuccin('catppuccin-macchiato'),
-            load_catppuccin('catppuccin-mocha'),
-            load_material('darker'),
-            load_material('palenight'),
-            load_nightfox('carbonfox'),
-            load_nightfox('duskfox'),
-            load_nightfox('nightfox'),
-            load_nightfox('nordfox'),
-            load_nightfox('terafox'),
-            load_rose_pine('main'),
-            load_rose_pine('moon'),
-        },
-
-        -- NOTE(vir): Yes, sometimes, i use light themes,
-        -- they remind me of the pain that exists in the world :o
-        light = {
-            "everforest",
-            "gruvbox",
-            "gruvbox-material",
-            "intellij",
-            "oxocarbon",
-            "sweetie",
-            "tempus_dawn", "tempus_totus",
-            "vscode",
-            "xcodelighthc",
-            "shine",
-
-            -- lua configured colorschemes
-            load_catppuccin("catppuccin-latte"),
-            load_material('lighter'),
-            load_nightfox('dawnfox'),
-            load_rose_pine(),
-        }
+      -- lua configured colorschemes
+      load_catppuccin('catppuccin-frappe'),
+      load_catppuccin('catppuccin-macchiato'),
+      load_catppuccin('catppuccin-mocha'),
+      load_material('darker'),
+      load_material('palenight'),
+      load_nightfox('carbonfox'),
+      load_nightfox('duskfox'),
+      load_nightfox('nightfox'),
+      load_nightfox('nordfox'),
+      load_nightfox('terafox'),
+      load_rose_pine('main'),
+      load_rose_pine('moon'),
     },
-    ui_overrides = ui_overrides,
+
+    -- NOTE(vir): Yes, sometimes, i use light themes,
+    -- they remind me of the pain that exists in the world :o
+    light = {
+      "everforest",
+      "gruvbox",
+      "gruvbox-material",
+      "intellij",
+      "oxocarbon",
+      "sweetie",
+      "tempus_dawn", "tempus_totus",
+      "vscode",
+      "xcodelighthc",
+      "shine",
+
+      -- lua configured colorschemes
+      load_catppuccin("catppuccin-latte"),
+      load_material('lighter'),
+      load_nightfox('dawnfox'),
+      load_rose_pine(),
+    }
+  },
+  ui_overrides = ui_overrides,
 }
