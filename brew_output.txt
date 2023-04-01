@@ -1,6 +1,4 @@
-bandwhich
 bat
-bdw-gc
 brotli
 c-ares
 ca-certificates
@@ -18,7 +16,6 @@ glib-networking
 gmp
 gnutls
 gsettings-desktop-schemas
-guile
 htop
 icu4c
 jansson
@@ -29,7 +26,6 @@ libpng
 libssh2
 libtasn1
 libtermkey
-libtool
 libunistring
 libuv
 libvterm
@@ -39,7 +35,6 @@ luajit
 luarocks
 luv
 lz4
-m4
 megatools
 msgpack
 ncurses
@@ -53,7 +48,6 @@ p11-kit
 pcre
 pcre2
 pkg-config
-readline
 ripgrep
 rtmpdump
 rustup-init

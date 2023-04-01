@@ -365,7 +365,7 @@ return {
     local utils = require('utils')
 
     -- NOTE(vir): use mason to install dependencies
-    require('mason-nvim-dap').setup({ ensure_installed = { 'python', 'codelldb' } })
+    require('mason-nvim-dap').setup({ ensure_installed = { 'python', 'codelldb', 'lua_ls' } })
 
     -- setup ux
     setup_dap_adapters()
