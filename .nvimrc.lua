@@ -1,11 +1,7 @@
 local utils = require('utils')
 local Project = require('lib/project').Project
 
-local project = Project:new(
-    'ViRu-ThE-ViRuS/configs',
-    require('lib/core').get_username(),
-    vim.fn.getcwd()
-)
+local project = Project.new({ name = 'ViRu-ThE-ViRuS/configs' })
 
 utils.add_command('UpdateRepo', function()
     vim.cmd [[
@@ -35,3 +31,5 @@ end, {
     nargs = 0,
     desc = 'Update configs with current repository files'
 }, true)
+
+return project

@@ -1,9 +1,9 @@
-local utils = require('utils')
 local core = require('lib/core')
+local misc = require('lib/misc')
 
-local tag_state = utils.editor_config.tag_state
-local symbol_config = utils.editor_config.symbol_config
-local truncation = utils.editor_config.truncation
+local tag_state = session.state.tags
+local symbols = session.config.symbols
+local truncation = session.config.truncation
 
 -- statusline colors
 local colors = {
@@ -57,7 +57,7 @@ local statusline_blacklist = {
 local function truncate_statusline(small)
   local limit = (small and truncation.truncation_limit_s) or truncation.truncation_limit
   local get_global = vim.api.nvim_get_option_value('laststatus', { scope = 'global' }) == 3
-  return utils.is_htruncated(limit, get_global)
+  return misc.is_htruncated(limit, get_global)
 end
 
 -- setup statusline highlights
@@ -159,7 +159,7 @@ local function get_diagnostics()
   local errors = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
   if errors > 0 then
     table.insert(status_parts,
-      symbol_config.indicator_error .. symbol_config.indicator_seperator .. errors)
+      symbols.indicator_error .. symbols.indicator_seperator .. errors)
   end
 
   if not truncate_statusline() then
@@ -169,15 +169,15 @@ local function get_diagnostics()
 
     if warnings > 0 then
       table.insert(status_parts,
-        symbol_config.indicator_warning .. symbol_config.indicator_seperator .. warnings)
+        symbols.indicator_warning .. symbols.indicator_seperator .. warnings)
     end
     if infos > 0 then
       table.insert(status_parts,
-        symbol_config.indicator_info .. symbol_config.indicator_seperator .. infos)
+        symbols.indicator_info .. symbols.indicator_seperator .. infos)
     end
     if hints > 0 then
       table.insert(status_parts,
-        symbol_config.indicator_hint .. symbol_config.indicator_seperator .. hints)
+        symbols.indicator_hint .. symbols.indicator_seperator .. hints)
     end
   end
 

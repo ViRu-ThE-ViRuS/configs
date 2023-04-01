@@ -1,5 +1,6 @@
 -- hello my name is viraat chandra and i love to program
 
+require("session")
 require("plugins")
 require("settings")
 require("colorscheme")
@@ -10,8 +11,8 @@ vim.api.nvim_create_autocmd("User", {
     require("keymaps")
     require("commands")
 
-    -- NOTE(vir): load project local config last
-    require("project_config").load()
+    -- NOTE(vir): load local settings last
+    require("lib/local_session").load_local_session()
   end
 })
 
@@ -23,3 +24,4 @@ vim.api.nvim_create_autocmd("User", {
 --  .clang-tidy         : clang-tidy config
 --  .flake8             : autopep8 config
 --  pyrightconfig.json  : pyright config
+

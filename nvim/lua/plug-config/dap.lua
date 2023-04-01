@@ -1,24 +1,12 @@
 -- {{{ helpers
--- TODO(vir): deprecated, remove this
--- servers launched internally in neovim
--- these servers are launched within terminal buffers
--- and this dap configurations manages these sessions
--- examples: internal_servers = { 'codelldb' }
-local internal_servers = {}
-
 -- get handles of output windows
-local function activate_output_window(session)
+local function activate_output_window(_)
   local utils = require('utils')
   local target_handle = nil
   local target_regex = nil
 
   -- TODO(vir): manually update this when new adapters are added
-  if session.config.type == 'pwa-node' then
-    target_regex = vim.regex('\\v^.*/.*dap-repl.*$')
-    require('dap').repl.open()
-  else
-    target_regex = vim.regex('\\v^.*/python3|codelldb$')
-  end
+  target_regex = vim.regex('\\v^.*/python3|codelldb$')
 
   -- get buffer handle for output window
   for _, handle in ipairs(vim.api.nvim_list_bufs()) do
@@ -34,9 +22,9 @@ local function activate_output_window(session)
     vim.api.nvim_buf_set_option(target_handle, 'bufhidden', 'delete')
     utils.map('n', '<c-o>', function()
       vim.cmd [[
-                q!
-                tabclose
-            ]]
+        q!
+        tabclose
+      ]]
     end, { buffer = target_handle })
 
     local windows = vim.fn.win_findbuf(target_handle)
@@ -51,21 +39,6 @@ local function activate_output_window(session)
 
   return target_handle
 end
-
--- close servers launched within neovim
-local function close_internal_servers()
-  local core = require('lib/core')
-  local buffers = vim.api.nvim_list_bufs()
-
-  core.foreach(internal_servers, function(_, title)
-    for _, handle in ipairs(buffers) do
-      if vim.api.nvim_buf_get_name(handle):match('^.*/' .. title) then
-        vim.api.nvim_buf_delete(handle, { force = true })
-      end
-    end
-  end)
-end
-
 -- }}}
 
 local function setup_dap_adapters()
@@ -85,26 +58,6 @@ local function setup_dap_adapters()
       args = { '--port', '13000' },
     },
   }
-
-  -- TODO(vir): fix this
-  -- load extra js/ts dependencies
-  -- _ = (function()
-  --     local ft = vim.api.nvim_get_option_value('ft', { scope = 'local' })
-  --     local targets = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' }
-
-  --     if not core.table_contains(targets, ft) then return end
-
-  --     -- load if needed and not already present
-  --     -- this is to get around packer messing up ordering
-  --     if not packer_plugins['nvim-dap-vscode-js'].loaded then
-  --         require('packer').loader('nvim-dap-vscode-js')
-  --     end
-
-  --     require('dap-vscode-js').setup({
-  --         adapters = { 'pwa-node' },
-  --         debugger_path = core.get_homedir() .. '/.local/vscode-js-debug',
-  --     })
-  -- end)()
 end
 
 local function setup_dap_configurations()
@@ -146,38 +99,6 @@ local function setup_dap_configurations()
   }
   dap.configurations.cpp = dap.configurations.c
   dap.configurations.rust = dap.configurations.cpp
-
-  -- TODO(vir): fix this
-  -- dap.configurations.javascript = {
-  --     {
-  --         type = 'pwa-node',
-  --         request = 'launch',
-  --         name = 'launch',
-  --         program = '${file}',
-  --         sourceMaps = true,
-  --         cwd = '${workspaceFolder}',
-  --         rootPath = '${workspaceFolder}',
-  --         skipFiles = { '<node_internals>/**' },
-  --         protocol = 'inspector',
-  --         console = 'integratedTerminal',
-  --         resolveSourceMapLocations = {
-  --             "${workspaceFolder}/dist/**/*.js",
-  --             "${workspaceFolder}/**",
-  --             "!**/node_modules/**",
-  --         },
-  --     },
-  --     {
-  --         type = 'pwa-node',
-  --         request = 'attach',
-  --         name = 'attach',
-  --         processId = require('dap/utils').pick_process,
-  --         cwd = '${workspaceFolder}'
-
-  --     }
-  -- }
-  -- dap.configurations.typescript = dap.configurations.javascript
-  -- dap.configurations.javascriptreact = dap.configurations.javascript
-  -- dap.configurations.typescriptreact = dap.configurations.javascript
 end
 
 local function setup_dap_ui()
@@ -221,6 +142,7 @@ local function setup_dap_ui()
     }
   })
 
+  -- autocomplete in repl buffer
   -- vim.api.nvim_create_augroup('DAPConfig', { clear = true })
   -- vim.api.nvim_create_autocmd('FileType', {
   --     group = 'DAPConfig',
@@ -284,8 +206,7 @@ local function setup_dap_events()
     utils.map('n', '<m-2>', dap.step_into)
     utils.map('n', '<m-3>', dap.step_out)
 
-    -- hard terminate: remove keymaps, close dapui, close dap repl, close dap,
-    -- delete output buffers, close internal_servers
+    -- hard terminate: remove keymaps, close dapui, close dap repl, close dap, delete output buffers
     utils.map('n', '<m-q>', function()
       local session = dap.session()
 
@@ -294,7 +215,6 @@ local function setup_dap_events()
       dap.repl.close()
       dap.close()
 
-      close_internal_servers()
       activate_output_window(session)
 
       utils.notify(
@@ -325,8 +245,7 @@ local function setup_dap_events()
     )
   end
 
-  -- terminate session: remove keymaps, close dapui, close dap repl,
-  -- close internal_servers, set last output buffer active
+  -- terminate session: remove keymaps, close dapui, close dap repl, set last output buffer active
   local function terminate_session(session, _)
     if session.config.program == nil then return end
 
@@ -334,7 +253,6 @@ local function setup_dap_events()
     dapui.close()
     dap.repl.close()
 
-    close_internal_servers()
     activate_output_window(session)
 
     utils.notify(
@@ -360,9 +278,70 @@ return {
     'theHamsta/nvim-dap-virtual-text',
   },
   ft = { 'c', 'cpp', 'rust', 'python' },
+  init = function()
+    -- project debug config
+    -- TODO(vir): fix me!
+    --  - compile / preamble
+    --  - override default dap configs
+    --  - specify master file to run debugging from
+    vim.api.nvim_create_autocmd('User', {
+      pattern = 'ProjectInit',
+      callback = function()
+        local core = require('lib/core')
+        local project = session.state.project
+        assert(project, "project should not be nil on ProjectInit")
+
+        -- launch dap for current ft
+        local launch_dap = function(config_overrides)
+
+          local dap = require('dap')
+          local ft = vim.api.nvim_get_option_value('filetype', { scope = 'local' })
+          local base = core.table_copy(dap.configurations[ft])[1]
+
+          print("config_overrides: ", vim.inspect(config_overrides)) -- __DEBUG_PRINT__
+          print("base: ", vim.inspect(base)) -- __DEBUG_PRINT__
+
+          for key, value in pairs(config_overrides) do
+            base[key] = value
+          end
+
+          dap.continue(base)
+        end
+
+        -- no dap configs specified
+        if not project.dap_config then return end
+
+        -- add project command for specified configs
+        project:add_command(
+          'run DAP config',
+          function()
+            vim.ui.select(
+              core.table_keys(project.dap_config),
+              { prompt = 'config> ' },
+              function(config_name) launch_dap(project.dap_config[config_name]) end
+            )
+          end,
+          nil,
+          true
+        )
+      end
+    })
+  end,
   config = function()
     local dap = require('dap')
     local utils = require('utils')
+
+    local dap_continue = dap.continue
+    dap.continue = function(...)
+      -- create session tab if needed
+      if dap.session() == nil then
+        vim.cmd('tab sb ' .. vim.api.nvim_get_current_buf())
+      else
+        vim.cmd('normal ' .. dap.session().session_target_tab .. 'gt')
+      end
+
+      dap_continue(...)
+    end
 
     -- NOTE(vir): use mason to install dependencies
     require('mason-nvim-dap').setup({ ensure_installed = { 'python', 'codelldb', 'lua_ls' } })
@@ -375,6 +354,7 @@ return {
 
     -- general keymaps and commands
     utils.map('n', '<m-d>b', dap.toggle_breakpoint)
+    utils.map('n', '<f5>', dap.continue)
 
     utils.add_command('[DAP] Add conditional breakpoint', function()
       vim.ui.input({
@@ -393,47 +373,5 @@ return {
         dap.set_breakpoint(nil, nil, log_msg)
       end)
     end, nil, true)
-
-    utils.map('n', '<f5>', function()
-      -- create session tab if needed
-      if dap.session() == nil then
-        vim.cmd('tab sb ' .. vim.api.nvim_get_current_buf())
-      else
-        vim.cmd('normal ' .. dap.session().session_target_tab .. 'gt')
-      end
-      dap.continue()
-    end)
-
-    vim.api.nvim_create_autocmd('User', {
-      pattern = 'ProjectInit',
-      callback = function()
-        local core = require('lib/core')
-        local project = utils.workspace_config.project
-        assert(project, "project should not be nil on ProjectInit")
-
-        local launch_dap = function(config_overrides)
-          local ft = vim.api.nvim_get_option_value('filetype', { scope = 'local' })
-          local base = core.table_copy(dap.configurations[ft])[1]
-
-          for key, value in pairs(config_overrides) do
-            base[key] = value
-          end
-
-          dap.continue(base)
-        end
-
-        project:add_command(
-          'run DAP config',
-          function()
-            local configs = project.dap_config
-            vim.ui.select(core.table_keys(configs), { prompt = 'config> ' }, function(config)
-              launch_dap(configs[config])
-            end)
-          end,
-          nil,
-          true
-        )
-      end
-    })
   end
 }

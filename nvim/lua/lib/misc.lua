@@ -1,7 +1,7 @@
 local core = require("lib/core")
 local utils = require("utils")
 
-local ui_state = utils.editor_config.ui_state
+local ui = session.state.ui
 
 -- strip filename from full path
 local function strip_fname(path)
@@ -93,15 +93,15 @@ local function toggle_window()
   if vim.fn.winnr("$") > 1 then
     local original = vim.api.nvim_get_current_win()
     vim.cmd("tab sp")
-    ui_state.window_state[vim.api.nvim_get_current_win()] = original
+    ui.window_focus_state[vim.api.nvim_get_current_win()] = original
   else
     local maximized = vim.api.nvim_get_current_win()
-    local original = ui_state.window_state[maximized]
+    local original = ui.window_focus_state[maximized]
 
     if original ~= nil then
       vim.cmd("tabclose")
       vim.api.nvim_set_current_win(original)
-      ui_state.window_state[maximized] = nil
+      ui.window_focus_state[maximized] = nil
     end
   end
 end
@@ -109,7 +109,8 @@ end
 -- winbar: toggle context winbar in all windows
 local function toggle_context_winbar()
   local callback = nil
-  if ui_state.context_winbar then
+
+  if session.config.context_winbar then
     callback = function(_, bufnr)
       vim.api.nvim_buf_call(
         bufnr,
@@ -129,12 +130,12 @@ local function toggle_context_winbar()
   end
 
   core.foreach(vim.api.nvim_list_bufs(), callback)
-  ui_state.context_winbar = not ui_state.context_winbar
+  session.config.context_winbar = not session.config.context_winbar
 end
 
 -- separator: toggle buffer separators (thick <-> default)
 local function toggle_thicc_separators()
-  if ui_state.thick_separators == true then
+  if ui.thick_separators == true then
     vim.opt.fillchars = {
       horiz = nil,
       horizup = nil,
@@ -145,7 +146,7 @@ local function toggle_thicc_separators()
       verthoriz = nil,
     }
 
-    ui_state.thick_separators = false
+    ui.thick_separators = false
     utils.notify("thiccness", "debug", { title = '[UI] deactivated', render = "compact" })
   else
     vim.opt.fillchars = {
@@ -158,7 +159,7 @@ local function toggle_thicc_separators()
       verthoriz = "╋",
     }
 
-    ui_state.thick_separators = true
+    ui.thick_separators = true
     utils.notify("thiccness", "info", { title = '[UI] activated', render = "compact" })
   end
 end
@@ -197,7 +198,7 @@ end
 -- quickfix: toggle qflist
 local function toggle_qflist()
   if vim.tbl_isempty(core.filter(vim.fn.getwininfo(), function(_, win) return win.quickfix == 1 end)) then
-    vim.cmd [[ belowright copen ]]
+    vim.cmd [[ horizontal copen ]]
   else
     vim.cmd [[ cclose ]]
   end
@@ -245,6 +246,20 @@ local function random_colors()
   end
 end
 
+-- is buffer horizontally truncated
+local function is_htruncated(width, global)
+  local current_width = (global and vim.api.nvim_get_option_value('columns', { scope = 'global' })) or
+      vim.api.nvim_win_get_width(0)
+  return current_width <= width
+end
+
+-- is buffer vertical truncated
+local function is_vtruncated(height, global)
+  local current_height = (global and vim.api.nvim_get_option_value('lines', { scope = 'global' })) or
+      vim.api.nvim_win_get_height(0)
+  return current_height <= height
+end
+
 return {
   -- utils
   strip_fname = strip_fname,
@@ -267,4 +282,6 @@ return {
   show_messages = show_messages,
   show_command = show_command,
   random_colors = random_colors,
+  is_htruncated = is_htruncated,
+  is_vtruncated = is_vtruncated
 }

@@ -7,7 +7,7 @@ local function buffer_functions()
   if not valid then return end
 
   local tree = parser:parse()[1]
-  local functions = vim.treesitter.query.parse_query(
+  local functions = vim.treesitter.query.parse(
     ft,
 
     -- TODO(vir): can add more language specific captures when needed
@@ -27,7 +27,7 @@ local function buffer_functions()
       bufnr = bufnr,
       lnum = l1 + 1,
       col = c1 + 1,
-      text = vim.split(vim.treesitter.query.get_node_text(node, bufnr), '\n')[1]
+      text = vim.split(vim.treesitter.get_node_text(node, bufnr), '\n')[1]
     })
   end
 
@@ -117,21 +117,12 @@ return {
         },
       })
 
-      -- go to parent
-      -- utils.map('n', '[{', function()
-      --     local ts = require('nvim-treesitter/ts_utils')
-      --     local current = ts.get_node_at_cursor(0)
-      --     local parent = current:parent()
-      --     ts.goto_node(parent)
-      -- end)
-
       -- populate all functions and lambdas into qflist
       utils.map('n', '<leader>uf', function()
         utils.qf_populate(buffer_functions(), 'r', 'Functions & Lambdas')
       end)
 
       -- text-subjects : move + center
-      --- @format disable
       utils.map({ 'n', 'o', 'x' }, ']F',
         '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@class.outer")<CR>zz')
       utils.map({ 'n', 'o', 'x' }, '[F',

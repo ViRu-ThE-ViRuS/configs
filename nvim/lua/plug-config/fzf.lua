@@ -35,21 +35,21 @@ return {
       desc = 'FzfLua powered colorscheme picker'
     }, true)
 
-    -- custom commands
     -- NOTE(vir): doing here so as to force fzf
+    -- custom commands
     utils.add_command("Commands", function()
       local keys = require('lib/core').apply(
-        utils.workspace_config.commands,
+        session.state.commands,
         function(key, _) return key end
       )
       table.sort(keys, function(a, b) return a > b end)
 
-      -- force fzf-lua usage,
-      -- by setting fzf-lua as vim.ui.select handler
+      -- force fzf-lua usage, by setting fzf-lua as vim.ui.select handler
+      -- this calls config function, which sets value of vim.ui.select
       require('fzf-lua')
 
       vim.ui.select(keys, { prompt = "Commands> " }, function(key)
-        if key then utils.workspace_config.commands[key]() end
+        if key then session.state.commands[key]() end
       end)
     end, {
       bang = false,
@@ -74,8 +74,8 @@ return {
     local default_rg_options = string.format(' --hidden --follow --no-heading --smart-case --no-ignore -g "!{%s}"',
       ignore_dirs)
 
-    local symbol_config = utils.editor_config.symbol_config
-    local truncation = utils.editor_config.truncation
+    local symbols = session.config.symbols
+    local truncation = session.config.truncation
     local actions = fzf.actions
 
     -- set fzf-lua as vim.ui.select handler
@@ -85,7 +85,7 @@ return {
 
     fzf.setup({
       winopts = {
-        split = 'belowright new',
+        split = 'horizontal new',
         fullscreen = false,
         preview = {
           -- default = 'bat',
@@ -153,11 +153,6 @@ return {
           ['ctrl-v'] = actions.file_vsplit,
           ['ctrl-t'] = actions.file_tabedit,
           ['ctrl-q'] = actions.file_sel_to_qf,
-          -- ['ctrl-w'] = function (selected)
-          --     local picker_window_id = require('window-picker').pick_window()
-          --     picker_window_id = picker_window_id or vim.api.nvim_win_get_current_win()
-          --     print("selected:", vim.inspect(selected)) -- __DEBUG_PRINT__
-          -- end
         },
         buffers = {
           ['default'] = actions.buf_edit,
@@ -199,10 +194,10 @@ return {
       lsp = {
         continue_last_search = false,
         icons = {
-          ['Error'] = { icon = symbol_config.indicator_error, color = 'red' },
-          ['Warning'] = { icon = symbol_config.indicator_warning, color = 'yellow' },
-          ['Information'] = { icon = symbol_config.indicator_info, color = 'blue' },
-          ['Hint'] = { icon = symbol_config.indicator_hint, color = 'magenta' }
+          ['Error'] = { icon = symbols.indicator_error, color = 'red' },
+          ['Warning'] = { icon = symbols.indicator_warning, color = 'yellow' },
+          ['Information'] = { icon = symbols.indicator_info, color = 'blue' },
+          ['Hint'] = { icon = symbols.indicator_hint, color = 'magenta' }
         }
       }
     })

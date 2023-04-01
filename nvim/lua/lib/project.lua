@@ -1,18 +1,23 @@
-local class = require('lib/class').class
+local class = require('lib/class')
 local terminal = require('terminal')
 
 -- Project class
 local Project = class()
+Project.default_args = {
+  host_user = require('lib/core').get_username(),
+  host_path = vim.fn.getcwd(),
+}
 
 -- {{{ Project api
-function Project:init(
-  name,
-  host_user,
-  host_path
-)
-  self.name      = name or "_project_"
-  self.host_user = host_user or require('lib/core').get_username()
-  self.host_path = host_path or vim.fn.getcwd()
+function Project:init(args)
+  args           = vim.tbl_deep_extend('force', Project.default_args, args or {})
+
+  assert(args.name, 'project name cannot be nil')
+
+  self.name      = args.name
+  self.host_user = args.host_user
+  self.host_path = args.host_path
+  self.args      = args
 end
 
 -- send a project-scoped notification
@@ -27,7 +32,10 @@ end
 
 -- add project-dap config
 function Project:add_dap_config(name, program, args)
-  self.dap_config = self.dap_config or { to_run = nil }
+  assert(program, 'program argument must not be nil')
+  args = args or {}
+
+  self.dap_config = self.dap_config or {}
   self.dap_config[name] = { program = program, args = args }
 end
 
@@ -35,27 +43,20 @@ end
 
 -- RemoteProject class
 local RemoteProject = class(Project)
+RemoteProject.default_args = {}
 
 -- {{{ RemoteProject api
-function RemoteProject:init(
--- Project
-  name,
-  host_user,
-  host_path,
+function RemoteProject:init(args)
+  args = vim.tbl_deep_extend('force', RemoteProject.default_args, args or {})
+  self.super:init(args) -- init superclass
 
-  -- Remote
-  target,
-  target_user,
-  target_path
-)
-  -- TODO(vir): figure out how to call parent constructor
-  self.name        = name or "_project_"
-  self.host_user   = host_user or require('lib/core').get_username()
-  self.host_path   = host_path or vim.fn.getcwd()
+  assert(args.target, 'target cannot be nil')
+  assert(args.target_user, 'target_user cannot be nil')
+  assert(args.target_path, 'target_path cannot be nil')
 
-  self.target      = target
-  self.target_user = target_user
-  self.target_path = target_path
+  self.target      = args.target
+  self.target_user = args.target_user
+  self.target_path = args.target_path
 end
 
 -- launch rsync host <-> remote target

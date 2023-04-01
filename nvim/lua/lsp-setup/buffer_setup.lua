@@ -80,7 +80,7 @@ local function setup_options(_, bufnr)
   vim.opt_local.formatexpr = 'v:lua.vim.lsp.formatexpr()'
 
   -- set context in winbar
-  if utils.editor_config.ui_state.context_winbar then
+  if session.config.context_winbar then
     vim.opt_local.winbar = "%!luaeval(\"require('lsp-setup/lsp_utils').get_context_winbar(" .. bufnr .. ")\")"
   end
 end

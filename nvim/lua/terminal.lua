@@ -1,8 +1,8 @@
 local utils = require('utils')
 local misc = require('lib/misc')
 
-local run_config = utils.workspace_config.run_config
-local truncation = utils.editor_config.truncation
+local run_config = session.state.run_config
+local truncation = session.config.truncation
 
 -- toggle target_terminal
 local function toggle_target(force_open)
@@ -22,7 +22,7 @@ local function toggle_target(force_open)
       run_config.target_terminal = nil
     end
   else
-    local split_dir = (utils.is_htruncated(truncation.truncation_limit_s_terminal) and "") or "v"
+    local split_dir = (misc.is_htruncated(truncation.truncation_limit_s_terminal) and "") or "v"
 
     -- open in split
     if not pcall(vim.cmd, split_dir .. 'split #' .. run_config.target_terminal.bufnr) then
@@ -128,7 +128,7 @@ end
 local function launch_terminal(command, background, callback)
   assert(command, "param. command must be a valid shell command")
 
-  local split_cmd = (utils.is_htruncated(truncation.truncation_limit_s_terminal) and "sp") or "vsp"
+  local split_cmd = (misc.is_htruncated(truncation.truncation_limit_s_terminal) and "sp") or "vsp"
   vim.cmd(string.format('%s | terminal', split_cmd))
 
   -- terminal state

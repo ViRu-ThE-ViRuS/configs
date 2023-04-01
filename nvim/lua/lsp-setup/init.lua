@@ -82,7 +82,7 @@ lsp["lua_ls"].setup {
   settings = {
     Lua = {
       runtime = { version = "LuaJIT", path = runtime_path },
-      diagnostics = { globals = { "vim", "use", "packer_plugins", "require" } },
+      diagnostics = { globals = { "vim", "use", "packer_plugins", "require", "session" } },
       telemetry = { enable = false },
       workspace = {
         library = {

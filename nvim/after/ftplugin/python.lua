@@ -21,7 +21,7 @@ utils.add_command("[MISC] REPL: launch ipython", function()
         repl_session.job_id,
         repl_session.bufnr
       ),
-      "debug", { title = "[REPL] ipython session" }, true
+      "debug", { title = "[REPL] ipython session" }
     )
 
     vim.api.nvim_buf_delete(repl_session.bufnr, { force = true })
@@ -34,11 +34,11 @@ utils.add_command("[MISC] REPL: launch ipython", function()
     utils.notify(
       string.format(
         "repl session set to { job_id %s, bufnr: %s }",
-        utils.workspace_config.run_config.target_terminal.job_id,
-        utils.workspace_config.run_config.target_terminal.bufnr
+        session.state.run_config.target_terminal.job_id,
+        session.state.run_config.target_terminal.bufnr
       ),
       "info",
-      { title = "[REPL] ipython session" }, true
+      { title = "[REPL] ipython session" }
     )
   end)
 end, nil, true)
@@ -47,7 +47,7 @@ end, nil, true)
 local function get_current_cell()
   -- NOTE(vir): consider updating 'after/queries/python/textobjects.scm' when
   -- updating this
-  local cell_markers = vim.treesitter.parse_query("python", [[
+  local cell_markers = vim.treesitter.query.parse("python", [[
         ((comment) @cmt (#eq? @cmt "###"))
     ]])
 

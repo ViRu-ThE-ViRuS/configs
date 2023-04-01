@@ -1,107 +1,102 @@
--- NOTE(vir): contents of this file are referenced/taken from https://github.com/jonstoler/class.lua
-local Class = {}
+--- classes.lua: https://gist.github.com/paulmoore/1429475
+--
+-- The classes library enables simple OOP constructs using prototypes and meta-tables.
+--
+-- @author Paul Moore
+--
+-- Copyright (C) 2011 by Strange Ideas Software
+--
+-- Permission is hereby granted, free of charge, to any person obtaining a copy
+-- of this software and associated documentation files (the "Software"), to deal
+-- in the Software without restriction, including without limitation the rights
+-- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+-- copies of the Software, and to permit persons to whom the Software is
+-- furnished to do so, subject to the following conditions:
+--
+-- The above copyright notice and this permission notice shall be included in
+-- all copies or substantial portions of the Software.
+--
+-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+-- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+-- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+-- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+-- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+-- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+-- THE SOFTWARE.
 
--- default (empty) constructor
-function Class:init(...)
+local classes = {}
+
+-- Baseclass of all objects.
+classes.Object = {}
+classes.Object.class = classes.Object
+
+--- Nullary constructor.
+function classes.Object:init(...)
 end
 
--- create a subclass
-function Class:extend(obj)
-  obj = obj or {}
-
-  local function copyTable(table, destination)
-    table = table or {}
-    local result = destination or {}
-
-    for k, v in pairs(table) do
-      if not result[k] then
-        if type(v) == "table" and k ~= "__index" and k ~= "__newindex" then
-          result[k] = copyTable(v)
-        else
-          result[k] = v
-        end
-      end
-    end
-
-    return result
-  end
-
-  copyTable(self, obj)
-
-  obj._ = obj._ or {}
-
-  local mt = {}
-
-  -- create new objects directly, like o = Object()
-  mt.__call = function(self, ...)
-    return self:new(...)
-  end
-
-  -- allow for getters and setters
-  mt.__index = function(table, key)
-    local val = rawget(table._, key)
-    if val and type(val) == "table" and (val.get ~= nil or val.value ~= nil) then
-      if val.get then
-        if type(val.get) == "function" then
-          return val.get(table, val.value)
-        else
-          return val.get
-        end
-      elseif val.value then
-        return val.value
-      end
-    else
-      return val
-    end
-  end
-
-  mt.__newindex = function(table, key, value)
-    local val = rawget(table._, key)
-    if val and type(val) == "table" and ((val.set ~= nil and val._ == nil) or val.value ~= nil) then
-      local v = value
-      if val.set then
-        if type(val.set) == "function" then
-          v = val.set(table, value, val.value)
-        else
-          v = val.set
-        end
-      end
-      val.value = v
-      if val and val.afterSet then val.afterSet(table, v) end
-    else
-      table._[key] = value
-    end
-  end
-
-  setmetatable(obj, mt)
-
-  return obj
+--- Base alloc method.
+function classes.Object.alloc(mastertable)
+  return setmetatable({}, { __index = classes.Object, __newindex = mastertable })
 end
 
--- set properties outside the constructor or other functions
-function Class:set(prop, value)
-  if not value and type(prop) == "table" then
-    for k, v in pairs(prop) do
-      rawset(self._, k, v)
-    end
-  else
-    rawset(self._, prop, value)
+--- Base new method.
+function classes.Object.new(...)
+  return classes.Object.alloc({}):init(...)
+end
+
+--- Checks if this object is an instance of class.
+-- @param class The class object to check.
+-- @return Returns true if this object is an instance of class, false otherwise.
+function classes.Object:instanceOf(class)
+  -- Recurse up the supertypes until class is found, or until the supertype is not part of the inheritance tree.
+  if self.class == class then
+    return true
   end
+  if self.super then
+    return self.super:instanceOf(class)
+  end
+  return false
 end
 
--- create an instance of an object with constructor parameters
-function Class:new(...)
-  local obj = self:extend({})
-  if obj.init then obj:init(...) end
-  return obj
+--- Creates a new class.
+-- @param baseclass The Baseclass of this class, or nil.
+-- @return A new class reference.
+function classes.class(baseclass)
+  -- Create the class definition and metatable.
+  local classdef = {}
+  -- Find the super class, either Object or user-defined.
+  baseclass = baseclass or classes.Object
+  -- If this class definition does not know of a function, it will 'look up' to the Baseclass via the __index of the metatable.
+  setmetatable(classdef, { __index = baseclass })
+  -- All class instances have a reference to the class object.
+  classdef.class = classdef
+  --- Recursivly allocates the inheritance tree of the instance.
+  -- @param mastertable The 'root' of the inheritance tree.
+  -- @return Returns the instance with the allocated inheritance tree.
+  function classdef.alloc(mastertable)
+    -- All class instances have a reference to a superclass object.
+    local instance = { super = baseclass.alloc(mastertable) }
+    -- Any functions this instance does not know of will 'look up' to the superclass definition.
+    setmetatable(instance, { __index = classdef, __newindex = mastertable })
+    return instance
+  end
+
+  --- Constructs a new instance from this class definition.
+  -- @param arg Arguments to this class' constructor
+  -- @return Returns a new instance of this class.
+  function classdef.new(...)
+    -- Create the empty object.
+    local instance = {}
+    -- Start the process of creating the inheritance tree.
+    instance.super = baseclass.alloc(instance)
+    setmetatable(instance, { __index = classdef })
+    -- Finally, init the object, it is up to the programmer to choose to call the super init method.
+    instance:init(...)
+    return instance
+  end
+
+  -- Finally, return the class we created.
+  return classdef
 end
 
-local function class(attr)
-  attr = attr or {}
-  return Class:extend(attr)
-end
-
-return {
-  _class = Class,
-  class = class,
-}
+return classes.class

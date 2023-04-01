@@ -36,7 +36,6 @@ return {
           end
         end
 
-        --- @format disable
         -- keymaps
         utils.map('n', '<leader>gp', gitsigns.preview_hunk, map_opts)
         utils.map('n', '<leader>gt', gitsigns.toggle_deleted, map_opts)

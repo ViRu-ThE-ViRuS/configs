@@ -1,10 +1,10 @@
 local proto = require('vim.lsp.protocol')
 local core = require('lib/core')
-local utils = require('utils')
+local misc = require('lib/misc')
 
-local tag_state = utils.editor_config.tag_state
-local diagnostics_state = utils.editor_config.ui_state.diagnostics_state
-local truncation = utils.editor_config.truncation
+local tag_state = session.state.tags
+local diagnostics_state = session.state.ui.diagnostics_state
+local truncation = session.config.truncation
 
 -- {{{ configs
 -- tag states for statusline
@@ -220,7 +220,7 @@ local function get_context_winbar(bufnr, colors)
         background = "%#WinBar#",
       }
 
-  local filename = (utils.is_htruncated(truncation.truncation_limit, true) and ' [ %t ] ') or ' [ %f ] '
+  local filename = (misc.is_htruncated(truncation.truncation_limit, true) and ' [ %t ] ') or ' [ %f ] '
   local context = get_context(bufnr, function(context_tbl)
     local context = core.foreach(context_tbl, function(_, arg)
           return arg.iconhl .. arg.icon .. ' ' .. colors.background .. arg.name
@@ -242,8 +242,8 @@ local function debug_print(visual)
 
   -- NOTE(vir): no error handling, to remind me that i need to add missing config
   local ft = vim.api.nvim_get_option_value('filetype', { scope = 'local' })
-  local template = utils.workspace_config.debug_print_fmt[ft]
-  local postfix_raw = utils.workspace_config.debug_print_postfix
+  local template = session.config.debug_print.fmt[ft]
+  local postfix_raw = session.config.debug_print.postfix
   local postfix = ' ' .. vim.api.nvim_get_option_value('commentstring', { scope = 'local' })
       :format(postfix_raw)
 
@@ -263,15 +263,14 @@ local function debug_print(visual)
     target_line = start_line - 1
     target = vim.trim(vim.api.nvim_buf_get_text(0, start_line - 1, start_col, start_line - 1, end_col + 1, {})[1])
   else
-    local ts = require('nvim-treesitter/ts_utils')
-    local current = ts.get_node_at_cursor(0)
-    local start_line, _, end_line, _, _ = ts.get_node_range(current)
+    local current = vim.treesitter.get_node()
+    local start_line, _, end_line, _, _ = vim.treesitter.get_node_range(current)
 
     -- only support single line nodes
     if start_line ~= end_line then return end
 
     target_line = start_line
-    target = vim.treesitter.query.get_node_text(current, 0)
+    target = vim.treesitter.get_node_text(current, 0)
   end
 
   -- debug print statement to insert

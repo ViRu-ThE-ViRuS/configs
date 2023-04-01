@@ -1,8 +1,11 @@
 local misc = require('lib/misc')
 local core = require('lib/core')
+
 local colorscheme = require('colorscheme')
 local utils = require('utils')
 local plenary = require('plenary')
+
+--- autocommands
 
 -- ui setup
 vim.api.nvim_create_augroup('UISetup', { clear = true })
@@ -72,23 +75,23 @@ vim.api.nvim_create_autocmd('BufWritePost', {
     vim.lsp.stop_client(vim.lsp.get_active_clients(), false)
 
     -- reload modules
-    core.foreach(to_reload, function(_, mod) require(mod) end)
+    core.foreach(to_reload, function(_, mod) if not package.loaded[mod] then require(mod) end end)
 
-    -- NOTE(vir): init file is only reloaded when modified
-    if src_file == 'init.lua' then vim.cmd [[ source $MYVIMRC ]] end
+    -- TODO(vir): do more testing, and figure out how this works
+    -- NOTE(vir): this seems to be necessary for some reason
+    -- source file
+    vim.cmd('source')
+
     utils.notify(
-      string.format('from: %s', src_file),
+      src_file,
       'info',
-      { title = '[CONFIG] reloaded', render = 'compact' }
+      { title = '[CONFIG] reloaded from', render = 'compact' }
     )
   end
 })
 
--- lib/project api
-vim.api.nvim_create_augroup('ProjectInit', { clear = true })
-
--- custom commands
 -- NOTE(vir): Commands cmd setup in fzf-lua init
+--- custom commands
 
 -- open repository in github (after selecting remote)
 if misc.get_git_root() ~= nil then
