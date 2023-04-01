@@ -1,9 +1,8 @@
 -- default config
 local config = {
-  context_winbar      = false, -- set context in winbar
-  fancy_notifications = true, -- use fancy notifications (nvim-notify)
-  thick_separators    = false, -- use thick buffer separators
-  local_rc_name       = '.nvimrc.lua',
+  context_winbar      = false,         -- set context in winbar
+  fancy_notifications = true,          -- use fancy notifications (nvim-notify)
+  local_rc_name       = '.nvimrc.lua', -- project local config file
 
   -- symbols and signs
   symbols             = {
@@ -45,16 +44,17 @@ local config = {
 local state = {
   -- contexts using lsp+ts, managed by lsp autocommands
   tags = {
-    cache = {},
-    context = {},
+    cache     = {},
+    context   = {},
     req_state = {}
   },
 
   -- ui toggles and config
   ui = {
+    thick_separators   = true, -- use thick buffer separators
     window_focus_state = {}, -- window isolation
-    diagnostics_state = {    -- diagnostics list visibility
-      ["local"] = {},
+    diagnostics_state  = { -- diagnostics list visibility
+      ["local"]  = {},
       ["global"] = false,
     },
   },
@@ -62,7 +62,7 @@ local state = {
   -- run_config, works with terminal api
   run_config = {
     target_terminal = nil,
-    target_command = "",
+    target_command  = "",
   },
 
   -- project-config, works with lib/project api
@@ -76,7 +76,7 @@ local state = {
 -- NOTE(vir): make this global
 _G.session = {
   config = config,
-  state = state
+  state  = state
 }
 
 -- initialize misc features

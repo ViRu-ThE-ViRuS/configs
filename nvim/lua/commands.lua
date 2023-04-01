@@ -77,9 +77,10 @@ vim.api.nvim_create_autocmd('BufWritePost', {
     -- reload modules
     core.foreach(to_reload, function(_, mod) if not package.loaded[mod] then require(mod) end end)
 
-    -- TODO(vir): do more testing, and figure out how this works
-    -- NOTE(vir): this seems to be necessary for some reason
-    -- source file
+    -- TODO(vir):
+    --  - do more testing, and figure out how this works
+    --  - when writing to init.lua and .nvimrc.lua, session commands do not re-register
+    -- NOTE(vir): this seems to be necessary for some reason source file
     vim.cmd('source')
 
     utils.notify(
@@ -174,7 +175,7 @@ end, nil, true)
 
 -- toggles
 utils.add_command('[UI] Toggle Context WinBar', misc.toggle_context_winbar, nil, true)
-utils.add_command('[UI] Toggle Thicc Seperators', misc.toggle_thicc_separators, nil, true)
+utils.add_command('[UI] Toggle Thick Seperators', misc.toggle_thick_separators, nil, true)
 utils.add_command('[UI] Toggle Spellings', misc.toggle_spellings, nil, true)
 utils.add_command('[UI] Toggle Dark Mode', misc.toggle_dark_mode, nil, true)
 utils.add_command('[UI] Toggle CWord Highlights', 'if CWordHlToggle() | set hlsearch | endif', nil, true)

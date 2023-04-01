@@ -134,7 +134,7 @@ local function toggle_context_winbar()
 end
 
 -- separator: toggle buffer separators (thick <-> default)
-local function toggle_thicc_separators()
+local function toggle_thick_separators()
   if ui.thick_separators == true then
     vim.opt.fillchars = {
       horiz = nil,
@@ -273,7 +273,7 @@ return {
   -- toggles
   toggle_window = toggle_window,
   toggle_context_winbar = toggle_context_winbar,
-  toggle_thicc_separators = toggle_thicc_separators,
+  toggle_thick_separators = toggle_thick_separators,
   toggle_spellings = toggle_spellings,
   toggle_global_statusline = toggle_global_statusline,
   toggle_dark_mode = toggle_dark_mode,
