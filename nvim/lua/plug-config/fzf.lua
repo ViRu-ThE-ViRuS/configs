@@ -14,6 +14,7 @@ return {
     end)
 
     utils.map("n", "<c-p>b", function() require('fzf-lua').buffers() end)
+    utils.map("n", "<c-p>o", function() require('fzf-lua').resume() end)
 
     utils.map("n", "<c-p>f", function() require('fzf-lua').live_grep({ exec_empty_query = true }) end)
     utils.map("n", "<c-p>F", function() require('fzf-lua').live_grep({ continue_last_search = true }) end)
@@ -69,10 +70,8 @@ return {
     local utils = require("utils")
     local fzf = require('fzf-lua')
 
-    local ignore_dirs =
-    '.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build,*.dSYM,tags,node_modules,Pods,sessions,external'
-    local default_rg_options = string.format(' --hidden --follow --no-heading --smart-case --no-ignore -g "!{%s}"',
-      ignore_dirs)
+    local ignore_dirs = os.getenv('FZF_IGNORE_DIRS') .. ',' .. session.config.fuzzy_ignore_dirs
+    local default_rg_options = string.format(' --hidden --follow --no-heading --smart-case --no-ignore -g "!{%s}"', ignore_dirs)
 
     local symbols = session.config.symbols
     local truncation = session.config.truncation
@@ -139,7 +138,8 @@ return {
           ['ctrl-u'] = 'beginning-of-line',
           ['ctrl-o'] = 'end-of-line',
           ['ctrl-d'] = 'abort',
-          -- ['ctrl-i'] = 'clear-query'
+          ['alt-a']  = 'select-all+accept',
+          ['alt-i'] = 'clear-query',          -- [right-option + delete] works on macos
 
           -- preview (bat)
           ['shift-down'] = 'preview-page-down',
@@ -148,14 +148,14 @@ return {
       },
       actions = {
         files = {
-          ['default'] = actions.file_edit,
+          ['default'] = actions.file_edit_or_qf,
           ['ctrl-x'] = actions.file_split,
           ['ctrl-v'] = actions.file_vsplit,
           ['ctrl-t'] = actions.file_tabedit,
           ['ctrl-q'] = actions.file_sel_to_qf,
         },
         buffers = {
-          ['default'] = actions.buf_edit,
+          ['default'] = actions.buf_edit_or_qf,
           ['ctrl-x'] = actions.buf_split,
           ['ctrl-v'] = actions.buf_vsplit,
           ['ctrl-t'] = actions.buf_tabedit,

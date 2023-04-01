@@ -43,7 +43,6 @@ vim.api.nvim_create_autocmd('BufWritePost', {
     core.get_homedir() .. '/.config/nvim/*/*.lua',
     '.nvimrc.lua'
   },
-  -- command = 'source $MYVIMRC',
 
   callback = function()
     local src_file = vim.fn.expand('<afile>')

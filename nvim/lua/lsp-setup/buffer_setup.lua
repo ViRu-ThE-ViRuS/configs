@@ -92,11 +92,10 @@ local function setup_autocmds(client, bufnr)
   vim.api.nvim_create_autocmd('CursorHold', { group = 'LspPopups', callback = vim.diagnostic.open_float, buffer = bufnr })
 
   if client.server_capabilities.documentHighlightProvider then
-    local group = vim.api.nvim_create_augroup('LspHighlights', { clear = true })
+    local group = vim.api.nvim_create_augroup('LspHighlights', { clear = false })
     vim.api.nvim_clear_autocmds({ buffer = bufnr, group = group })
 
-    vim.api.nvim_create_autocmd('CursorHold',
-      { group = group, callback = vim.lsp.buf.document_highlight, buffer = bufnr })
+    vim.api.nvim_create_autocmd('CursorHold', { group = group, callback = vim.lsp.buf.document_highlight, buffer = bufnr })
     vim.api.nvim_create_autocmd('CursorMoved', { group = group, callback = vim.lsp.buf.clear_references, buffer = bufnr })
   end
 
@@ -104,12 +103,9 @@ local function setup_autocmds(client, bufnr)
     local group = vim.api.nvim_create_augroup('LspStates', { clear = false })
     vim.api.nvim_clear_autocmds({ buffer = bufnr, group = group })
 
-    vim.api.nvim_create_autocmd({ 'InsertLeave', 'BufEnter', 'CursorHold' },
-      { group = group, callback = lsp_utils.update_tags, buffer = bufnr })
-    vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorMoved' },
-      { group = group, callback = lsp_utils.update_context, buffer = bufnr })
-    vim.api.nvim_create_autocmd('BufDelete',
-      { group = group, callback = function() lsp_utils.clear_buffer_tags(bufnr) end, buffer = bufnr })
+    vim.api.nvim_create_autocmd({ 'InsertLeave', 'BufEnter', 'CursorHold' }, { group = group, callback = lsp_utils.update_tags, buffer = bufnr })
+    vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorMoved' }, { group = group, callback = lsp_utils.update_context, buffer = bufnr })
+    vim.api.nvim_create_autocmd('BufDelete', { group = group, callback = function() lsp_utils.clear_buffer_tags(bufnr) end, buffer = bufnr })
 
     -- first-call
     lsp_utils.update_tags()

@@ -16,16 +16,17 @@ set -xg LANG                en_US.UTF-8
 set -xg LC_CTYPE            en_US.UTF-8
 
 # fzf
-set FZF_DEFAULT_COMMAND     'rg --files --follow --smart-case --hidden --no-ignore -g "!{.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build,*.dSYM}" 2> /dev/null'
-set FZF_DEFAULT_OPTS        '--reverse --height 50%'
-set FZF_CTRL_T_COMMAND      $FZF_DEFAULT_COMMAND
-set FZF_CTRL_T_OPTS         '--preview "bat --style=numbers,changes --color always --theme Coldark-Dark --line-range :500 {}"'
+set -xg FZF_IGNORE_DIRS         '.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build,*.dSYM'
+set     FZF_DEFAULT_COMMAND     'rg --files --follow --smart-case --hidden --no-ignore -g "!{$FZF_IGNORE_DIRS}" 2> /dev/null'
+set     FZF_DEFAULT_OPTS        '--reverse --height 50%'
+set     FZF_CTRL_T_COMMAND      $FZF_DEFAULT_COMMAND
+set     FZF_CTRL_T_OPTS         '--preview "bat --style=numbers,changes --color always --theme Coldark-Dark --line-range :500 {}"'
 
 # macos : viraat-t2t
 set fish_user_paths         $fish_user_paths "/opt/homebrew/bin/"
 set fish_user_paths         $fish_user_paths "/Users/viraat-chandra/Library/Python/3.9/bin"
 # set fish_user_paths         $fish_user_paths "/opt/homebrew/opt/llvm/bin"
-# set -xg SUDO_ASKPASS        ~/.config/system/pw.sh # make this nvim specific
+# set -xg SUDO_ASKPASS        ~/.config/system/pw.sh # only used in nvim alias for now
 
 # rust setup
 set -xg CARGO_HOME          ~/.rust/cargo/

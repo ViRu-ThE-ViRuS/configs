@@ -298,8 +298,8 @@ return {
           local ft = vim.api.nvim_get_option_value('filetype', { scope = 'local' })
           local base = core.table_copy(dap.configurations[ft])[1]
 
-          print("config_overrides: ", vim.inspect(config_overrides)) -- __DEBUG_PRINT__
-          print("base: ", vim.inspect(base)) -- __DEBUG_PRINT__
+          -- print("config_overrides: ", vim.inspect(config_overrides)) -- __DEBUG_PRINT__
+          -- print("base: ", vim.inspect(base)) -- __DEBUG_PRINT__
 
           for key, value in pairs(config_overrides) do
             base[key] = value

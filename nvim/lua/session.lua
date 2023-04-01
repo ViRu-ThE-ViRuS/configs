@@ -4,6 +4,9 @@ local config = {
   fancy_notifications = true,          -- use fancy notifications (nvim-notify)
   local_rc_name       = '.nvimrc.lua', -- project local config file
 
+  -- additional fuzzy search ignore dirs for this session
+  fuzzy_ignore_dirs   = 'tags,node_modules,Pods,sessions,external',
+
   -- symbols and signs
   symbols             = {
     -- indicators, icons
@@ -31,6 +34,10 @@ local config = {
   -- debug print setup
   debug_print         = {
     postfix = '__DEBUG_PRINT__',
+
+    -- format string with 2 strings (%s):
+    --  - first is label
+    --  - second is object to be printed
     fmt     = {
       lua    = 'print("%s: ", vim.inspect(%s))',
       c      = 'printf("%s: %%s", %s);',
@@ -84,3 +91,15 @@ vim.api.nvim_create_augroup('ProjectInit', { clear = true }) -- lib/project
 
 -- NOTE(vir): return this as well
 return session
+
+--[[ example setup in local .nvimrc.lua
+
+-- override / append to session configs
+require('lib/local_session').override_session_config({
+  fuzzy_ignore_dirs = session.config.fuzzy_ignore_dirs .. ',lazy_lock.json'
+})
+
+-- when a Project object is returned, specialized project session is initaited
+return require('lib/project').Project.new({ name = 'config' })
+
+--]]
