@@ -23,27 +23,26 @@ utils.map({ "n", "v" }, "_", '"0P=`]')
 -- utils.map('n', 'N', 'Nzv', { noremap = false })
 
 -- misc
-utils.map("n", ";", ":") -- swaperoo
-utils.map("n", ":", ";") -- swaperoo
-utils.map("i", "jj", "<esc>") -- home-row escape
-utils.map("n", "U", "<c-r>") -- undo
-utils.map('n', 'Y', 'yy') -- yank full line
-utils.map("n", "<space>", "za") -- toggle folds
-utils.map("n", "gp", "`[v`]") -- last paste
-utils.map("n", "p", "p`[=`]") -- autoformat paste
-utils.map("n", "P", "P`[=`]") -- autoformat Paste
-utils.map({ "n", "v" }, "<c-b>", "<nop>") -- disable <c-b>
-utils.map("n", "/", "ms/") -- mark search start
-utils.map("n", "?", "ms?") -- mark search start
-utils.map("v", "&", ":&&<cr>") -- visual execute last substitution
-utils.map("v", ".", ":normal! .<cr>") -- visual execute .
-utils.map("v", "@", ":normal! @") -- visual execute macro
-utils.map("n", "ss", "s") -- substitute mode
-utils.map("x", "ss", ":s/\\%V") -- substitute in visual
-utils.map("x", "s/", ":s/\\<<C-r><C-w>\\>/") -- substitute cword in selection
-utils.map('x', '//', [[y/\V<c-r>=escape(@",'/\')<cr><cr>]]) -- search for selection
-utils.map('x', '<m-/>', '<esc>/\\%V') -- search within selection
--- utils.map('x', '/', '<esc>/\\%V') -- search within selection
+utils.map("n", ";", ":")                                         -- swaperoo
+utils.map("n", ":", ";")                                         -- swaperoo
+utils.map("i", "jj", "<esc>")                                    -- home-row escape
+utils.map("n", "U", "<c-r>")                                     -- undo
+utils.map('n', 'Y', 'yy')                                        -- yank full line
+utils.map("n", "<space>", "za")                                  -- toggle folds
+utils.map("n", "gp", "`[v`]")                                    -- last paste
+utils.map("n", "p", "p`[=`]")                                    -- autoformat paste
+utils.map("n", "P", "P`[=`]")                                    -- autoformat Paste
+utils.map({ "n", "v" }, "<c-b>", "<nop>")                        -- disable <c-b>
+utils.map("n", "/", "ms/")                                       -- mark search start
+utils.map("n", "?", "ms?")                                       -- mark search start
+utils.map("v", "&", ":&&<cr>")                                   -- visual execute last substitution
+utils.map("v", ".", ":normal! .<cr>")                            -- visual execute .
+utils.map("v", "@", ":normal! @")                                -- visual execute macro
+utils.map("n", "ss", "s")                                        -- substitute mode
+utils.map("x", "ss", ":s/\\%V")                                  -- substitute in visual
+utils.map("x", "s/", ":s/\\<<C-r><C-w>\\>/")                     -- substitute cword in selection
+utils.map('x', '<m-/>', '<esc>/\\%V')                            -- search within selection, '/' itself is a good mapping to consider for this
+utils.map('x', '//', [[y/<c-r>=trim(escape(@",'\/]'))<cr><cr>]]) -- search for selection
 
 -- command edit modes
 -- utils.map({ "n", "v" }, "q:", "<nop>")

@@ -1,5 +1,6 @@
 local class = require('lib/class')
 local terminal = require('terminal')
+local utils = require('utils')
 
 -- Project class
 local Project = class()
@@ -11,34 +12,49 @@ Project.default_args = {
 -- {{{ Project api
 function Project:init(args)
   args           = vim.tbl_deep_extend('force', Project.default_args, args or {})
-
   assert(args.name, 'project name cannot be nil')
 
   self.name      = args.name
   self.host_user = args.host_user
   self.host_path = args.host_path
   self.args      = args
+
+  self.command_keys = {}
+  self.dap_config = {}
 end
 
 -- send a project-scoped notification
 function Project:notify(content, type, opts)
-  require('utils').notify(string.format('[%s] %s', self.name, content), type, opts)
+  utils.notify(string.format('[%s] %s', self.name, content), type, opts)
 end
 
 -- add a project-scoped command
 function Project:add_command(name, callback, opts, also_custom)
-  require('utils').add_command(string.format('[%s] %s', self.name, name), callback, opts, also_custom)
+  local key = utils.add_command(string.format('[%s] %s', self.name, name), callback, opts, also_custom)
+  self.command_keys[key] = 1
+end
+
+-- run project-scoped command
+function Project:run_command(key)
+  key = string.format('[%s] %s', self.name, key)
+  assert(self.command_keys[key], 'project command was not registered: ' .. key)
+  utils.run_command(key)
 end
 
 -- add project-dap config
-function Project:add_dap_config(name, program, args)
+function Project:add_dap_config(name, program, args, opts)
   assert(program, 'program argument must not be nil')
   args = args or {}
+  opts = opts or {}
 
-  self.dap_config = self.dap_config or {}
-  self.dap_config[name] = { program = program, args = args }
+  -- extra opts for runner
+  opts = vim.tbl_deep_extend('force', {
+    base_type = vim.api.nvim_get_option_value('filetype', { scope = 'local' }),
+    preamble = nil,
+  }, opts)
+
+  self.dap_config[name] = { program = program, args = args, _opts = opts }
 end
-
 -- }}}
 
 -- RemoteProject class

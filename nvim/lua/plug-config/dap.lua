@@ -280,10 +280,6 @@ return {
   ft = { 'c', 'cpp', 'rust', 'python' },
   init = function()
     -- project debug config
-    -- TODO(vir): fix me!
-    --  - compile / preamble
-    --  - override default dap configs
-    --  - specify master file to run debugging from
     vim.api.nvim_create_autocmd('User', {
       pattern = 'ProjectInit',
       callback = function()
@@ -293,19 +289,21 @@ return {
 
         -- launch dap for current ft
         local launch_dap = function(config_overrides)
-
           local dap = require('dap')
-          local ft = vim.api.nvim_get_option_value('filetype', { scope = 'local' })
-          local base = core.table_copy(dap.configurations[ft])[1]
+          local opts = config_overrides._opts
 
-          -- print("config_overrides: ", vim.inspect(config_overrides)) -- __DEBUG_PRINT__
-          -- print("base: ", vim.inspect(base)) -- __DEBUG_PRINT__
+          local base = core.table_copy(dap.configurations[opts.base_type])[1]
+          assert(base, 'dap configuration for base type doesnt exist: ' .. opts.base_type)
 
+          -- override a copy of the base_configuration
           for key, value in pairs(config_overrides) do
             base[key] = value
           end
 
-          dap.continue(base)
+          -- preamble is called with final dap config, which will be run next
+          if opts.preamble then opts.preamble(base) end
+
+          dap.run(base, { new = false })
         end
 
         -- no dap configs specified
@@ -331,6 +329,7 @@ return {
     local dap = require('dap')
     local utils = require('utils')
 
+    -- {{{ override dap functions
     local dap_continue = dap.continue
     dap.continue = function(...)
       -- create session tab if needed
@@ -342,6 +341,19 @@ return {
 
       dap_continue(...)
     end
+
+    local dap_run = dap.run
+    dap.run = function(...)
+      -- create session tab if needed
+      if dap.session() == nil then
+        vim.cmd('tab sb ' .. vim.api.nvim_get_current_buf())
+      else
+        vim.cmd('normal ' .. dap.session().session_target_tab .. 'gt')
+      end
+
+      dap_run(...)
+    end
+    -- }}}
 
     -- NOTE(vir): use mason to install dependencies
     require('mason-nvim-dap').setup({ ensure_installed = { 'python', 'codelldb', 'lua_ls' } })

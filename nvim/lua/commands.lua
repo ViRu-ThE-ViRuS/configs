@@ -134,7 +134,6 @@ utils.add_command('Show', misc.show_command, {
   desc = 'Run Command and show output in qflist'
 })
 
--- TODO(vir): do this in lua
 -- <cword> highlight toggle
 vim.cmd [[
         function! CWordHlToggle()

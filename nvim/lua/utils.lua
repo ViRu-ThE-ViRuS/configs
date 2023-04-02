@@ -44,22 +44,31 @@ end
 
 -- add custom command
 local function add_command(key, callback, cmd_opts, also_custom)
-  -- opts defined, create user command
-  if cmd_opts and next(cmd_opts) then
-    vim.api.nvim_create_user_command(key, callback, cmd_opts)
-    key = '[CMD] ' .. key
-  end
+  -- opts are defined, create user command
+  if cmd_opts then vim.api.nvim_create_user_command(key, callback, cmd_opts) end
 
   -- create custom command
   if also_custom then
+
     -- assert opts not defined, or 0 args
     assert((not cmd_opts) or (not cmd_opts.nargs) or cmd_opts.nargs == 0)
 
-    local callback_fn = (type(callback) == 'function' and callback) or function()
-          vim.api.nvim_command(callback)
-        end
+    local callback_fn = (type(callback) == 'function' and callback)
+        or function() vim.api.nvim_command(callback) end
+
+    local header_regex = vim.regex('\\v\\[.*]')
+    if not header_regex:match_str(key) then key = '[CMD] ' .. key end
+
     session.state.commands[key] = callback_fn
   end
+
+  return key
+end
+
+-- run custom command
+local function run_command(key)
+  assert(session.state.commands[key], 'command not registered in session: ' .. key)
+  session.state.commands[key]()
 end
 
 return {
@@ -68,4 +77,5 @@ return {
   qf_populate = qf_populate,
   notify = notify,
   add_command = add_command,
+  run_command = run_command
 }

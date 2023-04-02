@@ -17,9 +17,6 @@ local function load_local_session()
   local utils = require('utils')
   local local_rc_name = session.config.local_rc_name
 
-  -- TODO(vir): fix this, can lead to arbit. Code Execution exploits
-  --            file_owned_by_me protection is not enough
-
   -- return if local rc doesn't exist, or if it is not owned by current user
   if not file_owned_by_me(local_rc_name) then return end
 
@@ -28,13 +25,8 @@ local function load_local_session()
   utils.notify('sourced: ' .. local_rc_name, 'info', { title = '[CONFIG] session loaded' })
 
   if session.state.project then
-    vim.defer_fn(function()
-      -- TODO(vir): test this out, after the session.lua refactor
-      -- NOTE(vir): for some reason, this only works when deferred
-      -- initialize project settings
-      vim.cmd.doautocmd({ 'User ProjectInit' })
-      session.state.project:notify('Configured', 'debug', { render = 'minimal' })
-    end, 0)
+    vim.cmd.doautocmd({ 'User ProjectInit' })
+    session.state.project:notify('configured', 'debug', { render = 'minimal' })
   end
 end
 
