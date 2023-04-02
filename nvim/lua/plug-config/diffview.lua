@@ -42,6 +42,18 @@ return {
           ['<m-l>'] = actions.cycle_layout,
           ["[x"] = actions.prev_conflict,
           ["]x"] = actions.next_conflict,
+
+          -- toggle linematching
+          ['<tab>'] = function()
+            local current_diffopt = vim.api.nvim_get_option_value('diffopt', { scope = 'local' })
+            local linematch = 'linematch:50'
+
+            if string.match(current_diffopt, linematch) then
+              vim.opt.diffopt = vim.opt.diffopt - linematch
+            else
+              vim.opt.diffopt = vim.opt.diffopt + linematch
+            end
+          end
         },
         file_panel = {
           ["j"] = actions.next_entry,
