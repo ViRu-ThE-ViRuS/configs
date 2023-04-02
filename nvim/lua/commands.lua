@@ -177,3 +177,4 @@ utils.add_command('[UI] Toggle Thick Seperators', misc.toggle_thick_separators, 
 utils.add_command('[UI] Toggle Spellings', misc.toggle_spellings, nil, true)
 utils.add_command('[UI] Toggle Dark Mode', misc.toggle_dark_mode, nil, true)
 utils.add_command('[UI] Toggle CWord Highlights', 'if CWordHlToggle() | set hlsearch | endif', nil, true)
+utils.add_command('[UI] Rename buffer', misc.rename_buffer, nil, true)

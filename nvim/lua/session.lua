@@ -69,7 +69,7 @@ local state = {
   -- run_config, works with terminal api
   run_config = {
     target_terminal = nil,
-    target_command  = "",
+    target_command  = nil,
   },
 
   -- project-config, works with lib/project api

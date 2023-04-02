@@ -37,6 +37,14 @@ local function filter(tbl, f, keep_keys)
   return t
 end
 
+-- currying functions, fn(params) will be called on partial()
+local function partial(fn, ...)
+  local n, args = select('#', ...), { ... }
+  return function()
+    return fn(unpack(args, 1, n))
+  end
+end
+
 -- concatenate two tables
 local function list_concat(A, B)
   local t = {}
@@ -136,6 +144,7 @@ return {
   apply = apply,
   filter = filter,
   list_concat = list_concat,
+  partial = partial,
   table_contains = table_contains,
   table_copy = table_copy,
   table_keys = table_keys,

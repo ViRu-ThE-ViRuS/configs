@@ -50,9 +50,12 @@ return {
 
             if string.match(current_diffopt, linematch) then
               vim.opt.diffopt = vim.opt.diffopt - linematch
+              require('utils').notify("linematch", "debug", { title = '[UI] deactivated', render = "compact" })
             else
               vim.opt.diffopt = vim.opt.diffopt + linematch
+              require('utils').notify("linematch", "info", { title = '[UI] activated', render = "compact" })
             end
+
           end
         },
         file_panel = {

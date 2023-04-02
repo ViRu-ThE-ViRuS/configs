@@ -5,19 +5,34 @@ local run_config = session.state.run_config
 local truncation = session.config.truncation
 
 --[[
-
-TODO(vir): The goal is to have a terminal api with the following capabilities:
-  - set a target_terminal, and a target_command
-  - list of terminals, select one to toggle?
-
+1. support a command palette, fuzzy selection, sent to target terminal
+2. support a terminal palette, fuzzy selection, to toggle open a particular one
 --]]
 
--- set target_terminal/target_command
-local function set_target(default)
-  if vim.b.terminal_job_id ~= nil then
-    -- default is not used within a temrinal buffer
-    assert(not default)
+-- returns if run_config.target_terminal is valid
+local function assure_target_valid()
+  -- not configured
+  if not run_config.target_terminal then
+    utils.notify('not set', 'warn', { title = '[TERM] target', render = 'compact' })
+    return
+  end
 
+  -- not valid
+  if not vim.api.nvim_buf_is_loaded(run_config.target_terminal.bufnr) then
+    utils.notify('exited, resetting state', 'debug', { title = '[TERM] target', render = 'compact' })
+    run_config.target_terminal = nil
+    return
+  end
+
+  return true
+end
+
+-- set target_terminal/target_command
+local function set_target(command)
+  if vim.b.terminal_job_id ~= nil then
+    assert(not command, "command ~= nil doesn't mabe sense when called from terminal buffer")
+
+    -- override existing setup
     run_config.target_terminal = {
       bufnr = vim.api.nvim_get_current_buf(),
       job_id = vim.b.terminal_job_id,
@@ -30,70 +45,50 @@ local function set_target(default)
         run_config.target_terminal.bufnr
       ),
       "info",
-      { title = '[TERMINAL] target', render = "compact" }
+      { title = '[TERM] target', render = "compact" }
     )
   else
-    run_config.target_command = default or vim.fn.input('[terminal] target command: ', '', 'shellcmd')
+    run_config.target_command = command or vim.fn.input('[TERM] target command: ', '', 'shellcmd')
 
     utils.notify(
       string.format("set to: %s", run_config.target_command),
       "info",
-      { title = '[TERMINAL] command', render = "compact" }
+      { title = '[TERM] command', render = "compact" }
     )
   end
 end
 
 -- toggle target_terminal
 local function toggle_target(force_open)
-  if run_config.target_terminal == nil then
-    utils.notify('not set', 'warn', { title = '[TERMINAL] target', render = 'compact' })
-    return
-  end
+  if not assure_target_valid() then return end
 
+  -- toggle if needed
   local target_winid = vim.fn.bufwinid(run_config.target_terminal.bufnr)
-
-  if target_winid ~= -1 and #vim.api.nvim_list_wins() ~= 1 then
-    if force_open then return end
-
-    -- hide target
-    if not pcall(vim.api.nvim_win_close, target_winid, false) then
-      utils.notify('exited, resetting state', 'debug', { title = '[TERMINAL] target', render = 'compact' })
-      run_config.target_terminal = nil
-    end
+  if target_winid ~= -1 and #vim.api.nvim_list_wins() > 1 then
+    -- already open
+    if not force_open then vim.api.nvim_win_close(target_winid, false) end
   else
-    local split_dir = (misc.is_htruncated(truncation.truncation_limit_s_terminal) and "") or "v"
-
     -- open in split
-    if not pcall(vim.cmd, split_dir .. 'split #' .. run_config.target_terminal.bufnr) then
-      utils.notify('exited, resetting state', 'debug', { title = '[TERMINAL] target', render = 'compact' })
-      run_config.target_terminal = nil
-    end
+    local split_dir = (misc.is_htruncated(truncation.truncation_limit_s_terminal) and "") or "v"
+    local split_cmd = string.format('%ssplit #%d', split_dir, run_config.target_terminal.bufnr)
+    vim.cmd(split_cmd)
   end
 end
 
 -- send payload to target_terminal
 local function send_to_target(payload, repeat_last)
-  if run_config.target_terminal == nil then
-    utils.notify('not set', 'warn', { title = '[TERMINAL] target', render = 'compact' })
-    return
-  end
+  if not assure_target_valid() then return end
 
-  if vim.api.nvim_buf_is_loaded(run_config.target_terminal.bufnr) then
-    -- not using pcalls intentionally, fails successfully
-    if repeat_last then
-      vim.cmd("call chansend(" .. run_config.target_terminal.job_id .. ', "\x1b\x5b\x41\\<cr>")')
-    else
-      vim.api.nvim_chan_send(run_config.target_terminal.job_id, payload .. "\n")
-    end
-
-    -- open target terminal and scroll to bottom
-    toggle_target(true)
-    misc.scroll_to_end(run_config.target_terminal.bufnr)
+  -- send command
+  if repeat_last then
+    vim.cmd("call chansend(" .. run_config.target_terminal.job_id .. ', "\x1b\x5b\x41\\<cr>")')
   else
-    -- buf has been unloaded
-    utils.notify('does not exist, resetting state', 'debug', { title = '[TERMINAL] target', render = 'compact' })
-    run_config.target_terminal = nil
+    vim.api.nvim_chan_send(run_config.target_terminal.job_id, payload .. "\n")
   end
+
+  -- open target terminal and scroll to bottom
+  toggle_target(true)
+  misc.scroll_to_end(run_config.target_terminal.bufnr)
 end
 
 -- send lines to target_terminal
@@ -120,11 +115,12 @@ end
 
 -- run target_command
 local function run_target_command()
-  if run_config.target_command ~= "" then
-    send_to_target(run_config.target_command, false)
-  else
-    utils.notify('command not set', 'warn', { title = '[TERMINAL] command', render = 'compact' })
+  if not run_config.target_command then
+    utils.notify('command not set', 'warn', { title = '[TERM] command', render = 'compact' })
+    return
   end
+
+  send_to_target(run_config.target_command, false)
 end
 
 -- run previous command in target_terminal
@@ -134,13 +130,14 @@ end
 
 -- launch a terminal with the command in a split
 local function launch_terminal(command, opts) -- background, callback)
-  assert(command, "param. command must be a valid shell command")
+  assert(command, "invalid shell command: " .. command)
   opts = vim.tbl_deep_extend('force', {
     background = false,
     callback = nil,
-    name = command
+    bufname = command
   }, opts)
 
+  -- create new terminal
   local split_cmd = (misc.is_htruncated(truncation.truncation_limit_s_terminal) and "sp") or "vsp"
   vim.cmd(string.format('%s | terminal', split_cmd))
 
@@ -148,17 +145,21 @@ local function launch_terminal(command, opts) -- background, callback)
   local term_state = {
     bufnr = vim.api.nvim_get_current_buf(),
     job_id = vim.b.terminal_job_id,
-    name = opts.name
+    bufname = opts.bufname
   }
 
   -- this should not crash, so pcall not needed
+  vim.api.nvim_buf_set_name(term_state.bufnr, term_state.bufname)
   vim.api.nvim_chan_send(term_state.job_id, command .. "\n")
-  utils.notify(command, 'info', { title = '[TERMINAL] launched command' })
+  utils.notify(command, 'info', { title = '[TERM] launched command' })
 
   -- wrap up
   if opts.callback then opts.callback() end
-  if opts.background then vim.api.nvim_win_close(vim.fn.bufwinid(term_state.bufnr), true)
-  else vim.cmd [[ wincmd p ]] end
+  if opts.background then
+    vim.api.nvim_win_close(vim.fn.bufwinid(term_state.bufnr), true)
+  else
+    vim.cmd [[ wincmd p ]]
+  end
 
   return term_state
 end

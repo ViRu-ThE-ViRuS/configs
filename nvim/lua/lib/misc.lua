@@ -30,6 +30,18 @@ local function scroll_to_end(bufnr)
   end)
 end
 
+-- rename current buffer
+local function rename_buffer(name)
+  name = name or vim.fn.input('bufname: ', '', 'file')
+  if not name then return end
+
+  if vim.b.terminal_job_id ~= nil then
+    name = 'term: ' .. name
+  end
+
+  vim.api.nvim_buf_set_name(0, name)
+end
+
 -- get git repo root dir (or nil)
 local function get_git_root()
   local git_cmd = "git -C " .. vim.loop.cwd() .. " rev-parse --show-toplevel"
@@ -266,10 +278,13 @@ return {
   strip_trailing_whitespaces = strip_trailing_whitespaces,
   calculate_indent = calculate_indent,
   scroll_to_end = scroll_to_end,
+  rename_buffer = rename_buffer,
+
   -- repo related
   get_git_root = get_git_root,
   get_git_remotes = get_git_remotes,
   open_repo_on_github = open_repo_on_github,
+
   -- toggles
   toggle_window = toggle_window,
   toggle_context_winbar = toggle_context_winbar,
@@ -278,6 +293,7 @@ return {
   toggle_global_statusline = toggle_global_statusline,
   toggle_dark_mode = toggle_dark_mode,
   toggle_qflist = toggle_qflist,
+
   -- misc
   show_messages = show_messages,
   show_command = show_command,
