@@ -11,7 +11,6 @@ local function setup_lsp_keymaps(_, bufnr)
 
   -- NOTE(vir): now using fzf-lua
   local fzf = require('fzf-lua')
-  utils.map("n", "<m-cr>", fzf.lsp_code_actions, map_opts)
   utils.map("n", "<leader>us", fzf.lsp_references, map_opts)
   utils.map("n", "<leader>ud", fzf.lsp_document_symbols, map_opts)
   utils.map("n", "<leader>uD", fzf.lsp_live_workspace_symbols, map_opts)
@@ -70,6 +69,7 @@ local function setup_commands(client, _)
 
   utils.add_command('[LSP] Incoming Calls', vim.lsp.buf.incoming_calls, nil, true)
   utils.add_command('[LSP] Outgoing Calls', vim.lsp.buf.outgoing_calls, nil, true)
+  utils.add_command('[LSP] Code Actions', require('fzf-lua').lsp_code_actions, nil, true)
 end
 
 -- setup buffer options

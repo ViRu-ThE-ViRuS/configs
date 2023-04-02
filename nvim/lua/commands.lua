@@ -17,7 +17,7 @@ vim.api.nvim_create_autocmd('ColorScheme', {
 
 vim.api.nvim_create_augroup('Misc', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost',
-  { group = 'Misc', pattern = '*', callback = function() vim.highlight.on_yank({ on_visual = true }) end })
+{ group = 'Misc', pattern = '*', callback = function() vim.highlight.on_yank({ on_visual = true }) end })
 vim.api.nvim_create_autocmd('BufWritePre', { group = 'Misc', pattern = '*', callback = misc.strip_trailing_whitespaces })
 -- vim.api.nvim_create_autocmd('BufReadPost', { group = 'Misc', pattern = '*', command = 'silent! normal `"' })
 
@@ -35,15 +35,21 @@ vim.api.nvim_create_autocmd('TermOpen', {
 
 -- config reloading
 vim.api.nvim_create_augroup('Configs', { clear = true })
-vim.api.nvim_create_autocmd('BufWritePost', { group = 'Configs', pattern = '.nvimrc.lua', command = 'source <afile>' })
+vim.api.nvim_create_autocmd('BufWritePost', {
+  group = 'Configs',
+  pattern = '.nvimrc.lua',
+  callback = function()
+    vim.cmd('source')
+    utils.notify('.nvimrc.lua', 'info', { title = '[CONFIG] session reloaded', render = 'compact' })
+  end
+})
 vim.api.nvim_create_autocmd('BufWritePost', {
   group = 'Configs',
   pattern = {
     core.get_homedir() .. '/.config/nvim/init.lua',
     core.get_homedir() .. '/.config/nvim/*/*.lua',
-    '.nvimrc.lua'
+    -- '.nvimrc.lua'
   },
-
   callback = function()
     local src_file = vim.fn.expand('<afile>')
     local rc_file = vim.fn.expand('$MYVIMRC')
@@ -76,17 +82,8 @@ vim.api.nvim_create_autocmd('BufWritePost', {
     -- reload modules
     core.foreach(to_reload, function(_, mod) if not package.loaded[mod] then require(mod) end end)
 
-    -- TODO(vir):
-    --  - do more testing, and figure out how this works
-    --  - when writing to init.lua and .nvimrc.lua, session commands do not re-register
-    -- NOTE(vir): this seems to be necessary for some reason source file
     vim.cmd('source')
-
-    utils.notify(
-      src_file,
-      'info',
-      { title = '[CONFIG] reloaded from', render = 'compact' }
-    )
+    utils.notify(src_file, 'info', { title = '[CONFIG] reloaded from', render = 'compact' })
   end
 })
 
@@ -136,29 +133,27 @@ utils.add_command('Show', misc.show_command, {
 
 -- <cword> highlight toggle
 vim.cmd [[
-        function! CWordHlToggle()
-            let @/ = ''
-            if exists('#auto_highlight')
-                autocmd! auto_highlight
-                augroup! auto_highlight
-                set updatetime=1000
+  function! CWordHlToggle()
+    let @/ = ''
+    if exists('#auto_highlight')
+      autocmd! auto_highlight
+      augroup! auto_highlight
 
-                lua require('utils').notify('<cword> highlight', 'debug', { title = '[UI] deactivated', render='compact' })
+      set updatetime=1000
+      lua require('utils').notify('<cword> highlight', 'debug', { title = '[UI] deactivated', render='compact' })
+      return 0
+    else
+      augroup auto_highlight
+        autocmd!
+        autocmd CursorHold * let @/ = '\V\<'.escape(expand('<cword>'), '\').'\>'
+      augroup end
 
-                return 0
-            else
-                augroup auto_highlight
-                    autocmd!
-                    autocmd CursorHold * let @/ = '\V\<'.escape(expand('<cword>'), '\').'\>'
-                augroup end
-                set updatetime=250
-
-                lua require('utils').notify('<cword> highlight', 'info', { title = '[UI] activated', render='compact' })
-
-                return 1
-            endif
-        endfunction
-    ]]
+      set updatetime=250
+      lua require('utils').notify('<cword> highlight', 'info', { title = '[UI] activated', render='compact' })
+      return 1
+    endif
+  endfunction
+]]
 
 -- generate tags
 utils.add_command('[MISC] Generate Tags', function()
@@ -169,6 +164,15 @@ utils.add_command('[MISC] Generate Tags', function()
     on_start = function() utils.notify('generating tags file', 'debug', { title = '[MISC] tags', render = 'compact' }) end,
     on_exit = function() utils.notify('generated tags file', 'info', { title = '[MISC] tags', render = 'compact' }) end
   }):start()
+end, nil, true)
+
+-- target_terminal commands
+utils.add_command('[TERM] run from palette', function() require('terminal').run_from_palette() end, nil, true)
+utils.add_command('[TERM] add to palette', function()
+  vim.ui.input(
+    { prompt = 'add command to palette> ', completion = 'shellcmd' },
+    function(command) require('terminal').add_to_palette(command) end
+  )
 end, nil, true)
 
 -- toggles

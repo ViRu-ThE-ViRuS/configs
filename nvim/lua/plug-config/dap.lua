@@ -307,7 +307,7 @@ return {
         end
 
         -- no dap configs specified
-        if not project.dap_config then return end
+        if #project.dap_config == 0 then return end
 
         -- add project command for specified configs
         project:add_command(

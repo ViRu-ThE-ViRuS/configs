@@ -35,11 +35,23 @@ local function rename_buffer(name)
   name = name or vim.fn.input('bufname: ', '', 'file')
   if not name then return end
 
+  -- trivial to rename terminal buffer
   if vim.b.terminal_job_id ~= nil then
     name = 'term: ' .. name
+    vim.api.nvim_buf_set_name(0, name)
+    return
   end
 
-  vim.api.nvim_buf_set_name(0, name)
+  -- ask for confirmation otherwise
+  vim.ui.select(
+    { 'yes', 'no' },
+    { prompt = 'Rename buffer[file] to ' .. name .. '> ' },
+    function(choice)
+      if choice == 'yes' then
+        vim.api.nvim_buf_set_name(0, name)
+      end
+    end
+  )
 end
 
 -- get git repo root dir (or nil)

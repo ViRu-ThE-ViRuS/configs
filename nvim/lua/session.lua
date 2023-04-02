@@ -1,5 +1,5 @@
 -- default config
-local config = {
+local default_config = {
   context_winbar      = false,         -- set context in winbar
   fancy_notifications = true,          -- use fancy notifications (nvim-notify)
   local_rc_name       = '.nvimrc.lua', -- project local config file
@@ -48,7 +48,7 @@ local config = {
 }
 
 -- {{{ global editor state
-local state = {
+local default_state = {
   -- contexts using lsp+ts, managed by lsp autocommands
   tags = {
     cache     = {},
@@ -70,6 +70,7 @@ local state = {
   run_config = {
     target_terminal = nil,
     target_command  = nil,
+    palette = {}
   },
 
   -- project-config, works with lib/project api
@@ -81,6 +82,9 @@ local state = {
 -- }}}
 
 -- NOTE(vir): make this global
+local config = default_config     -- config is reloaded from file
+local state = (session and vim.tbl_deep_extend('force', default_state, session.state)) or default_state
+
 _G.session = {
   config = config,
   state  = state

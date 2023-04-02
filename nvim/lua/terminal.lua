@@ -14,14 +14,14 @@ local function assure_target_valid()
   -- not configured
   if not run_config.target_terminal then
     utils.notify('not set', 'warn', { title = '[TERM] target', render = 'compact' })
-    return
+    return false
   end
 
   -- not valid
   if not vim.api.nvim_buf_is_loaded(run_config.target_terminal.bufnr) then
     utils.notify('exited, resetting state', 'debug', { title = '[TERM] target', render = 'compact' })
     run_config.target_terminal = nil
-    return
+    return false
   end
 
   return true
@@ -128,6 +128,21 @@ local function run_previous_command()
   send_to_target(nil, true)
 end
 
+-- add configuration to palette
+local function add_to_palette(command)
+  assert(command, 'invalid command: ' .. command)
+  table.insert(run_config.palette, command)
+end
+
+-- trigger selection from palette
+local function run_from_palette()
+  vim.ui.select(
+    run_config.palette,
+    { prompt = 'launch command> ' },
+    function(command) send_to_target(command) end
+  )
+end
+
 -- launch a terminal with the command in a split
 local function launch_terminal(command, opts) -- background, callback)
   assert(command, "invalid shell command: " .. command)
@@ -174,6 +189,9 @@ return {
   -- target_terminal api
   run_target_command = run_target_command,
   run_previous_command = run_previous_command,
+
+  add_to_palette = add_to_palette,
+  run_from_palette = run_from_palette,
 
   -- utils
   launch_terminal = launch_terminal
