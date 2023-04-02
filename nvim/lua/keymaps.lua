@@ -126,8 +126,8 @@ utils.map("n", "<leader>cA", terminal.run_target_command)
 utils.map("n", "<leader>ca", terminal.run_previous_command)
 utils.map("n", "<leader>cS", terminal.set_target)
 utils.map("n", "<leader>cs", terminal.toggle_target)
-utils.map("n", "<leader>cv", terminal.run_selection)
-utils.map("v", "<leader>cv", '<esc><cmd>lua require("terminal").run_selection(true)<cr>gv')
+-- utils.map("n", "<leader>cv", terminal.send_content_to_target)
+-- utils.map("v", "<leader>cv", '<esc><cmd>lua require("terminal").send_content_to_target(true)<cr>gv')
 
 -- commands
 utils.map('n', '<c-cr>', vim.cmd.Commands)

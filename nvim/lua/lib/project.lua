@@ -11,16 +11,16 @@ Project.default_args = {
 
 -- {{{ Project api
 function Project:init(args)
-  args           = vim.tbl_deep_extend('force', Project.default_args, args or {})
+  args = vim.tbl_deep_extend('force', Project.default_args, args or {})
   assert(args.name, 'project name cannot be nil')
 
-  self.name      = args.name
-  self.host_user = args.host_user
-  self.host_path = args.host_path
-  self.args      = args
+  self.name         = args.name
+  self.host_user    = args.host_user
+  self.host_path    = args.host_path
+  self.args         = args
 
   self.command_keys = {}
-  self.dap_config = {}
+  self.dap_config   = {}
 end
 
 -- send a project-scoped notification
@@ -55,6 +55,7 @@ function Project:add_dap_config(name, program, args, opts)
 
   self.dap_config[name] = { program = program, args = args, _opts = opts }
 end
+
 -- }}}
 
 -- RemoteProject class
@@ -85,8 +86,7 @@ function RemoteProject:launch_sync(reverse)
         self.target,
         self.target_path,
         self.host_path
-      ),
-      false
+      )
     )
   else
     terminal.launch_terminal(
@@ -98,7 +98,7 @@ function RemoteProject:launch_sync(reverse)
         self.target,
         self.target_path
       ),
-      true
+      { background = true }
     )
   end
 end
@@ -109,29 +109,17 @@ function RemoteProject:launch_ssh(set_target, path)
   local to_path_cmd = 'cd ' .. path .. ' ; bash --'
 
   terminal.launch_terminal(
-    string.format(
-      'ssh -t %s@%s "%s"',
-      self.target_user,
-      self.target,
-      to_path_cmd
-    ),
-    false,
-    (set_target and terminal.set_target) or nil
+    string.format('ssh -t %s@%s "%s"', self.target_user, self.target, to_path_cmd),
+    { callback = (set_target and terminal.set_target) or nil }
   )
 end
 
 -- launch a procject session: ssh and/or rsync host -> remote
 function RemoteProject:launch_project_session(sync)
-  local use_rsync = sync or false
-
   -- make ip updatable
   vim.ui.input({ prompt = "target gcp ip> ", default = self.target }, function(ip)
     if ip == nil then
-      self:notify(
-        string.format("invalid target ip: %s", self.target),
-        "warn",
-        { render = "minimal" }
-      )
+      self:notify(string.format("invalid target ip: %s", self.target), "warn", { render = "minimal" })
       return
     end
 
@@ -139,7 +127,7 @@ function RemoteProject:launch_project_session(sync)
     self.target = ip
 
     -- launch sync in background
-    if use_rsync then self:launch_sync(false) end
+    if sync then self:launch_sync(false) end
 
     -- launch ssh terminal
     self:launch_ssh(true)
@@ -173,7 +161,6 @@ project:add_dap_config('basic', project.executable, { 'bzc/curve1.bzc' }, {
   base_type = 'cpp',
   preamble = function(_) project:run_command('build') end
 })
-
 
 -- MUST RETURN THIS PROJECT OBJECT, so as to register it into the session
 return project

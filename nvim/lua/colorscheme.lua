@@ -1,5 +1,3 @@
-vim.g.aqua_bold = 1
-
 vim.g.barstrata_italic_booleans = true
 vim.g.barstrata_italic_functions = true
 vim.g.barstrata_italic_keywords = true
@@ -193,7 +191,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = 'dark'
 
-local colorscheme = 'gruvbox-material'
+local colorscheme = 'gruvbox-baby'
 ---@cast colorscheme +string +function
 
 -- load default colorscheme if chosen one is not available

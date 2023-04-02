@@ -6,6 +6,10 @@ vim.opt_local.shiftwidth = 4
 vim.opt_local.tabstop = 4
 vim.opt_local.softtabstop = 4
 
+-- send selection to terminal
+utils.map("n", "<leader>cv", terminal.send_content_to_target)
+utils.map("v", "<leader>cv", '<esc><cmd>lua require("terminal").send_content_to_target(true)<cr>gv')
+
 -- repl state
 local repl_session = {
   job_id = nil,
@@ -14,6 +18,7 @@ local repl_session = {
 
 -- launch repl session in terminal, and set it as target_terminalj
 utils.add_command("[MISC] REPL: launch ipython", function()
+  -- close off existing repl if any
   if repl_session.bufnr ~= nil and vim.api.nvim_buf_get_name(repl_session.bufnr) ~= "" then
     utils.notify(
       string.format(
@@ -28,19 +33,24 @@ utils.add_command("[MISC] REPL: launch ipython", function()
   end
 
   -- launch repl and set as target terminal
-  repl_session = terminal.launch_terminal("ipython3 -i --no-autoindent", false, function()
-    terminal.set_target()
+  repl_session = terminal.launch_terminal(
+      "ipython3 -i --no-autoindent",
+      {
+          callback = function()
+              terminal.set_target()
+              utils.notify(
+                  string.format(
+                      "repl session set to { job_id %s, bufnr: %s }",
+                      session.state.run_config.target_terminal.job_id,
+                      session.state.run_config.target_terminal.bufnr
+                  ),
+                  "info",
+                  { title = "[REPL] ipython session" }
+              )
+          end
+      }
+  )
 
-    utils.notify(
-      string.format(
-        "repl session set to { job_id %s, bufnr: %s }",
-        session.state.run_config.target_terminal.job_id,
-        session.state.run_config.target_terminal.bufnr
-      ),
-      "info",
-      { title = "[REPL] ipython session" }
-    )
-  end)
 end, nil, true)
 
 -- get current cell contents
@@ -105,7 +115,5 @@ utils.map("n", "<leader>cc", function()
 end, { buffer = 0 })
 
 -- cell navigation
-utils.map('n', ']i', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@cellmarker")<CR>zz',
-  { buffer = 0 })
-utils.map('n', '[i', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@cell-marker")<CR>zz',
-  { buffer = 0 })
+utils.map('n', ']i', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@cellmarker")<CR>zz', { buffer = 0 })
+utils.map('n', '[i', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@cell-marker")<CR>zz', { buffer = 0 })
