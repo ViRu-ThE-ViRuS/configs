@@ -34,3 +34,12 @@ return {
   override_session_config = override_session_config,
   load_local_session = load_local_session,
 }
+
+--[[ example usage in .nvimrc.lua
+
+-- override / append to session configs
+require('lib/local_session').override_session_config({
+  fuzzy_ignore_dirs = session.config.fuzzy_ignore_dirs .. ',lazy_lock.json'
+})
+
+--]]

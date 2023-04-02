@@ -92,14 +92,3 @@ vim.api.nvim_create_augroup('ProjectInit', { clear = true }) -- lib/project
 -- NOTE(vir): return this as well
 return session
 
---[[ example setup in local .nvimrc.lua
-
--- override / append to session configs
-require('lib/local_session').override_session_config({
-  fuzzy_ignore_dirs = session.config.fuzzy_ignore_dirs .. ',lazy_lock.json'
-})
-
--- when a Project object is returned, specialized project session is initaited
-return require('lib/project').Project.new({ name = 'config' })
-
---]]

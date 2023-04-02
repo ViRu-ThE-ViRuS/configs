@@ -29,8 +29,8 @@ function Project:notify(content, type, opts)
 end
 
 -- add a project-scoped command
-function Project:add_command(name, callback, opts, also_custom)
-  local key = utils.add_command(string.format('[%s] %s', self.name, name), callback, opts, also_custom)
+function Project:add_command(name, callback)
+  local key = utils.add_command(string.format('[%s] %s', self.name, name), callback, nil, true)
   self.command_keys[key] = 1
 end
 
@@ -153,3 +153,29 @@ return {
   Project = Project,
   RemoteProject = RemoteProject
 }
+
+--[[ example usage in .nvimrc.lua
+
+local terminal = require('terminal')
+local Project = require('lib/project').Project
+
+-- create a project
+local project = Project.new({ name = "meshedit" })
+project.executable = string.format('%s/build/%s', vim.loop.cwd(), project.name)
+
+-- add a command
+project:add_command('build', function()
+  terminal.send_to_target('cd build ; make ; cd ..')
+end)
+
+-- add a debug config
+project:add_dap_config('basic', project.executable, { 'bzc/curve1.bzc' }, {
+  base_type = 'cpp',
+  preamble = function(_) project:run_command('build') end
+})
+
+
+-- MUST RETURN THIS PROJECT OBJECT, so as to register it into the session
+return project
+
+--]]

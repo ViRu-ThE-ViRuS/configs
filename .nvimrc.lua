@@ -3,32 +3,25 @@ local Project = require('lib/project').Project
 
 local project = Project.new({ name = 'ViRu-ThE-ViRuS/configs' })
 
-utils.add_command(
-  'UpdateRepo',
-  function()
-    vim.cmd [[
+project:add_command('UpdateRepo', function()
+  vim.cmd [[
       !source update_repo.sh
       G
     ]]
-  end,
-  { bang = false, nargs = 0, desc = 'Update repository with current config files' },
-  true
-)
+end, nil, true)
 
-utils.add_command(
-  'UpdateConfigs',
-  function()
-    vim.ui.select(
-      { 'yes', 'no' },
-      { prompt = 'Update System Config>' },
-      function(choice)
-        if choice == 'yes' then vim.cmd [[ !source update_config.sh ]]
-        else project:notify('update aborted', 'debug', { render = 'minimal' }) end
+project:add_command('UpdateConfigs', function()
+  vim.ui.select(
+    { 'yes', 'no' },
+    { prompt = 'Update System Config>' },
+    function(choice)
+      if choice == 'yes' then
+        vim.cmd [[ !source update_config.sh ]]
+      else
+        project:notify('update aborted', 'debug', { render = 'minimal' })
       end
-    )
-  end,
-  { bang = true, nargs = 0, desc = 'Update configs with current repository files' },
-  true
-)
+    end
+  )
+end, nil, true)
 
 return project
