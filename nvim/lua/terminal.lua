@@ -288,7 +288,7 @@ end
 
 -- launch new terminal
 local function launch_terminal(command, opts)
-  assert(command, "invalid shell command: " .. command)
+  assert(command and command ~= '', "invalid shell command: " .. command)
 
   opts = vim.tbl_deep_extend('force', {
     background = false,
@@ -299,6 +299,9 @@ local function launch_terminal(command, opts)
   -- create new terminal
   local split_cmd = (misc.is_htruncated(truncation.truncation_limit_s_terminal) and "sp") or "vsp"
   vim.cmd(string.format('%s | terminal', split_cmd))
+
+  -- TODO(vir): investigate why this is necessary
+  vim.api.nvim_exec_autocmds('TermOpen', { group = 'TerminalSetup' })
 
   -- terminal state
   local term_state = {
@@ -316,11 +319,8 @@ local function launch_terminal(command, opts)
 
   -- wrap up
   if opts.callback then opts.callback() end
-  if opts.background then
-    vim.api.nvim_win_close(vim.fn.bufwinid(term_state.bufnr), true)
-  else
-    vim.cmd [[ wincmd p ]]
-  end
+  if opts.background then vim.api.nvim_win_close(vim.fn.bufwinid(term_state.bufnr), true)
+  else vim.cmd [[ wincmd p ]] end
 
   return term_state
 end

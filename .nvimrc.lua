@@ -1,4 +1,3 @@
-local utils = require('utils')
 local Project = require('lib/project').Project
 
 local project = Project.new({ name = 'ViRu-ThE-ViRuS/configs' })

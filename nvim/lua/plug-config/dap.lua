@@ -293,13 +293,14 @@ return {
           local opts = config_overrides._opts
 
           local base = core.table_copy(dap.configurations[opts.base_type])[1]
-          assert(base, 'dap configuration for base type doesnt exist: ' .. opts.base_type)
+          assert(base, "dap configuration for base type doesn't exist: " .. opts.base_type)
 
           -- override a copy of the base_configuration
           for key, value in pairs(config_overrides) do
             base[key] = value
           end
 
+          -- TODO(vir): fix this, doesnt work for some reason
           -- preamble is called with final dap config, which will be run next
           if opts.preamble then opts.preamble(base) end
 
@@ -307,7 +308,7 @@ return {
         end
 
         -- no dap configs specified
-        if #project.dap_config == 0 then return end
+        if vim.tbl_count(project.dap_config) == 0 then return end
 
         -- add project command for specified configs
         project:add_command(

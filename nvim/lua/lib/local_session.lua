@@ -9,8 +9,7 @@ end
 
 -- override session defaults (sesison.config)
 local function override_session_config(config)
-  assert(config, 'cannot override with config: ' .. config)
-  session.config = vim.tbl_deep_extend('force', session.config, config)
+  session.config = vim.tbl_deep_extend('force', session.config, config or {})
 end
 
 -- execute local rc
