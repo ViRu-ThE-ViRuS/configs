@@ -4,11 +4,6 @@ local misc = require('lib/misc')
 local run_config = session.state.run_config
 local truncation = session.config.truncation
 
---[[
-1. support a command palette, fuzzy selection, sent to target terminal
-2. support a terminal palette, fuzzy selection, to toggle open a particular one
---]]
-
 -- returns if run_config.target_terminal is valid
 local function assure_target_valid()
   -- not configured
@@ -81,6 +76,7 @@ local function send_to_target(payload, repeat_last)
 
   -- send command
   if repeat_last then
+    assert(not payload, 'payload specified, along with repeat_last')
     vim.cmd("call chansend(" .. run_config.target_terminal.job_id .. ', "\x1b\x5b\x41\\<cr>")')
   else
     vim.api.nvim_chan_send(run_config.target_terminal.job_id, payload .. "\n")
@@ -144,13 +140,13 @@ local function run_from_palette()
 end
 
 -- launch a terminal with the command in a split
-local function launch_terminal(command, opts) -- background, callback)
+local function launch_terminal(command, opts)
   assert(command, "invalid shell command: " .. command)
   opts = vim.tbl_deep_extend('force', {
     background = false,
     callback = nil,
     bufname = command
-  }, opts)
+  }, opts or {})
 
   -- create new terminal
   local split_cmd = (misc.is_htruncated(truncation.truncation_limit_s_terminal) and "sp") or "vsp"
@@ -163,18 +159,17 @@ local function launch_terminal(command, opts) -- background, callback)
     bufname = opts.bufname
   }
 
+  -- try setting name, fails if buffer with same name exists
+  pcall(vim.api.nvim_buf_set_name, term_state.bufnr, term_state.bufname)
+
   -- this should not crash, so pcall not needed
-  vim.api.nvim_buf_set_name(term_state.bufnr, term_state.bufname)
   vim.api.nvim_chan_send(term_state.job_id, command .. "\n")
   utils.notify(command, 'info', { title = '[TERM] launched command' })
 
   -- wrap up
   if opts.callback then opts.callback() end
-  if opts.background then
-    vim.api.nvim_win_close(vim.fn.bufwinid(term_state.bufnr), true)
-  else
-    vim.cmd [[ wincmd p ]]
-  end
+  if opts.background then vim.api.nvim_win_close(vim.fn.bufwinid(term_state.bufnr), true)
+  else vim.cmd [[ wincmd p ]] end
 
   return term_state
 end
