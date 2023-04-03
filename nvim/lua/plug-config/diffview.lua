@@ -55,7 +55,6 @@ return {
               vim.opt.diffopt = vim.opt.diffopt + linematch
               require('utils').notify("linematch", "info", { title = '[UI] activated', render = "compact" })
             end
-
           end
         },
         file_panel = {
@@ -77,6 +76,14 @@ return {
 
           ["e"] = actions.goto_file,
           ["<leader>gh"] = actions.toggle_files,
+
+          -- NOTE(vir): fugitive integration
+          ['cc'] = function()
+            vim.cmd [[
+              G
+              G commit
+            ]]
+          end
         },
         file_history_panel = {
           ["zr"] = actions.open_all_folds,
