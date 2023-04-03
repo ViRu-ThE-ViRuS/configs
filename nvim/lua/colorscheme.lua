@@ -189,9 +189,9 @@ end
 -- }}}
 
 vim.opt.termguicolors = true
-vim.opt.background = 'light'
+vim.opt.background = 'dark'
 
-local colorscheme = 'xcodelighthc'
+local colorscheme = 'xcodedarkhc'
 ---@cast colorscheme +string +function
 
 -- load default colorscheme if chosen one is not available

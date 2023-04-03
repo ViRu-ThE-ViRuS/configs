@@ -1,4 +1,5 @@
 local class = require('lib/class')
+local core = require('lib/core')
 local terminal = require('terminal')
 local utils = require('utils')
 
@@ -43,15 +44,14 @@ end
 
 -- add project-dap config
 function Project:add_dap_config(name, program, args, opts)
-  assert(program, 'program argument must not be nil')
+  assert(program, 'invalid program specified: ' .. program)
   args = args or {}
-  opts = opts or {}
 
   -- extra opts for runner
   opts = vim.tbl_deep_extend('force', {
     base_type = vim.api.nvim_get_option_value('filetype', { scope = 'local' }),
     preamble = nil,
-  }, opts)
+  }, opts or {})
 
   self.dap_config[name] = { program = program, args = args, _opts = opts }
 end
@@ -110,7 +110,7 @@ function RemoteProject:launch_ssh(set_target, path)
 
   terminal.launch_terminal(
     string.format('ssh -t %s@%s "%s"', self.target_user, self.target, to_path_cmd),
-    { callback = (set_target and terminal.set_target) or nil }
+    { callback = (set_target and core.partial(terminal.add_terminal, { primary = true })) or nil }
   )
 end
 
@@ -153,7 +153,7 @@ project.executable = string.format('%s/build/%s', vim.loop.cwd(), project.name)
 
 -- add a command
 project:add_command('build', function()
-  terminal.send_to_target('cd build ; make ; cd ..')
+  terminal.send_to_terminal('cd build ; make ; cd ..')
 end)
 
 -- add a debug config

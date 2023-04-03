@@ -2,7 +2,9 @@ local misc = require('lib/misc')
 local core = require('lib/core')
 
 local colorscheme = require('colorscheme')
+local terminal = require('terminal')
 local utils = require('utils')
+
 local plenary = require('plenary')
 
 --- autocommands
@@ -16,10 +18,21 @@ vim.api.nvim_create_autocmd('ColorScheme', {
 })
 
 vim.api.nvim_create_augroup('Misc', { clear = true })
-vim.api.nvim_create_autocmd('TextYankPost',
-{ group = 'Misc', pattern = '*', callback = function() vim.highlight.on_yank({ on_visual = true }) end })
-vim.api.nvim_create_autocmd('BufWritePre', { group = 'Misc', pattern = '*', callback = misc.strip_trailing_whitespaces })
--- vim.api.nvim_create_autocmd('BufReadPost', { group = 'Misc', pattern = '*', command = 'silent! normal `"' })
+vim.api.nvim_create_autocmd('TextYankPost', {
+  group = 'Misc',
+  pattern = '*',
+  callback = function() vim.highlight.on_yank({ on_visual = true }) end,
+})
+vim.api.nvim_create_autocmd('BufWritePre', {
+  group = 'Misc',
+  pattern = '*',
+  callback = misc.strip_trailing_whitespaces,
+})
+-- vim.api.nvim_create_autocmd('BufReadPost', {
+--   group = 'Misc',
+--   pattern = '*',
+--   command = 'silent! normal `"',
+-- })
 
 -- terminal setup
 vim.api.nvim_create_augroup('TerminalSetup', { clear = true })
@@ -166,14 +179,9 @@ utils.add_command('[MISC] Generate Tags', function()
   }):start()
 end, nil, true)
 
--- target_terminal commands
-utils.add_command('[TERM] run from palette', function() require('terminal').run_from_palette() end, nil, true)
-utils.add_command('[TERM] add to palette', function()
-  vim.ui.input(
-    { prompt = 'add command to palette> ', completion = 'shellcmd' },
-    function(command) require('terminal').add_to_palette(command) end
-  )
-end, nil, true)
+-- terminal commands
+utils.add_command('[TERM] Set Primary Terminal', core.partial(terminal.add_terminal, { primary = true }), nil, true)
+utils.add_command('[TERM] Run Command from palette', terminal.run_command, nil, true)
 
 -- toggles
 utils.add_command('[UI] Toggle Context WinBar', misc.toggle_context_winbar, nil, true)

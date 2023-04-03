@@ -25,3 +25,9 @@ vim.api.nvim_create_autocmd("User", {
 --  .flake8             : autopep8 config
 --  pyrightconfig.json  : pyright config
 
+-- ideas --
+-- 1. toggle pin buffers (cannot delete pinned buffers)
+-- 2. toggle buffers like primary terminal
+-- 3. fix Q in new tab (same buffer)
+-- 4. further work on terminal api
+

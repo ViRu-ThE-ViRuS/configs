@@ -2,20 +2,22 @@ local core = require("lib/core")
 
 -- setup keymaps
 local function map(mode, lhs, rhs, opts)
-  local options = { noremap = true }
-  if opts then options = vim.tbl_extend("force", options, opts) end
-  vim.keymap.set(mode, lhs, rhs, options)
+  vim.keymap.set(
+    mode,
+    lhs,
+    rhs,
+    vim.tbl_deep_extend("force", { noremap = true }, opts or {})
+  )
 end
 
 -- remove keymaps
+-- returns true if a keymap was successfully removed
 local function unmap(mode, lhs, options)
-  options = options or {}
-
-  -- vim.keymap.del(mode, lhs, options)
-  pcall(vim.keymap.del, mode, lhs, options)
+  return pcall(vim.keymap.del, mode, lhs, options or {})
 end
 
 -- set qflist and open
+-- TODO(vir): refactor this
 local function qf_populate(lines, mode, title, scroll_to_end)
   if not lines or #lines == 0 then return end
 
@@ -43,6 +45,7 @@ local function notify(content, type, opts)
 end
 
 -- add custom command
+-- TODO(vir): refactor this
 local function add_command(key, callback, cmd_opts, also_custom)
   -- opts are defined, create user command
   if cmd_opts then vim.api.nvim_create_user_command(key, callback, cmd_opts) end

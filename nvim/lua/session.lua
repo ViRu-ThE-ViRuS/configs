@@ -68,9 +68,11 @@ local default_state = {
 
   -- run_config, works with terminal api
   run_config = {
-    target_terminal = nil,
-    target_command  = nil,
-    palette         = {}
+    palette         = {
+      terminals = {},
+      commands = {},
+      indices = {}
+    }
   },
 
   -- project-config, works with lib/project api

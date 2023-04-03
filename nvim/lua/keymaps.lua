@@ -2,7 +2,6 @@ local utils = require("utils")
 local terminal = require('terminal')
 
 local misc = require('lib/misc')
-local core = require('lib/core')
 
 -- line navigation and movements
 utils.map("v", "<", "<gv")
@@ -122,18 +121,11 @@ utils.map("t", "<c-l>", "<c-\\><c-w>l")
 utils.map('v', '<a-j>', ":move '>+1<CR>gv=gv", { silent = true })
 utils.map('v', '<a-k>', ":move '<-2<CR>gv=gv", { silent = true })
 
--- terminal setup
+-- terminal keymaps
 utils.map("n", "<leader>s", "<cmd>vsp | terminal<cr>")
-utils.map("n", "<leader>cA", terminal.run_target_command)
-utils.map("n", "<leader>ca", terminal.run_previous_command)
-utils.map("n", "<leader>cS", terminal.set_target)
-utils.map("n", "<leader>cs", terminal.toggle_target)
-
--- TODO(vir): instead use this as top level for target_terminal api
---  - select command
---  - select terminal
---  - other misc commands
-utils.map("n", "<m-cr>", core.partial(utils.run_command, '[TERM] run from palette'))
+utils.map("n", "<leader>ca", terminal.send_to_terminal)
+utils.map("n", "<leader>cs", terminal.toggle_terminal)
+utils.map("n", "<leader>cS", terminal.add_terminal)
 
 -- commands
 utils.map('n', '<c-cr>', vim.cmd.Commands)

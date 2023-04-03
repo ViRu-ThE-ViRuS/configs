@@ -54,10 +54,10 @@ local statusline_blacklist = {
 
 -- utils {{{
 -- is statusline supposed to be truncated
-local function truncate_statusline(small)
+local function truncate_statusline(small, consider_global)
   local limit = (small and truncation.truncation_limit_s) or truncation.truncation_limit
-  local get_global = vim.api.nvim_get_option_value('laststatus', { scope = 'global' }) == 3
-  return misc.is_htruncated(limit, get_global)
+  local global_statusline = vim.api.nvim_get_option_value('laststatus', { scope = 'global' }) == 3
+  return misc.is_htruncated(limit, global_statusline or consider_global)
 end
 
 -- setup statusline highlights
@@ -129,7 +129,7 @@ end
 
 -- get current file name
 local function get_filename()
-  if truncate_statusline() then return ' %t ' end
+  if truncate_statusline(false, true) then return ' %t ' end
   return ' %f '
 end
 
@@ -147,7 +147,7 @@ local function get_filetype() return ' %y ' end
 
 -- get buffer number
 local function get_bufnr()
-  if truncate_statusline(true) then return '' end
+  if truncate_statusline(true, true) then return '' end
   return ' %n '
 end
 
@@ -221,10 +221,10 @@ end
 
 -- inactive statusline
 local function statusline_inactive()
-  local filename = colors.file .. ' %t '
-  local line_col = colors.line_col .. ' %l:%c '
-  local bufnr = colors.bufnr .. ' %n '
-  local filetype = colors.filetype .. ' %y '
+  local filename = colors.file .. get_filename()
+  local line_col = colors.line_col .. get_line_col()
+  local bufnr = colors.bufnr .. get_bufnr()
+  local filetype = colors.filetype .. get_filetype()
 
   return table.concat({
     colors.active, filename, colors.inactive,
@@ -291,9 +291,11 @@ vim.api.nvim_create_autocmd('BufWinEnter', { group = autocmd_group, pattern = 'd
 return {
   setup_highlights = setup_highlights,
   autocmd_group = autocmd_group,
+
   -- statusline fn
   statusline = statusline,
   statusline_inactive = statusline_inactive,
+
   -- api to setup statusline
   set_statusline_func = set_statusline_func,
   set_statusline_cmd = set_statusline_cmd,
