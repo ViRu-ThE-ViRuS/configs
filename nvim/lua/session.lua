@@ -66,13 +66,12 @@ local default_state = {
     },
   },
 
-  -- run_config, works with terminal api
-  run_config = {
-    palette         = {
-      terminals = {},
-      commands = {},
-      indices = {}
-    }
+  -- palette, represents the working set of files,commands, etc
+  -- integrated with internal apis like project, terminal
+  palette = {
+    terminals = {},
+    commands = {},
+    indices = {}
   },
 
   -- project-config, works with lib/project api

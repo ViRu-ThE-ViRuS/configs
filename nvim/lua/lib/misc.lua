@@ -24,10 +24,11 @@ local function calculate_indent(str, get)
 end
 
 -- scroll buffer to end
+-- TODO(vir): fix the need for pcall
+--  - debug using preamble terminal calls, in dap config
+--  - issue is related to `cant switch to normal mode from terminal mode`
 local function scroll_to_end(bufnr)
-  vim.api.nvim_buf_call(bufnr, function()
-    vim.cmd [[ normal! G ]]
-  end)
+  pcall(vim.api.nvim_buf_call, bufnr, function() vim.cmd [[ normal! G ]] end)
 end
 
 -- rename current buffer

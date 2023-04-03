@@ -191,7 +191,7 @@ local function setup_dap_events()
 
   -- remove debugging keymaps
   local function remove_maps()
-    utils.unmap({ 'n', 'v' }, '<m-k>')
+    utils.unmap({ 'n', 'v' }, 'gK')
     utils.unmap('n', '<m-1>')
     utils.unmap('n', '<m-2>')
     utils.unmap('n', '<m-3>')
@@ -201,7 +201,7 @@ local function setup_dap_events()
 
   -- setup debugging keymaps
   local function setup_maps()
-    utils.map({ 'n', 'v' }, '<m-k>', dapui.eval)
+    utils.map({ 'n', 'v' }, 'gK', dapui.eval)
     utils.map('n', '<m-1>', dap.step_over)
     utils.map('n', '<m-2>', dap.step_into)
     utils.map('n', '<m-3>', dap.step_out)
@@ -279,6 +279,28 @@ return {
   },
   ft = { 'c', 'cpp', 'rust', 'python' },
   init = function()
+    -- launch a dap config
+    local function launch_dap(config)
+      local dap = require('dap')
+      local opts = config._opts
+
+      local base = require('lib/core').table_copy(dap.configurations[opts.base_type])[1]
+      assert(base, "dap configuration for base type doesn't exist: " .. opts.base_type)
+
+      -- override a copy of the base_configuration
+      for key, value in pairs(config) do
+        base[key] = value
+      end
+
+      -- preamble is called with final dap config, which will be run next
+      if opts.preamble then
+        -- TODO(vir): does not support long running commands, fix this?
+        opts.preamble()
+      end
+
+      dap.run(base, { new = false })
+    end
+
     -- project debug config
     vim.api.nvim_create_autocmd('User', {
       pattern = 'ProjectInit',
@@ -287,42 +309,17 @@ return {
         local project = session.state.project
         assert(project, "project should not be nil on ProjectInit")
 
-        -- launch dap for current ft
-        local launch_dap = function(config_overrides)
-          local dap = require('dap')
-          local opts = config_overrides._opts
-
-          local base = core.table_copy(dap.configurations[opts.base_type])[1]
-          assert(base, "dap configuration for base type doesn't exist: " .. opts.base_type)
-
-          -- override a copy of the base_configuration
-          for key, value in pairs(config_overrides) do
-            base[key] = value
-          end
-
-          -- TODO(vir): fix this, doesnt work for some reason
-          -- preamble is called with final dap config, which will be run next
-          if opts.preamble then opts.preamble(base) end
-
-          dap.run(base, { new = false })
-        end
-
         -- no dap configs specified
         if vim.tbl_count(project.dap_config) == 0 then return end
 
         -- add project command for specified configs
-        project:add_command(
-          'run DAP config',
-          function()
-            vim.ui.select(
-              core.table_keys(project.dap_config),
-              { prompt = 'config> ' },
-              function(config_name) launch_dap(project.dap_config[config_name]) end
-            )
-          end,
-          nil,
-          true
-        )
+        project:add_command('run DAP config', function()
+          vim.ui.select(
+            core.table_keys(project.dap_config),
+            { prompt = 'config> ' },
+            function(config_name) launch_dap(project.dap_config[config_name]) end
+          )
+        end, nil, true)
       end
     })
   end,

@@ -2,7 +2,7 @@ local utils = require('utils')
 local misc = require('lib/misc')
 local core = require('lib/core')
 
-local palette = session.state.run_config.palette
+local palette = session.state.palette
 local truncation = session.config.truncation
 
 -- TODO(vir): future
@@ -112,10 +112,10 @@ end
 
 -- get term_state of primary terminal if any
 local function get_primary_terminal()
-  local primary_id = session.state.run_config.palette.indices[1]
+  local primary_id = palette.indices[1]
   if not primary_id then return nil end
 
-  local primary_state = session.state.run_config.palette.terminals[primary_id]
+  local primary_state = palette.terminals[primary_id]
   return primary_state
 end
 -- }}}
@@ -131,6 +131,11 @@ local function add_terminal(opts)
 
   local job_id = vim.b.terminal_job_id
   local index = (opts.primary and 1) or opts.index or vim.v.count -- 0 means no index specified
+
+  -- NOTE(vir): convenience behavior, first terminal we add is primary
+  if palette.indices[1] == nil then
+    index = 1
+  end
 
   -- only makes sense to call this function from a terminal buffer
   if job_id == nil then
@@ -251,6 +256,30 @@ local function send_to_terminal(payload, opts)
   if opts.toggle_open then toggle_terminal(true) end
   if opts.scroll_to_end then misc.scroll_to_end(palette.terminals[job_id].bufnr) end
 end
+
+-- send buffer content (visual/line) to terminal
+-- if count is valid, then it is used as target index
+-- otherwise target is primary
+local function send_content_to_terminal(visual_mode)
+  local payload = nil
+
+  if visual_mode then
+    -- take last visual selection
+    local l1 = vim.api.nvim_buf_get_mark(0, "<")[1]
+    local l2 = vim.api.nvim_buf_get_mark(0, ">")[1]
+    if l1 > l2 then l1, l2 = l2, l1 end
+
+    local lines = vim.api.nvim_buf_get_lines(0, l1 - 1, l2, false)
+    payload = table.concat(lines, '\n')
+  else
+    -- take current line when called from normal mode
+    -- it makes sense to trim this before feeding input
+    local line = vim.api.nvim_win_get_cursor(0)[1]
+    payload = vim.trim(vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1])
+  end
+
+  send_to_terminal(payload)
+end
 -- }}}
 
 -- {{{ palette.commands
@@ -330,6 +359,7 @@ return {
   add_terminal = add_terminal,
   toggle_terminal = toggle_terminal,
   send_to_terminal = send_to_terminal,
+  send_content_to_terminal = send_content_to_terminal,
 
   -- commands
   add_command = add_command,

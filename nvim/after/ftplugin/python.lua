@@ -6,10 +6,9 @@ vim.opt_local.shiftwidth = 4
 vim.opt_local.tabstop = 4
 vim.opt_local.softtabstop = 4
 
--- TODO(vir): add this functionality to new terminal api
 -- send selection to terminal
--- utils.map("n", "<leader>cv", terminal.send_content_to_target)
--- utils.map("v", "<leader>cv", '<esc><cmd>lua require("terminal").send_content_to_target(true)<cr>gv')
+utils.map("n", "<leader>cv", terminal.send_content_to_terminal)
+utils.map("v", "<leader>cv", '<esc><cmd>lua require("terminal").send_content_to_terminal(true)<cr>gv')
 
 -- repl state
 local repl_session = {
