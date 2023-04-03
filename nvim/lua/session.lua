@@ -26,7 +26,7 @@ local default_config = {
   -- truncation limits
   truncation          = {
     truncation_limit_s_terminal = 110, -- terminal truncation limit
-    truncation_limit_s          = 80, -- small truncation limit
+    truncation_limit_s          = 80,  -- small truncation limit
     truncation_limit            = 100, -- medium truncation limit
     truncation_limit_l          = 160, -- large truncation limit
   },
@@ -35,9 +35,8 @@ local default_config = {
   debug_print         = {
     postfix = '__DEBUG_PRINT__',
 
-    -- format string with 2 strings (%s):
-    --  - first is label
-    --  - second is object to be printed
+    -- TODO(vir): support more languages as needed
+    -- NOTE(vir): format string with 2 strings (%s) [label, target]
     fmt     = {
       lua    = 'print("%s: ", vim.inspect(%s))',
       c      = 'printf("%s: %%s", %s);',
@@ -45,6 +44,7 @@ local default_config = {
       python = 'print(f"%s: {str(%s)}")',
     },
   },
+
 }
 
 -- {{{ global editor state
@@ -59,10 +59,10 @@ local default_state = {
   -- ui toggles and config
   ui = {
     thick_separators   = true, -- use thick buffer separators
-    window_focus_state = {}, -- window isolation
-    diagnostics_state  = { -- diagnostics list visibility
+    window_focus_state = {},   -- window isolation
+    diagnostics_state  = {     -- diagnostics list visibility
       ["local"]  = {},
-      ["global"] = false,
+      ["global"] = false
     },
   },
 
@@ -70,24 +70,25 @@ local default_state = {
   run_config = {
     target_terminal = nil,
     target_command  = nil,
-    palette = {}
+    palette         = {}
   },
 
   -- project-config, works with lib/project api
   project = nil,
 
   -- workspace commands
-  commands = {},
+  commands = {}
 }
 -- }}}
 
--- NOTE(vir): make this global
-local config = default_config     -- config is reloaded from file
-local state = (session and vim.tbl_deep_extend('force', default_state, session.state)) or default_state
-
+-- NOTE(vir): initialize global session
 _G.session = {
-  config = config,
-  state  = state
+  -- config is reloaded from file
+  config = default_config,
+
+  -- state is restored from previous session, if possible
+  state  = (session and vim.tbl_deep_extend('force', default_state, session.state)) or
+      default_state
 }
 
 -- initialize misc features
@@ -95,4 +96,3 @@ vim.api.nvim_create_augroup('ProjectInit', { clear = true }) -- lib/project
 
 -- NOTE(vir): return this as well
 return session
-

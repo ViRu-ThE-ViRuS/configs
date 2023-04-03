@@ -217,6 +217,9 @@ local function toggle_dark_mode()
   else
     vim.api.nvim_set_option_value('background', 'dark', { scope = 'global' })
   end
+
+  -- reload current colorscheme if needed
+  vim.cmd.colorscheme(vim.cmd.colorscheme())
 end
 
 -- quickfix: toggle qflist

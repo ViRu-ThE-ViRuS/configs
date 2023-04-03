@@ -3,7 +3,9 @@ local utils = require('utils')
 return {
   {
     'famiu/bufdelete.nvim',
-    init = function() utils.map("n", "<leader>q", function() require('bufdelete').bufdelete(0, true) end) end,
+    init = function()
+      utils.map("n", "<leader>q", function() require('bufdelete').bufdelete(0, true) end)
+    end,
   },
   {
     'tpope/vim-fugitive',
@@ -25,10 +27,17 @@ return {
     end
   },
 
-  { 'tpope/vim-eunuch',             cmd = { 'Delete', 'Rename', 'Chmod' } },
-  { 'godlygeek/tabular', cmd = 'Tab', init = function()
-    utils.map("v", "<leader>=",
-      ":Tab /")
-  end },
-  { 'tweekmonster/startuptime.vim', cmd = 'StartupTime' },
+  {
+    'godlygeek/tabular',
+    cmd = 'Tab',
+    init = function() utils.map("v", "<leader>=", ":Tab /") end,
+  },
+  {
+    'tpope/vim-eunuch',
+    cmd = { 'Delete', 'Rename', 'Chmod' },
+  },
+  {
+    'tweekmonster/startuptime.vim',
+    cmd = 'StartupTime',
+  },
 }
