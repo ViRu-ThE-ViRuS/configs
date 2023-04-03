@@ -241,7 +241,7 @@ local function show_messages()
     table.insert(entries, { text = line })
   end
 
-  utils.qf_populate(entries, "r", "Messages", true)
+  utils.qf_populate(entries, "r", { title = "Messages", scroll_to_end = true })
 end
 
 -- send :command output to qflist
@@ -255,7 +255,7 @@ local function show_command(command)
     table.insert(entries, { text = line })
   end
 
-  utils.qf_populate(entries, "r", "Command Output")
+  utils.qf_populate(entries, "r", { title = "Command Output"})
 end
 
 -- randomize colorscheme

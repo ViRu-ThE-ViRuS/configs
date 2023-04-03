@@ -17,25 +17,38 @@ local function unmap(mode, lhs, options)
 end
 
 -- set qflist and open
--- TODO(vir): refactor this
-local function qf_populate(lines, mode, title, scroll_to_end)
+local function qf_populate(lines, mode, opts)
   if not lines or #lines == 0 then return end
 
-  if mode == nil or type(mode) == "table" then
-    lines = core.foreach(lines, function(_, item) return { filename = item, lnum = 1, col = 1, text = item } end)
+  opts = vim.tbl_deep_extend('force', {
+    title = nil,
+    scroll_to_end = false
+  }, opts or {})
+
+  -- convenience implementation, set qf directly from values
+  if (not mode) or type(mode) == "table" then
+
+    -- set default file loc to 1:1
+    lines = core.foreach(lines, function(_, item)
+      return { filename = item, lnum = 1, col = 1, text = item }
+    end)
+
+    -- TODO(vir): it could be nice to have features around multiple qf lists
+    -- by default, replace list
     mode = "r"
   end
 
   vim.fn.setqflist(lines, mode)
 
-  local commands = {
+  -- ux
+  local commands = table.concat({
     'horizontal copen',
-    (scroll_to_end and 'normal! G') or "",
-    (title and require('statusline').set_statusline_cmd(title)) or "",
-    'wincmd p'
-  }
+    (opts.scroll_to_end and 'normal! G') or "",
+    (opts.title and require('statusline').set_statusline_cmd(opts.title)) or "",
+    'wincmd p',
+  }, '\n')
 
-  vim.cmd(table.concat(commands, '\n'))
+  vim.cmd(commands)
 end
 
 -- notify using current notifications setup

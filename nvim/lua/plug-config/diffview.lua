@@ -1,3 +1,17 @@
+-- toggle diffopt linematch:50
+local function toggle_line_matching()
+  local current_diffopt = vim.api.nvim_get_option_value('diffopt', { scope = 'local' })
+  local linematch = 'linematch:50'
+
+  if string.match(current_diffopt, linematch) then
+    vim.opt.diffopt = vim.opt.diffopt - linematch
+    require('utils').notify("linematch", "debug", { title = '[UI] deactivated', render = "compact" })
+  else
+    vim.opt.diffopt = vim.opt.diffopt + linematch
+    require('utils').notify("linematch", "info", { title = '[UI] activated', render = "compact" })
+  end
+end
+
 return {
   'sindrets/diffview.nvim',
   cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
@@ -43,19 +57,7 @@ return {
           ["[x"] = actions.prev_conflict,
           ["]x"] = actions.next_conflict,
 
-          -- toggle linematching
-          ['<tab>'] = function()
-            local current_diffopt = vim.api.nvim_get_option_value('diffopt', { scope = 'local' })
-            local linematch = 'linematch:50'
-
-            if string.match(current_diffopt, linematch) then
-              vim.opt.diffopt = vim.opt.diffopt - linematch
-              require('utils').notify("linematch", "debug", { title = '[UI] deactivated', render = "compact" })
-            else
-              vim.opt.diffopt = vim.opt.diffopt + linematch
-              require('utils').notify("linematch", "info", { title = '[UI] activated', render = "compact" })
-            end
-          end
+          ['<tab>'] = toggle_line_matching
         },
         file_panel = {
           ["j"] = actions.next_entry,
@@ -83,7 +85,9 @@ return {
               G
               G commit
             ]]
-          end
+          end,
+
+          ['<tab>'] = toggle_line_matching
         },
         file_history_panel = {
           ["zr"] = actions.open_all_folds,
@@ -101,6 +105,8 @@ return {
 
           ["e"] = actions.goto_file,
           ["<leader>gh"] = actions.toggle_files,
+
+          ['<tab>'] = toggle_line_matching
         },
         options_panel = {},
       },

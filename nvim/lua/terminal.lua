@@ -22,7 +22,7 @@ end
 
 -- deregister a terminal given job_id
 -- this removes it from palette.indices
--- returns true if an entry was deregistered, false if it wasnt needed
+-- returns true if an entry was deregistered, false if it wasn't needed
 local function deregister_terminal(job_id)
   assert(job_id, 'terminal_job_id not specified')
   local index = get_terminal_index(job_id)
@@ -101,9 +101,12 @@ local function assure_target_valid(job_id)
   assert(job_id, 'terminal_job_id not specified')
   local term_state = palette.terminals[job_id]
 
+  -- invalid if:
+  --  - term_state invalid
+  --  - term_state.bufnr unloaded
   if (not term_state) or (not vim.api.nvim_buf_is_loaded(term_state.bufnr)) then
     deregister_terminal(job_id)
-    utils.notify('terminal exitted, resetting index', 'warn', { title = '[TERM] palette ', render = 'compact' })
+    utils.notify('terminal exited, resetting index', 'warn', { title = '[TERM] palette ', render = 'compact' })
     return false
   end
 
@@ -120,7 +123,7 @@ local function get_primary_terminal()
 end
 -- }}}
 
--- {{{ pallet.terminals
+-- {{{ palette.terminals
 -- add/set terminal index
 -- if vim.v.count is valid, then index is updated
 local function add_terminal(opts)
@@ -338,7 +341,7 @@ local function launch_terminal(command, opts)
   }
 
   -- try setting name, fails if buffer with same name exists
-  pcall(vim.api.nvim_buf_set_name, term_state.bufnr, term_state.bufname)
+  pcall(misc.rename_buffer, term_state.bufname)
 
   -- this should not crash, so pcall not needed
   vim.api.nvim_chan_send(term_state.job_id, command .. "\n")
@@ -364,7 +367,8 @@ return {
   remove_command = remove_command,
   run_command = run_command,
 
-  -- misc
+  -- api
   launch_terminal = launch_terminal,
-  get_primary_terminal = get_primary_terminal
+  get_primary_terminal = get_primary_terminal,
+  set_primary_terminal = core.partial(add_terminal, { primary = true })
 }

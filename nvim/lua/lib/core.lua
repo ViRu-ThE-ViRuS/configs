@@ -153,5 +153,5 @@ return {
   get_python = get_python,
   get_username = get_username,
   get_homedir = get_homedir,
-  get_os = get_os
+  get_os = get_os,
 }
