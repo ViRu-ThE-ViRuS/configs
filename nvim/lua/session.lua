@@ -35,8 +35,8 @@ local default_config = {
   debug_print         = {
     postfix = '__DEBUG_PRINT__',
 
-    -- TODO(vir): support more languages as needed
     -- NOTE(vir): format string with 2 strings (%s) [label, target]
+    --            support more languages as needed
     fmt     = {
       lua    = 'print("%s: ", vim.inspect(%s))',
       c      = 'printf("%s: %%s", %s);',

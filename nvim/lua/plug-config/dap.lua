@@ -5,7 +5,7 @@ local function activate_output_window(_)
   local target_handle = nil
   local target_regex = nil
 
-  -- TODO(vir): manually update this when new adapters are added
+  -- TODO(vir): update this when new adapters are added
   target_regex = vim.regex('\\v^.*/python3|codelldb$')
 
   -- get buffer handle for output window
@@ -292,9 +292,9 @@ return {
         base[key] = value
       end
 
+      -- TODO(vir): does not support long running commands, fix this?
       -- preamble is called with final dap config, which will be run next
       if opts.preamble then
-        -- TODO(vir): does not support long running commands, fix this?
         opts.preamble()
       end
 

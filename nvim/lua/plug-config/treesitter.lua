@@ -10,7 +10,7 @@ local function buffer_functions()
   local functions = vim.treesitter.query.parse(
     ft,
 
-    -- TODO(vir): can add more language specific captures when needed
+    -- NOTE(vir): add support more more languages as needed
     table.concat({
       '((function_definition) @definitions)',
       ((ft == 'lua' and '((function_declaration) @lua_declaration)') or ""),

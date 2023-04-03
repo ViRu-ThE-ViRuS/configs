@@ -328,8 +328,6 @@ local function launch_terminal(command, opts)
   -- create new terminal
   local split_cmd = (misc.is_htruncated(truncation.truncation_limit_s_terminal) and "sp") or "vsp"
   vim.cmd(string.format('%s | terminal', split_cmd))
-
-  -- TODO(vir): investigate why this is necessary
   vim.api.nvim_exec_autocmds('TermOpen', { group = 'TerminalSetup' })
 
   -- terminal state
