@@ -319,5 +319,5 @@ return {
   show_command = show_command,
   random_colors = random_colors,
   is_htruncated = is_htruncated,
-  is_vtruncated = is_vtruncated
+  is_vtruncated = is_vtruncated,
 }

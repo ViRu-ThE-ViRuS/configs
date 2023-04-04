@@ -129,7 +129,7 @@ utils.map("n", "<leader>ca", terminal.send_to_terminal)
 utils.map("n", "<leader>cA", terminal.run_command)
 utils.map("n", "<leader>cs", terminal.toggle_terminal)
 utils.map("n", "<leader>cS", terminal.add_terminal)
-utils.map("n", "<leader>cc", terminal.select_terminal)
+utils.map("n", "<leader>cC", terminal.select_terminal)
 
 -- commands
 utils.map('n', '<c-cr>', vim.cmd.Commands)

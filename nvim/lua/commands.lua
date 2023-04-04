@@ -1,6 +1,5 @@
 local misc = require('lib/misc')
 local core = require('lib/core')
-local terminal = require('lib/terminal')
 
 local colorscheme = require('colorscheme')
 local utils = require('utils')
@@ -76,9 +75,11 @@ vim.api.nvim_create_autocmd('BufWritePost', {
     local rc_path = vim.fs.dirname(rc_file)
     local lua_path = plenary.Path.new(rc_path) .. '/lua/'
 
+    -- collect all config files to reload
     local to_reload = core.foreach(
       vim.split(vim.fn.globpath(rc_path, '**/**.lua'), "\n"),
       function(_, full_path)
+        -- will only consider files within lua/
         local path_obj = plenary.Path.new(full_path)
         local rel_path = vim.fn.fnamemodify(path_obj:make_relative(lua_path), ':r')
 
@@ -100,10 +101,17 @@ vim.api.nvim_create_autocmd('BufWritePost', {
     vim.lsp.stop_client(vim.lsp.get_active_clients(), false)
 
     -- reload modules
-    core.foreach(to_reload, function(_, mod) if not package.loaded[mod] then require(mod) end end)
+    -- dofile(rc_file)
 
-    -- NOTE(vir): this mostly works, but kinda resets colorschemes
-    vim.cmd('source')
+    core.foreach(
+      to_reload,
+      function(_, mod)
+        require(mod)
+        -- dofile('lua/' .. mod .. '.lua')
+      end
+    )
+
+    vim.cmd [[ source ]]
 
     utils.notify(src_file, 'info', {
       title = '[CONFIG] reloaded from',
