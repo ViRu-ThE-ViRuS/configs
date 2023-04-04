@@ -225,7 +225,11 @@ end
 
 -- quickfix: toggle qflist
 local function toggle_qflist()
-  if vim.tbl_isempty(core.filter(vim.fn.getwininfo(), function(_, win) return win.quickfix == 1 end)) then
+  -- open if no windows with type quickfix in current tabpage
+  if vim.tbl_isempty(core.filter(
+    vim.api.nvim_tabpage_list_wins(0),
+    function(_, winnr) return vim.fn.getwininfo(winnr)[1].quickfix == 1 end
+  )) then
     vim.cmd [[ horizontal copen ]]
   else
     vim.cmd [[ cclose ]]

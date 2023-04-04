@@ -93,6 +93,37 @@ local function table_keys(tbl)
   return keys
 end
 
+-- checks if all (key, value) pairs exist in both tables
+local function table_equal(left, right)
+  for key, value in pairs(left) do
+    if (type(key) == 'table' and ((not right[key]) or (not table_equal(value, right[key])))) or
+       (type(key) ~= 'table' and ((not right[key]) or (right[key] ~= value))) then
+      return false
+    end
+  end
+
+  for key, value in pairs(right) do
+    if (type(key) == 'table' and ((not left[key]) or (not table_equal(value, left[key])))) or
+       (type(key) ~= 'table' and ((not left[key]) or (left[key] ~= value))) then
+      return false
+    end
+  end
+
+  return true
+end
+
+-- checks if all (key, value) pairs in child are present in parent
+local function table_subset(parent, child)
+  for key, value in pairs(child) do
+    if (type(key) == 'table' and ((not parent[key]) or (not table_equal(value, parent[key])))) or
+      (type(key) ~= 'table' and ((not parent[key]) or (parent[key] ~= value))) then
+      return false
+    end
+  end
+
+  return true
+end
+
 -- run shell command and get output lines as lua table
 -- from: https://github.com/ibhagwan/fzf-lua/blob/main/lua/fzf-lua/utils.lua
 local function lua_systemlist(cmd)
@@ -150,6 +181,8 @@ return {
   table_contains = table_contains,
   table_copy     = table_copy,
   table_keys     = table_keys,
+  table_equal    = table_equal,
+  table_subset   = table_subset,
   lua_systemlist = lua_systemlist,
   lua_system     = lua_system,
   get_python     = get_python,

@@ -58,7 +58,7 @@ local default_state = {
 
   -- ui toggles and config
   ui = {
-    thick_separators   = true, -- use thick buffer separators
+    thick_separators   = false, -- use thick buffer separators
     window_focus_state = {},   -- window isolation
     diagnostics_state  = {     -- diagnostics list visibility
       ["local"]  = {},
@@ -70,7 +70,6 @@ local default_state = {
   -- integrated with internal apis like project, terminal
   palette = {
     terminals = { term_states = {}, indices = {} },
-    locations = { loc_states = {}, indices = {} },
     commands = {},
   },
 

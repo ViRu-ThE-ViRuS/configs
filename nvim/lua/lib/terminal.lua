@@ -6,10 +6,8 @@ local palette = session.state.palette
 local truncation = session.config.truncation
 
 -- TODO(vir): future
---   1. terminal palette features
---     - visual reorder
---     - each terminal can have its own base_command, hotkey + fuzzy selector
---   2. general workspace features (bigger than TERM)
+--   - visual reorder
+--   - remove terminals from term_states? overwrite policy works so why?
 
 -- {{{ utils
 -- get index of terminal given terminal_job_id
@@ -21,27 +19,23 @@ local function get_terminal_index(job_id)
   end
 end
 
--- deregister a terminal given job_id
+-- deregister a terminal given job_id or index
 -- this removes it from palette.indices
 -- returns true if an entry was deregistered, false if it wasn't needed
-local function deregister_terminal(job_id)
-  assert(job_id, 'terminal_job_id not specified')
-  local index = get_terminal_index(job_id)
+local function deregister_terminal(opts)
+  opts = vim.tbl_deep_extend('force', { job_id = nil, index = nil }, opts or {})
+  assert(opts.job_id or opts.index, 'either job_id or terminal must be specified')
 
+  local index = opts.index or get_terminal_index(opts.job_id)
   if index then
-    -- if deregistering primary, set it to empty
-    if index == 1 then
-      palette.terminals.indices[index] = {}
-    else
-      table.remove(palette.terminals.indices, index)
-    end
-    return true
+    palette.terminals.indices[index] = {}
+    return index
   end
 end
 
 -- register a terminal given job_id, to the specified index
 -- if another valid entry is present at index, it is swapped to the end
--- using a replacement policy documented below
+-- swap policy: overwrite
 local function register_terminal(job_id, index)
   assert(index >= 0, 'index must be a positive number')
   assert(job_id, 'invalid job_id: ' .. job_id)
@@ -52,30 +46,13 @@ local function register_terminal(job_id, index)
   local notification = nil
 
   if existing ~= job_id then
-    deregister_terminal(job_id) -- deregister any current index for this terminal
+    deregister_terminal({ job_id = job_id })  -- deregister any current index
 
-    -- replacing an existing entry
-    -- type table represents a removed primary terminal, in which case simply overwrite
-    if existing and type(existing) ~= 'table' then
-      -- NOTE(vir): basic replacement strategies
-      --  1. swap existing to end, if needed
-      --  2. swap existing to first empty slot
-      --  3. deregister existing because we will overwrite it index slot (term_state will not be altered)
-
-      -- using option 3.
-      -- deregister existing entry in slot
-      local existing_index = get_terminal_index(existing)
-      deregister_terminal(existing)
-
-      utils.notify((existing and type(existing) ~= 'table' and string.format(
-          'deregistered terminal <%d>:{ job_id: %s, bufnr: %s }',
-          existing_index,
-          existing,
-          palette.terminals.term_states[existing].bufnr
-        )) or "", 'warn', { title = '[TERM] palette ', render = 'compact' })
+    if existing then
+      deregister_terminal({ job_id = existing }) -- replacing an existing entry
     end
 
-    -- replacement is done, assign index
+    -- replacement is by overwriting, assign index
     palette.terminals.indices[index] = job_id
 
     notification = string.format(
@@ -84,6 +61,9 @@ local function register_terminal(job_id, index)
       term_state.job_id,
       term_state.bufnr
     )
+
+    -- TODO(vir): set special statusline
+
   else
     -- swapping with self
     notification = string.format(
@@ -109,7 +89,7 @@ local function assure_target_valid(job_id)
   --  - term_state invalid
   --  - term_state.bufnr unloaded
   if (not term_state) or (not vim.api.nvim_buf_is_loaded(term_state.bufnr)) then
-    deregister_terminal(job_id)
+    deregister_terminal({ job_id = job_id })
     utils.notify('terminal exited, resetting index', 'warn', {
       title = '[TERM] palette ',
       render = 'compact',
@@ -131,7 +111,7 @@ end
 -- }}}
 
 -- {{{ palette.terminals
--- add/set terminal index
+-- add terminal to palette
 -- if vim.v.count is valid, then index is updated
 local function add_terminal(opts)
   opts = vim.tbl_deep_extend('force', {
@@ -375,7 +355,8 @@ local function launch_terminal(command, opts)
 
   opts = vim.tbl_deep_extend('force', {
     background = false,
-    callback = nil
+    callback = nil,
+    name = nil
   }, opts or {})
 
   -- create new terminal
@@ -390,7 +371,9 @@ local function launch_terminal(command, opts)
   }
 
   -- try setting name, fails if buffer with same name exists
-  pcall(misc.rename_buffer, opts.bufname)
+  if opts.name then
+    pcall(misc.rename_buffer, opts.name)
+  end
 
   -- this should not crash, so pcall not needed
   vim.api.nvim_chan_send(term_state.job_id, command .. "\n")

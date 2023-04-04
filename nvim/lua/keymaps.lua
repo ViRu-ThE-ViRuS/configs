@@ -39,7 +39,7 @@ utils.map("n", "?", "ms?")                                       -- mark search 
 utils.map("v", "&", ":&&<cr>")                                   -- visual execute last substitution
 utils.map("v", ".", ":normal! .<cr>")                            -- visual execute .
 utils.map("v", "@", ":normal! @")                                -- visual execute macro
-utils.map("n", "ss", "s")                                        -- substitute mode
+utils.map("n", "ss", "s")                                        -- substitute mode, same as default `gh`
 utils.map("x", "ss", ":s/\\%V")                                  -- substitute in visual
 utils.map("x", "s/", ":s/\\<<C-r><C-w>\\>/")                     -- substitute cword in selection
 utils.map('x', '<m-/>', '<esc>/\\%V')                            -- search within selection, '/' itself is a good mapping to consider for this

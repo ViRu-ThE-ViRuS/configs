@@ -4,8 +4,8 @@ vim.opt_local.signcolumn = "yes"
 vim.opt_local.bufhidden = "wipe"
 
 local utils = require("utils")
-utils.map("n", "<c-w><c-v>", "<c-w><cr><c-w>L", { buffer = 0 })
-utils.map("n", "<c-w><c-x>", "<c-w><cr><c-w>K", { buffer = 0 })
+utils.map("n", "<c-v>", "<c-w><cr><c-w>L", { buffer = 0 })
+utils.map("n", "<c-x>", "<c-w><cr><c-w>K", { buffer = 0 })
 utils.map("n", "<c-o>", "<cmd>wincmd p<cr>", { buffer = 0 })
 
 vim.cmd [[ autocmd! BufEnter <buffer> if winnr('$') < 2 | q | endif ]]

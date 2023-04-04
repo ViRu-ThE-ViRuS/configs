@@ -14,12 +14,13 @@ return {
     end)
 
     utils.map("n", "<c-p>b", function() require('fzf-lua').buffers() end)
+    utils.map("n", "<c-p>l", function() require('fzf-lua').blines() end)
+    utils.map("n", "<c-p>m", function() require('fzf-lua').marks() end)
     utils.map("n", "<c-p>o", function() require('fzf-lua').resume() end)
 
     utils.map("n", "<c-p>f", function() require('fzf-lua').live_grep({ exec_empty_query = true }) end)
     utils.map("n", "<c-p>F", function() require('fzf-lua').live_grep({ continue_last_search = true }) end)
 
-    utils.map("n", "<c-p>l", function() require('fzf-lua').blines() end)
     utils.map("n", "<c-p>ss", function() require('fzf-lua').grep_cword() end)
     utils.map("n", "<c-p>sz", function() require('fzf-lua').grep({ search = 'TODO|NOTE', no_esc = true }) end)
     utils.map("v", "<c-p>ss", function() require('fzf-lua').grep_visual() end)

@@ -1,5 +1,6 @@
 return {
   'folke/persistence.nvim',
+  event = 'BufReadPre',
   init = function()
     require('utils').add_command(
       '[MISC] Restore Workspace Session for CWD',
