@@ -19,7 +19,6 @@ local function buffer_functions()
     }, '\n')
   )
 
-
   local entries = {}
   for _, node, _ in functions:iter_captures(tree:root(), bufnr) do
     local l1, c1, _, _ = node:start()
@@ -33,6 +32,25 @@ local function buffer_functions()
 
   return entries
 end
+
+-- move cursor to lsp-parent
+local function up_lsp_stack()
+  local context = require('lsp-setup/lsp_utils').get_context()
+  if not context then return end
+
+  local current_line = vim.api.nvim_win_get_cursor(0)
+  local head = nil
+
+  for index = #context, 1, -1 do
+    head = context[index]
+    if head.range.start.line < current_line[1] then break end
+  end
+
+  -- add current location to jump list, then jump
+  vim.cmd [[ normal! m` ]]
+  vim.api.nvim_win_set_cursor(0, { head.range.start.line, head.range['end'].line })
+end
+
 
 return {
   {
@@ -86,7 +104,6 @@ return {
           move = {
             enable = true,
             set_jumps = true,
-
             -- NOTE(vir): remaps done manually below
           },
           swap = {
@@ -123,18 +140,16 @@ return {
       end)
 
       -- text-subjects : move + center
-      utils.map({ 'n', 'o', 'x' }, ']F',
-        '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@class.outer")<CR>zz')
-      utils.map({ 'n', 'o', 'x' }, '[F',
-        '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@class.outer")<CR>zz')
-      utils.map({ 'n', 'o', 'x' }, ']f',
-        '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@function.outer")<CR>zz')
-      utils.map({ 'n', 'o', 'x' }, '[f',
-        '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@function.outer")<CR>zz')
-      utils.map({ 'n', 'o', 'x' }, ']]',
-        '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@block.outer")<CR>zz')
-      utils.map({ 'n', 'o', 'x' }, '[[',
-        '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@block.outer")<CR>zz')
+      local cmd_str = '<cmd>lua require("nvim-treesitter.textobjects.move").'
+      utils.map({ 'n', 'o', 'x' }, ']F', cmd_str .. 'goto_next_start("@class.outer")<CR>zz')
+      utils.map({ 'n', 'o', 'x' }, '[F', cmd_str .. 'goto_previous_start("@class.outer")<CR>zz')
+      utils.map({ 'n', 'o', 'x' }, ']f', cmd_str .. 'goto_next_start("@function.outer")<CR>zz')
+      utils.map({ 'n', 'o', 'x' }, '[f', cmd_str .. 'goto_previous_start("@function.outer")<CR>zz')
+      utils.map({ 'n', 'o', 'x' }, ']]', cmd_str .. 'goto_next_start("@block.outer")<CR>zz')
+      utils.map({ 'n', 'o', 'x' }, '[[', cmd_str .. 'goto_previous_start("@block.outer")<CR>zz')
+
+      -- jump to lsp-parent
+      utils.map({'n', 'o', 'x'}, '[S', up_lsp_stack)
     end
   },
   {
@@ -155,10 +170,10 @@ return {
     config = function()
       vim.g['sandwich#recipes'] = require('lib/core').list_concat(
         vim.g['sandwich#default_recipes'], {
-        { buns = { '( ', ' )' }, nesting = 1, match_syntax = 1, input = { ')' } },
-        { buns = { '[ ', ' ]' }, nesting = 1, match_syntax = 1, input = { ']' } },
-        { buns = { '{ ', ' }' }, nesting = 1, match_syntax = 1, input = { '}' } },
-      })
+          { buns = { '( ', ' )' }, nesting = 1, match_syntax = 1, input = { ')' } },
+          { buns = { '[ ', ' ]' }, nesting = 1, match_syntax = 1, input = { ']' } },
+          { buns = { '{ ', ' }' }, nesting = 1, match_syntax = 1, input = { '}' } },
+        })
     end,
   },
 

@@ -69,9 +69,9 @@ local default_state = {
   -- palette, represents the working set of files,commands, etc
   -- integrated with internal apis like project, terminal
   palette = {
-    terminals = {},
+    terminals = { term_states = {}, indices = {} },
+    locations = { loc_states = {}, indices = {} },
     commands = {},
-    indices = {}
   },
 
   -- project-config, works with lib/project api

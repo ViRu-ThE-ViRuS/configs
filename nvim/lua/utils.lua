@@ -27,7 +27,6 @@ local function qf_populate(lines, mode, opts)
 
   -- convenience implementation, set qf directly from values
   if (not mode) or type(mode) == "table" then
-
     -- set default file loc to 1:1
     lines = core.foreach(lines, function(_, item)
       return { filename = item, lnum = 1, col = 1, text = item }
@@ -58,23 +57,35 @@ local function notify(content, type, opts)
 end
 
 -- add custom command
--- TODO(vir): refactor this
-local function add_command(key, callback, cmd_opts, also_custom)
+local function add_command(key, callback, opts)
+  opts = vim.tbl_deep_extend('force', {
+    cmd_opts = nil,
+    add_custom = false
+  }, opts or {})
+
+  assert(opts.cmd_opts or opts.add_custom, 'must either provide cmd_opts or set add_custom')
+
   -- opts are defined, create user command
-  if cmd_opts then vim.api.nvim_create_user_command(key, callback, cmd_opts) end
+  if opts.cmd_opts then
+    vim.api.nvim_create_user_command(key, callback, opts.cmd_opts)
+  end
 
   -- create custom command
-  if also_custom then
+  if opts.add_custom then
 
-    -- assert opts not defined, or 0 args
-    assert((not cmd_opts) or (not cmd_opts.nargs) or cmd_opts.nargs == 0)
+    -- make sure this command takes no parameters
+    assert(
+      (not opts.cmd_opts) or (not opts.cmd_opts.nargs) or opts.cmd_opts.nargs == 0,
+      'cannot add custom command which takes parameters'
+    )
 
-    local callback_fn = (type(callback) == 'function' and callback)
-        or function() vim.api.nvim_command(callback) end
+    -- wrap callback
+    local callback_fn = (type(callback) == 'function' and callback) or
+        core.partial(vim.api.nvim_command, callback)
 
+    -- add command header
     local header_regex = vim.regex('\\v\\[.*]')
     if not header_regex:match_str(key) then key = '[CMD] ' .. key end
-
     session.state.commands[key] = callback_fn
   end
 

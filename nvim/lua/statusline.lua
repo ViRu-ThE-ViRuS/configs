@@ -52,8 +52,12 @@ local statusline_blacklist = {
   'dap-repl'
 }
 
--- utils {{{
--- is statusline supposed to be truncated
+-- {{{ utils
+-- is statusline supposed to be truncated, will behave according to laststatus
+-- setting (global statusline)
+--
+-- specifying small means we are considering a smaller threshold than normal
+-- consider_global means we are to consider with the global statusline (force)
 local function truncate_statusline(small, consider_global)
   local limit = (small and truncation.truncation_limit_s) or truncation.truncation_limit
   local global_statusline = vim.api.nvim_get_option_value('laststatus', { scope = 'global' }) == 3
@@ -62,6 +66,9 @@ end
 
 -- setup statusline highlights
 local function setup_highlights()
+  -- want to make all statusline highlights have the same background color
+  -- so we don't get any weird looks on colorschemes
+
   local lsp_icons = require('lsp-setup/lsp_utils').lsp_icons
   local target_id = vim.api.nvim_get_hl_id_by_name(string.sub(colors.context, 3, -2))
   local target_hl = vim.api.nvim_get_hl_by_id(target_id, true)
@@ -94,13 +101,20 @@ local function get_git_status()
   local gitsigns_summary = vim.b.gitsigns_status_dict
   if not gitsigns_summary then return '' end
 
+  -- collect information from gitsigns
   meta['branch'] = gitsigns_summary['head']
   meta['added'] = gitsigns_summary['added']
   meta['modified'] = gitsigns_summary['changed']
   meta['removed'] = gitsigns_summary['removed']
 
   if truncate_statusline() then return string.format(' %s ', meta['branch']) end
-  return string.format(' %s | +%s ~%s -%s ', meta['branch'], meta['added'], meta['modified'], meta['removed'])
+  return string.format(
+    ' %s | +%s ~%s -%s ',
+    meta['branch'],
+    meta['added'],
+    meta['modified'],
+    meta['removed']
+  )
 end
 
 -- get current context / tag
@@ -118,6 +132,7 @@ local function get_statusline_context(bufnr)
       context[#context].name
     )
   else
+    -- create tree elements
     local context = core.foreach(tag_state.context[bufnr], function(_, arg)
           return arg.iconhl .. arg.icon .. ' ' .. colors.context .. arg.name
         end) or {}
@@ -188,13 +203,13 @@ end
 -- }}}
 
 -- {{{ statuslines
--- special statusline
-local function statusline_special(mode)
-  return colors.active .. ' ' .. mode .. ' ' .. colors.inactive
+-- special statusline with only title
+local function statusline_special(title)
+  return colors.active .. ' ' .. title .. ' ' .. colors.inactive
 end
 
--- normal statusline
-local function statusline_normal()
+-- standard active statusline
+local function statusline_active()
   local mode = colors.mode .. get_current_mode()
   local git = colors.git .. get_git_status()
   local diagnostics = colors.diagnostics .. get_diagnostics()
@@ -207,19 +222,13 @@ local function statusline_normal()
   local filetype = colors.filetype .. get_filetype()
 
   return table.concat({
-    colors.active, mode, git, diagnostics, truncator, filename,
-    colors.inactive, '%=% ', context, line_col, percentage, bufnr, filetype,
-    colors.inactive
+    colors.active, mode, git, diagnostics, truncator, filename, colors.inactive,
+    '%=% ',
+    context, line_col, percentage, bufnr, filetype, colors.inactive
   })
 end
 
--- active statusline
-local statusline = function(mode)
-  if mode then return statusline_special(mode) end
-  return statusline_normal()
-end
-
--- inactive statusline
+-- standard inactive statusline
 local function statusline_inactive()
   local filename = colors.file .. get_filename()
   local line_col = colors.line_col .. get_line_col()
@@ -231,6 +240,13 @@ local function statusline_inactive()
     '%=% ',
     line_col, bufnr, filetype, colors.inactive
   })
+end
+
+-- active statusline
+-- convenience function for export
+local statusline = function(mode)
+  if mode then return statusline_special(mode) end
+  return statusline_active()
 end
 -- }}}
 
@@ -256,9 +272,9 @@ end
 -- }}}
 
 -- {{{ statusline setup
--- setup defaults
 local autocmd_group = vim.api.nvim_create_augroup('StatusLine', { clear = true })
 
+-- setup defaults
 vim.api.nvim_create_autocmd({ 'BufEnter', 'WinEnter' }, {
   group = autocmd_group,
   pattern = '*',
@@ -266,7 +282,7 @@ vim.api.nvim_create_autocmd({ 'BufEnter', 'WinEnter' }, {
     local ft = vim.api.nvim_get_option_value('ft', { scope = 'local' })
     if not core.table_contains(statusline_blacklist, ft) then
       vim.opt_local.statusline =
-      "%!luaeval(\"require('statusline').statusline()\")"
+        "%!luaeval(\"require('statusline').statusline()\")"
     end
   end
 })
@@ -277,7 +293,7 @@ vim.api.nvim_create_autocmd({ 'BufLeave', 'WinLeave' }, {
     local ft = vim.api.nvim_get_option_value('ft', { scope = 'local' })
     if not core.table_contains(statusline_blacklist, ft) then
       vim.opt_local.statusline =
-      "%!luaeval(\"require('statusline').statusline_inactive()\")"
+        "%!luaeval(\"require('statusline').statusline_inactive()\")"
     end
   end
 })
@@ -290,13 +306,13 @@ vim.api.nvim_create_autocmd('BufWinEnter', { group = autocmd_group, pattern = 'd
 
 return {
   setup_highlights = setup_highlights,
-  autocmd_group = autocmd_group,
+  autocmd_group = autocmd_group,              -- augroup for setting statusline
 
   -- statusline fn
-  statusline = statusline,
-  statusline_inactive = statusline_inactive,
+  statusline = statusline,                    -- get current statusline string
+  statusline_inactive = statusline_inactive,  -- get inactive statusline string
 
   -- api to setup statusline
-  set_statusline_func = set_statusline_func,
-  set_statusline_cmd = set_statusline_cmd,
+  set_statusline_func = set_statusline_func,  -- calling this function will set the statusline
+  set_statusline_cmd = set_statusline_cmd,    -- calling this command will set the statusline
 }

@@ -13,7 +13,7 @@ local function override_session_config(config)
 end
 
 -- execute local rc
-local function load_local_session()
+local function load_local_session(silent)
   local utils = require('utils')
   local local_rc_name = session.config.local_rc_name
 
@@ -22,11 +22,21 @@ local function load_local_session()
 
   -- execute local rc and load project if specified
   session.state.project = dofile(local_rc_name)
-  utils.notify('sourced: ' .. local_rc_name, 'info', { title = '[CONFIG] session loaded' })
+
+  if not silent then
+    utils.notify(
+      'sourced: ' .. local_rc_name,
+      'info',
+      { title = '[CONFIG] session loaded' }
+    )
+  end
 
   if session.state.project then
     vim.cmd.doautocmd({ 'User ProjectInit' })
-    session.state.project:notify('configured', 'debug', { render = 'minimal' })
+
+    if not silent then
+      session.state.project:notify('configured', 'debug', { render = 'minimal' })
+    end
   end
 end
 

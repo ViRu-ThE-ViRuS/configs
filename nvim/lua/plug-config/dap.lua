@@ -373,7 +373,7 @@ return {
       }, function(condition)
         dap.set_breakpoint(condition)
       end)
-    end, nil, true)
+    end, { add_custom = true })
 
     utils.add_command('[DAP] Add log point', function()
       vim.ui.input({
@@ -382,6 +382,6 @@ return {
       }, function(log_msg)
         dap.set_breakpoint(nil, nil, log_msg)
       end)
-    end, nil, true)
+    end, { add_custom = true })
   end
 }

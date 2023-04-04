@@ -1,9 +1,11 @@
 -- create table (key, value) -> (key, f(key, value))
-local function foreach(tbl, f)
+-- if only_values is set, this returns (key, value) -> (f(key, value)) [flat array]
+local function foreach(tbl, f, only_values)
   if not tbl then return {} end
 
   local t = {}
-  for key, value in pairs(tbl) do t[key] = f(key, value) end
+  if only_values then for key, value in pairs(tbl) do table.insert(t, f(key, value)) end
+  else for key, value in pairs(tbl) do t[key] = f(key, value) end end
   return t
 end
 
@@ -140,18 +142,18 @@ local function get_os(table)
 end
 
 return {
-  foreach = foreach,
-  apply = apply,
-  filter = filter,
-  list_concat = list_concat,
-  partial = partial,
+  foreach        = foreach,
+  apply          = apply,
+  filter         = filter,
+  list_concat    = list_concat,
+  partial        = partial,
   table_contains = table_contains,
-  table_copy = table_copy,
-  table_keys = table_keys,
+  table_copy     = table_copy,
+  table_keys     = table_keys,
   lua_systemlist = lua_systemlist,
-  lua_system = lua_system,
-  get_python = get_python,
-  get_username = get_username,
-  get_homedir = get_homedir,
-  get_os = get_os,
+  lua_system     = lua_system,
+  get_python     = get_python,
+  get_username   = get_username,
+  get_homedir    = get_homedir,
+  get_os         = get_os,
 }

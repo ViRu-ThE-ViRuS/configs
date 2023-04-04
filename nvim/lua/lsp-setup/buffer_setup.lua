@@ -54,9 +54,9 @@ end
 -- setup buffer commands
 local function setup_commands(client, _)
   if client.name == 'clangd' then
-    utils.add_command('[LSP] clangd: Switch Source Header', 'ClangdSwitchSourceHeader', nil, true)
+    utils.add_command('[LSP] clangd: Switch Source Header', 'ClangdSwitchSourceHeader', { add_custom = true })
   elseif client.name == 'pyright' then
-    utils.add_command('[LSP] pyright: Organize Imports', 'PyrightOrganizeImports', nil, true)
+    utils.add_command('[LSP] pyright: Organize Imports', 'PyrightOrganizeImports', { add_custom = true })
   elseif client.name == 'tsserver' then
     utils.add_command('[LSP] tsserver: Organize Imports', function()
       vim.lsp.buf.execute_command({
@@ -64,12 +64,12 @@ local function setup_commands(client, _)
         arguments = { vim.api.nvim_buf_get_name(0) },
         title = ""
       })
-    end, nil, true)
+    end, { add_custom = true })
   end
 
-  utils.add_command('[LSP] Incoming Calls', vim.lsp.buf.incoming_calls, nil, true)
-  utils.add_command('[LSP] Outgoing Calls', vim.lsp.buf.outgoing_calls, nil, true)
-  utils.add_command('[LSP] Code Actions', require('fzf-lua').lsp_code_actions, nil, true)
+  utils.add_command('[LSP] Incoming Calls', vim.lsp.buf.incoming_calls, { add_custom = true })
+  utils.add_command('[LSP] Outgoing Calls', vim.lsp.buf.outgoing_calls, { add_custom = true })
+  utils.add_command('[LSP] Code Actions', require('fzf-lua').lsp_code_actions, { add_custom = true })
 end
 
 -- setup buffer options

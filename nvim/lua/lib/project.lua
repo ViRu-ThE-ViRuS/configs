@@ -1,6 +1,6 @@
 local class = require('lib/class')
 local core = require('lib/core')
-local terminal = require('terminal')
+local terminal = require('lib/terminal')
 local utils = require('utils')
 
 -- Project class
@@ -31,7 +31,7 @@ end
 
 -- add a project-scoped command
 function Project:add_command(name, callback)
-  local key = utils.add_command(string.format('[%s] %s', self.name, name), callback, nil, true)
+  local key = utils.add_command(string.format('[%s] %s', self.name, name), callback, { add_custom = true })
   self.command_keys[key] = 1
 end
 
@@ -144,7 +144,7 @@ return {
 
 --[[ example usage in .nvimrc.lua
 
-local terminal = require('terminal')
+local terminal = require('lib/terminal')
 local Project = require('lib/project').Project
 
 -- create a project

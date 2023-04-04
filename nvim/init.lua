@@ -29,6 +29,5 @@ vim.api.nvim_create_autocmd("User", {
 -- 1. toggle pin buffers (cannot delete pinned buffers)
 -- 2. toggle buffers like primary terminal
 -- 3. fix Q in new tab (same buffer)
--- 4. further work on terminal api
--- 5. fix doesnt to doesn't in config files
+-- 4. use multiple qf lists (palette)
 

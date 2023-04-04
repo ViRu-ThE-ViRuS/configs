@@ -19,7 +19,6 @@ return {
   'bluz71/vim-moonfly-colors',
   'thepogsupreme/mountain.nvim',
   'bluz71/vim-nightfly-guicolors',
-  'noorwachid/nvim-nightsky',
   'talha-akram/noctis.nvim',
   'nyoom-engineering/oxocarbon.nvim',
   'JoosepAlviste/palenightfall.nvim',

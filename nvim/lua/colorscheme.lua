@@ -183,6 +183,7 @@ local function ui_overrides()
     ]])
 
   -- set statusline highlights
+  -- NOTE(vir): this will also initialize and set the statusline on first call
   require('statusline').setup_highlights()
 end
 
@@ -191,7 +192,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = 'dark'
 
-local colorscheme = 'xcodedarkhc'
+local colorscheme = 'oxocarbon'
 ---@cast colorscheme +string +function
 
 -- load default colorscheme if chosen one is not available
@@ -218,7 +219,6 @@ return {
       "moonfly",
       "mountain",
       "nightfly",
-      "nightsky",
       "noctis", "noctis_bordo", "noctis_minimus", "noctis_uva",
       "oxocarbon",
       "palenightfall",

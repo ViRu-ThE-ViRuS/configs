@@ -4,8 +4,7 @@ return {
     require('utils').add_command(
       '[MISC] Restore Workspace Session for CWD',
       function() require('persistence').load() end,
-      nil,
-      true
+      { add_custom = true }
     )
   end,
   config = true

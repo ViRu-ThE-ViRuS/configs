@@ -1,5 +1,5 @@
 local utils = require("utils")
-local terminal = require('terminal')
+local terminal = require('lib/terminal')
 
 local misc = require('lib/misc')
 

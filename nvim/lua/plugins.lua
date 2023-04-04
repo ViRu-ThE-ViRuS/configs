@@ -12,7 +12,12 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require('utils').add_command('Lz', 'Lazy', { bang = true, nargs = 0, desc = 'Lazy' })
+-- convenience alias Lz to lazy
+require('utils').add_command('Lz', 'Lazy', {
+  cmd_opts = { bang = true, nargs = 0, desc = 'Lazy' },
+})
+
+-- setup lazy
 require('lazy').setup('plug-config', {
   defaults = { lazy = true },
   ui = { border = 'rounded' },

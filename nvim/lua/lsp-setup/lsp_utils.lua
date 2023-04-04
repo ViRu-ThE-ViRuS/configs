@@ -216,9 +216,9 @@ end
 local function get_context_winbar(bufnr, colors)
   bufnr = bufnr or vim.api.nvim_get_current_buf()
   colors = colors or {
-        foreground = "%#WinBar#",
-        background = "%#WinBar#",
-      }
+    foreground = "%#WinBar#",
+    background = "%#WinBar#",
+  }
 
   local filename = (misc.is_htruncated(truncation.truncation_limit, true) and ' [ %t ] ') or ' [ %f ] '
   local context = get_context(bufnr, function(context_tbl)

@@ -13,9 +13,10 @@ local truncation = session.config.truncation
 
 -- {{{ utils
 -- get index of terminal given terminal_job_id
+-- return nil if not registered
 local function get_terminal_index(job_id)
   assert(job_id, 'terminal_job_id not specified')
-  for index, id in pairs(palette.indices) do
+  for index, id in pairs(palette.terminals.indices) do
     if id == job_id then return index end
   end
 end
@@ -30,9 +31,9 @@ local function deregister_terminal(job_id)
   if index then
     -- if deregistering primary, set it to empty
     if index == 1 then
-      palette.indices[index] = {}
+      palette.terminals.indices[index] = {}
     else
-      table.remove(palette.indices, index)
+      table.remove(palette.terminals.indices, index)
     end
     return true
   end
@@ -45,8 +46,8 @@ local function register_terminal(job_id, index)
   assert(index >= 0, 'index must be a positive number')
   assert(job_id, 'invalid job_id: ' .. job_id)
 
-  local term_state = palette.terminals[job_id]
-  local existing = palette.indices[index]
+  local term_state = palette.terminals.term_states[job_id]
+  local existing = palette.terminals.indices[index]
 
   local notification = nil
 
@@ -70,12 +71,12 @@ local function register_terminal(job_id, index)
           'deregistered terminal <%d>:{ job_id: %s, bufnr: %s }',
           existing_index,
           existing,
-          palette.terminals[existing].bufnr
+          palette.terminals.term_states[existing].bufnr
         )) or "", 'warn', { title = '[TERM] palette ', render = 'compact' })
     end
 
     -- replacement is done, assign index
-    palette.indices[index] = job_id
+    palette.terminals.indices[index] = job_id
 
     notification = string.format(
       "terminal set <%d>:{ job_id: %s, bufnr: %s }",
@@ -93,20 +94,26 @@ local function register_terminal(job_id, index)
     )
   end
 
-  utils.notify(notification, 'info', { title = '[TERM] palette ', render = 'compact' })
+  utils.notify(notification, 'info', {
+    title = '[TERM] palette ',
+    render = 'compact',
+  })
 end
 
 -- returns true if terminal specified by job_id is a valid target
 local function assure_target_valid(job_id)
   assert(job_id, 'terminal_job_id not specified')
-  local term_state = palette.terminals[job_id]
+  local term_state = palette.terminals.term_states[job_id]
 
   -- invalid if:
   --  - term_state invalid
   --  - term_state.bufnr unloaded
   if (not term_state) or (not vim.api.nvim_buf_is_loaded(term_state.bufnr)) then
     deregister_terminal(job_id)
-    utils.notify('terminal exited, resetting index', 'warn', { title = '[TERM] palette ', render = 'compact' })
+    utils.notify('terminal exited, resetting index', 'warn', {
+      title = '[TERM] palette ',
+      render = 'compact',
+    })
     return false
   end
 
@@ -115,10 +122,10 @@ end
 
 -- get term_state of primary terminal if any
 local function get_primary_terminal()
-  local primary_id = palette.indices[1]
+  local primary_id = palette.terminals.indices[1]
   if not primary_id then return nil end
 
-  local primary_state = palette.terminals[primary_id]
+  local primary_state = palette.terminals.term_states[primary_id]
   return primary_state
 end
 -- }}}
@@ -136,28 +143,37 @@ local function add_terminal(opts)
   local index = (opts.primary and 1) or opts.index or vim.v.count -- 0 means no index specified
 
   -- NOTE(vir): convenience behavior, first terminal we add is primary
-  if palette.indices[1] == nil then
+  if palette.terminals.indices[1] == nil then
     index = 1
   end
 
   -- only makes sense to call this function from a terminal buffer
   if job_id == nil then
-    utils.notify('could not add terminal', 'warn', { title = '[TERM] palette', render = 'compact' })
+    utils.notify('could not add terminal', 'warn', {
+      title = '[TERM] palette',
+      render = 'compact',
+    })
     return
   end
 
   -- trying to re-add existing terminal, without specifying index
   -- this is not a reorder request, so we short-circuit
-  local existing = palette.terminals[job_id] ~= nil
+  local existing = palette.terminals.term_states[job_id] ~= nil
   if existing and (not index) then
-    utils.notify('terminal already added', 'warn', { title = '[TERM] palette ', render = 'compact' })
+    utils.notify('terminal already added', 'warn', {
+      title = '[TERM] palette ',
+      render = 'compact',
+    })
     return
   end
 
   -- create new terminal state
   -- old state is always consistent with new state
-  local term_state = palette.terminals[job_id] or { job_id = job_id, bufnr = vim.api.nvim_get_current_buf() }
-  palette.terminals[job_id] = term_state
+  local term_state = palette.terminals.term_states[job_id] or {
+    job_id = job_id,
+    bufnr = vim.api.nvim_get_current_buf(),
+  }
+  palette.terminals.term_states[job_id] = term_state
 
   if index ~= 0 then
     -- index is specified, we are swapping instead of adding
@@ -197,24 +213,50 @@ local function add_terminal(opts)
 end
 
 -- toggle primary/target terminal
--- if count is valid, then it is used as target index
--- otherwise target is primary
-local function toggle_terminal(force_open)
-  local index = vim.v.count1
-  local job_id = palette.indices[index]
+-- target is chosen as per:
+--  - if v:count is valid, then it is used as index (target)
+--  - if opts.index is valid, then it is used as index (target)
+--  - if opts.job_id is valid, then it is used as target directly
+--  - else (default) target is primary
+-- opts.force_open will open target if needed but will not toggle (close) it
+local function toggle_terminal(opts)
+  opts = vim.tbl_deep_extend('force', {
+    index = nil,
+    job_id = nil,
+    force_open = false,
+  }, opts or {})
 
-  if not job_id then
-    utils.notify('index not registered', 'warn', { title = '[TERM] palette ', render = 'compact' })
-    return
+  -- either 1 is set, or neither (between opts.index, opts.job_id)
+  assert(
+    (opts.index and (not opts.job_id) or
+    ((not opts.index) and opts.job_id) or
+    ((not opts.index) and (not opts.job_id))),
+    'opts.index and opts.job_id are exclusive options'
+  )
+
+  local job_id = opts.job_id
+
+  -- use opts.index or v:count
+  if not opts.job_id then
+    local index = opts.idnex or vim.v.count1
+    job_id = palette.terminals.indices[index]
+
+    if not job_id then
+      utils.notify('index not registered', 'warn', {
+        title = '[TERM] palette ',
+        render = 'compact',
+      })
+      return
+    end
   end
 
   if not assure_target_valid(job_id) then return end
-  local term_state = palette.terminals[job_id]
+  local term_state = palette.terminals.term_states[job_id]
   local winid = vim.fn.bufwinid(term_state.bufnr)
 
   if winid ~= -1 and #vim.api.nvim_list_wins() > 1 then
     -- already open
-    if not force_open then vim.api.nvim_win_close(winid, false) end
+    if not opts.force_open then vim.api.nvim_win_close(winid, false) end
   else
     -- open in split
     local split_dir = (misc.is_htruncated(truncation.truncation_limit_s_terminal) and "") or "v"
@@ -230,7 +272,7 @@ end
 -- will emulate <up><cr> in terminal if no payload specified
 local function send_to_terminal(payload, opts)
   local index = vim.v.count1
-  local job_id = palette.indices[index]
+  local job_id = palette.terminals.indices[index]
 
   opts = vim.tbl_deep_extend('force', {
     toggle_open = true,  -- toggle open target terminal if not already visible
@@ -238,12 +280,18 @@ local function send_to_terminal(payload, opts)
   }, opts or {})
 
   if not job_id then
-    utils.notify('index not registered', 'warn', { title = '[TERM] palette ', render = 'compact' })
+    utils.notify('index not registered', 'warn', {
+      title = '[TERM] palette ',
+      render = 'compact',
+    })
     return
   end
 
   if type(job_id) == 'table' then
-    utils.notify('primary terminal exitted', 'warn', { title = '[TERM] palette ', render = 'compact' })
+    utils.notify('primary terminal exitted', 'warn', {
+      title = '[TERM] palette ',
+      render = 'compact',
+    })
     return
   end
 
@@ -256,8 +304,8 @@ local function send_to_terminal(payload, opts)
     vim.cmd("call chansend(" .. job_id .. ', "\x1b\x5b\x41\\<cr>")')
   end
 
-  if opts.toggle_open then toggle_terminal(true) end
-  if opts.scroll_to_end then misc.scroll_to_end(palette.terminals[job_id].bufnr) end
+  if opts.toggle_open then toggle_terminal({ force_open = true }) end
+  if opts.scroll_to_end then misc.scroll_to_end(palette.terminals.term_states[job_id].bufnr) end
 end
 
 -- send buffer content (visual/line) to terminal
@@ -293,7 +341,10 @@ local function add_command(command)
   command = command or vim.fn.input('command: ', '', 'shellcmd')
 
   assert(command, 'invalid command: ' .. command)
-  assert(not core.table_contains(palette.commands, command), 'adding duplicate command: ' .. command)
+  assert(
+    not core.table_contains(palette.commands, command),
+    'adding duplicate command: ' .. command
+  )
   table.insert(palette.commands, command)
 end
 
@@ -324,8 +375,7 @@ local function launch_terminal(command, opts)
 
   opts = vim.tbl_deep_extend('force', {
     background = false,
-    callback = nil,
-    bufname = command
+    callback = nil
   }, opts or {})
 
   -- create new terminal
@@ -333,15 +383,14 @@ local function launch_terminal(command, opts)
   vim.cmd(string.format('%s | terminal', split_cmd))
   vim.api.nvim_exec_autocmds('TermOpen', { group = 'TerminalSetup' })
 
-  -- terminal state
+  -- terminal state, no need to save name
   local term_state = {
     bufnr = vim.api.nvim_get_current_buf(),
-    job_id = vim.b.terminal_job_id,
-    bufname = opts.bufname
+    job_id = vim.b.terminal_job_id
   }
 
   -- try setting name, fails if buffer with same name exists
-  pcall(misc.rename_buffer, term_state.bufname)
+  pcall(misc.rename_buffer, opts.bufname)
 
   -- this should not crash, so pcall not needed
   vim.api.nvim_chan_send(term_state.job_id, command .. "\n")
@@ -349,8 +398,11 @@ local function launch_terminal(command, opts)
 
   -- wrap up
   if opts.callback then opts.callback() end
-  if opts.background then vim.api.nvim_win_close(vim.fn.bufwinid(term_state.bufnr), true)
-  else vim.cmd [[ wincmd p ]] end
+  if opts.background then
+    vim.api.nvim_win_close(vim.fn.bufwinid(term_state.bufnr), true)
+  else
+    vim.cmd [[ wincmd p ]]
+  end
 
   return term_state
 end
@@ -370,5 +422,6 @@ return {
   -- api
   launch_terminal = launch_terminal,
   get_primary_terminal = get_primary_terminal,
-  set_primary_terminal = core.partial(add_terminal, { primary = true })
+  set_primary_terminal = core.partial(add_terminal, { primary = true }),
+  get_terminal_index = get_terminal_index,
 }

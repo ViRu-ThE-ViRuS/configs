@@ -1,4 +1,4 @@
-local terminal = require("terminal")
+local terminal = require("lib/terminal")
 local utils = require('utils')
 
 -- options
@@ -8,7 +8,7 @@ vim.opt_local.softtabstop = 4
 
 -- send selection to terminal
 utils.map("n", "<leader>cv", terminal.send_content_to_terminal)
-utils.map("v", "<leader>cv", '<esc><cmd>lua require("terminal").send_content_to_terminal(true)<cr>gv')
+utils.map("v", "<leader>cv", '<esc><cmd>lua require("lib/terminal").send_content_to_terminal(true)<cr>gv')
 
 -- repl state
 local repl_session = {

@@ -1,8 +1,8 @@
 local misc = require('lib/misc')
 local core = require('lib/core')
+local terminal = require('lib/terminal')
 
 local colorscheme = require('colorscheme')
-local terminal = require('terminal')
 local utils = require('utils')
 
 local plenary = require('plenary')
@@ -28,6 +28,7 @@ vim.api.nvim_create_autocmd('BufWritePre', {
   pattern = '*',
   callback = misc.strip_trailing_whitespaces,
 })
+-- return to last cursor position when new buf is opened
 -- vim.api.nvim_create_autocmd('BufReadPost', {
 --   group = 'Misc',
 --   pattern = '*',
@@ -52,8 +53,15 @@ vim.api.nvim_create_autocmd('BufWritePost', {
   group = 'Configs',
   pattern = '.nvimrc.lua',
   callback = function()
-    vim.cmd('source')
-    utils.notify('.nvimrc.lua', 'info', { title = '[CONFIG] session reloaded', render = 'compact' })
+
+    -- reload local config
+    -- vim.cmd('source')
+    require('lib/local_session').load_local_session(true)
+
+    utils.notify('.nvimrc.lua', 'info', {
+      title = '[CONFIG] session reloaded',
+      render = 'compact',
+    })
   end
 })
 vim.api.nvim_create_autocmd('BufWritePost', {
@@ -61,7 +69,6 @@ vim.api.nvim_create_autocmd('BufWritePost', {
   pattern = {
     core.get_homedir() .. '/.config/nvim/init.lua',
     core.get_homedir() .. '/.config/nvim/*/*.lua',
-    -- '.nvimrc.lua'
   },
   callback = function()
     local src_file = vim.fn.expand('<afile>')
@@ -95,8 +102,13 @@ vim.api.nvim_create_autocmd('BufWritePost', {
     -- reload modules
     core.foreach(to_reload, function(_, mod) if not package.loaded[mod] then require(mod) end end)
 
+    -- NOTE(vir): this mostly works, but kinda resets colorschemes
     vim.cmd('source')
-    utils.notify(src_file, 'info', { title = '[CONFIG] reloaded from', render = 'compact' })
+
+    utils.notify(src_file, 'info', {
+      title = '[CONFIG] reloaded from',
+      render = 'compact',
+    })
   end
 })
 
@@ -116,32 +128,39 @@ if misc.get_git_root() ~= nil then
       misc.open_repo_on_github(remotes[1])
     end
   end, {
-    bang = true,
-    nargs = 0,
-    desc = 'Open chosen remote on GitHub, in the Browser'
-  }, true)
+    cmd_opts = {
+      bang = true,
+      nargs = 0,
+      desc = 'Open chosen remote on GitHub, in the Browser',
+    },
+    add_custom = true,
+  })
 end
 
 -- sudowrite to file
 utils.add_command('SudoWrite', function()
   vim.cmd [[
-            write !sudo -A tee > /dev/null %
-            edit
-        ]]
-end, { bang = true, nargs = 0, desc = 'Sudo Write' }, true)
+    write !sudo -A tee > /dev/null %
+    edit
+  ]]
+end, {
+  cmd_opts = { bang = true, nargs = 0, desc = 'Sudo Write' },
+  add_custom = true,
+})
 
 -- messages in qflist
 utils.add_command('Messages', misc.show_messages, {
-  bang = false,
-  nargs = 0,
-  desc = 'Show :messages in qflist',
-}, true)
+  cmd_opts = { bang = false, nargs = 0, desc = 'Show :messages in qflist', },
+  add_custom = true
+})
 
 -- command output in qflist
 utils.add_command('Show', misc.show_command, {
-  bang = false,
-  nargs = '+',
-  desc = 'Run Command and show output in qflist'
+  cmd_opts = {
+    bang = false,
+    nargs = '+',
+    desc = 'Run Command and show output in qflist',
+  }
 })
 
 -- <cword> highlight toggle
@@ -170,23 +189,43 @@ vim.cmd [[
 
 -- generate tags
 utils.add_command('[MISC] Generate Tags', function()
+  local notification_opts = { title = '[MISC] tags', render = 'compact' }
   require('plenary').Job:new({
     command = 'ctags',
     args = { '-R', '--excmd=combine', '--fields=+K' },
     cwd = vim.loop.cwd(),
-    on_start = function() utils.notify('generating tags file', 'debug', { title = '[MISC] tags', render = 'compact' }) end,
-    on_exit = function() utils.notify('generated tags file', 'info', { title = '[MISC] tags', render = 'compact' }) end
+    on_start = function() utils.notify('generating tags file', 'debug', notification_opts) end,
+    on_exit = function() utils.notify('generated tags file', 'info', notification_opts) end
   }):start()
-end, nil, true)
+end, { add_custom = true } )
 
 -- terminal commands
-utils.add_command('[TERM] Set Primary Terminal', core.partial(terminal.add_terminal, { primary = true }), nil, true)
-utils.add_command('[TERM] Run Command from palette', terminal.run_command, nil, true)
+utils.add_command('[TERM] Run Command In Primary Terminal', terminal.run_command, { add_custom = true })
+utils.add_command('[TERM] Open Terminal from palette', function()
+  local terminals  = core.foreach(session.state.palette.terminals.term_states, function(_, term_state)
+    local index = terminal.get_terminal_index(term_state.job_id)
+    return string.format(
+      '[%d:%d] %s%s',
+      term_state.job_id,
+      term_state.bufnr,
+      (index and string.format("<%d>:", index)) or "",
+      vim.api.nvim_buf_get_name(term_state.bufnr)
+    )
+  end, true)
+
+  vim.ui.select(terminals, { prompt = 'terminal> ' }, function(selection)
+    terminal.toggle_terminal({
+      job_id = tonumber(selection:sub(1, selection:find(':') - 1)),
+      force_open = true,
+    })
+  end)
+end, { add_custom = true })
 
 -- toggles
-utils.add_command('[UI] Toggle Context WinBar', misc.toggle_context_winbar, nil, true)
-utils.add_command('[UI] Toggle Thick Seperators', misc.toggle_thick_separators, nil, true)
-utils.add_command('[UI] Toggle Spellings', misc.toggle_spellings, nil, true)
-utils.add_command('[UI] Toggle Dark Mode', misc.toggle_dark_mode, nil, true)
-utils.add_command('[UI] Toggle CWord Highlights', 'if CWordHlToggle() | set hlsearch | endif', nil, true)
-utils.add_command('[UI] Rename buffer', misc.rename_buffer, nil, true)
+utils.add_command('[UI] Toggle Context WinBar', misc.toggle_context_winbar, { add_custom = true })
+utils.add_command('[UI] Toggle Thick Seperators', misc.toggle_thick_separators, { add_custom = true })
+utils.add_command('[UI] Toggle Spellings', misc.toggle_spellings, { add_custom = true })
+utils.add_command('[UI] Toggle Dark Mode', misc.toggle_dark_mode, { add_custom = true })
+utils.add_command('[UI] Toggle CWord Highlights', 'if CWordHlToggle() | set hlsearch | endif', { add_custom = true })
+utils.add_command('[UI] Rename buffer', misc.rename_buffer, { add_custom = true })
+

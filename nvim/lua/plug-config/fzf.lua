@@ -31,10 +31,9 @@ return {
 
     -- colorscheme selector
     utils.add_command('Colors', function() require('fzf-lua').colorschemes() end, {
-      bang = false,
-      nargs = 0,
-      desc = 'FzfLua powered colorscheme picker'
-    }, true)
+      cmd_opts = { bang = false, nargs = 0, desc = 'FzfLua powered colorscheme picker' },
+      add_custom = true,
+    })
 
     -- NOTE(vir): doing here so as to force fzf
     -- custom commands
@@ -52,11 +51,7 @@ return {
       vim.ui.select(keys, { prompt = "Commands> " }, function(key)
         if key then session.state.commands[key]() end
       end)
-    end, {
-      bang = false,
-      nargs = 0,
-      desc = "Custom Commands",
-    })
+    end, { cmd_opts = { bang = false, nargs = 0, desc = "Custom Commands" } })
 
     -- set statusline for fzf buffers
     local statusline = require('statusline')
@@ -76,11 +71,6 @@ return {
     local symbols = session.config.symbols
     local truncation = session.config.truncation
     local actions = fzf.actions
-
-    -- set fzf-lua as vim.ui.select handler
-    if vim.ui.select ~= require('fzf-lua.providers.ui_select').ui_select then
-      fzf.register_ui_select()
-    end
 
     fzf.setup({
       winopts = {
@@ -201,5 +191,8 @@ return {
         }
       }
     })
+
+    -- set fzf-lua as vim.ui.select handler
+    fzf.register_ui_select({ winopts = { height = 0.5, width = 0.5 } }, true)
   end
 }
