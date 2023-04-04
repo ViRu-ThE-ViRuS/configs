@@ -40,16 +40,46 @@ local function load_local_session(silent)
   end
 end
 
+-- {{{ presets
+-- start syncing ctags file for this project based on event and filetypes
+-- like on BufWritePost for all c, cpp and related files
+local function sync_ctags(opts)
+  opts = vim.tbl_deep_extend('force', {
+    filetypes = '*.c,*.cpp,*.h,*.hpp',
+    event = 'BufWritePost'
+  }, opts or {})
+
+  vim.api.nvim_create_autocmd('BufWritePost', {
+    group = 'Session',
+    pattern = opts.filetypes,
+    callback = require('lib/core').partial(require('utils').run_command, '[MISC] Generate Tags', {
+      silent = true,
+
+      -- need to pass silent argument to command
+      -- as this is a long running command
+      args = { { silent = true } },
+    })
+  })
+end
+-- }}}
+
 return {
   override_session_config = override_session_config,
   load_local_session = load_local_session,
+  sync_ctags = sync_ctags,
 }
 
 --[[ example usage in .nvimrc.lua
 
 -- override / append to session configs
-require('lib/local_session').override_session_config({
+local local_session = require('lib/local_session')
+
+-- customize session
+local_session.override_session_config({
   fuzzy_ignore_dirs = session.config.fuzzy_ignore_dirs .. ',lazy_lock.json'
 })
+
+-- use a preset
+local_session.sync_ctags()
 
 --]]

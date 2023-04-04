@@ -43,6 +43,10 @@ local function rename_buffer(name)
     return
   end
 
+  -- NOTE(vir): disable for other filetypes
+  -- consider using command Rename from vim-eunuch
+  assert(false, 'disabled for non-terminal buffers')
+
   -- ask for confirmation otherwise
   vim.ui.select(
     { 'yes', 'no' },
@@ -236,6 +240,12 @@ local function toggle_qflist()
   end
 end
 
+-- toggle silent mode
+local function toggle_silent_mode()
+  session.state.ui.enable_notifications = not session.state.ui.enable_notifications
+  utils.notify('silent mode', "info", {  title = '[UI] activated', render = "compact" })
+end
+
 -- send :messages to qflist
 local function show_messages()
   local messages = vim.api.nvim_exec("messages", true)
@@ -294,30 +304,31 @@ end
 
 return {
   -- utils
-  strip_fname = strip_fname,
+  strip_fname                = strip_fname,
   strip_trailing_whitespaces = strip_trailing_whitespaces,
-  calculate_indent = calculate_indent,
-  scroll_to_end = scroll_to_end,
-  rename_buffer = rename_buffer,
+  calculate_indent           = calculate_indent,
+  scroll_to_end              = scroll_to_end,
+  rename_buffer              = rename_buffer,
 
   -- repo related
-  get_git_root = get_git_root,
-  get_git_remotes = get_git_remotes,
-  open_repo_on_github = open_repo_on_github,
+  get_git_root               = get_git_root,
+  get_git_remotes            = get_git_remotes,
+  open_repo_on_github        = open_repo_on_github,
 
   -- toggles
-  toggle_window = toggle_window,
-  toggle_context_winbar = toggle_context_winbar,
-  toggle_thick_separators = toggle_thick_separators,
-  toggle_spellings = toggle_spellings,
-  toggle_global_statusline = toggle_global_statusline,
-  toggle_dark_mode = toggle_dark_mode,
-  toggle_qflist = toggle_qflist,
+  toggle_window              = toggle_window,
+  toggle_context_winbar      = toggle_context_winbar,
+  toggle_thick_separators    = toggle_thick_separators,
+  toggle_spellings           = toggle_spellings,
+  toggle_global_statusline   = toggle_global_statusline,
+  toggle_dark_mode           = toggle_dark_mode,
+  toggle_qflist              = toggle_qflist,
+  toggle_silent_mode         = toggle_silent_mode,
 
   -- misc
-  show_messages = show_messages,
-  show_command = show_command,
-  random_colors = random_colors,
-  is_htruncated = is_htruncated,
-  is_vtruncated = is_vtruncated,
+  show_messages              = show_messages,
+  show_command               = show_command,
+  random_colors              = random_colors,
+  is_htruncated              = is_htruncated,
+  is_vtruncated              = is_vtruncated,
 }

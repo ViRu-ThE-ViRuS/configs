@@ -54,17 +54,33 @@ end
 -- setup buffer commands
 local function setup_commands(client, _)
   if client.name == 'clangd' then
-    utils.add_command('[LSP] clangd: Switch Source Header', 'ClangdSwitchSourceHeader', { add_custom = true })
-  elseif client.name == 'pyright' then
-    utils.add_command('[LSP] pyright: Organize Imports', 'PyrightOrganizeImports', { add_custom = true })
-  elseif client.name == 'tsserver' then
-    utils.add_command('[LSP] tsserver: Organize Imports', function()
-      vim.lsp.buf.execute_command({
-        command = "_typescript.organizeImports",
-        arguments = { vim.api.nvim_buf_get_name(0) },
-        title = ""
-      })
-    end, { add_custom = true })
+    utils.add_command(
+      '[LSP] clangd: Switch Source Header',
+      'ClangdSwitchSourceHeader',
+      { add_custom = true }
+    )
+  end
+
+  if client.name == 'pyright' then
+    utils.add_command(
+      '[LSP] pyright: Organize Imports',
+      'PyrightOrganizeImports',
+      { add_custom = true }
+    )
+  end
+
+  if client.name == 'tsserver' then
+    utils.add_command(
+      '[LSP] tsserver: Organize Imports',
+      function()
+        vim.lsp.buf.execute_command({
+          command = "_typescript.organizeImports",
+          arguments = { vim.api.nvim_buf_get_name(0) },
+          title = "",
+        })
+      end,
+      { add_custom = true }
+    )
   end
 
   utils.add_command('[LSP] Incoming Calls', vim.lsp.buf.incoming_calls, { add_custom = true })
@@ -95,7 +111,8 @@ local function setup_autocmds(client, bufnr)
     local group = vim.api.nvim_create_augroup('LspHighlights', { clear = false })
     vim.api.nvim_clear_autocmds({ buffer = bufnr, group = group })
 
-    vim.api.nvim_create_autocmd('CursorHold', { group = group, callback = vim.lsp.buf.document_highlight, buffer = bufnr })
+    vim.api.nvim_create_autocmd('CursorHold',
+      { group = group, callback = vim.lsp.buf.document_highlight, buffer = bufnr })
     vim.api.nvim_create_autocmd('CursorMoved', { group = group, callback = vim.lsp.buf.clear_references, buffer = bufnr })
   end
 
@@ -103,9 +120,12 @@ local function setup_autocmds(client, bufnr)
     local group = vim.api.nvim_create_augroup('LspStates', { clear = false })
     vim.api.nvim_clear_autocmds({ buffer = bufnr, group = group })
 
-    vim.api.nvim_create_autocmd({ 'InsertLeave', 'BufEnter', 'CursorHold' }, { group = group, callback = lsp_utils.update_tags, buffer = bufnr })
-    vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorMoved' }, { group = group, callback = lsp_utils.update_context, buffer = bufnr })
-    vim.api.nvim_create_autocmd('BufDelete', { group = group, callback = function() lsp_utils.clear_buffer_tags(bufnr) end, buffer = bufnr })
+    vim.api.nvim_create_autocmd({ 'InsertLeave', 'BufEnter', 'CursorHold' },
+      { group = group, callback = lsp_utils.update_tags, buffer = bufnr })
+    vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorMoved' },
+      { group = group, callback = lsp_utils.update_context, buffer = bufnr })
+    vim.api.nvim_create_autocmd('BufDelete',
+      { group = group, callback = function() lsp_utils.clear_buffer_tags(bufnr) end, buffer = bufnr })
 
     -- first-call
     lsp_utils.update_tags()

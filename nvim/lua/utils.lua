@@ -50,8 +50,10 @@ end
 
 -- notify using current notifications setup
 local function notify(content, type, opts)
-  local notify_fn = (session.config.fancy_notifications and require('notify')) or vim.notify
-  notify_fn(content, type, opts)
+  if session.state.ui.enable_notifications then
+    local notify_fn = (session.config.fancy_notifications and require('notify')) or vim.notify
+    notify_fn(content, type, opts)
+  end
 end
 
 -- add custom command
@@ -70,14 +72,17 @@ local function add_command(key, callback, opts)
 
   -- create custom command
   if opts.add_custom then
-
-    -- make sure this command takes no parameters
+    -- make sure this command takes:
+    --  - no parameters
+    --  - 0 parameters
+    --  - 0 or more parameters
     assert(
-      (not opts.cmd_opts) or (not opts.cmd_opts.nargs) or opts.cmd_opts.nargs == 0,
-      'cannot add custom command which takes parameters'
+      (not opts.cmd_opts) or (not opts.cmd_opts.nargs) or
+      (opts.cmd_opts.nargs == 0) or (opts.cmd_opts.nargs == '?'),
+      'cannot add custom command which requires 1+ arguments'
     )
 
-    -- wrap callback
+    -- create callable
     local callback_fn = (type(callback) == 'function' and callback) or
         core.partial(vim.api.nvim_command, callback)
 
@@ -91,16 +96,26 @@ local function add_command(key, callback, opts)
 end
 
 -- run custom command
-local function run_command(key)
+local function run_command(key, opts)
   assert(session.state.commands[key], 'command not registered in session: ' .. key)
-  session.state.commands[key]()
+
+  opts = vim.tbl_deep_extend('force', {
+    args = {},
+    silent = false,
+  }, opts or {})
+
+  local current_setting = session.state.ui.enable_notifications
+  if opts.silent then session.state.ui.enable_notifications = false end
+
+  session.state.commands[key](unpack(opts.args))
+  session.state.ui.enable_notifications = current_setting
 end
 
 return {
-  map = map,
-  unmap = unmap,
+  map         = map,
+  unmap       = unmap,
   qf_populate = qf_populate,
-  notify = notify,
+  notify      = notify,
   add_command = add_command,
   run_command = run_command
 }

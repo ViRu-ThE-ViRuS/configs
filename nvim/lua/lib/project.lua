@@ -139,7 +139,7 @@ end
 
 return {
   Project = Project,
-  RemoteProject = RemoteProject
+  RemoteProject = RemoteProject,
 }
 
 --[[ example usage in .nvimrc.lua

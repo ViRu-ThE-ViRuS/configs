@@ -190,9 +190,9 @@ end
 -- }}}
 
 vim.opt.termguicolors = true
-vim.opt.background = 'dark'
+vim.opt.background = 'light'
 
-local colorscheme = 'gruvbox'
+local colorscheme = 'tempus_totus'
 ---@cast colorscheme +string +function
 
 -- load default colorscheme if chosen one is not available

@@ -16,7 +16,7 @@ return {
         { filetype = "NvimTree"      , text = "Explorer"       , text_align = "center" },
         { filetype = "vista_kind"    , text = 'Tags'           , text_align = 'center' },
         { filetype = "vista"         , text = 'Tags'           , text_align = 'center' },
-        { filetype = "DiffviewFiles" , text = 'Diffview Files' , text_align = 'center' }
+        { filetype = "DiffviewFiles" , text = 'Diffview'       , text_align = 'center' }
       },
 
       show_tab_indicators = true,

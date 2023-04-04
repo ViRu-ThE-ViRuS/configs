@@ -8,6 +8,8 @@ vim.g.loaded_ruby_provider = 0
 vim.g.python_host_skip_check = 1
 
 -- set python path and shell
+-- has significant performance impact due to shell cmd call to find python
+-- defering this actually makes boot feel more responsive
 vim.defer_fn(function()
   vim.g.python3_host_prog = core.get_python()
 

@@ -58,9 +58,10 @@ local default_state = {
 
   -- ui toggles and config
   ui = {
-    thick_separators   = false, -- use thick buffer separators
-    window_focus_state = {},   -- window isolation
-    diagnostics_state  = {     -- diagnostics list visibility
+    thick_separators     = false, -- use thick buffer separators
+    window_focus_state   = {},    -- window isolation
+    enable_notifications = true,  -- like dnd mode when unset
+    diagnostics_state  = {        -- diagnostics list visibility
       ["local"]  = {},
       ["global"] = false
     },
@@ -88,11 +89,12 @@ _G.session = {
   config = default_config,
 
   -- state is restored from previous session, if possible
-  state  = (session and vim.tbl_deep_extend('force', default_state, session.state)) or
-      default_state
+  state  = (session and vim.tbl_deep_extend('force', default_state, session.state)) or default_state
+  -- state = default_state
 }
 
 -- initialize misc features
+vim.api.nvim_create_augroup('Session', { clear = true })     -- misc session autocommands
 vim.api.nvim_create_augroup('ProjectInit', { clear = true }) -- lib/project
 
 -- NOTE(vir): return this as well

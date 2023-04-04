@@ -52,7 +52,6 @@ vim.api.nvim_create_autocmd('BufWritePost', {
   group = 'Configs',
   pattern = '.nvimrc.lua',
   callback = function()
-
     -- reload local config
     -- vim.cmd('source')
     require('lib/local_session').load_local_session(true)
@@ -196,16 +195,19 @@ vim.cmd [[
 ]]
 
 -- generate tags
-utils.add_command('[MISC] Generate Tags', function()
+utils.add_command('[MISC] Generate Tags', function(opts)
   local notification_opts = { title = '[MISC] tags', render = 'compact' }
+  local notification_fn = (opts.silent and function(...)
+      end) or utils.notify
+
   require('plenary').Job:new({
     command = 'ctags',
     args = { '-R', '--excmd=combine', '--fields=+K' },
     cwd = vim.loop.cwd(),
-    on_start = function() utils.notify('generating tags file', 'debug', notification_opts) end,
-    on_exit = function() utils.notify('generated tags file', 'info', notification_opts) end
+    on_start = core.partial(notification_fn, 'generating tags file', 'debug', notification_opts),
+    on_exit = core.partial(notification_fn, 'generated tags file', 'info', notification_opts)
   }):start()
-end, { add_custom = true } )
+end, { add_custom = true })
 
 -- toggles
 utils.add_command('[UI] Toggle Context WinBar', misc.toggle_context_winbar, { add_custom = true })
@@ -214,4 +216,3 @@ utils.add_command('[UI] Toggle Spellings', misc.toggle_spellings, { add_custom =
 utils.add_command('[UI] Toggle Dark Mode', misc.toggle_dark_mode, { add_custom = true })
 utils.add_command('[UI] Toggle CWord Highlights', 'if CWordHlToggle() | set hlsearch | endif', { add_custom = true })
 utils.add_command('[UI] Rename buffer', misc.rename_buffer, { add_custom = true })
-
