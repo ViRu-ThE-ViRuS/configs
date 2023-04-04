@@ -70,6 +70,7 @@ local default_state = {
   -- integrated with internal apis like project, terminal
   palette = {
     terminals = { term_states = {}, indices = {} },
+    qf_lists = {},
     commands = {},
   },
 

@@ -1,7 +1,7 @@
-local utils = require("utils")
-local terminal = require('lib/terminal')
-
 local misc = require('lib/misc')
+local terminal = require('lib/terminal')
+local quickfix = require('lib/quickfix')
+local utils = require("utils")
 
 -- line navigation and movements
 utils.map("v", "<", "<gv")
@@ -89,10 +89,12 @@ utils.map("n", "<leader>1", misc.toggle_window, { desc = 'toggle maximize curren
 utils.map("n", "<leader>2", misc.random_colors, { desc = 'set a random preferred colorscheme' })
 utils.map("n", "<leader>3", misc.toggle_global_statusline, { desc = 'toggle global statusline' })
 
--- qflist navigation & toggle
+-- qflist keymaps
+utils.map("n", "<leader>Q", misc.toggle_qflist)
+utils.map("n", "<leader>cq", quickfix.open_list)
+utils.map("n", "<leader>cQ", quickfix.add_list)
 utils.map("n", "[q", "<cmd>try | cprev | catch | silent! clast | catch | endtry<cr>")
 utils.map("n", "]q", "<cmd>try | cnext | catch | silent! cfirst | catch | endtry<cr>")
-utils.map("n", "<leader>Q", misc.toggle_qflist)
 
 -- buffer resizing
 utils.map("n", "<m-j>", "<cmd>resize +2<cr>")
@@ -101,11 +103,11 @@ utils.map("n", "<m-h>", "<cmd>vertical resize -2<cr>")
 utils.map("n", "<m-l>", "<cmd>vertical resize +2<cr>")
 
 -- buffer & tab navigation
+utils.map("n", "<bs>", '<c-^>zz')
 utils.map("n", "[t", "<cmd>tabprev<cr>")
 utils.map("n", "]t", "<cmd>tabnext<cr>")
 utils.map("n", "[b", "<cmd>bprev<cr>")
 utils.map("n", "]b", "<cmd>bnext<cr>")
-utils.map("n", "<bs>", '<c-^>zz')
 utils.map("n", "<c-w><c-l>", "<cmd>try | cclose | pclose | lclose | tabclose | catch | endtry <cr>", { silent = true })
 
 -- terminal navigation
@@ -124,8 +126,10 @@ utils.map('v', '<a-k>', ":move '<-2<CR>gv=gv", { silent = true })
 -- terminal keymaps
 utils.map("n", "<leader>s", "<cmd>vsp | terminal<cr>")
 utils.map("n", "<leader>ca", terminal.send_to_terminal)
+utils.map("n", "<leader>cA", terminal.run_command)
 utils.map("n", "<leader>cs", terminal.toggle_terminal)
 utils.map("n", "<leader>cS", terminal.add_terminal)
+utils.map("n", "<leader>cc", terminal.select_terminal)
 
 -- commands
 utils.map('n', '<c-cr>', vim.cmd.Commands)

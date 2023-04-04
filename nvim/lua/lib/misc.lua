@@ -24,7 +24,7 @@ local function calculate_indent(str, get)
 end
 
 -- scroll buffer to end
--- TODO(vir): fix the need for pcall
+-- TODO(vir): FIXME why is there a need for pcall
 --  - debug using preamble terminal calls, in dap config
 --  - issue is related to `cant switch to normal mode from terminal mode`
 local function scroll_to_end(bufnr)
@@ -46,7 +46,7 @@ local function rename_buffer(name)
   -- ask for confirmation otherwise
   vim.ui.select(
     { 'yes', 'no' },
-    { prompt = 'Rename buffer[file] to ' .. name .. '> ' },
+    { prompt = 'rename buffer[file] to: ' .. name .. '> ' },
     function(choice)
       if choice == 'yes' then
         vim.api.nvim_buf_set_name(0, name)
@@ -77,7 +77,7 @@ local function get_git_remotes()
 end
 
 -- open repository on github
--- TODO(vir): make this universal (just works with github right now)
+-- TODO(vir): MANUAL add support for gitlab, bitbucket etc as needed
 local function open_repo_on_github(remote)
   if get_git_root() == nil then
     utils.notify(
@@ -245,7 +245,7 @@ local function show_messages()
     table.insert(entries, { text = line })
   end
 
-  utils.qf_populate(entries, "r", { title = "Messages", scroll_to_end = true })
+  utils.qf_populate(entries, { title = "Messages", scroll_to_end = true })
 end
 
 -- send :command output to qflist
@@ -259,7 +259,7 @@ local function show_command(command)
     table.insert(entries, { text = line })
   end
 
-  utils.qf_populate(entries, "r", { title = "Command Output"})
+  utils.qf_populate(entries, { title = "Command Output"})
 end
 
 -- randomize colorscheme

@@ -26,6 +26,4 @@ vim.api.nvim_create_autocmd("User", {
 --  pyrightconfig.json  : pyright config
 
 -- ideas --
--- 3. fix Q in new tab (same buffer)
--- 4. use multiple qf lists (palette)
 

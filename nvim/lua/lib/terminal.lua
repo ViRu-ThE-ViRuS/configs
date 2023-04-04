@@ -5,7 +5,7 @@ local core = require('lib/core')
 local palette = session.state.palette
 local truncation = session.config.truncation
 
--- TODO(vir): future
+-- TODO(vir): FUTURE
 --   - visual reorder
 --   - remove terminals from term_states? overwrite policy works so why?
 
@@ -62,8 +62,7 @@ local function register_terminal(job_id, index)
       term_state.bufnr
     )
 
-    -- TODO(vir): set special statusline
-
+    -- TODO(vir): FUTURE consider a special statusline
   else
     -- swapping with self
     notification = string.format(
@@ -103,7 +102,7 @@ end
 -- get term_state of primary terminal if any
 local function get_primary_terminal()
   local primary_id = palette.terminals.indices[1]
-  if not primary_id then return nil end
+  if not primary_id or type(primary_id) == 'table' then return nil end
 
   local primary_state = palette.terminals.term_states[primary_id]
   return primary_state
@@ -111,8 +110,10 @@ end
 -- }}}
 
 -- {{{ palette.terminals
--- add terminal to palette
--- if vim.v.count is valid, then index is updated
+-- add terminal to palette, registered as:
+--  - if no valid primary terminal, register this as primary
+--  - if opts.index or v:count is provided, use that index to register
+-- otherwise dont register
 local function add_terminal(opts)
   opts = vim.tbl_deep_extend('force', {
     primary = false,
@@ -122,15 +123,15 @@ local function add_terminal(opts)
   local job_id = vim.b.terminal_job_id
   local index = (opts.primary and 1) or opts.index or vim.v.count -- 0 means no index specified
 
-  -- NOTE(vir): convenience behavior, first terminal we add is primary
-  if palette.terminals.indices[1] == nil then
+  -- TODO(vir): FUTURE think about notes in quickfix.lua
+  if not get_primary_terminal() then
     index = 1
   end
 
   -- only makes sense to call this function from a terminal buffer
   if job_id == nil then
     utils.notify('could not add terminal', 'warn', {
-      title = '[TERM] palette',
+      title = '[TERM] palette ',
       render = 'compact',
     })
     return
@@ -218,7 +219,7 @@ local function toggle_terminal(opts)
 
   -- use opts.index or v:count
   if not opts.job_id then
-    local index = opts.idnex or vim.v.count1
+    local index = opts.index or vim.v.count1
     job_id = palette.terminals.indices[index]
 
     if not job_id then
@@ -244,6 +245,33 @@ local function toggle_terminal(opts)
     vim.cmd(split_cmd)
   end
 end
+
+-- select terminal from palette using vim.ui.select
+local function select_terminal()
+  -- create selection entries
+  local terminals = core.foreach(
+    palette.terminals.term_states,
+    function(_, term_state)
+      local index = get_terminal_index(term_state.job_id)
+      return string.format(
+        '[%d:%d] %s%s',
+        term_state.job_id,
+        term_state.bufnr,
+        (index and string.format("<%d>:", index)) or "",
+        vim.api.nvim_buf_get_name(term_state.bufnr)
+      )
+    end,
+    true
+  )
+
+  vim.ui.select(terminals, { prompt = 'open terminal> ' }, function(selection)
+    toggle_terminal({
+      job_id = tonumber(selection:sub(1, selection:find(':') - 1)),
+      force_open = true,
+    })
+  end)
+end
+
 
 -- send payload to terminal
 -- if count is valid, then it is used as target index
@@ -343,7 +371,7 @@ end
 local function run_command()
   vim.ui.select(
     palette.commands,
-    { prompt = 'launch command> ' },
+    { prompt = 'run command> ' },
     function(command) send_to_terminal(command) end
   )
 end
@@ -393,6 +421,7 @@ end
 return {
   -- terminals
   add_terminal = add_terminal,
+  select_terminal = select_terminal,
   toggle_terminal = toggle_terminal,
   send_to_terminal = send_to_terminal,
   send_content_to_terminal = send_content_to_terminal,

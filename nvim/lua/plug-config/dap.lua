@@ -5,7 +5,7 @@ local function activate_output_window(_)
   local target_handle = nil
   local target_regex = nil
 
-  -- TODO(vir): update this when new adapters are added
+  -- TODO(vir): MANUAL update this when new dap servers are added
   target_regex = vim.regex('\\v^.*/python3|codelldb$')
 
   -- get buffer handle for output window
@@ -292,7 +292,7 @@ return {
         base[key] = value
       end
 
-      -- TODO(vir): does not support long running commands, fix this?
+      -- TODO(vir): FIXME does not support long running commands
       -- preamble is called with final dap config, which will be run next
       if opts.preamble then
         opts.preamble()
@@ -316,7 +316,7 @@ return {
         project:add_command('run DAP config', function()
           vim.ui.select(
             core.table_keys(project.dap_config),
-            { prompt = 'config> ' },
+            { prompt = 'run config> ' },
             function(config_name) launch_dap(project.dap_config[config_name]) end
           )
         end, nil, true)

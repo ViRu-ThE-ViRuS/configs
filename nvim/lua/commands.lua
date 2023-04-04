@@ -121,7 +121,7 @@ if misc.get_git_root() ~= nil then
     local remotes = misc.get_git_remotes()
 
     if #remotes > 1 then
-      vim.ui.select(remotes, { prompt = 'remote> ' }, function(remote)
+      vim.ui.select(remotes, { prompt = 'open remote> ' }, function(remote)
         misc.open_repo_on_github(remote)
       end)
     else
@@ -131,7 +131,7 @@ if misc.get_git_root() ~= nil then
     cmd_opts = {
       bang = true,
       nargs = 0,
-      desc = 'Open chosen remote on GitHub, in the Browser',
+      desc = 'open chosen remote on GitHub, in the browser',
     },
     add_custom = true,
   })
@@ -144,13 +144,13 @@ utils.add_command('SudoWrite', function()
     edit
   ]]
 end, {
-  cmd_opts = { bang = true, nargs = 0, desc = 'Sudo Write' },
+  cmd_opts = { bang = true, nargs = 0, desc = 'sudo write' },
   add_custom = true,
 })
 
 -- messages in qflist
 utils.add_command('Messages', misc.show_messages, {
-  cmd_opts = { bang = false, nargs = 0, desc = 'Show :messages in qflist', },
+  cmd_opts = { bang = false, nargs = 0, desc = 'show :messages in qflist', },
   add_custom = true
 })
 
@@ -159,7 +159,7 @@ utils.add_command('Show', misc.show_command, {
   cmd_opts = {
     bang = false,
     nargs = '+',
-    desc = 'Run Command and show output in qflist',
+    desc = 'run command, show output in qflist',
   }
 })
 
@@ -198,28 +198,6 @@ utils.add_command('[MISC] Generate Tags', function()
     on_exit = function() utils.notify('generated tags file', 'info', notification_opts) end
   }):start()
 end, { add_custom = true } )
-
--- terminal commands
-utils.add_command('[TERM] Run Command In Primary Terminal', terminal.run_command, { add_custom = true })
-utils.add_command('[TERM] Open Terminal from palette', function()
-  local terminals  = core.foreach(session.state.palette.terminals.term_states, function(_, term_state)
-    local index = terminal.get_terminal_index(term_state.job_id)
-    return string.format(
-      '[%d:%d] %s%s',
-      term_state.job_id,
-      term_state.bufnr,
-      (index and string.format("<%d>:", index)) or "",
-      vim.api.nvim_buf_get_name(term_state.bufnr)
-    )
-  end, true)
-
-  vim.ui.select(terminals, { prompt = 'terminal> ' }, function(selection)
-    terminal.toggle_terminal({
-      job_id = tonumber(selection:sub(1, selection:find(':') - 1)),
-      force_open = true,
-    })
-  end)
-end, { add_custom = true })
 
 -- toggles
 utils.add_command('[UI] Toggle Context WinBar', misc.toggle_context_winbar, { add_custom = true })

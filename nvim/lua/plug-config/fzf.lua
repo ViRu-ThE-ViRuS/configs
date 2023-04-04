@@ -13,14 +13,15 @@ return {
       end
     end)
 
+    -- fuzzy pickers
     utils.map("n", "<c-p>b", function() require('fzf-lua').buffers() end)
     utils.map("n", "<c-p>l", function() require('fzf-lua').blines() end)
     utils.map("n", "<c-p>m", function() require('fzf-lua').marks() end)
     utils.map("n", "<c-p>o", function() require('fzf-lua').resume() end)
 
+    -- greps
     utils.map("n", "<c-p>f", function() require('fzf-lua').live_grep({ exec_empty_query = true }) end)
     utils.map("n", "<c-p>F", function() require('fzf-lua').live_grep({ continue_last_search = true }) end)
-
     utils.map("n", "<c-p>ss", function() require('fzf-lua').grep_cword() end)
     utils.map("n", "<c-p>sz", function() require('fzf-lua').grep({ search = 'TODO|NOTE', no_esc = true }) end)
     utils.map("v", "<c-p>ss", function() require('fzf-lua').grep_visual() end)
@@ -49,10 +50,10 @@ return {
       -- this calls config function, which sets value of vim.ui.select
       require('fzf-lua')
 
-      vim.ui.select(keys, { prompt = "Commands> " }, function(key)
+      vim.ui.select(keys, { prompt = "run command> " }, function(key)
         if key then session.state.commands[key]() end
       end)
-    end, { cmd_opts = { bang = false, nargs = 0, desc = "Custom Commands" } })
+    end, { cmd_opts = { bang = false, nargs = 0, desc = "custom commands" } })
 
     -- set statusline for fzf buffers
     local statusline = require('statusline')
@@ -194,6 +195,14 @@ return {
     })
 
     -- set fzf-lua as vim.ui.select handler
-    fzf.register_ui_select({ winopts = { height = 0.5, width = 0.5 } }, true)
+    fzf.register_ui_select({
+      winopts = {
+        split = false,
+        height = 0.40,
+        width  = 0.50,
+        row    = 0.50,
+        col    = 0.50,
+      }
+    }, true)
   end
 }

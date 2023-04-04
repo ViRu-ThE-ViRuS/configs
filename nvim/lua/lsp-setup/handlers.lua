@@ -135,7 +135,7 @@ local function qf_rename()
 
       -- set qflist if more than 1 file
       if num_files > 1 then
-        utils.qf_populate(entries, "r", { title = "Applied Changes" })
+        utils.qf_populate(entries, { title = "Applied Changes" })
       end
     end)
   end)

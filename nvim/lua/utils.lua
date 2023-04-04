@@ -17,27 +17,25 @@ local function unmap(mode, lhs, options)
 end
 
 -- set qflist and open
-local function qf_populate(lines, mode, opts)
+local function qf_populate(lines, opts)
   if not lines or #lines == 0 then return end
 
   opts = vim.tbl_deep_extend('force', {
+    simple_list = false,
+    mode = "r",
     title = nil,
-    scroll_to_end = false
+    scroll_to_end = false,
   }, opts or {})
 
   -- convenience implementation, set qf directly from values
-  if (not mode) or type(mode) == "table" then
-    -- set default file loc to 1:1
+  if opts.simple_list then
     lines = core.foreach(lines, function(_, item)
+      -- set default file loc to 1:1
       return { filename = item, lnum = 1, col = 1, text = item }
     end)
-
-    -- TODO(vir): it could be nice to have features around multiple qf lists
-    -- by default, replace list
-    mode = "r"
   end
 
-  vim.fn.setqflist(lines, mode)
+  vim.fn.setqflist(lines, opts.mode)
 
   -- ux
   local commands = table.concat({

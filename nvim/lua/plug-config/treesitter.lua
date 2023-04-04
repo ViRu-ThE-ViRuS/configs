@@ -136,7 +136,7 @@ return {
 
       -- populate all functions and lambdas into qflist
       utils.map('n', '<leader>uf', function()
-        utils.qf_populate(buffer_functions(), 'r', { title = 'Functions & Lambdas' })
+        utils.qf_populate(buffer_functions(), { title = 'Functions & Lambdas' })
       end)
 
       -- text-subjects : move + center

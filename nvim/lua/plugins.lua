@@ -12,7 +12,6 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- convenience alias Lz to lazy
 require('utils').add_command('Lz', 'Lazy', {
   cmd_opts = { bang = true, nargs = 0, desc = 'Lazy' },
 })
