@@ -49,10 +49,11 @@ function Project:add_dap_config(name, program, args, opts)
 
   -- extra opts for runner
   opts = vim.tbl_deep_extend('force', {
-    base_type = vim.api.nvim_get_option_value('filetype', { scope = 'local' }),
+    base_type = nil,
     preamble = nil,
   }, opts or {})
 
+  assert(opts.base_type, 'opts.base_type must be specified as this is the base DAP config which will be launched')
   self.dap_config[name] = { program = program, args = args, _opts = opts }
 end
 

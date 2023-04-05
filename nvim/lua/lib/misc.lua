@@ -59,6 +59,14 @@ local function rename_buffer(name)
   )
 end
 
+-- get winnrs for qflists visible in current tab
+local function get_visible_qflists()
+  return core.filter(
+    vim.api.nvim_tabpage_list_wins(0),
+    function(_, winnr) return vim.fn.getwininfo(winnr)[1].quickfix == 1 end
+  )
+end
+
 -- get git repo root dir (or nil)
 local function get_git_root()
   local git_cmd = "git -C " .. vim.loop.cwd() .. " rev-parse --show-toplevel"
@@ -205,8 +213,18 @@ local function toggle_spellings()
 end
 
 -- laststatus: toggle between global and local statusline
-local function toggle_global_statusline(force_local)
-  if vim.api.nvim_get_option_value("laststatus", { scope = "global" }) == 3 or force_local then
+local function toggle_global_statusline(opts)
+  opts = vim.tbl_deep_extend('force', {
+    force = nil -- 'local' | 'global'
+  }, opts or {})
+
+  assert(
+    (opts.force and (opts.force == 'local' or opts.force == 'global')) or (not opts.force),
+    'opts.force, if set, can be either "local"/"global"'
+  )
+
+  if opts.force == 'local' or
+    (opts.force ~= 'global' and vim.api.nvim_get_option_value("laststatus", { scope = "global" }) == 3) then
     vim.opt.laststatus = 2
     utils.notify("global statusline", "debug", { title = '[UI] deactivated', render = "compact" })
   else
@@ -230,10 +248,7 @@ end
 -- quickfix: toggle qflist
 local function toggle_qflist()
   -- open if no windows with type quickfix in current tabpage
-  if vim.tbl_isempty(core.filter(
-    vim.api.nvim_tabpage_list_wins(0),
-    function(_, winnr) return vim.fn.getwininfo(winnr)[1].quickfix == 1 end
-  )) then
+  if vim.tbl_isempty(get_visible_qflists()) then
     vim.cmd [[ horizontal copen ]]
   else
     vim.cmd [[ cclose ]]
@@ -309,6 +324,7 @@ return {
   calculate_indent           = calculate_indent,
   scroll_to_end              = scroll_to_end,
   rename_buffer              = rename_buffer,
+  get_visible_qflists        = get_visible_qflists,
 
   -- repo related
   get_git_root               = get_git_root,
@@ -330,5 +346,5 @@ return {
   show_command               = show_command,
   random_colors              = random_colors,
   is_htruncated              = is_htruncated,
-  is_vtruncated              = is_vtruncated,
+  is_vtruncated              = is_vtruncated
 }

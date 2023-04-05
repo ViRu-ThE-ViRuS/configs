@@ -4,7 +4,6 @@ google-drive
 kitty
 logi-options-plus
 microsoft-edge
-microsoft-teams
 nordvpn
 slack
 spotify
@@ -12,7 +11,6 @@ tiles
 transmission
 typora
 vlc
-wireshark
 yubico-yubikey-manager
 zoom
 zotero

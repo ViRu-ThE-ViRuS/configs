@@ -20,6 +20,8 @@ local function activate_output_window(_)
   -- make last output buffer active, if visible
   if target_handle then
     vim.api.nvim_buf_set_option(target_handle, 'bufhidden', 'delete')
+
+    -- TODO(vir): protect tabclose
     utils.map('n', '<c-o>', function()
       vim.cmd [[
         q!
@@ -64,6 +66,10 @@ local function setup_dap_configurations()
   local dap = require('dap')
   local core = require('lib/core')
 
+  -- get input on runtime
+  local get_program = core.partial(vim.fn.input, 'program: ', vim.loop.cwd() .. '/', 'file')
+  local get_args = core.partial(vim.split, core.partial(vim.fn.input, 'args: ', '', 'file'), ') ')
+
   dap.configurations.python = {
     {
       type = 'python',
@@ -72,12 +78,8 @@ local function setup_dap_configurations()
       terminal = 'console',
       console = 'integratedTerminal',
       pythonPath = core.get_python(),
-      program = function()
-        return vim.fn.input('program: ', vim.loop.cwd() .. '/', 'file')
-      end,
-      args = function()
-        return vim.split(vim.fn.input('args: ', '', 'file'), ' ')
-      end
+      program = get_program,
+      args = get_args
     }
   }
 
@@ -89,12 +91,8 @@ local function setup_dap_configurations()
       terminal = 'integrated',
       console = 'integratedTerminal',
       stopOnEntry = false,
-      program = function()
-        return vim.fn.input('program: ', vim.loop.cwd() .. '/', 'file')
-      end,
-      args = function()
-        return vim.split(vim.fn.input('args: ', '', 'file'), ' ')
-      end
+      program = get_program,
+      args = get_args
     }
   }
   dap.configurations.cpp = dap.configurations.c
@@ -235,8 +233,14 @@ local function setup_dap_events()
     setup_maps()
     dapui.open()
 
-    -- force local statusline
-    require('lib/misc').toggle_global_statusline(true)
+    -- we reactive global statusline on exit,
+    -- if we had it set before session began
+    session.session_reactivate_global_statusline = vim.api.nvim_get_option_value(
+          "laststatus",
+          { scope = "global" }
+        ) == 3
+
+    require('lib/misc').toggle_global_statusline({ force = 'local' })
 
     utils.notify(
       string.format('[PROG] %s', session.config.program),
@@ -248,6 +252,11 @@ local function setup_dap_events()
   -- terminate session: remove keymaps, close dapui, close dap repl, set last output buffer active
   local function terminate_session(session, _)
     if session.config.program == nil then return end
+
+    -- reactive global statusline if it was set before session began
+    if session.session_reactivate_global_statusline then
+      require('lib/misc').toggle_global_statusline({ force = 'global' })
+    end
 
     remove_maps()
     dapui.close()
@@ -298,8 +307,18 @@ return {
         opts.preamble()
       end
 
-      dap.run(base, { new = false })
+      -- run protected
+      -- crashes when running dap before any buffer was opened
+      -- NOTE(vir): probably a bug in dap?
+      if not pcall(require('lib/core').partial(dap.run, base, { new = false })) then
+        require('utils').notify(
+          string.format('[PROG] %s', base.program),
+          'debug',
+          { title = '[DAP] session failed', timeout = 500 }
+        )
+      end
     end
+
 
     -- project debug config
     vim.api.nvim_create_autocmd('User', {

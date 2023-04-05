@@ -35,6 +35,11 @@ local function qf_populate(lines, opts)
     end)
   end
 
+  -- close any prior lists visible in current tab
+  if not vim.tbl_isempty(require('lib/misc').get_visible_qflists()) then
+    vim.cmd [[ cclose ]]
+  end
+
   vim.fn.setqflist(lines, opts.mode)
 
   -- ux
