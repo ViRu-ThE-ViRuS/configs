@@ -79,8 +79,7 @@ local function add_command(key, callback, opts)
   if opts.add_custom then
     -- make sure this command takes:
     --  - no parameters
-    --  - 0 parameters
-    --  - 0 or more parameters
+    --  - 0+ parameters
     assert(
       (not opts.cmd_opts) or (not opts.cmd_opts.nargs) or
       (opts.cmd_opts.nargs == 0) or (opts.cmd_opts.nargs == '?'),

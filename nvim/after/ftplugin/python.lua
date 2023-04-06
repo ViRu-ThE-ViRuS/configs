@@ -124,4 +124,4 @@ utils.map('n', ']i', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_ne
     { buffer = 0 })
 
 -- useful python dev specific commands
-terminal.add_command('ipython3 -i --no-autoindent')
+-- terminal.add_command('ipython3 -i --no-autoindent')

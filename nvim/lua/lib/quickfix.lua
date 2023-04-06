@@ -1,7 +1,7 @@
 local utils = require('utils')
 local palette = session.state.palette
 
--- TODO(vir): FUTURE think about this
+-- TODO(vir): think about this
 -- quickfix implementation is simpler as it forces all entries to have an index
 -- entries are added by overwriting indices in a single table
 --

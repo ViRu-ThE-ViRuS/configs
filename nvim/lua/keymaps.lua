@@ -85,7 +85,7 @@ utils.map({ "n", "i" }, "<left>", "<nop>")
 utils.map({ "n", "i" }, "<right>", "<nop>")
 
 -- toggles
-utils.map("n", "<leader>1", misc.toggle_window, { desc = 'toggle maximize current window' })
+utils.map("n", "<leader>1", misc.toggle_window_focus, { desc = 'toggle focus on current buffer' })
 utils.map("n", "<leader>2", misc.random_colors, { desc = 'set a random preferred colorscheme' })
 utils.map("n", "<leader>3", misc.toggle_global_statusline, { desc = 'toggle global statusline' })
 
@@ -93,8 +93,8 @@ utils.map("n", "<leader>3", misc.toggle_global_statusline, { desc = 'toggle glob
 utils.map("n", "<leader>Q", misc.toggle_qflist)
 utils.map("n", "<leader>cq", quickfix.open_list)
 utils.map("n", "<leader>cQ", quickfix.add_list)
-utils.map("n", "[q", "<cmd>try | cprev | catch | silent! clast | catch | endtry<cr>")
-utils.map("n", "]q", "<cmd>try | cnext | catch | silent! cfirst | catch | endtry<cr>")
+utils.map("n", "[q", "<cmd>try | cprev | catch | silent! clast | catch | endtry<cr>zR")
+utils.map("n", "]q", "<cmd>try | cnext | catch | silent! cfirst | catch | endtry<cr>zR")
 
 -- buffer resizing
 utils.map("n", "<m-j>", "<cmd>resize +2<cr>")

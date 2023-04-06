@@ -6,7 +6,7 @@ local tag_state = session.state.tags
 local diagnostics_state = session.state.ui.diagnostics_state
 local truncation = session.config.truncation
 
--- {{{ configs
+-- {{{ config variables
 -- tag states for statusline
 local tag_state_filter = {
   Class     = true,
@@ -50,6 +50,7 @@ local lsp_icons = {
 }
 -- }}}
 
+-- {{{ utils
 -- pos in range
 local function in_range(pos, range)
   if pos[1] < range['start'].line or pos[1] > range['end'].line then
@@ -64,7 +65,179 @@ local function in_range(pos, range)
   return true
 end
 
--- toggle diagnostics list
+
+-- extract symbols from lsp results
+local function extract_symbols(items, result)
+  result = result or {}
+  if items == nil then return result end
+
+  for _, item in ipairs(items) do
+    local kind = proto.SymbolKind[item.kind] or 'Unknown'
+    local symbol_range = item.range or item.location.range
+
+    if symbol_range then
+      symbol_range['start'].line = symbol_range['start'].line + 1
+      symbol_range['end'].line = symbol_range['end'].line + 1
+    end
+
+    table.insert(result, {
+      filename = (item.location and vim.uri_to_fname(item.location.uri)) or nil,
+      range = symbol_range,
+      kind = kind,
+      name = item.name,
+      detail = item.detail,
+      raw = item
+    })
+
+    extract_symbols(item.children, result)
+  end
+
+  return result
+end
+-- }}}
+
+-- {{{ tag_state api
+-- clear buffer tags and context cache
+local function clear_buffer_tags(bufnr)
+  -- equivalent to removing buffer entry from cache to end tracking
+  tag_state.context[bufnr] = nil
+  tag_state.cache[bufnr] = nil
+  tag_state.req_state[bufnr] = nil
+end
+
+-- calculate and update context at current location using latest cache
+local function update_context()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local symbols = tag_state.cache[bufnr]
+  if not symbols or vim.tbl_isempty(symbols) then return end
+
+  local hovered_line = vim.api.nvim_win_get_cursor(0)
+  local contexts = {}
+
+  -- go through all symbols in this buffer
+  for index = #symbols, 1, -1 do
+    local current = symbols[index]
+
+    if current.range and in_range(hovered_line, current.range) then
+      table.insert(contexts, {
+        kind = current.kind,
+        name = current.name,
+        detail = current.detail,
+        range = current.range,
+        icon = lsp_icons[current.kind].icon,
+        iconhl = lsp_icons[current.kind].hl
+      })
+    end
+  end
+
+  if not vim.tbl_isempty(contexts) then
+    -- sort based on ascending tag end locations
+    table.sort(contexts, function(a, b)
+      return (a.range['end'].line > b.range['end'].line) or
+          (b.range['end'].character > b.range['end'].character)
+    end)
+
+    tag_state.context[bufnr] = contexts
+    return
+  end
+
+  -- no context found
+  tag_state.context[bufnr] = nil
+end
+
+-- update tag_state for current buffer
+-- setup on lsp load: CursorHold triggers refreshing of tag cache for buffer
+local function update_tags()
+  local bufnr = vim.api.nvim_get_current_buf()
+
+  -- set defaults for a new buffer
+  tag_state.req_state[bufnr] = tag_state.req_state[bufnr] or {
+    waiting = false, -- lsp request results are awaited
+    last_tick = 0,   -- last time tags were refreshed
+  }
+
+  -- we only continue if we are not waiting and were last updated in the past
+  if not (not tag_state.req_state[bufnr].waiting and
+      tag_state.req_state[bufnr].last_tick < vim.b.changedtick) then
+    return
+  end
+
+  -- update tags
+  tag_state.req_state[bufnr] = { waiting = true, last_tick = vim.b.changedtick }
+  vim.lsp.buf_request(
+    bufnr,
+    'textDocument/documentSymbol',
+    { textDocument = vim.lsp.util.make_text_document_params() },
+    function(_, results, _, _)
+      -- buffer might have closed by the time this request completed
+      if not tag_state.req_state[bufnr] then return end
+
+      -- results have arrived
+      tag_state.req_state[bufnr].waiting = false
+
+      -- exit if buffer is invalid or if no results were returned
+      if not vim.api.nvim_buf_is_valid(bufnr) then return end
+      if (not results) or (type(results) ~= 'table') then return end
+
+      -- extract and filter symbols
+      -- keep only those of types in context lists
+      local symbols = core.filter(
+        extract_symbols(results),
+        function(_, value) return tag_state_filter[value.kind] end
+      )
+
+      if not symbols or vim.tbl_isempty(symbols) then return end
+      tag_state.cache[bufnr] = symbols
+    end
+  )
+end
+-- }}}
+
+-- get current context with formatting
+-- format_fn(context) can format as context needed
+local function get_context(bufnr, format_fn)
+  bufnr = bufnr or vim.api.nvim_get_current_buf()
+  format_fn = format_fn or (function(context) return context end)
+
+  if tag_state.context[bufnr] == nil then return format_fn({}) end
+  return format_fn(tag_state.context[bufnr])
+end
+
+-- get current context winbar string
+local function get_context_winbar(bufnr, colors)
+  bufnr = bufnr or vim.api.nvim_get_current_buf()
+
+  -- same as context colors in statusline
+  colors = colors or {
+    foreground = "%#WinBar#",
+    background = "%#WinBar#",
+  }
+
+  local filename = (misc.is_htruncated(truncation.truncation_limit, true) and ' [ %t ] ') or ' [ %f ] '
+  local context = get_context(bufnr, function(context_tbl)
+    -- format for the winbar
+    local context = core.foreach(
+          context_tbl,
+          function(_, arg)
+            return arg.iconhl .. arg.icon .. ' ' .. colors.background .. arg.name
+          end
+        ) or {}
+
+    return table.concat(context, " -> ")
+  end)
+
+  -- context = (string.len(context) > 1 and '=> ' .. context) or context
+  -- return colors.foreground .. filename .. colors.background .. context
+
+  local left = string.format('%s => %s', colors.foreground, context)
+  local right = (string.len(left) <= core.round(vim.api.nvim_win_get_width(0) * 0.80)
+      and filename) or ""
+
+  return left .. '%=%' .. right
+end
+
+-- toggle global(workspace) / local(buffer) diagnostics qflist
+-- powered by diagnostics api, does not depend on lsp directly
 local function toggle_diagnostics_list(global)
   if global then
     if not diagnostics_state['global'] then
@@ -97,145 +270,8 @@ local function toggle_diagnostics_list(global)
   end
 end
 
--- extract symbols from lsp results
-local function extract_symbols(items, _result)
-  local result = _result or {}
-  if items == nil then return result end
-
-  for _, item in ipairs(items) do
-    local kind = proto.SymbolKind[item.kind] or 'Unknown'
-    local symbol_range = item.range
-
-    if not symbol_range then
-      symbol_range = item.location.range
-    end
-
-    if symbol_range then
-      symbol_range['start'].line = symbol_range['start'].line + 1
-      symbol_range['end'].line = symbol_range['end'].line + 1
-    end
-
-    table.insert(result, {
-      filename = item.location and vim.uri_to_fname(item.location.uri) or nil,
-      range = symbol_range,
-      kind = kind,
-      name = item.name,
-      detail = item.detail,
-      raw = item
-    })
-
-    extract_symbols(item.children, result)
-  end
-
-  return result
-end
-
--- clear buffer tags and context
-local function clear_buffer_tags(bufnr)
-  tag_state.context[bufnr] = nil
-  tag_state.cache[bufnr] = nil
-  tag_state.req_state[bufnr] = nil
-end
-
--- get current context
-local function update_context()
-  local bufnr = vim.api.nvim_get_current_buf()
-  local symbols = tag_state.cache[bufnr]
-  if not symbols or #symbols < 1 then return end
-
-  local hovered_line = vim.api.nvim_win_get_cursor(0)
-
-  local contexts = {}
-
-  for position = #symbols, 1, -1 do
-    local current = symbols[position]
-
-    if current.range and in_range(hovered_line, current.range) then
-      table.insert(contexts, {
-        kind = current.kind,
-        name = current.name,
-        detail = current.detail,
-        range = current.range,
-        icon = lsp_icons[current.kind].icon,
-        iconhl = lsp_icons[current.kind].hl
-      })
-    end
-  end
-
-  if #contexts > 0 then
-    table.sort(contexts,
-      function(a, b)
-        return a.range['end'].line > b.range['end'].line or
-            b.range['end'].character > b.range['end'].character
-      end)
-    tag_state.context[bufnr] = contexts
-    return
-  end
-
-  tag_state.context[bufnr] = nil
-end
-
--- update tag_state async
-local function update_tags()
-  local bufnr = vim.api.nvim_get_current_buf()
-  if tag_state.req_state[bufnr] == nil then tag_state.req_state[bufnr] = { waiting = false, last_tick = 0 } end
-
-  if (not tag_state.req_state[bufnr].waiting and tag_state.req_state[bufnr].last_tick < vim.b.changedtick) then
-    tag_state.req_state[bufnr] = { waiting = true, last_tick = vim.b.changedtick }
-  else
-    return
-  end
-
-  vim.lsp.buf_request(bufnr, 'textDocument/documentSymbol', { textDocument = vim.lsp.util.make_text_document_params() },
-    function(_, results, _, _)
-      -- buffer might have closed by the time this request completed
-      if not tag_state.req_state[bufnr] then return end
-
-      tag_state.req_state[bufnr].waiting = false
-      if not vim.api.nvim_buf_is_valid(bufnr) then return end
-      if results == nil or type(results) ~= 'table' then return end
-
-      local extracted = extract_symbols(results)
-      local symbols = core.filter(extracted, function(_, value) return tag_state_filter[value.kind] end)
-
-      if not symbols or #symbols == 0 then return end
-      tag_state.cache[bufnr] = symbols
-    end)
-end
-
--- get context with formatting
-local function get_context(bufnr, to_string_func)
-  bufnr = bufnr or vim.api.nvim_get_current_buf()
-  to_string_func = to_string_func or (function() return tag_state.context[bufnr] end)
-
-  if tag_state.context[bufnr] == nil then return to_string_func({}) end
-  return to_string_func(tag_state.context[bufnr])
-end
-
--- format winbar
-local function get_context_winbar(bufnr, colors)
-  bufnr = bufnr or vim.api.nvim_get_current_buf()
-  colors = colors or {
-    foreground = "%#WinBar#",
-    background = "%#WinBar#",
-  }
-
-  local filename = (misc.is_htruncated(truncation.truncation_limit, true) and ' [ %t ] ') or ' [ %f ] '
-  local context = get_context(bufnr, function(context_tbl)
-    local context = core.foreach(context_tbl, function(_, arg)
-          return arg.iconhl .. arg.icon .. ' ' .. colors.background .. arg.name
-        end) or {}
-
-    return table.concat(context, " -> ")
-  end)
-
-  -- context = (string.len(context) > 1 and '=> ' .. context) or context
-  -- return colors.foreground .. filename .. colors.background .. context
-
-  return colors.foreground .. ' => ' .. context .. ' ' .. '%=%' .. filename
-end
-
--- custom refactoring functionality
+-- toggle debug print statement for current selection / tresitter node
+-- powered by treesitter, does not depend on lsp
 local function debug_print(visual)
   local target_line = nil
   local target = nil
@@ -302,14 +338,15 @@ local function debug_print(visual)
 end
 
 return {
-  lsp_icons = lsp_icons,
+  lsp_icons               = lsp_icons,
+
+  get_context             = get_context,
+  get_context_winbar      = get_context_winbar,
+  debug_print             = debug_print,
   toggle_diagnostics_list = toggle_diagnostics_list,
-  -- context api
-  update_tags = update_tags,
-  update_context = update_context,
-  clear_buffer_tags = clear_buffer_tags,
-  -- utils
-  get_context = get_context,
-  get_context_winbar = get_context_winbar,
-  debug_print = debug_print
+
+  -- context tag_state api
+  update_tags             = update_tags,
+  update_context          = update_context,
+  clear_buffer_tags       = clear_buffer_tags,
 }

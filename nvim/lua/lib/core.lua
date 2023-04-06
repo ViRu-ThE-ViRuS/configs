@@ -1,3 +1,8 @@
+-- round to nearest integer
+local function round(val)
+  return math.floor(val + 0.5)
+end
+
 -- create table (key, value) -> (key, f(key, value))
 -- if only_values is set, this returns (key, value) -> (f(key, value)) [flat array]
 local function foreach(tbl, f, only_values)
@@ -77,9 +82,19 @@ local function table_contains(tbl, target_value)
 end
 
 -- return copy of table
-local function table_copy(t)
+local function table_copy(t, discard_keys)
   local u = {}
-  for k, v in pairs(t) do u[k] = v end
+
+  local insert = function(key, value)
+    if discard_keys then
+      table.insert(u, value)
+    else
+      u[key] = value
+    end
+  end
+
+  for k, v in pairs(t) do insert(k, v) end
+
   return setmetatable(u, getmetatable(t))
 end
 
@@ -173,6 +188,7 @@ local function get_os(table)
 end
 
 return {
+  round          = round,
   foreach        = foreach,
   apply          = apply,
   filter         = filter,

@@ -1,3 +1,57 @@
+-- setup fzf-lua powered lsp keymaps
+local function set_lsp_keymaps(_, bufnr)
+  local core = require('lib/core')
+  local utils = require('utils')
+  local fzf = require('fzf-lua')
+  local map_opts = { silent = true, buffer = bufnr }
+
+  utils.map("n", "<leader>us", fzf.lsp_references, map_opts)
+  utils.map("n", "<leader>ud", fzf.lsp_document_symbols, map_opts)
+  utils.map("n", "<leader>uD", fzf.lsp_live_workspace_symbols, map_opts)
+
+  utils.map("n", "<leader>d", core.partial(fzf.lsp_definitions, { sync = true, jump_to_single_result = true }), map_opts)
+  utils.map("n", "<leader>D", core.partial(fzf.lsp_definitions, {
+    sync = true,
+    jump_to_single_result = true,
+    jump_to_single_result_action = fzf.actions.file_vsplit,
+  }), map_opts)
+end
+
+-- custom fzf previewer
+local function create_custom_previwer()
+  local CustomPreviwer = require('fzf-lua.previewer.builtin').buffer_or_file:extend()
+
+  function CustomPreviwer:new(o, opts, fzf_win)
+    -- disable preview for vim.ui.select called with kind='plain_text'
+    if opts._ui_select and opts._ui_select.kind == 'plain_text' then
+      return nil
+    end
+
+    CustomPreviwer.super.new(self, o, opts, fzf_win)
+    setmetatable(self, CustomPreviwer)
+    return self
+  end
+
+  function CustomPreviwer:parse_entry(entry_str)
+    local kind = (self.opts._ui_select and self.opts._ui_select.kind) or nil
+
+    if kind == 'terminals' then
+      local begin_index = string.find(entry_str, ':')
+      local end_index = string.find(entry_str, ']')
+      local bufnr = tonumber(string.sub(entry_str, begin_index + 1, end_index - 1))
+
+      return {
+        bufnr = bufnr,
+        path = vim.api.nvim_buf_get_name(bufnr)
+      }
+    end
+
+    return {}
+  end
+
+  return CustomPreviwer
+end
+
 return {
   'ibhagwan/fzf-lua',
   init = function()
@@ -50,7 +104,7 @@ return {
       -- this calls config function, which sets value of vim.ui.select
       require('fzf-lua')
 
-      vim.ui.select(keys, { prompt = "run command> " }, function(key)
+      vim.ui.select(keys, { prompt = "run command> ", kind = 'plain_text' }, function(key)
         if key then session.state.commands[key]() end
       end)
     end, { cmd_opts = { bang = false, nargs = 0, desc = "custom commands" } })
@@ -68,7 +122,8 @@ return {
     local fzf = require('fzf-lua')
 
     local ignore_dirs = os.getenv('FZF_IGNORE_DIRS') .. ',' .. session.config.fuzzy_ignore_dirs
-    local default_rg_options = string.format(' --hidden --follow --no-heading --smart-case --no-ignore -g "!{%s}"', ignore_dirs)
+    local default_rg_options = string.format(' --hidden --follow --no-heading --smart-case --no-ignore -g "!{%s}"',
+      ignore_dirs)
 
     local symbols = session.config.symbols
     local truncation = session.config.truncation
@@ -79,14 +134,18 @@ return {
         split = 'horizontal new',
         fullscreen = false,
         preview = {
-          -- default = 'bat',
-          border = 'noborder',
+          -- default = 'bat_native',
+
+          layout = 'flex',
           horizontal = 'right:50%',
           vertical = 'up:50%',
-          scrollbar = false,
 
+          -- using winopts_fn to set truncation
           -- flip_columns = truncation.truncation_limit_s_terminal
-          -- winopts = { number = true, statuscolumn = '' }
+
+          -- builtin previewer
+          scrollbar = false,
+          delay = 50
         },
         on_create = function()
           vim.opt_local.buflisted = false
@@ -101,8 +160,8 @@ return {
         return {
           preview = {
             -- works better than flip_columns when in vsplits
-            layout = vim.api.nvim_win_get_width(0) <
-            truncation.truncation_limit_s_terminal and 'vertical' or 'horizontal'
+            layout = (vim.api.nvim_win_get_width(0) < truncation.truncation_limit_s_terminal and 'vertical')
+                or 'horizontal'
           }
         }
       end,
@@ -124,18 +183,18 @@ return {
       },
       keymap = {
         fzf = {
-          ['ctrl-a'] = 'toggle-all',
-          ['ctrl-f'] = 'half-page-down',
-          ['ctrl-b'] = 'half-page-up',
-          ['ctrl-u'] = 'beginning-of-line',
-          ['ctrl-o'] = 'end-of-line',
-          ['ctrl-d'] = 'abort',
-          ['alt-a']  = 'select-all+accept',
-          ['alt-i'] = 'clear-query',          -- [right-option + delete] works on macos
+          ['ctrl-a']     = 'toggle-all',
+          ['ctrl-f']     = 'half-page-down',
+          ['ctrl-b']     = 'half-page-up',
+          ['ctrl-u']     = 'beginning-of-line',
+          ['ctrl-o']     = 'end-of-line',
+          ['ctrl-d']     = 'abort',
+          ['alt-a']      = 'select-all+accept',
+          ['alt-i']      = 'clear-query', -- [right-option + delete] works on macos
 
           -- preview (bat)
           ['shift-down'] = 'preview-page-down',
-          ['shift-up'] = 'preview-page-up'
+          ['shift-up']   = 'preview-page-up'
         }
       },
       actions = {
@@ -162,16 +221,17 @@ return {
         }
       },
       buffers = {
-        -- previewer = 'bat',
         actions = {
           ['ctrl-d'] = { actions.buf_del, actions.resume },
           ['ctrl-x'] = actions.buf_split, -- disable default
-          ['ctrl-q'] = false -- disable default
+          ['ctrl-q'] = false              -- disable default
         }
       },
-      files = { rg_opts = '--files' .. default_rg_options },
+      files = {
+        rg_opts = '--files' .. default_rg_options,
+        git_icons = false
+      },
       blines = {
-        -- previewer = 'bat',
         actions = { ['ctrl-q'] = actions.buf_sel_to_qf }
       },
       grep = {
@@ -180,7 +240,6 @@ return {
         actions = { ['ctrl-g'] = actions.grep_lgrep }
       },
       tags = {
-        -- previewer = 'bat',
         actions = { ['ctrl-g'] = actions.grep_lgrep }
       },
       lsp = {
@@ -196,13 +255,19 @@ return {
 
     -- set fzf-lua as vim.ui.select handler
     fzf.register_ui_select({
+      previewer = create_custom_previwer(),
       winopts = {
-        split = false,
+        split  = false,
         height = 0.40,
         width  = 0.50,
         row    = 0.50,
         col    = 0.50,
       }
     }, true)
-  end
+  end,
+
+  -- export usage of this plugin
+  module_exports = {
+    set_lsp_keymaps = set_lsp_keymaps
+  }
 }

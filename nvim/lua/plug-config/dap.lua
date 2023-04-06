@@ -1,6 +1,6 @@
 -- {{{ helpers
 -- get handles of output windows
-local function activate_output_window(_)
+local function activate_output_window(session)
   local utils = require('utils')
   local target_handle = nil
   local target_regex = nil
@@ -21,12 +21,14 @@ local function activate_output_window(_)
   if target_handle then
     vim.api.nvim_buf_set_option(target_handle, 'bufhidden', 'delete')
 
-    -- TODO(vir): protect tabclose
     utils.map('n', '<c-o>', function()
-      vim.cmd [[
-        q!
-        tabclose
-      ]]
+      vim.cmd [[ q! ]]
+
+      -- only close if in session tab
+      if vim.api.nvim_get_current_tabpage() == session.session_target_tab then
+        vim.cmd [[ tabclose ]]
+      end
+
     end, { buffer = target_handle })
 
     local windows = vim.fn.win_findbuf(target_handle)
@@ -335,7 +337,7 @@ return {
         project:add_command('run DAP config', function()
           vim.ui.select(
             core.table_keys(project.dap_config),
-            { prompt = 'run config> ' },
+            { prompt = 'run config> ', kind = 'plain_text' },
             function(config_name) launch_dap(project.dap_config[config_name]) end
           )
         end, nil, true)

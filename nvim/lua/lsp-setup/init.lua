@@ -17,7 +17,10 @@ local function on_attach(client, bufnr)
   -- client.server_capabilities.semanticTokensProvider = nil
 
   -- NOTE(vir): lsp_signature setup
-  require('lsp_signature').on_attach({ doc_lines = 5, hint_prefix = "<>", handler_opts = { border = 'rounded' } }, bufnr)
+  require('lsp_signature').on_attach(
+    { doc_lines = 5, hint_prefix = "<>", handler_opts = { border = 'rounded' } },
+    bufnr
+  )
 
   setup_buffer.setup_lsp_keymaps(client, bufnr)
   setup_buffer.setup_diagnostics_keymaps(client, bufnr)

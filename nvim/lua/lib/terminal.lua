@@ -124,7 +124,7 @@ local function add_terminal(opts)
   local index = (opts.primary and 1) or opts.index or vim.v.count -- 0 means no index specified
 
   -- TODO(vir): FUTURE think about notes in quickfix.lua
-  if not get_primary_terminal() then
+  if (index == 0) and (not get_primary_terminal()) then
     index = 1
   end
 
@@ -248,9 +248,25 @@ end
 
 -- select terminal from palette using vim.ui.select
 local function select_terminal()
+  if vim.tbl_count(palette.terminals.term_states) == 0 then
+    utils.notify('no terminals added', 'warn', {
+      title = '[TERM] palette',
+      render = 'compact',
+    })
+    return
+  end
+
   -- create selection entries
-  local terminals = core.foreach(
-    palette.terminals.term_states,
+  -- ordered by index if present
+  local terminals = core.table_copy(palette.terminals.term_states, true)
+  table.sort(terminals, function(left, right)
+    local left_index = get_terminal_index(left.job_id) or 998
+    local right_index = get_terminal_index(right.job_id) or 999
+    return left_index < right_index
+  end)
+
+  local entries = core.foreach(
+    terminals,
     function(_, term_state)
       local index = get_terminal_index(term_state.job_id)
       return string.format(
@@ -264,14 +280,13 @@ local function select_terminal()
     true
   )
 
-  vim.ui.select(terminals, { prompt = 'open terminal> ' }, function(selection)
+  vim.ui.select(entries, { prompt = 'open terminal> ', kind = 'terminals' }, function(entry)
     toggle_terminal({
-      job_id = tonumber(selection:sub(1, selection:find(':') - 1)),
+      job_id = tonumber(entry:sub(1, entry:find(':') - 1)),
       force_open = true,
     })
   end)
 end
-
 
 -- send payload to terminal
 -- if count is valid, then it is used as target index
@@ -371,7 +386,7 @@ end
 local function run_command()
   vim.ui.select(
     palette.commands,
-    { prompt = 'run command> ' },
+    { prompt = 'run command> ', kind = 'plain_text' },
     function(command) send_to_terminal(command) end
   )
 end
@@ -420,20 +435,20 @@ end
 
 return {
   -- terminals
-  add_terminal = add_terminal,
-  select_terminal = select_terminal,
-  toggle_terminal = toggle_terminal,
-  send_to_terminal = send_to_terminal,
+  add_terminal             = add_terminal,
+  select_terminal          = select_terminal,
+  toggle_terminal          = toggle_terminal,
+  send_to_terminal         = send_to_terminal,
   send_content_to_terminal = send_content_to_terminal,
 
   -- commands
-  add_command = add_command,
-  remove_command = remove_command,
-  run_command = run_command,
+  add_command              = add_command,
+  remove_command           = remove_command,
+  run_command              = run_command,
 
   -- api
-  launch_terminal = launch_terminal,
-  get_primary_terminal = get_primary_terminal,
-  set_primary_terminal = core.partial(add_terminal, { primary = true }),
-  get_terminal_index = get_terminal_index,
+  launch_terminal          = launch_terminal,
+  get_primary_terminal     = get_primary_terminal,
+  set_primary_terminal     = core.partial(add_terminal, { primary = true }),
+  get_terminal_index       = get_terminal_index,
 }

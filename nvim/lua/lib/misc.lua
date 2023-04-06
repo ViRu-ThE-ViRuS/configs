@@ -50,7 +50,7 @@ local function rename_buffer(name)
   -- ask for confirmation otherwise
   vim.ui.select(
     { 'yes', 'no' },
-    { prompt = 'rename buffer[file] to: ' .. name .. '> ' },
+    { prompt = 'rename buffer[file] to: ' .. name .. '> ', kind = 'plain_text' },
     function(choice)
       if choice == 'yes' then
         vim.api.nvim_buf_set_name(0, name)
@@ -126,7 +126,7 @@ local function open_repo_on_github(remote)
 end
 
 -- window: toggle current window (maximum <-> original)
-local function toggle_window()
+local function toggle_window_focus()
   if vim.fn.winnr("$") > 1 then
     local original = vim.api.nvim_get_current_win()
     vim.cmd("tab sp")
@@ -159,8 +159,7 @@ local function toggle_context_winbar()
       vim.api.nvim_buf_call(
         bufnr,
         function()
-          vim.opt_local.winbar = "%!luaeval(\"require('lsp-setup/lsp_utils').get_context_winbar(" ..
-              bufnr .. ")\")"
+          vim.opt_local.winbar = "%!luaeval(\"require('lsp-setup/lsp_utils').get_context_winbar(" .. bufnr .. ")\")"
         end
       )
     end
@@ -224,7 +223,7 @@ local function toggle_global_statusline(opts)
   )
 
   if opts.force == 'local' or
-    (opts.force ~= 'global' and vim.api.nvim_get_option_value("laststatus", { scope = "global" }) == 3) then
+      (opts.force ~= 'global' and vim.api.nvim_get_option_value("laststatus", { scope = "global" }) == 3) then
     vim.opt.laststatus = 2
     utils.notify("global statusline", "debug", { title = '[UI] deactivated', render = "compact" })
   else
@@ -258,7 +257,7 @@ end
 -- toggle silent mode
 local function toggle_silent_mode()
   session.state.ui.enable_notifications = not session.state.ui.enable_notifications
-  utils.notify('silent mode', "info", {  title = '[UI] activated', render = "compact" })
+  utils.notify('silent mode', "info", { title = '[UI] activated', render = "compact" })
 end
 
 -- send :messages to qflist
@@ -284,7 +283,7 @@ local function show_command(command)
     table.insert(entries, { text = line })
   end
 
-  utils.qf_populate(entries, { title = "Command Output"})
+  utils.qf_populate(entries, { title = "Command Output" })
 end
 
 -- randomize colorscheme
@@ -326,13 +325,13 @@ return {
   rename_buffer              = rename_buffer,
   get_visible_qflists        = get_visible_qflists,
 
-  -- repo related
+  -- git related
   get_git_root               = get_git_root,
   get_git_remotes            = get_git_remotes,
   open_repo_on_github        = open_repo_on_github,
 
   -- toggles
-  toggle_window              = toggle_window,
+  toggle_window_focus        = toggle_window_focus,
   toggle_context_winbar      = toggle_context_winbar,
   toggle_thick_separators    = toggle_thick_separators,
   toggle_spellings           = toggle_spellings,

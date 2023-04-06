@@ -99,8 +99,10 @@ vim.api.nvim_create_autocmd('BufWritePost', {
     -- stop all servers before reloading
     vim.lsp.stop_client(vim.lsp.get_active_clients(), false)
 
-    -- reload modules
-    -- dofile(rc_file)
+    -- TODO(vir): get this working
+    -- source current file, source config file
+    -- reload all unloaded modules
+
 
     core.foreach(
       to_reload,
@@ -111,6 +113,7 @@ vim.api.nvim_create_autocmd('BufWritePost', {
     )
 
     vim.cmd [[ source ]]
+    vim.cmd.doautocmd('User VeryLazy')
 
     utils.notify(src_file, 'info', {
       title = '[CONFIG] reloaded from',
@@ -128,7 +131,7 @@ if misc.get_git_root() ~= nil then
     local remotes = misc.get_git_remotes()
 
     if #remotes > 1 then
-      vim.ui.select(remotes, { prompt = 'open remote> ' }, function(remote)
+      vim.ui.select(remotes, { prompt = 'open remote> ', kind = 'plain_text' }, function(remote)
         misc.open_repo_on_github(remote)
       end)
     else
