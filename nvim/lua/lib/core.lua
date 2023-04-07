@@ -14,15 +14,6 @@ local function foreach(tbl, f, only_values)
   return t
 end
 
--- create table (_, value) -> (_, f(key, value))
-local function apply(tbl, f)
-  if not tbl then return {} end
-
-  local t = {}
-  for key, value in pairs(tbl) do table.insert(t, f(key, value)) end
-  return t
-end
-
 -- filter using predicate f
 local function filter(tbl, f, keep_keys)
   if not tbl or tbl == {} then return {} end
@@ -96,16 +87,6 @@ local function table_copy(t, discard_keys)
   for k, v in pairs(t) do insert(k, v) end
 
   return setmetatable(u, getmetatable(t))
-end
-
--- return table of keys
-local function table_keys(tbl)
-  local keys = {}
-  for key, _ in pairs(tbl) do
-    table.insert(keys, key)
-  end
-
-  return keys
 end
 
 -- checks if all (key, value) pairs exist in both tables
@@ -190,13 +171,11 @@ end
 return {
   round          = round,
   foreach        = foreach,
-  apply          = apply,
   filter         = filter,
   list_concat    = list_concat,
   partial        = partial,
   table_contains = table_contains,
   table_copy     = table_copy,
-  table_keys     = table_keys,
   table_equal    = table_equal,
   table_subset   = table_subset,
   lua_systemlist = lua_systemlist,

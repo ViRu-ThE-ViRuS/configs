@@ -1,6 +1,6 @@
 local core = require('lib/core')
-local utils = require('utils')
 local lsp_utils = require('lsp-setup/lsp_utils')
+local utils = require('utils')
 
 -- setup lsp keymaps
 local function setup_lsp_keymaps(_, bufnr)

@@ -82,7 +82,8 @@ local function add_command(key, callback, opts)
     --  - 0+ parameters
     assert(
       (not opts.cmd_opts) or (not opts.cmd_opts.nargs) or
-      (opts.cmd_opts.nargs == 0) or (opts.cmd_opts.nargs == '?'),
+      (opts.cmd_opts.nargs == 0) or (opts.cmd_opts.nargs == '*') or
+      (opts.cmd_opts.nargs == '?'),
       'cannot add custom command which requires 1+ arguments'
     )
 

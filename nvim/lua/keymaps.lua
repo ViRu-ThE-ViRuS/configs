@@ -19,13 +19,18 @@ utils.map({ "n", "v" }, "<c-bs>", '"_dl', { noremap = false })
 utils.map({ "n", "v" }, "-", '"0p=`]')
 utils.map({ "n", "v" }, "_", '"0P=`]')
 
+-- set undo points between each word/line
+utils.map('i', '<cr>', '<c-g>u<cr>')
+
 -- search jumps open folds, this doesnt update shortmess
--- utils.map('n', 'n', 'nzv', { noremap = false })
--- utils.map('n', 'N', 'Nzv', { noremap = false })
+utils.map('n', 'n', 'nzv', { noremap = false })
+utils.map('n', 'N', 'Nzv', { noremap = false })
 
 -- misc
 utils.map("n", ";", ":")                                         -- swaperoo
 utils.map("n", ":", ";")                                         -- swaperoo
+utils.map("n", '`', "'")
+utils.map("n", "'", "`")
 utils.map("i", "jj", "<esc>")                                    -- home-row escape
 utils.map("n", "U", "<c-r>")                                     -- undo
 utils.map('n', 'Y', 'yy')                                        -- yank full line
@@ -93,14 +98,14 @@ utils.map("n", "<leader>3", misc.toggle_global_statusline, { desc = 'toggle glob
 utils.map("n", "<leader>Q", misc.toggle_qflist)
 utils.map("n", "<leader>cq", quickfix.open_list)
 utils.map("n", "<leader>cQ", quickfix.add_list)
-utils.map("n", "[q", "<cmd>try | cprev | catch | silent! clast | catch | endtry<cr>zR")
-utils.map("n", "]q", "<cmd>try | cnext | catch | silent! cfirst | catch | endtry<cr>zR")
+utils.map("n", "[q", "<cmd>try | cprev | catch | silent! clast | catch | endtry<cr>zv")
+utils.map("n", "]q", "<cmd>try | cnext | catch | silent! cfirst | catch | endtry<cr>zv")
 
 -- buffer resizing
-utils.map("n", "<m-j>", "<cmd>resize +2<cr>")
-utils.map("n", "<m-k>", "<cmd>resize -2<cr>")
-utils.map("n", "<m-h>", "<cmd>vertical resize -2<cr>")
-utils.map("n", "<m-l>", "<cmd>vertical resize +2<cr>")
+utils.map("n", "<m-down>", "<cmd>resize +2<cr>")
+utils.map("n", "<m-up>", "<cmd>resize -2<cr>")
+utils.map("n", "<m-left>", "<cmd>vertical resize -2<cr>")
+utils.map("n", "<m-right>", "<cmd>vertical resize +2<cr>")
 
 -- buffer & tab navigation
 utils.map("n", "<bs>", '<c-^>zz')

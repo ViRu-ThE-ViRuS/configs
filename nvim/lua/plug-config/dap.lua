@@ -5,7 +5,7 @@ local function activate_output_window(session)
   local target_handle = nil
   local target_regex = nil
 
-  -- TODO(vir): MANUAL update this when new dap servers are added
+  -- NOTE(vir): MANUAL update this when new dap servers are added
   target_regex = vim.regex('\\v^.*/python3|codelldb$')
 
   -- get buffer handle for output window
@@ -134,7 +134,7 @@ local function setup_dap_ui()
   })
 
   -- setup repl
-  dap.repl.commands = vim.tbl_extend('force', dap.repl.commands, {
+  dap.repl.commands = vim.tbl_deep_extend('force', dap.repl.commands, {
     exit = { 'q', 'exit' },
     custom_commands = {
       ['.run_to_cursor'] = dap.run_to_cursor,
@@ -336,7 +336,7 @@ return {
         -- add project command for specified configs
         project:add_command('run DAP config', function()
           vim.ui.select(
-            core.table_keys(project.dap_config),
+            vim.tbl_keys(project.dap_config),
             { prompt = 'run config> ', kind = 'plain_text' },
             function(config_name) launch_dap(project.dap_config[config_name]) end
           )

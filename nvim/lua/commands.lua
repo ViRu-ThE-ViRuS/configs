@@ -103,7 +103,6 @@ vim.api.nvim_create_autocmd('BufWritePost', {
     -- source current file, source config file
     -- reload all unloaded modules
 
-
     core.foreach(
       to_reload,
       function(_, mod)
@@ -167,8 +166,9 @@ utils.add_command('Messages', misc.show_messages, {
 -- command output in qflist
 utils.add_command('Show', misc.show_command, {
   cmd_opts = {
-    bang = false,
+    bang = true,
     nargs = '+',
+    complete = 'command',
     desc = 'run command, show output in qflist',
   }
 })

@@ -48,6 +48,20 @@ local lsp_icons = {
   Operator      = { icon = "+", hl = "%#SLTSOperator#" },
   TypeParameter = { icon = "𝙏", hl = "%#SLTSParameter#" }
 }
+
+-- debug_print config
+local debug_print_config = {
+  postfix = '__DEBUG_PRINT__',
+
+  -- NOTE(vir): format string with 2 strings (%s) [label, target]
+  --            support more languages as needed
+  fmt     = {
+    lua    = 'print("%s: ", vim.inspect(%s))',
+    c      = 'printf("%s: %%s", %s);',
+    cpp    = 'std::cout << "%s: " << %s << std::endl;',
+    python = 'print(f"%s: {str(%s)}")',
+  },
+}
 -- }}}
 
 -- {{{ utils
@@ -278,10 +292,10 @@ local function debug_print(visual)
 
   -- NOTE(vir): no error handling, to remind me that i need to add missing config
   local ft = vim.api.nvim_get_option_value('filetype', { scope = 'local' })
-  local template = session.config.debug_print.fmt[ft]
-  local postfix_raw = session.config.debug_print.postfix
+  local template = debug_print_config.fmt[ft]
+  local postfix_raw = debug_print_config.postfix
   local postfix = ' ' .. vim.api.nvim_get_option_value('commentstring', { scope = 'local' })
-      :format(postfix_raw)
+    :format(postfix_raw)
 
   if visual then
     local selection_start = vim.api.nvim_buf_get_mark(0, "<")
@@ -331,7 +345,7 @@ local function debug_print(visual)
   vim.cmd [[ normal! =jh ]]
 
   -- format using lsp
-  -- vim.lsp.buf.format({ bufnr = 0, async = false, range = {
+  -- vim.lsp.buf.format({ bufnr = 0, async = true, range = {
   --     ['start'] = { target_line + 2, 0 },
   --     ['end'] = { target_line + 2, #debug_print_statement },
   -- } })
@@ -340,10 +354,11 @@ end
 return {
   lsp_icons               = lsp_icons,
 
+  -- misc
   get_context             = get_context,
   get_context_winbar      = get_context_winbar,
-  debug_print             = debug_print,
   toggle_diagnostics_list = toggle_diagnostics_list,
+  debug_print             = debug_print,
 
   -- context tag_state api
   update_tags             = update_tags,

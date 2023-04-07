@@ -24,11 +24,11 @@ local function calculate_indent(str, get)
 end
 
 -- scroll buffer to end
--- TODO(vir): FIXME why is there a need for pcall
---  - debug using preamble terminal calls, in dap config
---  - issue is related to `cant switch to normal mode from terminal mode`
 local function scroll_to_end(bufnr)
-  pcall(vim.api.nvim_buf_call, bufnr, function() vim.cmd [[ normal! G ]] end)
+  vim.api.nvim_buf_call(bufnr, function()
+    vim.cmd.startinsert()
+    vim.cmd.stopinsert()
+  end)
 end
 
 -- rename current buffer
@@ -89,7 +89,7 @@ local function get_git_remotes()
 end
 
 -- open repository on github
--- TODO(vir): MANUAL add support for gitlab, bitbucket etc as needed
+-- NOTE(vir): MANUAL add support for gitlab, bitbucket etc as needed
 local function open_repo_on_github(remote)
   if get_git_root() == nil then
     utils.notify(
@@ -273,17 +273,29 @@ local function show_messages()
 end
 
 -- send :command output to qflist
-local function show_command(command)
-  command = command.args
+local function show_command(out)
+  local bang = out.bang
+  local command = out.args
 
   local output = vim.api.nvim_exec(command, true)
-  local entries = {}
 
-  for _, line in ipairs(vim.split(output, "\n", true)) do
-    table.insert(entries, { text = line })
+  if bang then
+    -- set to new buffer
+    vim.cmd.vsplit()
+
+    local bufnr = vim.api.nvim_create_buf(false, true)
+    vim.api.nvim_buf_set_option(bufnr, 'bufhidden', 'delete')
+    vim.api.nvim_win_set_buf(0, bufnr)
+    vim.api.nvim_buf_set_lines(bufnr, -1, -1, false, vim.split(output, "\n", true))
+  else
+    -- set to qflist
+    local entries = {}
+    for _, line in ipairs(vim.split(output, "\n", true)) do
+      table.insert(entries, { text = line })
+    end
+
+    utils.qf_populate(entries, { title = "Command Output" })
   end
-
-  utils.qf_populate(entries, { title = "Command Output" })
 end
 
 -- randomize colorscheme

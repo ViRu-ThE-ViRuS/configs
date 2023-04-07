@@ -1,8 +1,18 @@
--- refresh fugitive window if present
-local function refresh_fugitive()
-  local current_window = vim.api.nvim_get_current_win()
-  vim.cmd [[ windo if &ft == 'fugitive' | :edit | end ]]
-  vim.api.nvim_set_current_win(current_window)
+-- wrap func(arg) + fugitive refresh
+local function wrap_refresh_fugitive(func, arg)
+  return function()
+    local ret_val = func(arg)
+    local current_window = vim.api.nvim_get_current_win()
+
+    vim.cmd(string.format(
+      'windo if &ft == "fugitive" | :edit | end | call win_gotoid(%s)',
+      current_window
+    ))
+
+    -- vim.schedule_wrap(vim.api.nvim_set_current_win, current_window)
+    -- vim.fn.win_gotoid(current_window)
+    return ret_val
+  end
 end
 
 return {
@@ -26,15 +36,6 @@ return {
         -- text objects
         utils.map({ 'o', 'x' }, 'ig', gitsigns.select_hunk, map_opts)
         utils.map({ 'o', 'x' }, 'ag', gitsigns.select_hunk, map_opts)
-
-        -- return a function, which calls func(arg) and refreshes fugitive
-        local function wrap_refresh_fugitive(func, arg)
-          return function()
-            local ret_val = func(arg)
-            vim.schedule(refresh_fugitive)
-            return ret_val
-          end
-        end
 
         -- keymaps
         utils.map('n', '<leader>gp', gitsigns.preview_hunk, map_opts)

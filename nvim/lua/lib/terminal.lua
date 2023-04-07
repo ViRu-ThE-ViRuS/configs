@@ -5,10 +5,6 @@ local core = require('lib/core')
 local palette = session.state.palette
 local truncation = session.config.truncation
 
--- TODO(vir): FUTURE
---   - visual reorder
---   - remove terminals from term_states? overwrite policy works so why?
-
 -- {{{ utils
 -- get index of terminal given terminal_job_id
 -- return nil if not registered
@@ -62,7 +58,7 @@ local function register_terminal(job_id, index)
       term_state.bufnr
     )
 
-    -- TODO(vir): FUTURE consider a special statusline
+    -- NOTE(vir): FUTURE consider a special statusline
   else
     -- swapping with self
     notification = string.format(
@@ -123,7 +119,7 @@ local function add_terminal(opts)
   local job_id = vim.b.terminal_job_id
   local index = (opts.primary and 1) or opts.index or vim.v.count -- 0 means no index specified
 
-  -- TODO(vir): FUTURE think about notes in quickfix.lua
+  -- no index specified, and we dont have a primary terminal
   if (index == 0) and (not get_primary_terminal()) then
     index = 1
   end
@@ -222,7 +218,7 @@ local function toggle_terminal(opts)
     local index = opts.index or vim.v.count1
     job_id = palette.terminals.indices[index]
 
-    if not job_id then
+    if (not job_id) or type(job_id) == 'table' then
       utils.notify('index not registered', 'warn', {
         title = '[TERM] palette ',
         render = 'compact',

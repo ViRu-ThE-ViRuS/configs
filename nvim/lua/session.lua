@@ -29,22 +29,7 @@ local default_config = {
     truncation_limit_s          = 80,  -- small truncation limit
     truncation_limit            = 100, -- medium truncation limit
     truncation_limit_l          = 160, -- large truncation limit
-  },
-
-  -- debug print setup
-  debug_print         = {
-    postfix = '__DEBUG_PRINT__',
-
-    -- NOTE(vir): format string with 2 strings (%s) [label, target]
-    --            support more languages as needed
-    fmt     = {
-      lua    = 'print("%s: ", vim.inspect(%s))',
-      c      = 'printf("%s: %%s", %s);',
-      cpp    = 'std::cout << "%s: " << %s << std::endl;',
-      python = 'print(f"%s: {str(%s)}")',
-    },
-  },
-
+  }
 }
 
 -- {{{ global editor state

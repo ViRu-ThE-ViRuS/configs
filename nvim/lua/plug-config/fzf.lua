@@ -94,10 +94,7 @@ return {
     -- NOTE(vir): doing here so as to force fzf
     -- custom commands
     utils.add_command("Commands", function()
-      local keys = require('lib/core').apply(
-        session.state.commands,
-        function(key, _) return key end
-      )
+      local keys = vim.tbl_keys(session.state.commands)
       table.sort(keys, function(a, b) return a > b end)
 
       -- force fzf-lua usage, by setting fzf-lua as vim.ui.select handler
