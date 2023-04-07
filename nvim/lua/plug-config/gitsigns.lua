@@ -1,17 +1,30 @@
--- wrap func(arg) + fugitive refresh
+-- NOTE(vir): references to fugitive and diffview
+-- wrap func(arg) + fugitive window referesh
 local function wrap_refresh_fugitive(func, arg)
   return function()
     local ret_val = func(arg)
-    local current_window = vim.api.nvim_get_current_win()
 
-    vim.cmd(string.format(
-      'windo if &ft == "fugitive" | :edit | end | call win_gotoid(%s)',
-      current_window
-    ))
+    vim.schedule_wrap(function()
+      local diffview_buf = nil
+      local fugitive_buf = nil
 
-    -- vim.schedule_wrap(vim.api.nvim_set_current_win, current_window)
-    -- vim.fn.win_gotoid(current_window)
-    return ret_val
+      for _, winid in pairs(vim.api.nvim_tabpage_list_wins(0)) do
+        local buf = vim.api.nvim_win_get_buf(winid)
+
+        fugitive_buf = fugitive_buf or (vim.api.nvim_buf_get_option(buf, 'filetype') == "fugitive" and buf)
+        diffview_buf = diffview_buf or (string.find(vim.api.nvim_buf_get_name(buf), '^diffview://') ~= nil)
+
+        -- early exit if both found already
+        if fugitive_buf and diffview_buf then break end
+      end
+
+      -- do not update fugitive when in diffview tab
+      if fugitive_buf and not diffview_buf then
+        vim.api.nvim_buf_call(fugitive_buf, vim.cmd.edit)
+      end
+
+      return ret_val
+    end)
   end
 end
 
@@ -52,8 +65,10 @@ return {
 
         -- unstage and refresh fugitive
         utils.map('n', '<leader>gu', wrap_refresh_fugitive(gitsigns.undo_stage_hunk), map_opts)
-        utils.map('v', '<leader>gu',
-          wrap_refresh_fugitive(gitsigns.undo_stage_hunk, { vim.fn.line('.'), vim.fn.line('v') }), map_opts)
+        utils.map('v', '<leader>gu', wrap_refresh_fugitive(
+          gitsigns.undo_stage_hunk,
+          { vim.fn.line('.'), vim.fn.line('v') }
+        ), map_opts)
       end
     }
   end
