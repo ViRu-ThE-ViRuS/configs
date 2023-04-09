@@ -16,7 +16,6 @@ vim.api.nvim_create_autocmd('ColorScheme', {
   callback = colorscheme.ui_overrides,
 })
 
-vim.api.nvim_create_augroup('Misc', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
   group = 'Misc',
   pattern = '*',

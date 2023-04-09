@@ -79,8 +79,9 @@ _G.session = {
 }
 
 -- initialize misc features
-vim.api.nvim_create_augroup('Session', { clear = true })     -- misc session autocommands
+vim.api.nvim_create_augroup('Session', { clear = true })     -- session autocommands
 vim.api.nvim_create_augroup('ProjectInit', { clear = true }) -- lib/project
+vim.api.nvim_create_augroup('Misc', { clear = true })        -- various hacks (preload)
 
 -- NOTE(vir): return this as well
 return session

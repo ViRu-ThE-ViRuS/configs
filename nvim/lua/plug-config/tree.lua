@@ -8,6 +8,7 @@ return {
     utils.map('n', '<leader>j', '<cmd>NvimTreeToggle<cr>')
 
     vim.api.nvim_create_autocmd('FileType', {
+      group = 'Misc',
       pattern = { 'NvimTree' },
       callback = function()
         utils.map('n', '<c-o>', '<cmd>wincmd p<cr>', { buffer = 0 })

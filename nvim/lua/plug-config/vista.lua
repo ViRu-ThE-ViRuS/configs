@@ -7,6 +7,7 @@ return {
     utils.map('n', '<leader>k', function() vim.cmd.Vista({ bang = true, args = { '!' } }) end)
 
     vim.api.nvim_create_autocmd('FileType', {
+      group = 'Misc',
       pattern = { 'vista', 'vista_kind' },
       callback = function()
         utils.map('n', '<c-o>', '<cmd>wincmd p<cr>', { buffer = 0 })

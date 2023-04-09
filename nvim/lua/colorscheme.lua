@@ -207,7 +207,6 @@ return {
     dark = {
       "aquarium",
       "barstrata",
-      "danger",
       "everforest",
       "gruvbox",
       "gruvbox-baby",

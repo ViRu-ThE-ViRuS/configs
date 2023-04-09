@@ -29,5 +29,4 @@ vim.api.nvim_create_autocmd("User", {
 --  pyrightconfig.json  : pyright config
 
 -- ideas and todos --
--- 1. add groups to all autocommands in config
 

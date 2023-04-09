@@ -8,4 +8,8 @@ utils.map("n", "<c-v>", "<c-w><cr><c-w>L", { buffer = 0 })
 utils.map("n", "<c-x>", "<c-w><cr><c-w>K", { buffer = 0 })
 utils.map("n", "<c-o>", "<cmd>wincmd p<cr>", { buffer = 0 })
 
-vim.cmd [[ autocmd! BufEnter <buffer> if winnr('$') < 2 | q | endif ]]
+vim.cmd [[
+augroup Misc
+  autocmd! BufEnter <buffer> if winnr('$') < 2 | q | endif
+augroup END
+]]

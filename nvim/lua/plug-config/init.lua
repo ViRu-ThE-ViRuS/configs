@@ -6,7 +6,6 @@ return {
   -- colorschemes
   'FrenzyExists/aquarium-vim',
   'w3barsi/barstrata.nvim',
-  "igorgue/danger",
   'sainnhe/everforest',
   'ellisonleao/gruvbox.nvim',
   'luisiacc/gruvbox-baby',

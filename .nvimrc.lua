@@ -6,7 +6,9 @@ project:add_command('Update Repository', function()
   vim.cmd [[
       !source update_repo.sh
       G
-    ]]
+      G! difftool
+      cc! 1
+  ]]
 end, nil, true)
 
 project:add_command('Update Configs', function()

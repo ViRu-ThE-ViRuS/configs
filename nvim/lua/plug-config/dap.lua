@@ -143,9 +143,8 @@ local function setup_dap_ui()
   })
 
   -- autocomplete in repl buffer
-  -- vim.api.nvim_create_augroup('DAPConfig', { clear = true })
   -- vim.api.nvim_create_autocmd('FileType', {
-  --     group = 'DAPConfig',
+  --     group = 'Misc',
   --     pattern = 'dap-repl',
   --     callback = require('dap.ext.autocompl').attach
   -- })
@@ -324,9 +323,9 @@ return {
 
     -- project debug config
     vim.api.nvim_create_autocmd('User', {
+      group = 'Session',
       pattern = 'ProjectInit',
       callback = function()
-        local core = require('lib/core')
         local project = session.state.project
         assert(project, "project should not be nil on ProjectInit")
 

@@ -27,6 +27,7 @@ return {
 
       -- disable line numbers in git status
       vim.api.nvim_create_autocmd('FileType', {
+        group = 'Misc',
         pattern = 'fugitive',
         command = 'set nonumber'
       })
