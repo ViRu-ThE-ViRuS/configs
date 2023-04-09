@@ -12,7 +12,7 @@ utils.map({ "n", "v", "o" }, "L", "$")
 -- delete without yank
 utils.map({ "n", "v" }, "x", '"_d', { noremap = false })
 utils.map({ "n", "v" }, "X", '"_dd', { noremap = false })
-utils.map({ "n", "v" }, "<a-bs>", '"_dh', { noremap = false })
+utils.map({ "n", "v" }, "<m-bs>", '"_dh', { noremap = false })
 utils.map({ "n", "v" }, "<c-bs>", '"_dl', { noremap = false })
 
 -- paste yanked
@@ -123,10 +123,10 @@ utils.map("t", "<c-k>", "<c-\\><c-w>k")
 utils.map("t", "<c-l>", "<c-\\><c-w>l")
 
 -- move lines
--- utils.map('n', '<a-k>', ':move .-2<CR>==', { silent = true })
--- utils.map('n', '<a-j>', ':move .+1<CR>==', { silent = true })
-utils.map('v', '<a-j>', ":move '>+1<CR>gv=gv", { silent = true })
-utils.map('v', '<a-k>', ":move '<-2<CR>gv=gv", { silent = true })
+-- utils.map('n', '<m-k>', ':move .-2<CR>==', { silent = true })
+-- utils.map('n', '<m-j>', ':move .+1<CR>==', { silent = true })
+utils.map('v', '<m-j>', ":move '>+1<CR>gv=gv", { silent = true })
+utils.map('v', '<m-k>', ":move '<-2<CR>gv=gv", { silent = true })
 
 -- terminal keymaps
 utils.map("n", "<leader>s", "<cmd>vsp | terminal<cr>")

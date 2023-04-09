@@ -4,27 +4,31 @@ local function wrap_refresh_fugitive(func, arg)
   return function()
     local ret_val = func(arg)
 
-    vim.schedule_wrap(function()
-      local diffview_buf = nil
-      local fugitive_buf = nil
+    -- vim.schedule_wrap(function()
+    local diffview_buf = nil
+    local fugitive_buf = nil
 
-      for _, winid in pairs(vim.api.nvim_tabpage_list_wins(0)) do
-        local buf = vim.api.nvim_win_get_buf(winid)
+    for _, winid in pairs(vim.api.nvim_tabpage_list_wins(0)) do
+      local buf = vim.api.nvim_win_get_buf(winid)
 
-        fugitive_buf = fugitive_buf or (vim.api.nvim_buf_get_option(buf, 'filetype') == "fugitive" and buf)
-        diffview_buf = diffview_buf or (string.find(vim.api.nvim_buf_get_name(buf), '^diffview://') ~= nil)
+      fugitive_buf = fugitive_buf or (vim.api.nvim_buf_get_option(buf, 'filetype') == "fugitive" and buf)
+      diffview_buf = diffview_buf or (string.find(vim.api.nvim_buf_get_name(buf), '^diffview://') ~= nil)
 
-        -- early exit if both found already
-        if fugitive_buf and diffview_buf then break end
-      end
+      -- early exit if both found already
+      if fugitive_buf and diffview_buf then break end
+    end
 
-      -- do not update fugitive when in diffview tab
-      if fugitive_buf and not diffview_buf then
-        vim.api.nvim_buf_call(fugitive_buf, vim.cmd.edit)
-      end
+    -- do not update fugitive when in diffview tab
+    if fugitive_buf and not diffview_buf then
+      vim.defer_fn(require('lib/core').partial(
+        vim.api.nvim_buf_call,
+        fugitive_buf,
+        vim.cmd.edit
+      ), 10)
+    end
 
-      return ret_val
-    end)
+    return ret_val
+    -- end)
   end
 end
 

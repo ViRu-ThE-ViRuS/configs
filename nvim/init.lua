@@ -1,5 +1,8 @@
 -- hello my name is viraat chandra and i love to program
 
+-- NOTE(vir): do i need this?
+vim.loader.enable()
+
 require("session")
 require("plugins")
 require("settings")
@@ -25,5 +28,6 @@ vim.api.nvim_create_autocmd("User", {
 --  .flake8             : autopep8 config
 --  pyrightconfig.json  : pyright config
 
--- ideas --
+-- ideas and todos --
+-- 1. add groups to all autocommands in config
 

@@ -85,7 +85,7 @@ return {
             init_selection = '<m-=>',
             node_incremental = '<m-=>',
             node_decremental = '<m-->',
-            -- scope_incremental = '<m-0>'
+            scope_incremental = '+'
           }
         },
         textobjects = {
@@ -115,7 +115,7 @@ return {
             enable = true,
             border = 'rounded',
             peek_definition_code = {
-              ['gP'] = '@function.outer'
+              ['gK'] = '@function.outer'
             }
           }
         },

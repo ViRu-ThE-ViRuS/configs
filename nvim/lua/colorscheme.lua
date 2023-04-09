@@ -192,7 +192,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = 'dark'
 
-local colorscheme = 'xcodedarkhc'
+local colorscheme = 'gruvbox'
 ---@cast colorscheme +string +function
 
 -- load default colorscheme if chosen one is not available
@@ -213,6 +213,7 @@ return {
       "gruvbox-baby",
       "gruvbox-material",
       "habamax",
+      "hybrid",
       "melange",
       "mellow",
       "monokai_pro", "monokai_ristretto",

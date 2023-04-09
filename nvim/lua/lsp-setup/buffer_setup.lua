@@ -10,7 +10,7 @@ local function setup_lsp_keymaps(_, bufnr)
   require('plug-config/fzf').module_exports.set_lsp_keymaps(_, bufnr)
 
   utils.map('n', 'K', vim.lsp.buf.hover, map_opts)
-  utils.map('n', '<leader>r', vim.lsp.buf.rename, map_opts)
+  utils.map('n', '<leader>R', vim.lsp.buf.rename, map_opts)
   utils.map("n", "<leader>uS", vim.lsp.buf.references, map_opts)
 
   -- custom refactorings

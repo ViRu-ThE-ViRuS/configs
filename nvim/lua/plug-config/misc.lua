@@ -24,6 +24,23 @@ return {
         pattern = 'gitcommit',
         callback = statusline.set_statusline_func('GitCommit'),
       })
+
+      -- disable line numbers in git status
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = 'fugitive',
+        command = 'set nonumber'
+      })
+    end
+  },
+
+  {
+    'tommcdo/vim-exchange',
+    keys = { 'cx', 'cX', 'cxc' },
+    init = function() vim.g.exchange_no_mappings = true end,
+    config = function()
+      utils.map({'n', 'v'}, 'cx', '<plug>(Exchange)')
+      utils.map('n', 'cX', '<plug>(ExchangeLine)')
+      utils.map('n', 'cxc', '<plug>(ExchangeClear)')
     end
   },
 

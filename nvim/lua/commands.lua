@@ -20,7 +20,7 @@ vim.api.nvim_create_augroup('Misc', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
   group = 'Misc',
   pattern = '*',
-  callback = function() vim.highlight.on_yank({ on_visual = true }) end,
+  callback = core.partial(vim.highlight.on_yank, { on_visual = true })
 })
 vim.api.nvim_create_autocmd('BufWritePre', {
   group = 'Misc',
