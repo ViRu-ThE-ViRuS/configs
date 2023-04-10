@@ -62,11 +62,16 @@ local function list_concat(A, B)
   return t
 end
 
--- return index if table contains given value
-local function table_contains(tbl, target_value)
-  for key, value in pairs(tbl) do
-    if value == target_value then return key end
-    if key == target_value then return value end
+-- return index if table contains given value / key
+local function table_contains(tbl, target, use_keys)
+  if use_keys then
+    for key, _ in pairs(tbl) do
+      if key == target then return key end
+    end
+  else
+    for _, value in pairs(tbl) do
+      if value == target then return value end
+    end
   end
 
   return nil

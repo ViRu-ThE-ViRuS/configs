@@ -158,7 +158,6 @@ local function ui_overrides()
   --   ['@lsp.type.macro'] = '@macro',
   --   ['@lsp.type.decorator'] = '@function',
   -- }
-
   -- for newgroup, oldgroup in pairs(sh_links) do
   --   vim.api.nvim_set_hl(0, newgroup, { link = oldgroup, default = true })
   -- end
@@ -215,7 +214,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = 'dark'
 
-local colorscheme = 'everforest'
+local colorscheme = 'gruvbox'
 ---@cast colorscheme +string +function
 
 -- load default colorscheme if chosen one is not available

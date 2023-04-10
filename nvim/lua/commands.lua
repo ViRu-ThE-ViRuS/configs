@@ -84,25 +84,32 @@ vim.api.nvim_create_autocmd('BufWritePost', {
         -- NOTE(vir): skip files
         --  1. not already loaded
         --  2. lazy.nvim config cannot be reloaded
-        --  3. lazy.nvim plugin specs cannot be reloaded
-        if not core.table_contains(package.loaded, rel_path) then return end
+        if not core.table_contains(package.loaded, rel_path, true) then return end
         if string.find(rel_path, 'plugins') then return end
-        if string.find(rel_path, 'plug-config/') then return end
 
-        -- unload mod
+        -- unload module
         package.loaded[rel_path] = nil
         return rel_path
       end
     )
 
-    -- stop all servers before reloading
+    -- stop all servers before doing reloading
     vim.lsp.stop_client(vim.lsp.get_active_clients(), false)
 
     -- TODO(vir): get this working
-    -- source current file, source config file
-    -- reload all unloaded modules
-    -- Misc group does not work (cleared by session.lua)
+    --  1. reload session
+    --  2. reload $MYVIMRC
+    -- `3. reload all unloaded modules
+    --
+    -- known issues:
+    --  - latest file state not loaded by require (but loaded with dofile)
+    --  - dofile ~= require, doesnt update package.loaded state (even if done manually)
 
+    -- reload $MYVIMRC
+    vim.cmd [[ source $MYVIMRC ]]
+    vim.cmd.doautocmd('User VeryLazy')
+
+    -- reload other unloaded modules
     core.foreach(
       to_reload,
       function(_, mod)
@@ -112,7 +119,6 @@ vim.api.nvim_create_autocmd('BufWritePost', {
     )
 
     vim.cmd [[ source ]]
-    vim.cmd.doautocmd('User VeryLazy')
 
     utils.notify(src_file, 'info', {
       title = '[CONFIG] reloaded from',
@@ -203,7 +209,7 @@ utils.add_command('[MISC] Generate Tags', function(opts)
   local notification_fn = (opts.silent and function(...)
       end) or utils.notify
 
-  require('plenary').Job:new({
+  plenary.Job:new({
     command = 'ctags',
     args = { '-R', '--excmd=combine', '--fields=+K' },
     cwd = vim.loop.cwd(),

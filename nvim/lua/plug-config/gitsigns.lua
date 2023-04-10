@@ -77,6 +77,8 @@ return {
       end
     }
   end,
+
+  -- export usage of this plugin
   module_exports = {
     gitsigns_post_refresh_fugitive = gitsigns_post_refresh_fugitive
   }
