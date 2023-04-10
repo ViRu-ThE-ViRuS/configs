@@ -45,6 +45,7 @@ local default_state = {
   ui = {
     thick_separators     = false, -- use thick buffer separators
     window_focus_state   = {},    -- window isolation
+    buffer_diff_state    = {},    -- buffer changes diff
     enable_notifications = true,  -- like dnd mode when unset
     diagnostics_state  = {        -- diagnostics list visibility
       ["local"]  = {},

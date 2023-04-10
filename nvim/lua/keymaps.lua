@@ -93,6 +93,7 @@ utils.map({ "n", "i" }, "<right>", "<nop>")
 utils.map("n", "<leader>1", misc.toggle_window_focus, { desc = 'toggle focus on current buffer' })
 utils.map("n", "<leader>2", misc.random_colors, { desc = 'set a random preferred colorscheme' })
 utils.map("n", "<leader>3", misc.toggle_global_statusline, { desc = 'toggle global statusline' })
+utils.map("n", '<leader>4', misc.diff_current_buf, { desc = 'toggle unsaved changed diff' })
 
 -- qflist keymaps
 utils.map("n", "<leader>Q", misc.toggle_qflist)

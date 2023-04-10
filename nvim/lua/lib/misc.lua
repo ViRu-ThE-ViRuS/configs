@@ -59,6 +59,44 @@ local function rename_buffer(name)
   )
 end
 
+-- window: show diff between buffer and file on disk in new tab
+local function diff_current_buf()
+  -- focus current buffer
+  local bufnr = vim.api.nvim_get_current_buf()
+  local ft = vim.api.nvim_buf_get_option(bufnr, 'filetype')
+  local curstate = ui.buffer_diff_state[bufnr]
+
+  if not core.table_contains(vim.api.nvim_list_tabpages(), curstate) then
+    -- reset if tabpage no longer valid
+    ui.buffer_diff_state[bufnr] = false
+  else
+    -- NOTE(vir): this might not be the tab we actually want
+    -- will fix this later if needed
+    vim.api.nvim_set_current_tabpage(curstate)
+    return
+  end
+
+  -- create diff split
+  vim.cmd(string.format([[
+    tab split
+    diffthis
+
+    topleft vnew | read # | normal! 1Gdd
+    setlocal buftype=nofile
+    setlocal nobuflisted
+    setlocal noswapfile
+    setlocal readonly!
+    setlocal filetype=%s
+    diffthis
+
+    wincmd p
+  ]], ft))
+
+
+  ui.buffer_diff_state[bufnr] = vim.api.nvim_get_current_tabpage()
+end
+
+
 -- get winnrs for qflists visible in current tab
 local function get_visible_qflists()
   return core.filter(
@@ -129,7 +167,7 @@ end
 local function toggle_window_focus()
   if vim.fn.winnr("$") > 1 then
     local original = vim.api.nvim_get_current_win()
-    vim.cmd("tab sp")
+    vim.cmd("tab split")
     ui.window_focus_state[vim.api.nvim_get_current_win()] = original
   else
     local maximized = vim.api.nvim_get_current_win()
@@ -335,6 +373,7 @@ return {
   calculate_indent           = calculate_indent,
   scroll_to_end              = scroll_to_end,
   rename_buffer              = rename_buffer,
+  diff_current_buf         = diff_current_buf,
   get_visible_qflists        = get_visible_qflists,
 
   -- git related
