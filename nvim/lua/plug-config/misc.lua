@@ -47,7 +47,7 @@ return {
 
   {
     'godlygeek/tabular',
-    cmd = 'Tab',
+    cmd = 'Tabularize',
     init = function() utils.map("v", "<leader>=", ":Tab /") end,
   },
   {

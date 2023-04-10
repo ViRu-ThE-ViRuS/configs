@@ -143,6 +143,5 @@ utils.map('n', '<c-cr>', vim.cmd.Commands)
 
 -- NOTE(vir): tricks
 --  ins mode: <c-v> to get key code
---  these now work: <c-tab>, <s-tab>, <c-s-tab>, <c-cr>, <s-cr>, <c-s-cr>
-
+--  these work: <c-tab>, <s-tab>, <c-s-tab>, <c-cr>, <s-cr>, <c-s-cr>
 

@@ -120,7 +120,7 @@ vim.api.nvim_create_autocmd('BufWritePost', {
 
     -- NOTE(vir): temp fix, other files might suffer from the same issue
     -- do not double-source this file
-    if not src_file == 'lua/commands.lua' then
+    if src_file ~= 'lua/commands.lua' then
       vim.cmd [[ source ]]
     end
 

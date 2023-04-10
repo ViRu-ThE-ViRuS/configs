@@ -142,23 +142,22 @@ local function ui_overrides()
 
   -- TODO(vir): is this needed
   -- uniform semantic-treesitter highlights
-  -- local sh_links = {
-  --   ['@lsp.type.namespace'] = '@namespace',
-  --   ['@lsp.type.type'] = '@type',
-  --   ['@lsp.type.class'] = '@type',
-  --   ['@lsp.type.enum'] = '@type',
-  --   ['@lsp.type.interface'] = '@type',
-  --   ['@lsp.type.struct'] = '@structure',
-  --   ['@lsp.type.parameter'] = '@parameter',
-  --   ['@lsp.type.variable'] = '@variable',
-  --   ['@lsp.type.property'] = '@property',
+  -- for newgroup, oldgroup in pairs({
+  --   ['@lsp.type.namespace']  = '@namespace',
+  --   ['@lsp.type.type']       = '@type',
+  --   ['@lsp.type.class']      = '@type',
+  --   ['@lsp.type.enum']       = '@type',
+  --   ['@lsp.type.interface']  = '@type',
+  --   ['@lsp.type.struct']     = '@structure',
+  --   ['@lsp.type.parameter']  = '@parameter',
+  --   ['@lsp.type.variable']   = '@variable',
+  --   ['@lsp.type.property']   = '@property',
   --   ['@lsp.type.enumMember'] = '@constant',
-  --   ['@lsp.type.function'] = '@function',
-  --   ['@lsp.type.method'] = '@method',
-  --   ['@lsp.type.macro'] = '@macro',
-  --   ['@lsp.type.decorator'] = '@function',
-  -- }
-  -- for newgroup, oldgroup in pairs(sh_links) do
+  --   ['@lsp.type.function']   = '@function',
+  --   ['@lsp.type.method']     = '@method',
+  --   ['@lsp.type.macro']      = '@macro',
+  --   ['@lsp.type.decorator']  = '@function',
+  -- }) do
   --   vim.api.nvim_set_hl(0, newgroup, { link = oldgroup, default = true })
   -- end
 
@@ -166,43 +165,43 @@ local function ui_overrides()
   -- GitSign* highlights link to Diff* highlights for some reason despite
   -- configuring them not to. Consider linking these only when in git repos?
   vim.cmd([[
-        " lsp
-        highlight! link LspReferenceRead IncSearch
-        highlight! link LspReferenceWrite IncSearch
-        highlight! clear LspReferenceText
+    " lsp
+    highlight! link LspReferenceRead IncSearch
+    highlight! link LspReferenceWrite IncSearch
+    highlight! clear LspReferenceText
 
-        " make comments bold, italic
-        highlight! Comment gui=bold,italic
-        highlight! link @comment Comment
+    " make comments bold, italic
+    highlight! Comment gui=bold,italic
+    highlight! link @comment Comment
 
-        " diagnostics
-        highlight! DiagnosticError guibg=NONE
-        highlight! DiagnosticWarn guibg=NONE
-        highlight! DiagnosticInfo guibg=NONE
-        highlight! DiagnosticHint guibg=NONE
-        highlight! DiagnosticUnderlineError gui=bold,underline
-        highlight! DiagnosticUnderlineWarn gui=bold,underline
-        highlight! DiagnosticUnderlineInfo gui=bold,underline
-        highlight! DiagnosticUnderlineHint gui=bold,underline
+    " diagnostics
+    highlight! DiagnosticError guibg=NONE
+    highlight! DiagnosticWarn guibg=NONE
+    highlight! DiagnosticInfo guibg=NONE
+    highlight! DiagnosticHint guibg=NONE
+    highlight! DiagnosticUnderlineError gui=bold,underline
+    highlight! DiagnosticUnderlineWarn gui=bold,underline
+    highlight! DiagnosticUnderlineInfo gui=bold,underline
+    highlight! DiagnosticUnderlineHint gui=bold,underline
 
-        " gitsigns
-        highlight! link GitSignsAdd GitGutterAdd
-        highlight! link GitSignsChange GitGutterChange
-        highlight! link GitSignsDelete GitGutterDelete
+    " gitsigns
+    highlight! link GitSignsAdd GitGutterAdd
+    highlight! link GitSignsChange GitGutterChange
+    highlight! link GitSignsDelete GitGutterDelete
 
-        " statuscolumn
-        highlight! link LineNr Normal
-        highlight! link SignColumn Normal
-        highlight! link FoldColumn Normal
-        highlight! link CursorLineNr CursorLine
-        highlight! link CursorLineFold CursorLine
-        highlight! link CursorLineSign CursorLine
+    " statuscolumn
+    highlight! link LineNr Normal
+    highlight! link SignColumn Normal
+    highlight! link FoldColumn Normal
+    highlight! link CursorLineNr CursorLine
+    highlight! link CursorLineFold CursorLine
+    highlight! link CursorLineSign CursorLine
 
-        " misc
-        highlight! link VertSplit Normal
-        highlight! link FloatBorder Normal
-        highlight! link NormalFloat Normal
-    ]])
+    " misc
+    highlight! link VertSplit Normal
+    highlight! link FloatBorder Normal
+    highlight! link NormalFloat Normal
+  ]])
 
   -- set statusline highlights
   -- NOTE(vir): this will also initialize and set the statusline on first call
