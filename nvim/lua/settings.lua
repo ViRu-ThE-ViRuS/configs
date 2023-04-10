@@ -95,3 +95,4 @@ vim.opt.undofile = true
 
 -- remove ft maps
 vim.g.no_plugin_maps = 1
+

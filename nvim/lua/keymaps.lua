@@ -12,7 +12,7 @@ utils.map({ "n", "v", "o" }, "L", "$")
 -- delete without yank
 utils.map({ "n", "v" }, "x", '"_d', { noremap = false })
 utils.map({ "n", "v" }, "X", '"_dd', { noremap = false })
-utils.map({ "n", "v" }, "<m-bs>", '"_dh', { noremap = false })
+utils.map({ "n", "v" }, "<s-bs>", '"_dh', { noremap = false })
 utils.map({ "n", "v" }, "<c-bs>", '"_dl', { noremap = false })
 
 -- paste yanked
@@ -29,8 +29,8 @@ utils.map('n', 'N', 'Nzv', { noremap = false })
 -- misc
 utils.map("n", ";", ":")                                         -- swaperoo
 utils.map("n", ":", ";")                                         -- swaperoo
-utils.map("n", '`', "'")
-utils.map("n", "'", "`")
+utils.map("n", '`', "'")                                         -- jump to mark (row, 0), swap
+utils.map("n", "'", "`")                                         -- jump to mark (row,col), swap
 utils.map("i", "jj", "<esc>")                                    -- home-row escape
 utils.map("n", "U", "<c-r>")                                     -- undo
 utils.map('n', 'Y', 'yy')                                        -- yank full line
@@ -38,34 +38,41 @@ utils.map("n", "<space>", "za")                                  -- toggle folds
 utils.map("n", "gp", "`[v`]")                                    -- last paste
 utils.map("n", "p", "p`[=`]")                                    -- autoformat paste
 utils.map("n", "P", "P`[=`]")                                    -- autoformat Paste
-utils.map({ "n", "v" }, "<c-b>", "<nop>")                        -- disable <c-b>
 utils.map("n", "/", "ms/")                                       -- mark search start
 utils.map("n", "?", "ms?")                                       -- mark search start
-utils.map("v", "&", ":&&<cr>")                                   -- visual execute last substitution
-utils.map("v", ".", ":normal! .<cr>")                            -- visual execute .
-utils.map("v", "@", ":normal! @")                                -- visual execute macro
+utils.map("x", "&", ":&&<cr>")                                   -- visual execute last substitution
+utils.map("x", ".", ":normal! .<cr>")                            -- visual execute .
+utils.map("x", "@", ":normal! @")                                -- visual execute macro
 utils.map("n", "ss", "s")                                        -- substitute mode, same as default `gh`
 utils.map("x", "ss", ":s/\\%V")                                  -- substitute in visual
 utils.map("x", "s/", ":s/\\<<C-r><C-w>\\>/")                     -- substitute cword in selection
 utils.map('x', '<m-/>', '<esc>/\\%V')                            -- search within selection, '/' itself is a good mapping to consider for this
 utils.map('x', '//', [[y/<c-r>=trim(escape(@",'\/]'))<cr><cr>]]) -- search for selection
 
--- command edit modes
+-- commandline modes
+utils.map("n", '@"', "@:", { noremap = false })       -- repeat last comand
+utils.map("n", '@:', "q:")                            -- command edit mode
 -- utils.map({ "n", "v" }, "q:", "<nop>")
 -- utils.map({ "n", "v" }, "q/", "<nop>")
 -- utils.map({ "n", "v" }, "q?", "<nop>")
-utils.map("n", '@"', "@:", { noremap = false })
-utils.map("n", '@:', "q:")
 
--- mouse scrolling
-utils.map("n", "<ScrollWheelUp>", "<c-y>")
-utils.map("n", "<ScrollWheelDown>", "<c-e>")
+-- disable built ins
+utils.map({ "n", "i" }, "<up>", "<nop>")
+utils.map({ "n", "i" }, "<down>", "<nop>")
+utils.map({ "n", "i" }, "<left>", "<nop>")
+utils.map({ "n", "i" }, "<right>", "<nop>")
+utils.map({ "n", "x" }, "<c-b>", "<nop>")
+utils.map({ "n", "x" }, "<s-cr>", "<nop>")
 
--- disable clicks
+-- disable right mouse clicks, allow left clicks for mouse placement
 -- utils.map("n", "<LeftMouse>", "<nop>")
 -- utils.map("n", "<2-LeftMouse>", "<nop>")
 utils.map("n", "<RightMouse>", "<nop>")
 utils.map("n", "<2-RightMouse>", "<nop>")
+
+-- mouse scrolling
+utils.map("n", "<ScrollWheelUp>", "<c-y>")
+utils.map("n", "<ScrollWheelDown>", "<c-e>")
 
 -- sane speed scrolling
 utils.map({ "n", "v" }, "{", "4k")
@@ -83,12 +90,6 @@ vim.cmd [[
     cnoreabbrev <expr> ;w    ((getcmdtype()  is# ':' && getcmdline() is# ';w')?('w'):(';w'))
 ]]
 
--- hardcore mode
-utils.map({ "n", "i" }, "<up>", "<nop>")
-utils.map({ "n", "i" }, "<down>", "<nop>")
-utils.map({ "n", "i" }, "<left>", "<nop>")
-utils.map({ "n", "i" }, "<right>", "<nop>")
-
 -- toggles
 utils.map("n", "<leader>1", misc.toggle_window_focus, { desc = 'toggle focus on current buffer' })
 utils.map("n", "<leader>2", misc.random_colors, { desc = 'set a random preferred colorscheme' })
@@ -103,10 +104,10 @@ utils.map("n", "[q", "<cmd>try | cprev | catch | silent! clast | catch | endtry<
 utils.map("n", "]q", "<cmd>try | cnext | catch | silent! cfirst | catch | endtry<cr>zv")
 
 -- buffer resizing
-utils.map("n", "<m-J>", "<cmd>resize +2<cr>")
-utils.map("n", "<m-K>", "<cmd>resize -2<cr>")
-utils.map("n", "<m-H>", "<cmd>vertical resize -2<cr>")
-utils.map("n", "<m-L>", "<cmd>vertical resize +2<cr>")
+utils.map("n", "<c-s-j>", "<cmd>resize +2<cr>")
+utils.map("n", "<c-s-k>", "<cmd>resize -2<cr>")
+utils.map("n", "<c-s-h>", "<cmd>vertical resize -2<cr>")
+utils.map("n", "<c-s-l>", "<cmd>vertical resize +2<cr>")
 
 -- buffer & tab navigation
 utils.map("n", "<bs>", '<c-^>zz')
@@ -142,3 +143,6 @@ utils.map('n', '<c-cr>', vim.cmd.Commands)
 
 -- NOTE(vir): tricks
 --  ins mode: <c-v> to get key code
+--  these now work: <c-tab>, <s-tab>, <c-s-tab>, <c-cr>, <s-cr>, <c-s-cr>
+
+

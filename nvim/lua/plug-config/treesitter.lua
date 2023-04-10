@@ -51,7 +51,6 @@ local function up_lsp_stack()
   vim.api.nvim_win_set_cursor(0, { head.range.start.line, head.range['end'].line })
 end
 
-
 return {
   {
     'nvim-treesitter/nvim-treesitter',
@@ -71,7 +70,7 @@ return {
       require('nvim-treesitter.configs').setup({
         ensure_installed = {
           'lua', 'python', 'c', 'cpp', 'java', 'go', 'bash', 'fish',
-          'cmake', 'make', 'cuda', 'rust', 'vim', 'markdown',
+          'cmake', 'make', 'cuda', 'rust', 'vim', 'vimdoc', 'markdown',
           'javascript', 'typescript', 'tsx', 'query'
         },
         indent = { enable = true, disable = { 'python', 'c', 'cpp', 'lua' } },
@@ -159,6 +158,8 @@ return {
       vim.g.matchup_surround_enabled = 1
       vim.g.matchup_matchparen_offscreen = { method = 'popup' }
 
+      -- NOTE(vir): add missing vim.b.match_words
+
       local utils = require("utils")
       utils.map({ 'n', 'o', 'x' }, 'Q', '<plug>(matchup-%)')
       utils.map({ 'o', 'x' }, 'iQ', '<plug>(matchup-i%)')
@@ -170,9 +171,15 @@ return {
     config = function()
       vim.g['sandwich#recipes'] = require('lib/core').list_concat(
         vim.g['sandwich#default_recipes'], {
-          { buns = { '( ', ' )' }, nesting = 1, match_syntax = 1, input = { ')' } },
-          { buns = { '[ ', ' ]' }, nesting = 1, match_syntax = 1, input = { ']' } },
-          { buns = { '{ ', ' }' }, nesting = 1, match_syntax = 1, input = { '}' } },
+          -- add
+          { buns = { '( ', ' )' }         , nesting = 1, match_syntax = 1, input = { ')' } },
+          { buns = { '[ ', ' ]' }         , nesting = 1, match_syntax = 1, input = { ']' } },
+          { buns = { '{ ', ' }' }         , nesting = 1, match_syntax = 1, input = { '}' } },
+
+          -- remove or replace
+          { buns = {'{\\s*', '\\s*}'}     , nesting = 1, match_syntax = 1, regex = 1, kind= {'delete', 'replace', 'textobj'}, action = {'delete'}, input = {'{'}},
+          { buns = {'\\[\\s*', '\\s*\\]'} , nesting = 1, match_syntax = 1, regex = 1, kind= {'delete', 'replace', 'textobj'}, action = {'delete'}, input = {'['}},
+          { buns = {'(\\s*', '\\s*)'}     , nesting = 1, match_syntax = 1, regex = 1, kind= {'delete', 'replace', 'textobj'}, action = {'delete'}, input = {'('}},
         })
     end,
   },

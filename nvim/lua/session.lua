@@ -74,6 +74,7 @@ _G.session = {
   -- config is reloaded from file
   config = default_config,
 
+  -- TODO(vir): only carry over certain parts of state like commands or palette
   -- state is restored from previous session, if possible
   state  = (session and vim.tbl_deep_extend('force', default_state, session.state)) or default_state
   -- state = default_state

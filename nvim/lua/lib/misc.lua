@@ -23,7 +23,7 @@ local function calculate_indent(str, get)
   return string.rep(' ', indent_size)
 end
 
--- scroll buffer to end
+-- scroll target buffer to end (set cursor to last line)
 local function scroll_to_end(bufnr)
   local cur_win = vim.api.nvim_get_current_win()
 
@@ -101,7 +101,7 @@ local function diff_current_buf()
     wincmd p
   ]], ft))
 
-
+  -- set state
   ui.buffer_diff_state[bufnr] = vim.api.nvim_get_current_tabpage()
 end
 
@@ -384,10 +384,12 @@ return {
   rename_buffer              = rename_buffer,
   diff_current_buf           = diff_current_buf,
   get_visible_qflists        = get_visible_qflists,
+
   -- git related
   get_git_root               = get_git_root,
   get_git_remotes            = get_git_remotes,
   open_repo_on_github        = open_repo_on_github,
+
   -- toggles
   toggle_window_focus        = toggle_window_focus,
   toggle_context_winbar      = toggle_context_winbar,
@@ -397,6 +399,7 @@ return {
   toggle_dark_mode           = toggle_dark_mode,
   toggle_qflist              = toggle_qflist,
   toggle_silent_mode         = toggle_silent_mode,
+
   -- misc
   show_messages              = show_messages,
   show_command               = show_command,

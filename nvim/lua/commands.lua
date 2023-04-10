@@ -118,7 +118,11 @@ vim.api.nvim_create_autocmd('BufWritePost', {
       end
     )
 
-    vim.cmd [[ source ]]
+    -- NOTE(vir): temp fix, other files might suffer from the same issue
+    -- do not double-source this file
+    if not src_file == 'lua/commands.lua' then
+      vim.cmd [[ source ]]
+    end
 
     utils.notify(src_file, 'info', {
       title = '[CONFIG] reloaded from',

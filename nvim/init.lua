@@ -29,4 +29,4 @@ vim.api.nvim_create_autocmd("User", {
 --  pyrightconfig.json  : pyright config
 
 -- ideas and todos --
-
+-- - investigate effect of vim.loader.enable() on config reloading
