@@ -25,10 +25,19 @@ end
 
 -- scroll buffer to end
 local function scroll_to_end(bufnr)
+  local cur_win = vim.api.nvim_get_current_win()
+
+  -- switch to buf and set cursor
   vim.api.nvim_buf_call(bufnr, function()
-    vim.cmd.startinsert()
-    vim.cmd.stopinsert()
+    local target_win = vim.api.nvim_get_current_win()
+    vim.api.nvim_set_current_win(target_win)
+
+    local target_line = vim.tbl_count(vim.api.nvim_buf_get_lines(0, 0, -1, true))
+    vim.api.nvim_win_set_cursor(target_win, { target_line, 0 })
   end)
+
+  -- return to original window
+  vim.api.nvim_set_current_win(cur_win)
 end
 
 -- rename current buffer
@@ -373,14 +382,12 @@ return {
   calculate_indent           = calculate_indent,
   scroll_to_end              = scroll_to_end,
   rename_buffer              = rename_buffer,
-  diff_current_buf         = diff_current_buf,
+  diff_current_buf           = diff_current_buf,
   get_visible_qflists        = get_visible_qflists,
-
   -- git related
   get_git_root               = get_git_root,
   get_git_remotes            = get_git_remotes,
   open_repo_on_github        = open_repo_on_github,
-
   -- toggles
   toggle_window_focus        = toggle_window_focus,
   toggle_context_winbar      = toggle_context_winbar,
@@ -390,7 +397,6 @@ return {
   toggle_dark_mode           = toggle_dark_mode,
   toggle_qflist              = toggle_qflist,
   toggle_silent_mode         = toggle_silent_mode,
-
   -- misc
   show_messages              = show_messages,
   show_command               = show_command,

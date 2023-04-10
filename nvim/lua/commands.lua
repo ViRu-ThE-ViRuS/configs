@@ -101,6 +101,7 @@ vim.api.nvim_create_autocmd('BufWritePost', {
     -- TODO(vir): get this working
     -- source current file, source config file
     -- reload all unloaded modules
+    -- Misc group does not work (cleared by session.lua)
 
     core.foreach(
       to_reload,

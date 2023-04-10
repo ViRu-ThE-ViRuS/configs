@@ -103,10 +103,10 @@ utils.map("n", "[q", "<cmd>try | cprev | catch | silent! clast | catch | endtry<
 utils.map("n", "]q", "<cmd>try | cnext | catch | silent! cfirst | catch | endtry<cr>zv")
 
 -- buffer resizing
-utils.map("n", "<m-down>", "<cmd>resize +2<cr>")
-utils.map("n", "<m-up>", "<cmd>resize -2<cr>")
-utils.map("n", "<m-left>", "<cmd>vertical resize -2<cr>")
-utils.map("n", "<m-right>", "<cmd>vertical resize +2<cr>")
+utils.map("n", "<m-J>", "<cmd>resize +2<cr>")
+utils.map("n", "<m-K>", "<cmd>resize -2<cr>")
+utils.map("n", "<m-H>", "<cmd>vertical resize -2<cr>")
+utils.map("n", "<m-L>", "<cmd>vertical resize +2<cr>")
 
 -- buffer & tab navigation
 utils.map("n", "<bs>", '<c-^>zz')
