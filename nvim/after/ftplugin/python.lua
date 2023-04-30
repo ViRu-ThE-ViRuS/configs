@@ -86,6 +86,10 @@ local function get_current_cell()
         end
     end
 
+    if vim.tbl_count(markers) < 1 then
+        return
+    end
+
     local last_line = vim.api.nvim_buf_line_count(bufnr)
     table.insert(cells, { markers[#markers][1] + 1, last_line })
 

@@ -142,24 +142,24 @@ local function ui_overrides()
 
   -- TODO(vir): is this needed
   -- uniform semantic-treesitter highlights
-  -- for newgroup, oldgroup in pairs({
-  --   ['@lsp.type.namespace']  = '@namespace',
-  --   ['@lsp.type.type']       = '@type',
-  --   ['@lsp.type.class']      = '@type',
-  --   ['@lsp.type.enum']       = '@type',
-  --   ['@lsp.type.interface']  = '@type',
-  --   ['@lsp.type.struct']     = '@structure',
-  --   ['@lsp.type.parameter']  = '@parameter',
-  --   ['@lsp.type.variable']   = '@variable',
-  --   ['@lsp.type.property']   = '@property',
-  --   ['@lsp.type.enumMember'] = '@constant',
-  --   ['@lsp.type.function']   = '@function',
-  --   ['@lsp.type.method']     = '@method',
-  --   ['@lsp.type.macro']      = '@macro',
-  --   ['@lsp.type.decorator']  = '@function',
-  -- }) do
-  --   vim.api.nvim_set_hl(0, newgroup, { link = oldgroup, default = true })
-  -- end
+  for newgroup, oldgroup in pairs({
+    ['@lsp.type.namespace']  = '@namespace',
+    ['@lsp.type.type']       = '@type',
+    ['@lsp.type.class']      = '@type',
+    ['@lsp.type.enum']       = '@type',
+    ['@lsp.type.interface']  = '@type',
+    ['@lsp.type.struct']     = '@structure',
+    ['@lsp.type.parameter']  = '@parameter',
+    ['@lsp.type.variable']   = '@variable',
+    ['@lsp.type.property']   = '@property',
+    ['@lsp.type.enumMember'] = '@constant',
+    ['@lsp.type.function']   = '@function',
+    ['@lsp.type.method']     = '@method',
+    ['@lsp.type.macro']      = '@macro',
+    ['@lsp.type.decorator']  = '@function',
+  }) do
+    vim.api.nvim_set_hl(0, newgroup, { link = oldgroup, default = true })
+  end
 
   -- NOTE(vir): some colorschemes aint pretty with gitsigns
   -- GitSign* highlights link to Diff* highlights for some reason despite
@@ -213,7 +213,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = 'dark'
 
-local colorscheme = 'gruvbox'
+local colorscheme = 'moonfly'
 ---@cast colorscheme +string +function
 
 -- load default colorscheme if chosen one is not available
@@ -244,6 +244,8 @@ return {
       "oxocarbon",
       "palenightfall",
       "poimandres",
+      "retrobox",
+      "sorbet",
       "sweetie",
       "tempus_tempest", "tempus_dusk",
       "vscode",

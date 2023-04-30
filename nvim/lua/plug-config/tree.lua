@@ -1,5 +1,33 @@
 local function open_in_finder(handle) require('lib/core').lua_system("open -R " .. handle.absolute_path) end
 
+local function on_attach(bufnr)
+  local api = require('nvim-tree.api')
+  local opts = { buffer = bufnr, silent = true, nowait = true }
+
+  vim.keymap.set('n', '<cr>', api.node.open.edit, opts)
+  vim.keymap.set('n', '<2-leftmouse>', api.node.open.edit, opts)
+  vim.keymap.set('n', '<c-v>', api.node.open.vertical, opts)
+  vim.keymap.set('n', '<c-x>', api.node.open.horizontal, opts)
+  vim.keymap.set('n', '<bs>', api.node.navigate.parent_close, opts)
+  vim.keymap.set('n', 'J', api.node.navigate.parent, opts)
+  vim.keymap.set('n', '[c', api.node.navigate.git.prev, opts)
+  vim.keymap.set('n', ']c', api.node.navigate.git.next, opts)
+  vim.keymap.set('n', 'I', api.tree.toggle_hidden_filter, opts)
+  vim.keymap.set('n', 'R', api.tree.reload, opts)
+  vim.keymap.set('n', 'C', api.tree.change_root_to_node, opts)
+  vim.keymap.set('n', 'q', api.tree.close, opts)
+  vim.keymap.set('n', 'f', api.live_filter.start, opts)
+  vim.keymap.set('n', 'F', api.live_filter.clear, opts)
+  vim.keymap.set('n', 'Y', api.fs.copy.absolute_path, opts)
+  vim.keymap.set('n', '<leader>n', api.fs.create, opts)
+  vim.keymap.set('n', '<leader>d', api.fs.remove, opts)
+  vim.keymap.set('n', '<leader>r', api.fs.rename_sub, opts)
+  vim.keymap.set('n', 'OO', function()
+    local node = api.tree.get_node_under_cursor()
+    open_in_finder(node)
+  end, opts)
+end
+
 return {
   'kyazdani42/nvim-tree.lua',
   cmd = 'NvimTreeToggle',
@@ -30,39 +58,11 @@ return {
     update_focused_file = { enable = true, update_cwd = false },
     diagnostics = { enable = false },
     filters = {
-      custom = {
-        '*.pyc', '.DS_Store', 'node_modules', '__pycache__', 'venv', '.git',
-        '*.dSYM'
-      }
+      custom = { '*.pyc', '.DS_Store', 'node_modules', '__pycache__', 'venv', '*.dSYM' },
+      -- exclude = { 'gitignore', 'gitmodules' }
     },
-    view = {
-      mappings = {
-        custom_only = true,
-        list = {
-          { key = "<cr>",          action = "edit" },
-          { key = "<2-leftmouse>", action = "edit" },
-          { key = "<c-v>",         action = "vsplit" },
-          { key = "<c-x>",         action = "split" },
-          { key = "<bs>",          action = "close_node" },
-          { key = "J",             action = "parent_node" },
-          { key = "[c",            action = "prev_git_item" },
-          { key = "]c",            action = "next_git_item" },
-          { key = "I",             action = "toggle_dotfiles" },
-          { key = "R",             action = "refresh" },
-          { key = "C",             action = "cd" },
-          { key = "q",             action = "close" },
-          { key = "f",             action = "live_filter" },
-          { key = "F",             action = "clear_live_filter" },
-          { key = "Y",             action = "copy_absolute_path" },
-          { key = "<leader>n",     action = "create" },
-          { key = "<leader>d",     action = "remove" },
-          { key = "<leader>r",     action = "rename" },
-          { key = "OO",            action = "open_in_finder",    action_cb = open_in_finder },
-          { key = "<leader>Q",     action = "<nop>" },
-          -- { key = "<space>", action = "open_node" },
-        }
-      }
-    },
+    on_attach = on_attach,
+    view = { mappings = { custom_only = true } },
     git = { ignore = false },
     renderer = {
       indent_markers = { enable = true },

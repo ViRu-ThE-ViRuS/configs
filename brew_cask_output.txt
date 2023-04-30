@@ -1,5 +1,6 @@
 appcleaner
 discord
+docker
 google-drive
 kitty
 logi-options-plus

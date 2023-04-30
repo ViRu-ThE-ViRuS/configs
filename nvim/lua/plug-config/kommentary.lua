@@ -16,6 +16,11 @@ return {
       multi_line_comment_strings = false
     })
 
+    kommentary.configure_language("glsl", {
+      single_line_comment_string = '//',
+      multi_line_comment_strings = false
+    })
+
     kommentary.configure_language({ 'javascript', 'javascriptreact', 'typescriptreact' }, {
       single_line_comment_string = 'auto',
       multi_line_comment_strings = 'auto',

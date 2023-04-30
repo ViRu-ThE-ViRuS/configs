@@ -1,6 +1,6 @@
 # vim: ft=bash
 
-alias vim='SUDO_ASKPASS=~/.config/system/pw.sh nvim'
+alias vim='SUDO_ASKPASS=$HOME/.config/system/pw.sh nvim'
 alias rmd='rm -rf'
 alias cat='bat --theme=Coldark-Dark'
 alias icat='kitty +kitten icat'
@@ -23,10 +23,17 @@ set     FZF_CTRL_T_COMMAND      $FZF_DEFAULT_COMMAND
 set     FZF_CTRL_T_OPTS         '--preview "bat --style=numbers,changes --color always --theme Coldark-Dark --line-range :500 {}"'
 
 # macos : viraat-t2t
-set fish_user_paths         $fish_user_paths "/opt/homebrew/bin/"
-set fish_user_paths         $fish_user_paths "/Users/viraat-chandra/Library/Python/3.9/bin"
-# set fish_user_paths         $fish_user_paths "/opt/homebrew/opt/llvm/bin"
-# set -xg SUDO_ASKPASS        ~/.config/system/pw.sh # only used in nvim alias for now
+set fish_user_paths             $fish_user_paths "/opt/homebrew/bin/"
+set fish_user_paths             $fish_user_paths "$HOME/Library/Python/3.9/bin"
+
+set -xg VULKAN_SDK              '/Users/viraat-chandra/.vulkan/macOS'
+set fish_user_paths             $fish_user_paths "$VULKAN_SDK/bin"
+set -xg DYLD_LIBRARY_PATH       $DYLD_LIBRARY_PATH "$VULKAN_SDK/lib"
+set -xg VK_ADD_LAYER_PATH       "$VULKAN_SDK/share/vulkan/explicit_layer.d"
+set -xg VK_ICD_FILENAMES        "$VULKAN_SDK/share/vulkan/icd.d/MoltenVK_icd.json"
+set -xg VK_DRIVER_FILES         "$VULKAN_SDK/share/vulkan/icd.d/MoltenVK_icd.json"
+
+set fish_user_paths             $fish_user_paths "$HOME/.docker/bin"
 
 # rust setup
 set -xg CARGO_HOME          ~/.rust/cargo/

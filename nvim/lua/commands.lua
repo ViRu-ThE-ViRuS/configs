@@ -131,6 +131,9 @@ vim.api.nvim_create_autocmd('BufWritePost', {
   end
 })
 
+-- custom plugins setup
+require('lib/search_index').setup()
+
 -- NOTE(vir): Commands cmd setup in fzf-lua init
 --- custom commands
 
@@ -229,3 +232,4 @@ utils.add_command('[UI] Toggle Spellings', misc.toggle_spellings, { add_custom =
 utils.add_command('[UI] Toggle Dark Mode', misc.toggle_dark_mode, { add_custom = true })
 utils.add_command('[UI] Toggle CWord Highlights', 'if CWordHlToggle() | set hlsearch | endif', { add_custom = true })
 utils.add_command('[UI] Rename buffer', misc.rename_buffer, { add_custom = true })
+

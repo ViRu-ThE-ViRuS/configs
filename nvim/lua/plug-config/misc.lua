@@ -36,12 +36,12 @@ return {
 
   {
     'tommcdo/vim-exchange',
-    keys = { 'cx', 'cX', 'cxc' },
+    keys = { 'sl', 'sL', 'sl/' },
     init = function() vim.g.exchange_no_mappings = true end,
     config = function()
-      utils.map({'n', 'v'}, 'cx', '<plug>(Exchange)')
-      utils.map('n', 'cX', '<plug>(ExchangeLine)')
-      utils.map('n', 'cxc', '<plug>(ExchangeClear)')
+      utils.map({'n', 'v'}, 'sl', '<plug>(Exchange)')
+      utils.map('n', 'sL', '<plug>(ExchangeLine)')
+      utils.map('n', 'sl/', '<plug>(ExchangeClear)')
     end
   },
 

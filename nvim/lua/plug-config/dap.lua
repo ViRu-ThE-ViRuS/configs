@@ -25,10 +25,10 @@ local function activate_output_window(session)
       vim.cmd [[ q! ]]
 
       -- only close if in session tab
-      if vim.api.nvim_get_current_tabpage() == session.session_target_tab then
-        vim.cmd [[ tabclose ]]
+      if vim.api.nvim_get_current_tabpage() == session.session_target_tab and
+          vim.api.nvim_tabpage_is_valid(session.session_target_tab) then
+        pcall(vim.cmd, string.format('tabclose %d', session.session_target_tab))
       end
-
     end, { buffer = target_handle })
 
     local windows = vim.fn.win_findbuf(target_handle)
@@ -69,8 +69,8 @@ local function setup_dap_configurations()
   local core = require('lib/core')
 
   -- get input on runtime
-  local get_program = core.partial(vim.fn.input, 'program: ', vim.loop.cwd() .. '/', 'file')
-  local get_args = core.partial(vim.split, core.partial(vim.fn.input, 'args: ', '', 'file'), ') ')
+  local get_program = function() return vim.fn.input('program: ', vim.loop.cwd() .. '/' .. vim.fn.expand('%f'), 'file') end
+  local get_args = function() return vim.split(vim.fn.input('args: ', '', 'file'), ' ') end
 
   dap.configurations.python = {
     {
@@ -101,37 +101,31 @@ local function setup_dap_configurations()
   dap.configurations.rust = dap.configurations.cpp
 end
 
+-- setup statuslines
+local function setup_dapui_statuslines()
+  local statusline = require('statusline')
+  local statuslines = {
+    ['dapui_watches'] = 'Watches',
+    ['dapui_stacks'] = 'Stacks',
+    ['dapui_scopes'] = 'Scopes',
+    ['dapui_breakpoints'] = 'Breaks',
+    ['dap-repl'] = 'Repl',
+  }
+
+  local wins = vim.api.nvim_tabpage_list_wins(0)
+  for _, win in pairs(wins) do
+    local buf = vim.api.nvim_win_get_buf(win)
+    local ft = vim.api.nvim_buf_get_option(buf, 'filetype')
+
+    if statuslines[ft] then
+      vim.api.nvim_win_set_option(win, 'statusline', statusline.set_statusline_option(statuslines[ft]))
+    end
+  end
+end
+
 local function setup_dap_ui()
   local dap = require('dap')
   local dapui = require('dapui')
-
-  -- setup statusline
-  local statusline = require('statusline')
-  vim.api.nvim_create_autocmd('FileType', {
-    group = statusline.autocmd_group,
-    pattern = 'dapui_watches',
-    callback = statusline.set_statusline_func('Watches'),
-  })
-  vim.api.nvim_create_autocmd('FileType', {
-    group = statusline.autocmd_group,
-    pattern = 'dapui_stacks',
-    callback = statusline.set_statusline_func('Stacks'),
-  })
-  vim.api.nvim_create_autocmd('FileType', {
-    group = statusline.autocmd_group,
-    pattern = 'dapui_scopes',
-    callback = statusline.set_statusline_func('Scopes'),
-  })
-  vim.api.nvim_create_autocmd('FileType', {
-    group = statusline.autocmd_group,
-    pattern = 'dapui_breakpoints',
-    callback = statusline.set_statusline_func('Breaks'),
-  })
-  vim.api.nvim_create_autocmd('FileType', {
-    group = statusline.autocmd_group,
-    pattern = 'dap-repl',
-    callback = statusline.set_statusline_func('Repl'),
-  })
 
   -- setup repl
   dap.repl.commands = vim.tbl_deep_extend('force', dap.repl.commands, {
@@ -190,40 +184,54 @@ local function setup_dap_events()
 
   -- remove debugging keymaps
   local function remove_maps()
-    utils.unmap({ 'n', 'v' }, 'gK')
+    utils.unmap({ 'n', 'v' }, '<m-k>')
     utils.unmap('n', '<m-1>')
     utils.unmap('n', '<m-2>')
     utils.unmap('n', '<m-3>')
     utils.unmap('n', '<m-q>')
     utils.unmap('n', '<f4>')
+
+    -- NOTE(vir): link this to the default location
+    -- reset normal function
+    utils.map("n", "<c-w><c-l>", "<cmd>try | cclose | pclose | lclose | tabclose | catch | endtry <cr>",
+      { silent = true })
+  end
+
+  -- hard terminate: remove keymaps, close dapui, dap repl, dap session, output buffers
+  local function hard_terminate()
+    local session = dap.session()
+
+    remove_maps()
+    dapui.close()
+    dap.repl.close()
+    dap.close()
+
+    if session then
+      activate_output_window(session)
+    end
+
+    utils.notify(
+      string.format('[PROG] %s', (session and session.config.program) or 'SESSION'),
+      'debug',
+      { title = '[DAP] session closed', timeout = 500 }
+    )
   end
 
   -- setup debugging keymaps
   local function setup_maps()
-    utils.map({ 'n', 'v' }, 'gK', dapui.eval)
+    utils.map({ 'n', 'v' }, '<m-k>', dapui.eval)
     utils.map('n', '<m-1>', dap.step_over)
     utils.map('n', '<m-2>', dap.step_into)
     utils.map('n', '<m-3>', dap.step_out)
 
     -- hard terminate: remove keymaps, close dapui, close dap repl, close dap, delete output buffers
-    utils.map('n', '<m-q>', function()
-      local session = dap.session()
+    utils.map('n', '<m-q>', hard_terminate)
+    utils.map('n', '<c-w><c-l>', hard_terminate)
 
-      remove_maps()
-      dapui.close()
-      dap.repl.close()
-      dap.close()
-
-      activate_output_window(session)
-
-      utils.notify(
-        string.format('[PROG] %s', session.config.program),
-        'debug',
-        { title = '[DAP] session closed', timeout = 500 }
-      )
+    utils.map('n', '<f4>', function()
+      dapui.toggle()
+      setup_dapui_statuslines()
     end)
-
-    utils.map('n', '<f4>', dapui.toggle)
   end
 
   -- start session: setup keymaps, open dapui
@@ -233,6 +241,8 @@ local function setup_dap_events()
 
     setup_maps()
     dapui.open()
+
+    setup_dapui_statuslines()
 
     -- we reactive global statusline on exit,
     -- if we had it set before session began
@@ -308,6 +318,9 @@ return {
         opts.preamble()
       end
 
+      -- override config params
+      if opts.cwd then base.cwd = opts.cwd end
+
       -- run protected
       -- crashes when running dap before any buffer was opened
       -- NOTE(vir): probably a bug in dap?
@@ -319,7 +332,6 @@ return {
         )
       end
     end
-
 
     -- project debug config
     vim.api.nvim_create_autocmd('User', {
@@ -333,13 +345,13 @@ return {
         if vim.tbl_count(project.dap_config) == 0 then return end
 
         -- add project command for specified configs
-        project:add_command('run DAP config', function()
+        project:add_command('launch project DAP config', function()
           vim.ui.select(
             vim.tbl_keys(project.dap_config),
             { prompt = 'run config> ', kind = 'plain_text' },
             function(config_name) launch_dap(project.dap_config[config_name]) end
           )
-        end, nil, true)
+        end)
       end
     })
   end,
@@ -351,11 +363,11 @@ return {
     local dap_continue = dap.continue
     dap.continue = function(...)
       -- create session tab if needed
-      if dap.session() == nil then
-        vim.cmd('tab sb ' .. vim.api.nvim_get_current_buf())
-      else
-        vim.cmd('normal ' .. dap.session().session_target_tab .. 'gt')
-      end
+      -- if dap.session() == nil then
+      --   vim.cmd('tab sb ' .. vim.api.nvim_get_current_buf())
+      -- else
+      --   vim.cmd('normal ' .. dap.session().session_target_tab .. 'gt')
+      -- end
 
       dap_continue(...)
     end

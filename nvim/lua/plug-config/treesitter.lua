@@ -71,7 +71,7 @@ return {
         ensure_installed = {
           'lua', 'python', 'c', 'cpp', 'java', 'go', 'bash', 'fish',
           'cmake', 'make', 'cuda', 'rust', 'vim', 'vimdoc', 'markdown',
-          'javascript', 'typescript', 'tsx', 'query'
+          'javascript', 'typescript', 'tsx', 'query', 'glsl'
         },
         indent = { enable = true, disable = { 'python', 'c', 'cpp', 'lua' } },
         yati = { enable = true, disable = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' } },

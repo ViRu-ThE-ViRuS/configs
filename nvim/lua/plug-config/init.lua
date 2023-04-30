@@ -10,7 +10,6 @@ return {
   'ellisonleao/gruvbox.nvim',
   'luisiacc/gruvbox-baby',
   'sainnhe/gruvbox-material',
-  'habamax/vim-habamax',
   'w0ng/vim-hybrid',
   'chiendo97/intellij.vim',
   'savq/melange-nvim',

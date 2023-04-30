@@ -4,27 +4,27 @@ local quickfix = require('lib/quickfix')
 local utils = require("utils")
 
 -- line navigation and movements
-utils.map("v", "<", "<gv")
-utils.map("v", ">", ">gv")
-utils.map({ "n", "v", "o" }, "H", "^")
-utils.map({ "n", "v", "o" }, "L", "$")
+utils.map("x", "<", "<gv")
+utils.map("x", ">", ">gv")
+utils.map({ "n", "x", "o" }, "H", "^")
+utils.map({ "n", "x", "o" }, "L", "$")
 
 -- delete without yank
-utils.map({ "n", "v" }, "x", '"_d', { noremap = false })
-utils.map({ "n", "v" }, "X", '"_dd', { noremap = false })
-utils.map({ "n", "v" }, "<s-bs>", '"_dh', { noremap = false })
-utils.map({ "n", "v" }, "<c-bs>", '"_dl', { noremap = false })
+utils.map({ "n", "x" }, "x", '"_d', { noremap = false })
+utils.map({ "n", "x" }, "X", '"_dd', { noremap = false })
+utils.map({ "n", "x" }, "<s-bs>", '"_dh', { noremap = false })
+utils.map({ "n", "x" }, "<c-bs>", '"_dl', { noremap = false })
 
 -- paste yanked
-utils.map({ "n", "v" }, "-", '"0p=`]')
-utils.map({ "n", "v" }, "_", '"0P=`]')
+utils.map({ "n", "x" }, "-", '"0p=`]')
+utils.map({ "n", "x" }, "_", '"0P=`]')
 
 -- set undo points between each word/line
 utils.map('i', '<cr>', '<c-g>u<cr>')
 
--- search jumps open folds, this doesnt update shortmess
-utils.map('n', 'n', 'nzv', { noremap = false })
-utils.map('n', 'N', 'Nzv', { noremap = false })
+-- NOTE(vir): setup in commands.lua, (lib/search_index.setup)
+-- utils.map('n', 'n', 'nzv', { noremap = false })
+-- utils.map('n', 'N', 'Nzv', { noremap = false })
 
 -- misc
 utils.map("n", ";", ":")                                         -- swaperoo
@@ -52,9 +52,9 @@ utils.map('x', '//', [[y/<c-r>=trim(escape(@",'\/]'))<cr><cr>]]) -- search for s
 -- commandline modes
 utils.map("n", '@"', "@:", { noremap = false })       -- repeat last comand
 utils.map("n", '@:', "q:")                            -- command edit mode
--- utils.map({ "n", "v" }, "q:", "<nop>")
--- utils.map({ "n", "v" }, "q/", "<nop>")
--- utils.map({ "n", "v" }, "q?", "<nop>")
+-- utils.map({ "n", "x" }, "q:", "<nop>")
+-- utils.map({ "n", "x" }, "q/", "<nop>")
+-- utils.map({ "n", "x" }, "q?", "<nop>")
 
 -- disable built ins
 utils.map({ "n", "i" }, "<up>", "<nop>")
@@ -75,10 +75,10 @@ utils.map("n", "<ScrollWheelUp>", "<c-y>")
 utils.map("n", "<ScrollWheelDown>", "<c-e>")
 
 -- sane speed scrolling
-utils.map({ "n", "v" }, "{", "4k")
-utils.map({ "n", "v" }, "}", "4j")
-utils.map({ "n", "v" }, "<c-u>", "20kzz")
-utils.map({ "n", "v" }, "<c-d>", "20jzz")
+utils.map({ "n", "x" }, "{", "4k")
+utils.map({ "n", "x" }, "}", "4j")
+utils.map({ "n", "x" }, "<c-u>", "20kzz")
+utils.map({ "n", "x" }, "<c-d>", "20jzz")
 
 -- fixing that stupid typo when trying to [save]exit
 vim.cmd [[
@@ -98,8 +98,8 @@ utils.map("n", '<leader>4', misc.diff_current_buf, { desc = 'toggle unsaved chan
 
 -- qflist keymaps
 utils.map("n", "<leader>Q", misc.toggle_qflist)
-utils.map("n", "<leader>cq", quickfix.open_list)
-utils.map("n", "<leader>cQ", quickfix.add_list)
+utils.map("n", "<leader>cq", quickfix.add_list)
+utils.map("n", "<leader>cQ", quickfix.open_list)
 utils.map("n", "[q", "<cmd>try | cprev | catch | silent! clast | catch | endtry<cr>zv")
 utils.map("n", "]q", "<cmd>try | cnext | catch | silent! cfirst | catch | endtry<cr>zv")
 
@@ -116,6 +116,7 @@ utils.map("n", "]t", "<cmd>tabnext<cr>")
 utils.map("n", "[b", "<cmd>bprev<cr>")
 utils.map("n", "]b", "<cmd>bnext<cr>")
 utils.map("n", "<c-w><c-l>", "<cmd>try | cclose | pclose | lclose | tabclose | catch | endtry <cr>", { silent = true })
+utils.map("n", "<c-w><c-n>", "<cmd>tabnew<cr>")
 
 -- terminal navigation
 utils.map("t", "<esc>", "<c-\\><c-n>")
@@ -127,8 +128,8 @@ utils.map("t", "<c-l>", "<c-\\><c-w>l")
 -- move lines
 -- utils.map('n', '<m-k>', ':move .-2<CR>==', { silent = true })
 -- utils.map('n', '<m-j>', ':move .+1<CR>==', { silent = true })
-utils.map('v', '<m-j>', ":move '>+1<CR>gv=gv", { silent = true })
-utils.map('v', '<m-k>', ":move '<-2<CR>gv=gv", { silent = true })
+utils.map('x', '<m-j>', ":move '>+1<CR>gv=gv", { silent = true })
+utils.map('x', '<m-k>', ":move '<-2<CR>gv=gv", { silent = true })
 
 -- terminal keymaps
 utils.map("n", "<leader>s", "<cmd>vsp | terminal<cr>")
@@ -136,10 +137,12 @@ utils.map("n", "<leader>ca", terminal.send_to_terminal)
 utils.map("n", "<leader>cA", terminal.run_command)
 utils.map("n", "<leader>cs", terminal.toggle_terminal)
 utils.map("n", "<leader>cS", terminal.add_terminal)
-utils.map("n", "<leader>cC", terminal.select_terminal)
+utils.map("n", "<leader>cf", terminal.select_terminal)
 
 -- commands
 utils.map('n', '<c-cr>', vim.cmd.Commands)
+utils.map('n', 'gF', '<c-w>vgf')
+-- others
 
 -- NOTE(vir): tricks
 --  ins mode: <c-v> to get key code

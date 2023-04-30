@@ -251,15 +251,21 @@ end
 -- }}}
 
 -- {{{ set statusline api
+-- get the string value to set on statusline option
+-- can be used to set the statusline of another window
+local function set_statusline_option(title)
+  return "%!luaeval(\"require('statusline').statusline('" .. title .. "')\")"
+end
+
 -- get a function which sets statusline option when called
 local function set_statusline_func(title, non_local)
   -- NOTE(vir): opt vs opt_local?
   -- some dont work {DiffviewFiles, DiffviewFileHistory} with opt_local
   -- side effects of using global opt?
   if non_local then
-    return function() vim.opt.statusline = "%!luaeval(\"require('statusline').statusline('" .. title .. "')\")" end
+    return function() vim.opt.statusline = set_statusline_option(title) end
   else
-    return function() vim.opt_local.statusline = "%!luaeval(\"require('statusline').statusline('" .. title .. "')\")" end
+    return function() vim.opt_local.statusline = set_statusline_option(title) end
   end
 end
 
@@ -313,6 +319,7 @@ return {
   statusline_inactive = statusline_inactive,  -- get inactive statusline string
 
   -- api to setup statusline
-  set_statusline_func = set_statusline_func,  -- calling this function will set the statusline
-  set_statusline_cmd = set_statusline_cmd,    -- calling this command will set the statusline
+  set_statusline_option = set_statusline_option, -- get the value to set statusline option to (string)
+  set_statusline_func = set_statusline_func,     -- calling this function will set the statusline
+  set_statusline_cmd = set_statusline_cmd,       -- calling this command will set the statusline
 }

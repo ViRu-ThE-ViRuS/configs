@@ -57,33 +57,33 @@ return {
   init = function()
     -- NOTE(vir): using require in each because it sets up lazy loading
     local utils = require('utils')
-    utils.map("n", "<c-p>p", function() require('fzf-lua').files() end)
+    utils.map("n", "<c-p>p", function() require('fzf-lua').files({ copen = 'horizontal copen' }) end)
 
     -- defer this as it takes a bit to get git root
     vim.schedule(function()
       if require('lib/misc').get_git_root() then
-        utils.map("n", "<c-p>p", function() require('fzf-lua').git_files() end)
-        utils.map("n", "<c-p>P", function() require('fzf-lua').files() end)
+        utils.map("n", "<c-p>p", function() require('fzf-lua').git_files({ copen = 'horizontal copen' }) end)
+        utils.map("n", "<c-p>P", function() require('fzf-lua').files({ copen = 'horizontal copen' }) end)
       end
     end)
 
     -- fuzzy pickers
-    utils.map("n", "<c-p>b", function() require('fzf-lua').buffers() end)
-    utils.map("n", "<c-p>l", function() require('fzf-lua').blines() end)
     utils.map("n", "<c-p>m", function() require('fzf-lua').marks() end)
-    utils.map("n", "<c-p>o", function() require('fzf-lua').resume() end)
+    utils.map("n", "<c-p>b", function() require('fzf-lua').buffers() end)
+    utils.map("n", "<c-p>l", function() require('fzf-lua').blines({ copen = 'horizontal copen' }) end)
+    utils.map("n", "<c-p>o", function() require('fzf-lua').resume({ copen = 'horizontal copen' }) end)
 
     -- greps
-    utils.map("n", "<c-p>f", function() require('fzf-lua').live_grep({ exec_empty_query = true }) end)
-    utils.map("n", "<c-p>F", function() require('fzf-lua').live_grep({ continue_last_search = true }) end)
-    utils.map("n", "<c-p>ss", function() require('fzf-lua').grep_cword() end)
-    utils.map("n", "<c-p>sz", function() require('fzf-lua').grep({ search = 'TODO|NOTE', no_esc = true }) end)
-    utils.map("v", "<c-p>ss", function() require('fzf-lua').grep_visual() end)
+    utils.map("n", "<c-p>f", function() require('fzf-lua').live_grep({ exec_empty_query = true, copen = 'horizontal copen' }) end)
+    utils.map("n", "<c-p>F", function() require('fzf-lua').live_grep({ continue_last_search = true, copen = 'horizontal copen' }) end)
+    utils.map("n", "<c-p>ss", function() require('fzf-lua').grep_cword({ copen = 'horizontal copen' }) end)
+    utils.map("n", "<c-p>sz", function() require('fzf-lua').grep({ search = 'TODO|NOTE', no_esc = true, copen = 'horizontal copen' }) end)
+    utils.map("v", "<c-p>ss", function() require('fzf-lua').grep_visual({ copen = 'horizontal copen' }) end)
 
     -- ctags, independent of lsp
-    utils.map("n", "<c-p>sP", function() require('fzf-lua').tags_grep_cword() end)
-    utils.map("n", "<c-p>sp", function() require('fzf-lua').tags_live_grep({ exec_empty_query = true }) end)
-    utils.map("v", "<c-p>sp", function() require('fzf-lua').tags_grep_visual() end)
+    utils.map("n", "<c-p>sP", function() require('fzf-lua').tags_grep_cword({ copen = 'horizontal copen' }) end)
+    utils.map("n", "<c-p>sp", function() require('fzf-lua').tags_live_grep({ exec_empty_query = true, copen = 'horizontal copen' }) end)
+    utils.map("v", "<c-p>sp", function() require('fzf-lua').tags_grep_visual({ copen = 'horizontal copen' }) end)
 
     -- colorscheme selector
     utils.add_command('Colors', function() require('fzf-lua').colorschemes() end, {

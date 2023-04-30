@@ -42,7 +42,7 @@ local function register_terminal(job_id, index)
   local notification = nil
 
   if existing ~= job_id then
-    deregister_terminal({ job_id = job_id })  -- deregister any current index
+    deregister_terminal({ job_id = job_id }) -- deregister any current index
 
     if existing then
       deregister_terminal({ job_id = existing }) -- replacing an existing entry
@@ -252,6 +252,11 @@ local function select_terminal()
     return
   end
 
+  -- cleanup buffers if exited
+  for index, term in pairs(palette.terminals.term_states) do
+    if not vim.api.nvim_buf_is_valid(term.bufnr) then palette.terminals.term_states[index] = nil end
+  end
+
   -- create selection entries
   -- ordered by index if present
   local terminals = core.table_copy(palette.terminals.term_states, true)
@@ -277,8 +282,14 @@ local function select_terminal()
   )
 
   vim.ui.select(entries, { prompt = 'open terminal> ', kind = 'terminals' }, function(entry)
+    if not entry then return end
+
+    -- example for entry:
+    -- [4:6] term://~/pwd//62751:/opt/homebrew/bin/fish
+    -- [3:4] <1>:term://~/pwd//62730:/opt/homebrew/bin/fish
+
     toggle_terminal({
-      job_id = tonumber(entry:sub(1, entry:find(':') - 1)),
+      job_id = tonumber(entry:sub(2, entry:find(':') - 1)),
       force_open = true,
     })
   end)
@@ -290,13 +301,13 @@ end
 --
 -- will emulate <up><cr> in terminal if no payload specified
 local function send_to_terminal(payload, opts)
-  local index = vim.v.count1
-  local job_id = palette.terminals.indices[index]
-
   opts = vim.tbl_deep_extend('force', {
     toggle_open = true,  -- toggle open target terminal if not already visible
-    scroll_to_end = true -- scroll to end after sending payload
+    scroll_to_end = true, -- scroll to end after sending payload
+    index = vim.v.count1, -- which index terminal to send command to
   }, opts or {})
+
+  local job_id = palette.terminals.indices[opts.index]
 
   if not job_id then
     utils.notify('index not registered', 'warn', {
@@ -380,10 +391,11 @@ end
 -- run a command in primary terminal
 -- triggers ui selection to pick target
 local function run_command()
+  local count = vim.v.count1
   vim.ui.select(
     palette.commands,
     { prompt = 'run command> ', kind = 'plain_text' },
-    function(command) send_to_terminal(command) end
+    function(command) send_to_terminal(command, { index = count }) end
   )
 end
 -- }}}

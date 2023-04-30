@@ -65,7 +65,7 @@ local default_state = {
   project = nil,
 
   -- workspace commands
-  commands = {}
+  commands = {},
 }
 -- }}}
 
