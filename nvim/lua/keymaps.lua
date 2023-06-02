@@ -62,7 +62,7 @@ utils.map({ "n", "i" }, "<down>", "<nop>")
 utils.map({ "n", "i" }, "<left>", "<nop>")
 utils.map({ "n", "i" }, "<right>", "<nop>")
 utils.map({ "n", "x" }, "<c-b>", "<nop>")
-utils.map({ "n", "x" }, "<s-cr>", "<nop>")
+-- utils.map({ "n", "x" }, "<s-cr>", "<nop>")
 
 -- disable right mouse clicks, allow left clicks for mouse placement
 -- utils.map("n", "<LeftMouse>", "<nop>")
@@ -102,6 +102,8 @@ utils.map("n", "<leader>cq", quickfix.add_list)
 utils.map("n", "<leader>cQ", quickfix.open_list)
 utils.map("n", "[q", "<cmd>try | cprev | catch | silent! clast | catch | endtry<cr>zv")
 utils.map("n", "]q", "<cmd>try | cnext | catch | silent! cfirst | catch | endtry<cr>zv")
+utils.map("n", "[Q", "<cmd>silent! colder<cr>")
+utils.map("n", "]Q", "<cmd>silent! cnewer<cr>")
 
 -- buffer resizing
 utils.map("n", "<c-s-j>", "<cmd>resize +2<cr>")

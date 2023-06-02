@@ -7,6 +7,7 @@ local function clear_search_index()
   if search_count_extmark_id then
     vim.api.nvim_buf_del_extmark(0, namespace_id, search_count_extmark_id)
   end
+  vim.cmd.set('nohlsearch')
 end
 
 -- show virtual text searchount
@@ -30,7 +31,8 @@ local function show_search_index()
     virt_text_pos = "eol",
   })
 
-  vim.cmd("redraw")
+  vim.cmd.set('hlsearch')
+  vim.cmd.redraw()
 end
 
 -- setup keymaps and commands

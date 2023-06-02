@@ -48,6 +48,8 @@ end
 local function setup_dap_adapters()
   local dap = require('dap')
 
+  dap.defaults.fallback.exception_breakpoints = {'default'}
+
   -- adapters
   dap.adapters.python = {
     type = 'executable',
