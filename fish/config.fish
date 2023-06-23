@@ -18,17 +18,15 @@ set     FZF_DEFAULT_OPTS        '--reverse --height 50%'
 set     FZF_CTRL_T_COMMAND      $FZF_DEFAULT_COMMAND
 set     FZF_CTRL_T_OPTS         '--preview "bat --style=numbers,changes --color always --theme Coldark-Dark --line-range :500 {}"'
 
-# macos : viraat
-set fish_user_paths             $fish_user_paths "/opt/homebrew/bin/"
+# macos : tt
+# set fish_user_paths             $fish_user_paths "/opt/homebrew/bin/"
+# set fish_user_paths             $fish_user_paths "$HOME/Library/Python/3.9/bin"
 
 # berkeley vpn
 # alias globalproject-unload="launchctl unload /Library/LaunchAgents/com.paloaltonetworks.gp.pangp*"
 # alias globalproject-load="launchctl load /Library/LaunchAgents/com.paloaltonetworks.gp.pangp*"
 
-# python packages
-set fish_user_paths             $fish_user_paths "$HOME/Library/Python/3.9/bin"
-
-# vulkan
+# vulkan setup
 # set -xg VULKAN_SDK              '/Users/viraat-chandra/.vulkan/macOS'
 # set fish_user_paths             $fish_user_paths "$VULKAN_SDK/bin"
 # set -xg DYLD_LIBRARY_PATH       $DYLD_LIBRARY_PATH "$VULKAN_SDK/lib"
@@ -36,13 +34,16 @@ set fish_user_paths             $fish_user_paths "$HOME/Library/Python/3.9/bin"
 # set -xg VK_ICD_FILENAMES        "$VULKAN_SDK/share/vulkan/icd.d/MoltenVK_icd.json"
 # set -xg VK_DRIVER_FILES         "$VULKAN_SDK/share/vulkan/icd.d/MoltenVK_icd.json"
 
-# docker
+# docker setup
 # set fish_user_paths             $fish_user_paths "$HOME/.docker/bin"
 
-# rust
-# set -xg CARGO_HOME          ~/.rust/cargo/
-# set -xg RUSTUP_HOME         ~/.rust/rustup/
-# set fish_user_paths         $fish_user_paths ~/.rust/cargo/bin/
+# rust setup
+# set -xg CARGO_HOME              ~/.rust/cargo/
+# set -xg RUSTUP_HOME             ~/.rust/rustup/
+# set fish_user_paths             $fish_user_paths ~/.rust/cargo/bin/
+
+# linux : storm
+set fish_user_paths 		          $fish_user_paths "/usr/local/cuda-12.1/bin/"
 
 function setup_fish_colors
     set -U fish_greeting              " Stars :)"
