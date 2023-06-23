@@ -44,6 +44,7 @@ local default_state = {
   -- ui toggles and config
   ui = {
     thick_separators     = false, -- use thick buffer separators
+    inlay_hints          = false, -- lsp inlay hints
     window_focus_state   = {},    -- window isolation
     buffer_diff_state    = {},    -- buffer changes diff
     enable_notifications = true,  -- like dnd mode when unset

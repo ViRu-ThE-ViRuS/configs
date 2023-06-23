@@ -7,10 +7,6 @@ alias icat='kitty +kitten icat'
 alias pip='pip3'
 # alias ssh='kitty +kitten ssh'
 
-# berkeley vpn
-alias globalproject-unload="launchctl unload /Library/LaunchAgents/com.paloaltonetworks.gp.pangp*"
-alias globalproject-load="launchctl load /Library/LaunchAgents/com.paloaltonetworks.gp.pangp*"
-
 set -xg EDITOR              nvim
 set -xg LANG                en_US.UTF-8
 set -xg LC_CTYPE            en_US.UTF-8
@@ -22,23 +18,31 @@ set     FZF_DEFAULT_OPTS        '--reverse --height 50%'
 set     FZF_CTRL_T_COMMAND      $FZF_DEFAULT_COMMAND
 set     FZF_CTRL_T_OPTS         '--preview "bat --style=numbers,changes --color always --theme Coldark-Dark --line-range :500 {}"'
 
-# macos : viraat-t2t
+# macos : viraat
 set fish_user_paths             $fish_user_paths "/opt/homebrew/bin/"
+
+# berkeley vpn
+# alias globalproject-unload="launchctl unload /Library/LaunchAgents/com.paloaltonetworks.gp.pangp*"
+# alias globalproject-load="launchctl load /Library/LaunchAgents/com.paloaltonetworks.gp.pangp*"
+
+# python packages
 set fish_user_paths             $fish_user_paths "$HOME/Library/Python/3.9/bin"
 
-set -xg VULKAN_SDK              '/Users/viraat-chandra/.vulkan/macOS'
-set fish_user_paths             $fish_user_paths "$VULKAN_SDK/bin"
-set -xg DYLD_LIBRARY_PATH       $DYLD_LIBRARY_PATH "$VULKAN_SDK/lib"
-set -xg VK_ADD_LAYER_PATH       "$VULKAN_SDK/share/vulkan/explicit_layer.d"
-set -xg VK_ICD_FILENAMES        "$VULKAN_SDK/share/vulkan/icd.d/MoltenVK_icd.json"
-set -xg VK_DRIVER_FILES         "$VULKAN_SDK/share/vulkan/icd.d/MoltenVK_icd.json"
+# vulkan
+# set -xg VULKAN_SDK              '/Users/viraat-chandra/.vulkan/macOS'
+# set fish_user_paths             $fish_user_paths "$VULKAN_SDK/bin"
+# set -xg DYLD_LIBRARY_PATH       $DYLD_LIBRARY_PATH "$VULKAN_SDK/lib"
+# set -xg VK_ADD_LAYER_PATH       "$VULKAN_SDK/share/vulkan/explicit_layer.d"
+# set -xg VK_ICD_FILENAMES        "$VULKAN_SDK/share/vulkan/icd.d/MoltenVK_icd.json"
+# set -xg VK_DRIVER_FILES         "$VULKAN_SDK/share/vulkan/icd.d/MoltenVK_icd.json"
 
-set fish_user_paths             $fish_user_paths "$HOME/.docker/bin"
+# docker
+# set fish_user_paths             $fish_user_paths "$HOME/.docker/bin"
 
-# rust setup
-set -xg CARGO_HOME          ~/.rust/cargo/
-set -xg RUSTUP_HOME         ~/.rust/rustup/
-set fish_user_paths         $fish_user_paths ~/.rust/cargo/bin/
+# rust
+# set -xg CARGO_HOME          ~/.rust/cargo/
+# set -xg RUSTUP_HOME         ~/.rust/rustup/
+# set fish_user_paths         $fish_user_paths ~/.rust/cargo/bin/
 
 function setup_fish_colors
     set -U fish_greeting              " Stars :)"

@@ -31,4 +31,3 @@ vim.api.nvim_create_autocmd("User", {
 -- ideas and todos --
 -- 1. investigate effect of vim.loader.enable() on config reloading
 -- 2. check generate tags command
-

@@ -228,6 +228,7 @@ end, { add_custom = true })
 -- toggles
 utils.add_command('[UI] Toggle Context WinBar', misc.toggle_context_winbar, { add_custom = true })
 utils.add_command('[UI] Toggle Thick Seperators', misc.toggle_thick_separators, { add_custom = true })
+utils.add_command('[UI] Toggle Inlay Hints', misc.toggle_inlay_hints, { add_custom = true })
 utils.add_command('[UI] Toggle Spellings', misc.toggle_spellings, { add_custom = true })
 utils.add_command('[UI] Toggle Dark Mode', misc.toggle_dark_mode, { add_custom = true })
 utils.add_command('[UI] Toggle CWord Highlights', 'if CWordHlToggle() | set hlsearch | endif', { add_custom = true })

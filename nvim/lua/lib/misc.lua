@@ -216,6 +216,23 @@ local function toggle_context_winbar()
   session.config.context_winbar = not session.config.context_winbar
 end
 
+-- inlay_hints: from lsp
+local function toggle_inlay_hints()
+  if ui.inlay_hints == false and vim.tbl_count(
+    core.foreach(
+      vim.lsp.get_active_clients({ bufnr = 0 }),
+      function(_, client) return client.server_capabilities.inlayHintProvider end,
+      true
+    )
+  ) > 0 then
+    vim.lsp.buf.inlay_hint(0, true)
+    ui.inlay_hints = true
+  else
+    vim.lsp.buf.inlay_hint(0, false)
+    ui.inlay_hints = false
+  end
+end
+
 -- separator: toggle buffer separators (thick <-> default)
 local function toggle_thick_separators()
   if ui.thick_separators == true then
@@ -393,6 +410,7 @@ return {
   -- toggles
   toggle_window_focus        = toggle_window_focus,
   toggle_context_winbar      = toggle_context_winbar,
+  toggle_inlay_hints         = toggle_inlay_hints,
   toggle_thick_separators    = toggle_thick_separators,
   toggle_spellings           = toggle_spellings,
   toggle_global_statusline   = toggle_global_statusline,

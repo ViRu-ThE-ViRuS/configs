@@ -87,6 +87,7 @@ lsp["lua_ls"].setup {
       runtime = { version = "LuaJIT", path = runtime_path },
       diagnostics = { globals = { "vim", "use", "packer_plugins", "require", "session" } },
       telemetry = { enable = false },
+      hint = { enable = true },
       workspace = {
         library = {
           vim.api.nvim_get_runtime_file('', true),

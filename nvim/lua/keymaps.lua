@@ -97,6 +97,7 @@ utils.map("n", "<leader>3", misc.toggle_global_statusline, { desc = 'toggle glob
 utils.map("n", '<leader>4', misc.diff_current_buf, { desc = 'toggle unsaved changed diff' })
 
 -- qflist keymaps
+utils.map("n", "<leader>M", '<cmd>Messages<cr>')
 utils.map("n", "<leader>Q", misc.toggle_qflist)
 utils.map("n", "<leader>cq", quickfix.add_list)
 utils.map("n", "<leader>cQ", quickfix.open_list)
