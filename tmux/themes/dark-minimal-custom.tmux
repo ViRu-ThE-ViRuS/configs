@@ -23,7 +23,7 @@ set -g mode-style fg="#10c891"
 
 # status bar right
 set -g status-right-style none
-set -g status-right '#[fg=#999999]{#[fg=#10c891,bold]vir#[fg=#999999]@#(whoami)}'
+set -g status-right '#[fg=#999999]{#[fg=#10c891,bold]#(whoami)#[fg=#999999]@#(hostname)}'
 
 # background window tab
 set-window-option -g window-status-style none
