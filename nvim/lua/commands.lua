@@ -4,7 +4,8 @@ local core = require('lib/core')
 local colorscheme = require('colorscheme')
 local utils = require('utils')
 
-local plenary = require('plenary')
+local plenary_path = require('plenary.path')
+local plenary_job = require('plenary.job')
 
 --- autocommands
 
@@ -71,14 +72,14 @@ vim.api.nvim_create_autocmd('BufWritePost', {
     local src_file = vim.fn.expand('<afile>')
     local rc_file = vim.fn.expand('$MYVIMRC')
     local rc_path = vim.fs.dirname(rc_file)
-    local lua_path = plenary.Path.new(rc_path) .. '/lua/'
+    local lua_path = plenary_path.new(rc_path) .. '/lua/'
 
     -- collect all config files to reload
     local to_reload = core.foreach(
       vim.split(vim.fn.globpath(rc_path, '**/**.lua'), "\n"),
       function(_, full_path)
         -- will only consider files within lua/
-        local path_obj = plenary.Path.new(full_path)
+        local path_obj = plenary_path.new(full_path)
         local rel_path = vim.fn.fnamemodify(path_obj:make_relative(lua_path), ':r')
 
         -- NOTE(vir): skip files
@@ -216,7 +217,7 @@ utils.add_command('[MISC] Generate Tags', function(opts)
   local notification_fn = (opts.silent and function(...)
       end) or utils.notify
 
-  plenary.Job:new({
+  plenary_job:new({
     command = 'ctags',
     args = { '-R', '--excmd=combine', '--fields=+K' },
     cwd = vim.loop.cwd(),
