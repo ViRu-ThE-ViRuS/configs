@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# vim: ft=fish :
 
 # neovim
 rm -rf nvim/*
@@ -33,8 +34,12 @@ cp ~/.zshenv zsh/ 2&> /dev/null
 
 # brew
 switch (uname)
-    case Darwin
-        brew list --formula > brew_output.txt
-        brew list --cask > brew_cask_output.txt
-    case '*'
+  case Darwin
+    brew list --formula > system/brew_output.txt
+    brew list --cask > system/brew_cask_output.txt
+
+  case Linux
+    dconf dump / > system/dconf-settings.ini
+
+  case '*'
 end

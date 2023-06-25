@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# vim: ft=fish :
 
 # nvim
 # sudo -A cp -r nvim/* ~/.config/nvim/
@@ -27,3 +28,7 @@ cp emacs/init.el ~/.config/emacs/init.el
 cp zsh/.zshrc ~/.config/zsh/
 cp zsh/.zshenv ~/.zshenv
 
+# ---:notes:---
+# dconf load / < system/dconf-settings.ini
+# cat system/brew_output.txt | xargs brew install
+# cat system/brew_cask_output.txt | xargs brew install --cask

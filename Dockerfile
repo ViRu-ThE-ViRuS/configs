@@ -1,4 +1,4 @@
-FROM ubuntu:22.04 AS base
+FROM ubuntu:22.04 AS dev
 WORKDIR /root
 
 ARG SSH_PRV_KEY
@@ -14,17 +14,15 @@ RUN	 apt update && apt upgrade -y                              \
 # install python
 RUN apt install -y python3-pip && pip3 install virtualenv pynvim neovim ipython
 
-# install tools
-RUN	 add-apt-repository -y ppa:neovim-ppa/unstable  && apt install -y neovim \
-  && add-apt-repository -y ppa:fish-shell/release-3 && apt install -y fish   \
-	&& add-apt-repository -y ppa:git-core/ppa				  && apt install -y git    \
-	&& apt install -y tmux ripgrep bat universal-ctags
-
 # install node, npm
 RUN	 curl -sL https://deb.nodesource.com/setup_18.x -o /tmp/nodesource_setup.sh \
   && bash /tmp/nodesource_setup.sh && apt install -y nodejs
 
-FROM base as dev
+# install tools
+RUN	 add-apt-repository -y ppa:neovim-ppa/unstable  && apt install -y neovim \
+  && add-apt-repository -y ppa:fish-shell/release-3 && apt install -y fish   \
+  && add-apt-repository -y ppa:git-core/ppa				  && apt install -y git    \
+  && apt install -y tmux ripgrep bat universal-ctags
 
 # setup user
 # RUN useradd --create-home --shell $(which fish) -g root -G sudo viraat && passwd -d viraat
@@ -63,3 +61,8 @@ CMD ["fish"]
 
 # DOCKER_BUILDKIT=1 docker build -t tensorrt_llm-dev --build-arg SSH_PRV_KEY="$(cat ~/.ssh/id_rsa)" --build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" --network=host -f docker/Dockerfile.custom .
 # docker run --gpus all --rm -it -v (pwd):/code/tensorrt_llm --hostname=dev --network=host -w /code/tensorrt_llm tensorrt_llm-dev fish
+
+# ---:notes:---
+# build image:
+# docker build --network host --build-arg SSH_PRV_KEY="$(cat ~/.ssh/id_rsa)" --build-arg SSH_PUB_KEY="$(cat ~/.ssh/id_rsa.pub)" -t dev -f Dockerfile .
+
