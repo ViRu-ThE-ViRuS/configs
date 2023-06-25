@@ -9,12 +9,12 @@ project:add_command('Update Repository', function()
       G! difftool
       cc! 1
   ]]
-end, nil, true)
+end)
 
 project:add_command('Update Configs', function()
   vim.ui.select(
     { 'yes', 'no' },
-    { prompt = 'Update System Config>' },
+    { prompt = 'Update System Config> ' },
     function(choice)
       if choice == 'yes' then
         vim.cmd [[ !source update_config.sh ]]
@@ -23,6 +23,6 @@ project:add_command('Update Configs', function()
       end
     end
   )
-end, nil, true)
+end)
 
 return project
