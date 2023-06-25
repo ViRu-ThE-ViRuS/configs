@@ -4,7 +4,7 @@
 function setup_base_aliases
   alias vim='nvim'
   alias rmd='rm -rf'
-  alias cat='bat --theme=Coldark-Dark'
+  alias cat='bat'
   alias icat='kitty +kitten icat'
   alias pip='pip3'
   # alias ssh='kitty +kitten ssh'
@@ -12,10 +12,10 @@ end
 
 function setup_fzf
   set -xg FZF_IGNORE_DIRS     '.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build,*.dSYM'
-  set     FZF_DEFAULT_COMMAND 'rg --files --follow --smart-case --hidden --no-ignore -g "!{$FZF_IGNORE_DIRS}" 2> /dev/null'
-  set     FZF_DEFAULT_OPTS    '--reverse --height 50%'
-  set     FZF_CTRL_T_COMMAND  $FZF_DEFAULT_COMMAND
-  set     FZF_CTRL_T_OPTS     '--preview "bat --style=numbers,changes --color always --theme Coldark-Dark --line-range :500 {}"'
+  set -xg FZF_DEFAULT_COMMAND 'rg --files --follow --smart-case --hidden --no-ignore -g "!{$FZF_IGNORE_DIRS}" 2> /dev/null'
+  set -xg FZF_DEFAULT_OPTS    '--reverse --height 50%'
+  set -xg FZF_CTRL_T_COMMAND  $FZF_DEFAULT_COMMAND
+  set -xg FZF_CTRL_T_OPTS     '--preview "bat --style=numbers,changes --color always --line-range :500 {}"'
 end
 # }}}
 
@@ -27,13 +27,17 @@ set -xg LC_CTYPE en_US.UTF-8
 setup_fzf
 setup_base_aliases
 
-# setup os specific options
+
+
+# setup os specific overrides
 switch (uname)
   case Linux
     alias bat='batcat'
 
   case Darwin
+    alias cat='bat --theme=Coldark-Dark'
     alias vim='SUDO_ASKPASS=$HOME/.config/system/pw.sh nvim'
+    set -xg FZF_CTRL_T_OPTS     '--preview "bat --style=numbers,changes --color always --theme Coldark-Dark --line-range :500 {}"'
 
   case '*'
 end
@@ -74,7 +78,12 @@ end
 function fish_prompt
   set -l status_copy $status
   set -l target_color 10c891
-  set -l ssh_color    1075c8
+  set -l ssh_color    da2f31
+  set -l dev_color    009ece
+
+  set -l HOST (hostname)
+  set -l CWD (basename $PWD)
+  set -l GIT (fish_git_prompt)
 
   if not set -q VIRTUAL_ENV
     echo -sn ' '
@@ -82,16 +91,16 @@ function fish_prompt
 
   if set -q SSH_TTY
     echo -sn (set_color -o $ssh_color) '$'
+  else if [ $HOST = 'dev' ]
+    echo -sn (set_color -o $dev_color) '$'
   else
     echo -sn (set_color -o $target_color) '$'
   end
 
-  set -l CWD (basename $PWD)
   if [ $CWD != 'viraat-chandra' ]
     echo -sn ' ' (set_color normal) (basename $PWD)
   end
 
-  set -l GIT (fish_git_prompt)
   if [ $GIT ]
     echo -sn (set_color normal) (fish_git_prompt)
   end
@@ -101,11 +110,11 @@ function fish_prompt
 end
 
 function tmux --description 'tmux multiplexer'
-  command tmux -f ~/.config/tmux/.tmux.conf $argv
+  command tmux -f $HOME/.config/tmux/.tmux.conf $argv
 end
 
 function vmux --description 'tmux launch/attach session vir'
-  command tmux -f ~/.config/tmux/.tmux.conf attach -t vir $argv || tmux -f ~/.config/tmux/.tmux.conf new -s vir $argv
+  command tmux -f $HOME/.config/tmux/.tmux.conf attach -t vir $argv || tmux -f $HOME/.config/tmux/.tmux.conf new -s vir $argv
 end
 
 function tree --description 'tree'
@@ -114,15 +123,54 @@ end
 
 function python --description 'launch python'
   # disable outside virtualenvs
-  # if test -ne "$VIRTUAL_ENV"
-  #    command python3 $argv
+  # if test -z "$VIRTUAL_ENV"
+  #    command python $argv
   #    return
   # end
 
   if command -sq 'ipython'
     command ipython $argv
-  else
-    command python3 $argv
+    return
   end
+
+  command python $argv
+end
+
+function download_configs
+  mkdir -p $HOME/workspace/
+  cd $HOME/workspace/
+
+  if not [ -d configs ]
+    # only clone: dont install yet
+    git clone https://www.github.com/ViRu-ThE-ViRuS/configs.git
+  else
+    # clone repo only when not present already
+    echo "repo. already present $HOME/workspace/configs/"
+  end
+
+  cd $HOME
+end
+
+function build_ubuntu_dev
+  if not command -sq 'docker'
+    echo '[!] check docker installation'
+    return
+  end
+
+  if not [ -d "$HOME/workspace/configs" ]
+    echo '[!] check configs repository'
+    return
+  end
+
+  echo '[@] building ubuntu dev image'
+
+  cd $HOME/workspace/configs/
+  docker build --network=host \
+    --build-arg SSH_PRV_KEY="$(cat $HOME/.ssh/id_rsa)" \
+    --build-arg SSH_PUB_KEY="$(cat $HOME/.ssh/id_rsa.pub)" \
+    -t dev -f Dockerfile .
+  cd $HOME
+
+  echo '[@] ubuntu dev image built'
 end
 
