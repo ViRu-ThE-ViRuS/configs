@@ -18,5 +18,5 @@ return {
     utils.map('n', 'sot', function() require("textcase").operator("to_title_case") end)
     utils.map('n', 'sof', function() require("textcase").operator("to_path_case") end)
   end,
-  setup = true
+  config = true
 }

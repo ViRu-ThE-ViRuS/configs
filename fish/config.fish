@@ -110,3 +110,11 @@ function python --description 'launch python'
     end
 end
 
+# TODO(vir): find a better place for this
+switch (uname)
+  case Linux
+    alias bat='batcat'
+
+  case '*'
+end
+
