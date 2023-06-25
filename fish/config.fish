@@ -1,45 +1,64 @@
 # vim: ft=fish
 
-alias vim='nvim'
-alias rmd='rm -rf'
-alias cat='bat --theme=Coldark-Dark'
-alias icat='kitty +kitten icat'
-alias pip='pip3'
-# alias ssh='kitty +kitten ssh'
+# {{{ setup functions
+function setup_base_aliases
+  alias vim='nvim'
+  alias rmd='rm -rf'
+  alias cat='bat --theme=Coldark-Dark'
+  alias icat='kitty +kitten icat'
+  alias pip='pip3'
+  # alias ssh='kitty +kitten ssh'
+end
 
+function setup_fzf
+  set -xg FZF_IGNORE_DIRS     '.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build,*.dSYM'
+  set     FZF_DEFAULT_COMMAND 'rg --files --follow --smart-case --hidden --no-ignore -g "!{$FZF_IGNORE_DIRS}" 2> /dev/null'
+  set     FZF_DEFAULT_OPTS    '--reverse --height 50%'
+  set     FZF_CTRL_T_COMMAND  $FZF_DEFAULT_COMMAND
+  set     FZF_CTRL_T_OPTS     '--preview "bat --style=numbers,changes --color always --theme Coldark-Dark --line-range :500 {}"'
+end
+# }}}
+
+# setup common options
 set -xg EDITOR   nvim
 set -xg LANG     en_US.UTF-8
 set -xg LC_CTYPE en_US.UTF-8
 
-# fzf
-set -xg FZF_IGNORE_DIRS     '.DS_Store,.cache,venv,.git,.clangd,.ccls-cache,*.o,build,*.dSYM'
-set     FZF_DEFAULT_COMMAND 'rg --files --follow --smart-case --hidden --no-ignore -g "!{$FZF_IGNORE_DIRS}" 2> /dev/null'
-set     FZF_DEFAULT_OPTS    '--reverse --height 50%'
-set     FZF_CTRL_T_COMMAND  $FZF_DEFAULT_COMMAND
-set     FZF_CTRL_T_OPTS     '--preview "bat --style=numbers,changes --color always --theme Coldark-Dark --line-range :500 {}"'
-
-# macos : tt
-# alias vim='SUDO_ASKPASS=$HOME/.config/system/pw.sh nvim'
-# set fish_user_paths             $fish_user_paths "/opt/homebrew/bin/"
-# set fish_user_paths             $fish_user_paths "$HOME/Library/Python/3.9/bin"
+setup_fzf
+setup_base_aliases
 
 # setup os specific options
 switch (uname)
   case Linux
     alias bat='batcat'
 
+  case Darwin
+    alias vim='SUDO_ASKPASS=$HOME/.config/system/pw.sh nvim'
+
   case '*'
 end
 
 # setup host specific paths
 switch (hostname)
+
+  # the OG
+  case Viraat-TT4.local
+    set fish_user_paths           $fish_user_paths "/opt/homebrew/bin/"
+    set fish_user_paths           $fish_user_paths "$HOME/Library/Python/3.9/bin"
+
+  # # work desk workstation
+  # case nova
+
+  # work mobile workstation
   case storm
     set fish_user_paths 		      $fish_user_paths "/usr/local/cuda-12.1/bin/"
 
-  case nova
+  # dev-container
   case dev
     set fish_user_paths           $fish_user_paths "$HOME/.local/bin/"
+
   case '*'
+
 end
 
 function setup_fish_colors
@@ -94,7 +113,8 @@ function tree --description 'tree'
 end
 
 function python --description 'launch python'
-  # if test -e "$VIRTUAL_ENV"
+  # disable outside virtualenvs
+  # if test -ne "$VIRTUAL_ENV"
   #    command python3 $argv
   #    return
   # end
