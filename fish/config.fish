@@ -1,7 +1,7 @@
 # vim: ft=fish
 
 # {{{ setup functions
-function setup_base_aliases
+function setup_base
   alias vim='nvim'
   alias rmd='rm -rf'
   alias cat='bat'
@@ -24,15 +24,15 @@ set -xg EDITOR   nvim
 set -xg LANG     en_US.UTF-8
 set -xg LC_CTYPE en_US.UTF-8
 
+setup_base
 setup_fzf
-setup_base_aliases
-
-
 
 # setup os specific overrides
 switch (uname)
+
   case Linux
     alias bat='batcat'
+    set -xg DOCKER_BUILDKIT       1
 
   case Darwin
     alias cat='bat --theme=Coldark-Dark'
@@ -40,9 +40,10 @@ switch (uname)
     set -xg FZF_CTRL_T_OPTS     '--preview "bat --style=numbers,changes --color always --theme Coldark-Dark --line-range :500 {}"'
 
   case '*'
+
 end
 
-# setup host specific paths
+# setup host specific overrides
 switch (hostname)
 
   # the OG
@@ -76,7 +77,7 @@ function setup_fish_colors
 end
 
 function fish_prompt
-  set -l status_copy $status
+  set -l status_copy  $status
   set -l target_color 10c891
   set -l ssh_color    da2f31
   set -l dev_color    009ece
@@ -154,23 +155,31 @@ end
 function build_ubuntu_dev
   if not command -sq 'docker'
     echo '[!] check docker installation'
-    return
+    return -1
   end
 
   if not [ -d "$HOME/workspace/configs" ]
     echo '[!] check configs repository'
-    return
+    return -1
   end
 
+  set -l pwd (pwd)
   echo '[@] building ubuntu dev image'
 
   cd $HOME/workspace/configs/
-  docker build --network=host \
-    --build-arg SSH_PRV_KEY="$(cat $HOME/.ssh/id_rsa)" \
-    --build-arg SSH_PUB_KEY="$(cat $HOME/.ssh/id_rsa.pub)" \
-    -t dev -f Dockerfile .
-  cd $HOME
+  docker build --network=host --ssh=default -t dev -f Dockerfile .
+  cd $pwd
 
   echo '[@] ubuntu dev image built'
+  return 0
+end
+
+function launch_ubuntu_dev
+  if not build_ubuntu_dev
+    echo '[!] could not run build_ubuntu_dev'
+    return
+  end
+
+  docker run --network=host --hostname=dev --name=dev --rm -it dev
 end
 
