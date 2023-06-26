@@ -1,0 +1,35 @@
+version: "3"
+services:
+  dev:
+    image: dev
+    tty: true
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+      network: host
+      ssh: ["default"]
+
+    hostname: dev
+    network_mode: host
+    ipc: host
+
+    # gpu usage and profiling
+    cap_add:
+      - SYS_PTRACE
+      - SYS_ADMIN
+    security_opt: ["seccomp:unconfined"]
+
+    # gpu reservation
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+    volumes:
+      - ${SSH_AUTH_SOCK}:${SSH_AUTH_SOCK}
+      - ./:/workspace/configs/:cached
+

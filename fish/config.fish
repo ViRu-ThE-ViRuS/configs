@@ -83,7 +83,7 @@ function fish_prompt
   set -l dev_color    009ece
 
   set -l HOST (hostname)
-  set -l CWD (basename $PWD)
+  set -l CWD (basename (pwd))
   set -l GIT (fish_git_prompt)
 
   if not set -q VIRTUAL_ENV
@@ -98,8 +98,8 @@ function fish_prompt
     echo -sn (set_color -o $target_color) '$'
   end
 
-  if [ $CWD != 'viraat-chandra' ]
-    echo -sn ' ' (set_color normal) (basename $PWD)
+  if [ $CWD != $USER ]
+    echo -sn ' ' (set_color normal) $CWD
   end
 
   if [ $GIT ]
@@ -137,6 +137,15 @@ function python --description 'launch python'
   command python $argv
 end
 
+function dvim --description 'launch dev neovim'
+  if command -sq 'docker'
+    command nvim --remote-ui --server localhost:5757 $argv
+    return
+  end
+
+  command nvim $argv
+end
+
 function download_configs
   mkdir -p $HOME/workspace/
   cd $HOME/workspace/
@@ -152,7 +161,7 @@ function download_configs
   cd $HOME
 end
 
-function build_ubuntu_dev
+function configure_dev --description 'configure dev server and environment'
   if not command -sq 'docker'
     echo '[!] check docker installation'
     return -1
@@ -164,22 +173,59 @@ function build_ubuntu_dev
   end
 
   set -l pwd (pwd)
-  echo '[@] building ubuntu dev image'
+  echo '[@] building dev image'
 
   cd $HOME/workspace/configs/
   docker build --network=host --ssh=default -t dev -f Dockerfile .
   cd $pwd
 
-  echo '[@] ubuntu dev image built'
+  echo '[@] dev image built and environment configured'
   return 0
 end
 
-function launch_ubuntu_dev
-  if not build_ubuntu_dev
-    echo '[!] could not run build_ubuntu_dev'
+function start_dev --description 'start dev server' -a name
+  set -l target dev-(basename (pwd))
+
+  if test -n "$name"
+    set target $name
+  end
+
+  set -l current (docker ps -a -q -f name=$target)
+  if test -n "$current"
+    echo "[@] [$target] dev server is already running"
     return
   end
 
-  docker run --network=host --hostname=dev --name=dev --rm -it dev
+  if not configure_dev
+    echo "[!] could not configure dev env"
+    return
+  end
+
+  # run container of needed and mount (pwd) as working dir
+  docker run --network=host --hostname=dev --name=$target                  \
+         --mount type=bind,source=$SSH_AUTH_SOCK,target=/ssh-agent         \
+         --mount type=bind,source=(pwd),target=/workspace/(basename (pwd)) \
+         -d --rm -it dev
+
+  echo "[@] [$target] dev server has been started"
+end
+
+function stop_dev --description 'stop dev server' -a name
+  set -l target dev-(basename (pwd))
+  set -l msg_head "[$target]"
+
+  if test -n "$name"
+    set target $name
+    set msg_head "[$target]"
+  end
+
+  set -l current (docker ps -a -q -f name=$target)
+  if test -z "$current"
+    echo "[@] [$target] dev server is already stopped"
+    return
+  end
+
+  docker stop $target 2&> /dev/null
+  echo "[@] $msg_head dev server has been stopped"
 end
 
