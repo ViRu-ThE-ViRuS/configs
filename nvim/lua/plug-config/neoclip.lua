@@ -1,13 +1,13 @@
 return {
   'AckslD/nvim-neoclip.lua',
   event = 'BufReadPre',
-  requires = { 'ibhagwan/fzf-lua' },
+  dependencies = { 'ibhagwan/fzf-lua' },
   init = function()
     require('utils').map('n', 'gP', function()
       require('neoclip.fzf')()
     end)
   end,
-  config = {
+  opts = {
     history = 50,
     prompt = 'clipboard> ',
     enable_macro_history = false,

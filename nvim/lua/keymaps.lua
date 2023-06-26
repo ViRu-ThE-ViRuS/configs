@@ -135,7 +135,9 @@ utils.map('x', '<m-j>', ":move '>+1<CR>gv=gv", { silent = true })
 utils.map('x', '<m-k>', ":move '<-2<CR>gv=gv", { silent = true })
 
 -- terminal keymaps
+utils.map("n", "<leader><leader>s", "<cmd>terminal<cr>")
 utils.map("n", "<leader>s", "<cmd>vsp | terminal<cr>")
+utils.map("n", "<leader>S", "<cmd>sp | terminal<cr>")
 utils.map("n", "<leader>ca", terminal.send_to_terminal)
 utils.map("n", "<leader>cA", terminal.run_command)
 utils.map("n", "<leader>cs", terminal.toggle_terminal)
