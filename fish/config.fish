@@ -211,7 +211,7 @@ function start_dev --description 'start dev server' -a name
     set target $name
   end
 
-  set -l current (docker ps -a -q -f name=$target)
+  set -l current (docker ps -q -f name=$target)
   if test -n "$current"
     echo "[@] [$target] dev server is already running"
     return

@@ -29,6 +29,9 @@ services:
               count: 1
               capabilities: [gpu]
 
+    environment:
+      - SSH_AUTH_SOCK:${SSH_AUTH_SOCK}
+
     volumes:
       - ${SSH_AUTH_SOCK}:${SSH_AUTH_SOCK}
       - ./:/workspace/configs/:cached
