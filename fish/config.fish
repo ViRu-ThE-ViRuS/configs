@@ -66,6 +66,7 @@ switch (hostname)
 
 end
 
+# {{{ core
 function setup_fish_colors
   set -U fish_greeting             " Stars :)"
   set -U fish_color_command        eee8d5
@@ -121,6 +122,7 @@ end
 function tree --description 'tree'
     command tree -C -I 'node_modules|venv|.git|__pycache__' $argv
 end
+# }}}
 
 function python --description 'launch python'
   # disable outside virtualenvs
@@ -137,15 +139,6 @@ function python --description 'launch python'
   command python $argv
 end
 
-function dvim --description 'launch dev neovim'
-  if command -sq 'docker'
-    command nvim --remote-ui --server localhost:5757 $argv
-    return
-  end
-
-  command nvim $argv
-end
-
 function download_configs
   mkdir -p $HOME/workspace/
   cd $HOME/workspace/
@@ -159,6 +152,34 @@ function download_configs
   end
 
   cd $HOME
+end
+
+# {{{ dev-env api
+function dvim --description 'launch dev neovim'
+  if command -sq 'docker'
+    command nvim --remote-ui --server localhost:5757 $argv
+    return
+  end
+
+  command nvim $argv
+end
+
+function dev --description 'launch dev shell' -a name
+  set -l target dev-(basename (pwd))
+
+  if test -n "$name"
+    set target $name
+  end
+
+  if not command -sq 'docker'
+    echo '[!] need to install docker to support dev envs'
+    return
+  end
+
+  docker exec -it $target fish
+  if test $status -ne 0
+    echo "[!] [$target] env not running"
+  end
 end
 
 function configure_dev --description 'configure dev server and environment'
@@ -225,7 +246,7 @@ function stop_dev --description 'stop dev server' -a name
     return
   end
 
-  docker stop $target 2&> /dev/null
+  docker stop $target
   echo "[@] $msg_head dev server has been stopped"
 end
-
+# }}}
