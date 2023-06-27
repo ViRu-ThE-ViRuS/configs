@@ -51,8 +51,9 @@ switch (hostname)
     set fish_user_paths           $fish_user_paths "/opt/homebrew/bin/"
     set fish_user_paths           $fish_user_paths "$HOME/Library/Python/3.9/bin"
 
-  # # work desk workstation
-  # case nova
+  # work desk workstation
+  case nova
+    set fish_user_paths           $fish_user_paths "$HOME/.local/bin/"
 
   # work mobile workstation
   case storm
