@@ -1,4 +1,4 @@
-FROM ubuntu:22.04 as dev
+FROM ubuntu:22.04 as dev-configs
 WORKDIR /root
 
 # ENV SSH_AUTH_SOCK=/ssh-agent

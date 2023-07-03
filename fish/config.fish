@@ -17,6 +17,12 @@ function setup_fzf
   set -xg FZF_CTRL_T_COMMAND  $FZF_DEFAULT_COMMAND
   set -xg FZF_CTRL_T_OPTS     '--preview "bat --style=numbers,changes --color always --line-range :500 {}"'
 end
+
+function setup_ssh
+  eval (ssh-agent -c) > /dev/null
+  set -Ux SSH_AUTH_SOCK $SSH_AUTH_SOCK
+  set -Ux SSH_AGENT_PID $SSH_AGENT_PID
+end
 # }}}
 
 # setup common options
@@ -57,7 +63,9 @@ switch (hostname)
 
   # work mobile workstation
   case storm
+    set fish_user_paths           $fish_user_paths "$HOME/.local/bin/"
     set fish_user_paths 		      $fish_user_paths "/usr/local/cuda-12.1/bin/"
+    setup_ssh
 
   # dev-container
   case dev
@@ -227,7 +235,7 @@ function start_dev --description 'start dev server' -a name
   docker run --network=host --hostname=dev --name=$target                  \
          --mount type=bind,source=$SSH_AUTH_SOCK,target=/ssh-agent         \
          --mount type=bind,source=(pwd),target=/workspace/(basename (pwd)) \
-         -d --rm -it dev
+         -d --rm -it $target
 
   echo "[@] [$target] dev server has been started"
 end

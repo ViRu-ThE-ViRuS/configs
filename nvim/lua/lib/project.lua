@@ -82,7 +82,7 @@ function RemoteProject:launch_sync(reverse)
   if reverse then
     terminal.launch_terminal(
       string.format(
-        'rsync -aP --exclude "venv" %s@%s:%s/ %s',
+        'rsync -aP --exclude "venv" --exclude "build" --exclude "__pycache__" %s@%s:%s/ %s',
         self.target_user,
         self.target,
         self.target_path,
@@ -92,7 +92,7 @@ function RemoteProject:launch_sync(reverse)
   else
     terminal.launch_terminal(
       string.format(
-        'watch -n0.5 "rsync -aP --exclude "venv" %s/ %s@%s:%s/"',
+        'watch -n0.5 "rsync -aP --exclude "venv"  --exclude "build" --exclude "__pycache__" %s/ %s@%s:%s/"',
         self.host_path,
 
         self.target_user,
@@ -138,9 +138,48 @@ end
 
 -- }}}
 
+-- FileSyncProject class
+local FileSyncProject = class(Project)
+FileSyncProject.default_args = { host_path = vim.fn.getcwd() }
+
+-- {{{ FileSyncProject api
+function FileSyncProject:init(args)
+  args = vim.tbl_deep_extend('force', FileSyncProject.default_args, args or {})
+  self.super:init(args) -- init superclass
+
+  assert(args.target_path, 'target cannot be nil')
+
+  self.host_path = args.host_path
+  self.target_path = args.target_path
+end
+
+-- launch rsync host <-> remote target
+function FileSyncProject:launch_sync(reverse)
+  if reverse then
+    terminal.launch_terminal(
+      string.format(
+        'rsync --aP --exclude "venv" --exclude "build" --exclude "__pycache__" %s/ %s/',
+        self.target_path,
+        self.host_path
+      )
+    )
+  else
+    terminal.launch_terminal(
+      string.format(
+        'watch -n1 "rsync -aP --exclude "venv" --exclude "build" --exclude "__pycache__" %s/ %s/"',
+        self.host_path,
+        self.target_path
+      ),
+      { background = true }
+    )
+  end
+end
+-- }}}
+
 return {
   Project = Project,
   RemoteProject = RemoteProject,
+  FileSyncProject = FileSyncProject
 }
 
 --[[ example usage in .nvimrc.lua
@@ -154,13 +193,13 @@ project.executable = string.format('%s/build/%s', vim.loop.cwd(), project.name)
 
 -- add a command
 project:add_command('build', function()
-  terminal.send_to_terminal('cd build ; make ; cd ..')
+terminal.send_to_terminal('cd build ; make ; cd ..')
 end)
 
 -- add a debug config
 project:add_dap_config('basic', project.executable, { 'bzc/curve1.bzc' }, {
-  base_type = 'cpp',
-  preamble = function(_) project:run_command('build') end
+base_type = 'cpp',
+preamble = function(_) project:run_command('build') end
 })
 
 -- MUST RETURN THIS PROJECT OBJECT, so as to register it into the session

@@ -101,6 +101,8 @@ local function get_primary_terminal()
   if not primary_id or type(primary_id) == 'table' then return nil end
 
   local primary_state = palette.terminals.term_states[primary_id]
+  if not vim.api.nvim_buf_is_loaded(primary_state.bufnr) then return nil end
+
   return primary_state
 end
 -- }}}
