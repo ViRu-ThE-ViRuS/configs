@@ -20,8 +20,9 @@ end
 
 function setup_ssh
   eval (ssh-agent -c) > /dev/null
-  set -Ux SSH_AUTH_SOCK $SSH_AUTH_SOCK
-  set -Ux SSH_AGENT_PID $SSH_AGENT_PID
+  set -xg SSH_AUTH_SOCK $SSH_AUTH_SOCK
+  set -xg SSH_AGENT_PID $SSH_AGENT_PID
+  ssh-add ~/.ssh/id_rsa 1&> /dev/null
 end
 # }}}
 
@@ -60,6 +61,8 @@ switch (hostname)
   # work desk workstation
   case nova
     set fish_user_paths           $fish_user_paths "$HOME/.local/bin/"
+    set fish_user_paths 		      $fish_user_paths "/usr/local/cuda-12.1/bin/"
+    setup_ssh
 
   # work mobile workstation
   case storm

@@ -212,17 +212,13 @@ vim.cmd [[
 ]]
 
 -- generate tags
-utils.add_command('[MISC] Generate Tags', function(opts)
-  local notification_opts = { title = '[MISC] tags', render = 'compact' }
-  local notification_fn = (opts.silent and function(...)
-      end) or utils.notify
-
+utils.add_command('[MISC] Generate Tags', function()
   plenary_job:new({
     command = 'ctags',
     args = { '-R', '--excmd=combine', '--fields=+K' },
     cwd = vim.loop.cwd(),
-    on_start = core.partial(notification_fn, 'generating tags file', 'debug', notification_opts),
-    on_exit = core.partial(notification_fn, 'generated tags file', 'info', notification_opts)
+    on_start = core.partial(utils.notify, 'generating tags file', 'debug', { title = '[MISC] tags'}),
+    on_exit = core.partial(utils.notify, 'generated tags file', 'info', { title = '[MISC] tags'})
   }):start()
 end, { add_custom = true })
 
