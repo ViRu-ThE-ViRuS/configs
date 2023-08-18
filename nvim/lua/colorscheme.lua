@@ -211,9 +211,9 @@ end
 -- }}}
 
 vim.opt.termguicolors = true
-vim.opt.background = 'dark'
+vim.opt.background = "dark"
 
-local colorscheme = 'moonfly'
+local colorscheme = "melange"
 ---@cast colorscheme +string +function
 
 -- load default colorscheme if chosen one is not available
@@ -226,12 +226,15 @@ ui_overrides()
 return {
   preferred = {
     dark = {
+      "alabaster",
       "aquarium",
       "barstrata",
+      "caret",
       "everforest",
       "gruvbox",
       "gruvbox-baby",
       "gruvbox-material",
+      "gruvsquirrel",
       "habamax",
       "hybrid",
       "melange",
@@ -270,6 +273,8 @@ return {
     -- NOTE(vir): Yes, sometimes, i use light themes,
     -- they remind me of the pain that exists in the world :o
     light = {
+      "alabaster",
+      "caret",
       "everforest",
       "gruvbox",
       "gruvbox-material",

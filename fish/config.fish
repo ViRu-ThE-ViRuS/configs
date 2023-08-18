@@ -19,10 +19,13 @@ function setup_fzf
 end
 
 function setup_ssh
-  eval (ssh-agent -c) > /dev/null
-  set -xg SSH_AUTH_SOCK $SSH_AUTH_SOCK
-  set -xg SSH_AGENT_PID $SSH_AGENT_PID
-  ssh-add ~/.ssh/id_rsa 1&> /dev/null
+  if test -z "$SSH_AUTH_SOCK"
+    killall ssh-agent
+    eval (ssh-agent -c) > /dev/null
+    set -xg SSH_AUTH_SOCK $SSH_AUTH_SOCK
+    set -xg SSH_AGENT_PID $SSH_AGENT_PID
+    ssh-add ~/.ssh/id_rsa 1&> /dev/null
+  end
 end
 # }}}
 

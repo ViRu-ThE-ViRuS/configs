@@ -4,12 +4,15 @@ return {
   'kyazdani42/nvim-web-devicons',
 
   -- colorschemes
+  'p00f/alabaster.nvim',
   'FrenzyExists/aquarium-vim',
   'w3barsi/barstrata.nvim',
+  'projekt0n/caret.nvim',
   'sainnhe/everforest',
   'ellisonleao/gruvbox.nvim',
   'luisiacc/gruvbox-baby',
   'sainnhe/gruvbox-material',
+  'mikesmithgh/gruvsquirrel.nvim',
   'w0ng/vim-hybrid',
   'chiendo97/intellij.vim',
   'savq/melange-nvim',
