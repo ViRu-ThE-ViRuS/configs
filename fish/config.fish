@@ -130,8 +130,13 @@ function tmux --description 'tmux multiplexer'
   command tmux -f $HOME/.config/tmux/.tmux.conf $argv
 end
 
-function vmux --description 'tmux launch/attach session vir'
+function vmux --description 'tmux launch/join session vir'
   command tmux -f $HOME/.config/tmux/.tmux.conf attach -t vir $argv || tmux -f $HOME/.config/tmux/.tmux.conf new -s vir $argv
+end
+
+function wmux --description 'tmux launch/attach session vir'
+  set -l sess_name (echo "vir_$(random 0 100)")
+  command tmux -f $HOME/.config/tmux/.tmux.conf new-session -t vir -s $sess_name $argv
 end
 
 function tree --description 'tree'
