@@ -64,3 +64,4 @@ ready to go
 - **brew**: packages in `brew_output.txt` & `brew_cask_output.txt`
 - **kitty**: setup fonts according to `kitty/kitty.conf`
 - **nvim**: use `LuaCacheClear` from impatient.nvim, if startup seems weirdly slow
+- ngc: docker auth token preset in ~/.docker/config.json

@@ -163,7 +163,12 @@ local function open_repo_on_github(remote)
   url = url:gsub("git:", "https://")
   url = url:gsub("git@", "https://")
   url = url:gsub("com:", "com/")
-  core.lua_system("open -u " .. url)
+  url = url:gsub('ssh://', '')
+
+  url = url:gsub('com/12051', 'com')
+  core.lua_system("open " .. url)
+
+  -- core.lua_system("open -u " .. url)
 
   utils.notify(
     string.format("[%s] -> %s", remote, url),

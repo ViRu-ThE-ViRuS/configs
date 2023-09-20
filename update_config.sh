@@ -20,7 +20,8 @@ cp -r kitty/* ~/.config/kitty/
 cp -r system/* ~/.config/system/
 
 # git config
-cp .gitconfig ~/.gitconfig
+# cp .gitconfig ~/.gitconfig
+sed -n '/github/!p' .gitconfig  > ~/.gitconfig
 
 # deprecated
 cp alacritty/* ~/.config/alacritty/

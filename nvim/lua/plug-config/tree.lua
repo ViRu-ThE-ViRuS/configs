@@ -62,7 +62,6 @@ return {
       -- exclude = { 'gitignore', 'gitmodules' }
     },
     on_attach = on_attach,
-    view = { mappings = { custom_only = true } },
     git = { ignore = false },
     renderer = {
       indent_markers = { enable = true },
