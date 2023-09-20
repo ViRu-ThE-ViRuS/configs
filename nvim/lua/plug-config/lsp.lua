@@ -13,7 +13,10 @@ return {
     -- use mason to install dependencies
     require('mason').setup({ ui = { border = 'rounded' } })
     require('mason-lspconfig').setup({ ensure_installed = { 'pyright', 'clangd', 'lua_ls', 'tsserver' } })
-    require('mason-null-ls').setup({ ensure_installed = { 'cppcheck', 'autopep8', 'prettier' } })
+    require('mason-null-ls').setup({
+      ensure_installed = { 'cppcheck', 'autopep8', 'prettier', 'cpplint' },
+      automatic_installation = true
+    })
 
     -- setup lsps
     require("lsp-setup/init")
