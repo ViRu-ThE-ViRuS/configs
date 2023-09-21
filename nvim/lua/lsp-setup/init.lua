@@ -67,7 +67,8 @@ lsp["clangd"].setup {
   init_options = {
     usePlaceholders = true,
     completeUnimported = true,
-    clangdFileStatus = true
+    clangdFileStatus = true,
+    semanticHighlighting = true
   },
   on_attach = on_attach,
   flags = { debounce_text_changes = 150 }
@@ -124,7 +125,8 @@ local null_ls = require('null-ls')
 null_ls.setup({
   sources = {
     null_ls.builtins.completion.spell.with({ filetypes = { 'text', 'markdown' } }),
-    -- null_ls.builtins.diagnostics.cppcheck,
+    null_ls.builtins.diagnostics.cppcheck,
+    -- null_ls.builtins.diagnostics.cpplint,
     null_ls.builtins.formatting.autopep8,
     null_ls.builtins.formatting.prettier.with({ filetypes = { 'markdown', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' } }),
     null_ls.builtins.hover.dictionary.with({ filetypes = { 'text', 'markdown' } }),

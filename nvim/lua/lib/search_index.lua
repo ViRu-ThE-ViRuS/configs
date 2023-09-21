@@ -16,7 +16,9 @@ local function show_search_index()
   local namespace_id = vim.api.nvim_create_namespace('search')
   vim.api.nvim_buf_clear_namespace(0, namespace_id, 0, -1)
 
-  -- search.count.total < 1: no matches, dont show search index
+  if not search_count then return end
+
+  -- search_count.total < 1: no matches, dont show search index
   -- search_count.incomplete == 1: recomputing / timed out ie invalid result
   if search_count.total < 1 or search_count.incomplete == 1 then return end
 

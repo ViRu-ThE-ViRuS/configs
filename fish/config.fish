@@ -67,6 +67,8 @@ switch (hostname)
     set fish_user_paths 		      $fish_user_paths "/usr/local/cuda-12.1/bin/"
     setup_ssh
 
+    alias rvim='nvim --remote-ui --server ip6-localhost:5757'
+
   # work mobile workstation
   case storm
     set fish_user_paths           $fish_user_paths "$HOME/.local/bin/"

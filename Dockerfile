@@ -6,47 +6,46 @@ ENV NVIM_PORT=5757
 ENV DEBIAN_FRONTEND=noninteractive
 
 # install updates and utils
-RUN  apt update && apt upgrade -y                              \
-  && apt install -y software-properties-common build-essential \
-  && apt install -y cmake autoconf automake                    \
-  && apt install -y curl wget tree htop watch sudo unzip file
+RUN apt update; apt upgrade -y;                                                                                                  \
+    apt install -y software-properties-common build-essential cmake autoconf automake curl wget tree htop watch sudo unzip file;
 
 # install python
-RUN apt install -y python3-pip && pip3 install virtualenv pynvim neovim ipython
+RUN apt install -y python3-pip; pip3 install virtualenv pynvim neovim ipython
 
-# install node, npm
-RUN  curl -sL https://deb.nodesource.com/setup_18.x -o /tmp/nodesource_setup.sh \
-  && bash /tmp/nodesource_setup.sh && apt install -y nodejs
+# install nodejs
+RUN mkdir -p /etc/apt/keyrings; curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg;                         \
+    NODE_MAJOR=18; echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" > /etc/apt/sources.list.d/nodesource.list; \
+    apt-get update; apt-get install -y nodejs
 
 # install tools
-RUN  add-apt-repository -y ppa:neovim-ppa/unstable  && apt install -y neovim \
-  && add-apt-repository -y ppa:fish-shell/release-3 && apt install -y fish   \
-  && add-apt-repository -y ppa:git-core/ppa         && apt install -y git    \
-  && apt install -y tmux ripgrep bat universal-ctags
+RUN add-apt-repository -y ppa:neovim-ppa/unstable;   \
+    add-apt-repository -y ppa:fish-shell/release-3;  \
+    add-apt-repository -y ppa:git-core/ppa;          \
+    apt install -y neovim fish git tmux ripgrep bat;
 
 # setup user
 # RUN useradd --create-home --shell $(which fish) -g root -G sudo viraat && passwd -d viraat
 # USER viraat
-# WORKDIR /home/viraat
 WORKDIR $HOME/
 
-# install fzf
-RUN  mkdir -p $HOME/.local/bin && cd $HOME/.local/bin                                            \
-  && wget https://github.com/junegunn/fzf/releases/download/0.42.0/fzf-0.42.0-linux_amd64.tar.gz \
-  && tar -xf fzf-0.42.0-linux_amd64.tar.gz && rm -rf fzf-0.42.0-linux_amd64.tar.gz
+# install binaries
+RUN mkdir -p $HOME/.local/bin;                                                                                                                                                                                   \
+    wget https://github.com/junegunn/fzf/releases/download/0.42.0/fzf-0.42.0-linux_amd64.tar.gz -O $HOME/.local/bin/fzf.tar.gz;                                                                                  \
+    tar -xf $HOME/.local/bin/fzf.tar.gz -C $HOME/.local/bin/;                                                                                                                                                    \
+    wget https://github.com/universal-ctags/ctags-nightly-build/releases/download/2023.09.20%2Bdedfed1a22ab542be257fd14362fcc919d4140dc/uctags-2023.09.20-linux-x86_64.tar.xz -O $HOME/.local/bin/uctags.tar.xz; \
+    tar -xf $HOME/.local/bin/uctags.tar.xz -C $HOME/.local/bin/; mv $HOME/.local/bin/uctags-2023.09.20-linux-x86_64/bin/ctags $HOME/.local/bin/;                                                                 \
+    rm -rf ~/.local/bin/*.tar.*;
+
 
 # install config files
-RUN  git config --global --add safe.directory /                                                      \
-  && git clone https://www.github.com/ViRu-ThE-ViRuS/configs.git $HOME/_configs && cd $HOME/_configs \
-  && mkdir -p $HOME/.config/nvim && mkdir -p $HOME/.config/fish && mkdir -p $HOME/.config/tmux       \
-  && sh ./update_config.sh 2> /dev/null
+RUN git clone https://www.github.com/ViRu-ThE-ViRuS/configs.git $HOME/configs;            \
+    mkdir -p $HOME/.config/nvim $HOME/.config/nvim $HOME/.config/fish $HOME/.config/tmux; \
+    cd $HOME/configs && sh ./update_config.sh 2> /dev/null;
 
 # initialize neovim
-RUN --mount=type=ssh mkdir -p $HOME/.ssh/                                                                \
-  && ssh-keyscan github.com >> $HOME/.ssh/known_hosts                                                    \
-  && nvim --headless 'Lazy! sync' +qa                                                                    \
-  && touch test.txt && nvim +TSUpdateSync '+MasonInstall clangd pyright' +qa test.txt && rm -rf test.txt \
-  && chsh -s /usr/bin/fish
+RUN nvim --headless 'Lazy! sync' +qa;                                                               \
+    touch test.txt; nvim +TSUpdateSync '+MasonInstall clangd pyright' +qa test.txt; rm -rf test.txt \
+    chsh -s $(which fish)
 
 WORKDIR $HOME/workspace
 
