@@ -213,7 +213,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-local colorscheme = "melange"
+local colorscheme = "caret"
 ---@cast colorscheme +string +function
 
 -- load default colorscheme if chosen one is not available

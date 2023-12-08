@@ -3,18 +3,18 @@ return {
   dependencies = {
     'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
-    'jayp0521/mason-null-ls.nvim',
+    {'jayp0521/mason-null-ls.nvim', dependencies = 'jose-elias-alvarez/null-ls.nvim' },
 
-    'jose-elias-alvarez/null-ls.nvim',
     'ray-x/lsp_signature.nvim',
+    {'creativenull/efmls-configs-nvim', dependencies = 'neovim/nvim-lspconfig' },
   },
   event = 'BufReadPre',
   config = function()
     -- use mason to install dependencies
     require('mason').setup({ ui = { border = 'rounded' } })
-    require('mason-lspconfig').setup({ ensure_installed = { 'pyright', 'clangd', 'lua_ls', 'tsserver' } })
+    require('mason-lspconfig').setup({ ensure_installed = { 'pyright', 'clangd', 'lua_ls', 'tsserver', 'efm' } })
     require('mason-null-ls').setup({
-      ensure_installed = { 'cppcheck', 'autopep8', 'prettier', 'cpplint' },
+      ensure_installed = { 'autopep8', 'prettier', 'cpplint' },
       automatic_installation = true
     })
 

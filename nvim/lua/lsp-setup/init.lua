@@ -119,31 +119,38 @@ lsp['tsserver'].setup {
 }
 -- }}}
 
--- {{{ null-ls setup
--- NOTE(vir): plugin null-ls
-local null_ls = require('null-ls')
-null_ls.setup({
-  sources = {
-    null_ls.builtins.completion.spell.with({ filetypes = { 'text', 'markdown' } }),
-    null_ls.builtins.diagnostics.cppcheck,
-    -- null_ls.builtins.diagnostics.cpplint,
-    null_ls.builtins.formatting.autopep8,
-    null_ls.builtins.formatting.prettier.with({ filetypes = { 'markdown', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' } }),
-    null_ls.builtins.hover.dictionary.with({ filetypes = { 'text', 'markdown' } }),
+-- {{{ efm-ls setup
+-- NOTE(vir): plugin efmls configs
+local clike = {
+  require('efmls-configs.linters.cpplint'),
+}
+local languages = {
+  python = { require('efmls-configs.formatters.autopep8'), },
+  markdown = { require('efmls-configs.formatters.prettier'), },
+
+  c = vim.tbl_deep_extend('force', clike, {}),
+  cpp = vim.tbl_deep_extend('force', clike, {}),
+  cuda = vim.tbl_deep_extend('force', clike, {}),
+}
+
+lsp['efm'].setup({
+  filetypes = vim.tbl_keys(languages),
+  settings = {
+    rootMarkers = {'.git/'},
+    languages = languages
   },
+  init_options = {
+    documentFormatting = true,
+    documentRangeFormatting = true,
+  },
+
   capabilities = capabilities,
   on_attach = function(client, bufnr)
-    -- utils.notify(
-    --     string.format("[SERVER] %s\n[CWD] %s", client.name, vim.loop.cwd()),
-    --     "info",
-    --     { title = "[LSP] active" },
-    --     true
-    -- )
-
-    utils.map('n', 'K', vim.lsp.buf.hover, { silent = true, buffer = bufnr })
+    -- utils.map('n', 'K', vim.lsp.buf.hover, { silent = true, buffer = bufnr })
     setup_buffer.setup_diagnostics_keymaps(client, bufnr)
     setup_buffer.setup_formatting_keymaps(client, bufnr)
   end,
   flags = { debounce_text_changes = 150 }
 })
 -- }}}
+

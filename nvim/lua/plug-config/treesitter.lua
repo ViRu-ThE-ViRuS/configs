@@ -67,6 +67,7 @@ return {
     config = function()
       local utils = require("utils")
 
+      vim.g.skip_ts_context_commentstring_module = true
       require('nvim-treesitter.configs').setup({
         ensure_installed = {
           'lua', 'python', 'c', 'cpp', 'java', 'go', 'bash', 'fish',
@@ -78,7 +79,6 @@ return {
         yati = { enable = true, disable = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' } },
         highlight = { enable = true, additional_vim_regex_highlighting = { 'markdown' } },
         matchup = { enable = true, disable_virtual_text = true },
-        context_commentstring = { enable = true, enable_autocmd = false },
         incremental_selection = {
           enable = true,
           keymaps = {
@@ -133,6 +133,8 @@ return {
           lint_events = { "BufWrite", "CursorHold" },
         },
       })
+
+      require('ts_context_commentstring').setup{}
 
       -- populate all functions and lambdas into qflist
       utils.map('n', '<leader>uf', function()

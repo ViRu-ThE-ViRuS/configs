@@ -9,12 +9,14 @@ gettext
 git-delta
 htop
 icu4c
+jansson
 libevent
 libnghttp2
 libomp
 libtermkey
 libuv
 libvterm
+libyaml
 lpeg
 luajit
 luv
@@ -23,6 +25,7 @@ ncurses
 neovim
 node
 openssl@1.1
+openssl@3
 pcre2
 pkg-config
 ripgrep
@@ -30,5 +33,6 @@ tmux
 tree
 tree-sitter
 unibilium
+universal-ctags
 utf8proc
 watch
