@@ -24,7 +24,12 @@ function setup_ssh
     eval (ssh-agent -c) > /dev/null
     set -xg SSH_AUTH_SOCK $SSH_AUTH_SOCK
     set -xg SSH_AGENT_PID $SSH_AGENT_PID
-    ssh-add ~/.ssh/id_rsa 1&> /dev/null
+
+    # ssh-add ~/.ssh/id_rsa 1&> /dev/null
+    for id in (ls $HOME/.ssh/id_* | grep -v ".pub")
+      ssh-add $id 1&> /dev/null
+    end
+
   end
 end
 # }}}
@@ -68,6 +73,14 @@ switch (hostname)
     setup_ssh
 
     alias rvim='nvim --remote-ui --server ip6-localhost:5757'
+
+    # tensorrt
+    set -xg GIT_TRT_ROOT          "$HOME/workspace/trt/git-trt/"
+    set -xg MANPATH               $MANPATH "$HOME/workspace/trt/git-trt/man"
+    set fish_user_paths           $fish_user_paths "$HOME/workspace/trt/git-trt/bin"
+
+    # mlperf
+    set -xg MLPERF_SCRATCH_PATH   "/home/viraatc/workspace/mlperf/mlperf_scratch_space/"
 
   # work mobile workstation
   case storm

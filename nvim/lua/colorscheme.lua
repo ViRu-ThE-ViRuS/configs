@@ -230,6 +230,7 @@ return {
       "aquarium",
       "barstrata",
       "caret",
+      "deviuspro",
       "everforest",
       "gruvbox",
       "gruvbox-baby",

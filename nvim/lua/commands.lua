@@ -215,7 +215,8 @@ vim.cmd [[
 utils.add_command('[MISC] Generate Tags', function()
   plenary_job:new({
     command = 'ctags',
-    args = { '-R' },
+    -- args = { '-R' },
+    args = { '-R', '--excmd=combine', '--exclude=build', '--exclude=venv' },
     -- args = { '-R', '--excmd=combine', '--fields=+K' },
     cwd = vim.loop.cwd(),
     on_start = core.partial(utils.notify, 'generating tags file', 'debug', { title = '[MISC] tags'}),

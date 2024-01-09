@@ -8,6 +8,7 @@ return {
   'FrenzyExists/aquarium-vim',
   'w3barsi/barstrata.nvim',
   'projekt0n/caret.nvim',
+  'DeviusVim/deviuspro.nvim',
   'sainnhe/everforest',
   'ellisonleao/gruvbox.nvim',
   'luisiacc/gruvbox-baby',
