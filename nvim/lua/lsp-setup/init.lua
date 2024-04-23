@@ -122,7 +122,7 @@ lsp['tsserver'].setup {
 -- {{{ efm-ls setup
 -- NOTE(vir): plugin efmls configs
 local clike = {
-  require('efmls-configs.linters.cpplint'),
+  -- require('efmls-configs.linters.cpplint'),
 }
 local languages = {
   python = { require('efmls-configs.formatters.autopep8'), },
