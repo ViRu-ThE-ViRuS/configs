@@ -6,6 +6,7 @@ return {
   -- colorschemes
   'p00f/alabaster.nvim',
   'FrenzyExists/aquarium-vim',
+  'ribru17/bamboo.nvim',
   'w3barsi/barstrata.nvim',
   'projekt0n/caret.nvim',
   'DeviusVim/deviuspro.nvim',
@@ -18,6 +19,7 @@ return {
   'chiendo97/intellij.vim',
   'savq/melange-nvim',
   'kvrohit/mellow.nvim',
+  'miikanissi/modus-themes.nvim',
   'tanvirtin/monokai.nvim',
   'bluz71/vim-moonfly-colors',
   'thepogsupreme/mountain.nvim',

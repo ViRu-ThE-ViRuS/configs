@@ -213,7 +213,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-local colorscheme = "caret"
+local colorscheme = "vscode"
 ---@cast colorscheme +string +function
 
 -- load default colorscheme if chosen one is not available
@@ -228,6 +228,7 @@ return {
     dark = {
       "alabaster",
       "aquarium",
+      "bamboo",
       "barstrata",
       "caret",
       "deviuspro",
@@ -240,6 +241,7 @@ return {
       "hybrid",
       "melange",
       "mellow",
+      "modus",
       "monokai_pro", "monokai_ristretto",
       "moonfly",
       "mountain",
@@ -275,11 +277,13 @@ return {
     -- they remind me of the pain that exists in the world :o
     light = {
       "alabaster",
+      "bamboo",
       "caret",
       "everforest",
       "gruvbox",
       "gruvbox-material",
       "intellij",
+      "modus",
       "oxocarbon",
       "sweetie",
       "tempus_dawn", "tempus_totus",

@@ -19,8 +19,8 @@ function setup_fzf
 end
 
 function setup_ssh
-  if test -z "$SSH_AUTH_SOCK"
-    killall ssh-agent
+  # if test -z "$SSH_AUTH_SOCK"
+    killall ssh-agent 1&> /dev/null
     eval (ssh-agent -c) > /dev/null
     set -xg SSH_AUTH_SOCK $SSH_AUTH_SOCK
     set -xg SSH_AGENT_PID $SSH_AGENT_PID
@@ -30,7 +30,9 @@ function setup_ssh
       ssh-add $id 1&> /dev/null
     end
 
-  end
+
+    docker login -u viraatc -p $TRT_GITLAB_API_TOKEN gitlab-master.nvidia.com &> /dev/null
+  # end
 end
 # }}}
 
@@ -70,7 +72,6 @@ switch (hostname)
   case nova
     set fish_user_paths           $fish_user_paths "$HOME/.local/bin/"
     set fish_user_paths 		      $fish_user_paths "/usr/local/cuda-12.1/bin/"
-    setup_ssh
 
     alias rvim='nvim --remote-ui --server ip6-localhost:5757'
 
@@ -82,10 +83,13 @@ switch (hostname)
     # mlperf
     set -xg MLPERF_SCRATCH_PATH   "/home/viraatc/workspace/mlperf/mlperf_scratch_space/"
 
+    setup_ssh
+
   # work mobile workstation
   case storm
     set fish_user_paths           $fish_user_paths "$HOME/.local/bin/"
     set fish_user_paths 		      $fish_user_paths "/usr/local/cuda-12.1/bin/"
+
     setup_ssh
 
   # dev-container
