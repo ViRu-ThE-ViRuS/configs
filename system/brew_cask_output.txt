@@ -4,8 +4,12 @@ bitwarden
 docker
 google-drive
 kitty
+microsoft-auto-update
 microsoft-edge
+microsoft-excel
+microsoft-outlook
 microsoft-teams
+microsoft-word
 nordvpn
 slack
 spotify

@@ -11,8 +11,10 @@ htop
 icu4c
 jansson
 libevent
+libgit2
 libnghttp2
 libomp
+libssh2
 libtermkey
 libuv
 libvterm
@@ -24,7 +26,7 @@ msgpack
 ncurses
 neovim
 node
-openssl@1.1
+oniguruma
 openssl@3
 pcre2
 pkg-config

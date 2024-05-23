@@ -257,6 +257,7 @@ return {
       "vscode",
       "xcodedarkhc",
       "default",
+      "vim",
 
       -- lua configured colorschemes
       load_catppuccin('catppuccin-frappe'),
@@ -290,6 +291,7 @@ return {
       "vscode",
       "xcodelighthc",
       "shine",
+      "default",
 
       -- lua configured colorschemes
       load_catppuccin("catppuccin-latte"),
