@@ -15,7 +15,6 @@ libgit2
 libnghttp2
 libomp
 libssh2
-libtermkey
 libuv
 libvterm
 libyaml

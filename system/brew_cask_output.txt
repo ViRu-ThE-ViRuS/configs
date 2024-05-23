@@ -1,6 +1,5 @@
 anydesk
 appcleaner
-bitwarden
 docker
 google-drive
 kitty
