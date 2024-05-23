@@ -168,7 +168,7 @@ end
 
 -- get current file diagnostics
 local function get_diagnostics()
-  if #vim.lsp.get_active_clients({ bufnr = 0 }) == 0 or truncate_statusline(true) then return '' end
+  if #vim.lsp.get_clients({ bufnr = 0 }) == 0 or truncate_statusline(true) then return '' end
 
   local status_parts = {}
   local errors = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })

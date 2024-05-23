@@ -225,7 +225,7 @@ end
 local function toggle_inlay_hints()
   if ui.inlay_hints == false and vim.tbl_count(
     core.foreach(
-      vim.lsp.get_active_clients({ bufnr = 0 }),
+      vim.lsp.get_clients({ bufnr = 0 }),
       function(_, client) return client.server_capabilities.inlayHintProvider end,
       true
     )
