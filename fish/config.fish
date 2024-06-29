@@ -30,7 +30,6 @@ function setup_ssh
       ssh-add $id 1&> /dev/null
     end
 
-
     docker login -u viraatc -p $TRT_GITLAB_API_TOKEN gitlab-master.nvidia.com &> /dev/null
   # end
 end
