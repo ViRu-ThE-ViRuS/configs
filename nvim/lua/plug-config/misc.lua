@@ -7,6 +7,7 @@ return {
       utils.map("n", "<leader>q", function() require('bufdelete').bufdelete(0, true) end)
     end,
   },
+
   {
     'tpope/vim-fugitive',
     cmd = { 'G', 'Gread', 'GcLog' },
@@ -50,12 +51,20 @@ return {
     cmd = 'Tabularize',
     init = function() utils.map("v", "<leader>=", ":Tab /") end,
   },
+
   {
     'tpope/vim-eunuch',
     cmd = { 'Delete', 'Rename', 'Chmod' },
   },
+
   {
     'tweekmonster/startuptime.vim',
     cmd = 'StartupTime',
   },
+
+  {
+    "OXY2DEV/markview.nvim",
+    ft = 'markdown',
+    config = {}
+}
 }
