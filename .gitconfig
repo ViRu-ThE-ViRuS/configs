@@ -7,21 +7,21 @@
     insteadOf = https://github.com/
 
 [core]
-    pager = delta
+  pager = delta
 
 [interactive]
-    diffFilter = delta --color-only
+  diffFilter = delta --color-only
 
 [delta]
-    navigate = true
-    side-by-side = true
-    line-numbers = true
+  navigate = true
+  side-by-side = true
+  line-numbers = true
 
 [merge]
-    conflictstyle = diff3
+  conflictstyle = diff3
 
 [diff]
-    colorMoved = default
+  colorMoved = default
 
 # [remote "origin"]
 #   fetch = +refs/heads/*:refs/remotes/origin/*

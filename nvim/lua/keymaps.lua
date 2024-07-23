@@ -107,10 +107,10 @@ utils.map("n", "[Q", "<cmd>silent! colder<cr>")
 utils.map("n", "]Q", "<cmd>silent! cnewer<cr>")
 
 -- buffer resizing
-utils.map("n", "<c-s-j>", "<cmd>resize +2<cr>")
-utils.map("n", "<c-s-k>", "<cmd>resize -2<cr>")
-utils.map("n", "<c-s-h>", "<cmd>vertical resize -2<cr>")
-utils.map("n", "<c-s-l>", "<cmd>vertical resize +2<cr>")
+utils.map("n", "<m-s-j>", "<cmd>resize +2<cr>")
+utils.map("n", "<m-s-k>", "<cmd>resize -2<cr>")
+utils.map("n", "<m-s-h>", "<cmd>vertical resize -2<cr>")
+utils.map("n", "<m-s-l>", "<cmd>vertical resize +2<cr>")
 
 -- buffer & tab navigation
 utils.map("n", "<bs>", '<c-^>zz')
