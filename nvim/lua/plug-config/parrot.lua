@@ -26,7 +26,7 @@ return {
     },
 
     chat_confirm_delete = false,
-    chat_dir = '/home/viraatc/workspace/local/share/nvim/parrot/chats',
+    chat_dir = '$HOME/.local/share/nvim/parrot/chats',
 
     chat_user_prefix = "[>]:",
     chat_agent_prefix = "[=>]:",
