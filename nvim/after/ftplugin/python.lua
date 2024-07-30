@@ -6,9 +6,8 @@ vim.opt_local.shiftwidth = 4
 vim.opt_local.tabstop = 4
 vim.opt_local.softtabstop = 4
 
--- send selection to terminal
-utils.map("n", "<leader>cv", terminal.send_content_to_terminal)
-utils.map("v", "<leader>cv", '<esc><cmd>lua require("lib/terminal").send_content_to_terminal(true)<cr>gv')
+-- NOTE(vir): to avoid errors when called multiple times
+pcall(terminal.add_command,'ipython3 -i --no-autoindent')
 
 -- repl state
 local repl_session = {
@@ -110,6 +109,10 @@ local function get_current_cell()
     return payload
 end
 
+-- send selection to terminal
+utils.map("n", "<leader>cv", terminal.send_content_to_terminal)
+utils.map("v", "<leader>cv", '<esc><cmd>lua require("lib/terminal").send_content_to_terminal(true)<cr>gv')
+
 -- run current cell marked by `###`
 utils.map("n", "<leader>cc", function()
     local payload = get_current_cell()
@@ -126,6 +129,3 @@ utils.map('n', '[i', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_pr
     { buffer = 0 })
 utils.map('n', ']i', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@cellmarker")<CR>zz',
     { buffer = 0 })
-
--- useful python dev specific commands
--- terminal.add_command('ipython3 -i --no-autoindent')

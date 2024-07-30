@@ -27,31 +27,31 @@ utils.map('i', '<cr>', '<c-g>u<cr>')
 -- utils.map('n', 'N', 'Nzv', { noremap = false })
 
 -- misc
-utils.map("n", ";", ":")                                         -- swaperoo
-utils.map("n", ":", ";")                                         -- swaperoo
-utils.map("n", '`', "'")                                         -- jump to mark (row, 0), swap
-utils.map("n", "'", "`")                                         -- jump to mark (row,col), swap
-utils.map("i", "jj", "<esc>")                                    -- home-row escape
-utils.map("n", "U", "<c-r>")                                     -- undo
-utils.map('n', 'Y', 'yy')                                        -- yank full line
-utils.map("n", "<space>", "za")                                  -- toggle folds
-utils.map("n", "gp", "`[v`]")                                    -- last paste
-utils.map("n", "p", "p`[=`]")                                    -- autoformat paste
-utils.map("n", "P", "P`[=`]")                                    -- autoformat Paste
-utils.map("n", "/", "ms/")                                       -- mark search start
-utils.map("n", "?", "ms?")                                       -- mark search start
-utils.map("x", "&", ":&&<cr>")                                   -- visual execute last substitution
-utils.map("x", ".", ":normal! .<cr>")                            -- visual execute .
-utils.map("x", "@", ":normal! @")                                -- visual execute macro
-utils.map("n", "ss", "s")                                        -- substitute mode, same as default `gh`
-utils.map("x", "ss", ":s/\\%V")                                  -- substitute in visual
-utils.map("x", "s/", "\"sy:%s/<c-r>s//g<left><left>")            -- substitute selection in file
-utils.map('x', '<m-/>', '<esc>/\\%V')                            -- search within selection, '/' itself is a good mapping to consider for this
-utils.map('x', '//', [[y/<c-r>=trim(escape(@",'\/]'))<cr><cr>]]) -- search for selection
+utils.map("n", ";", ":")                                                          -- swaperoo
+utils.map("n", ":", ";")                                                          -- swaperoo
+utils.map("n", '`', "'")                                                          -- jump to mark (row, 0), swap
+utils.map("n", "'", "`")                                                          -- jump to mark (row,col), swap
+utils.map("i", "jj", "<esc>")                                                     -- home-row escape
+utils.map("n", "U", "<c-r>")                                                      -- undo
+utils.map('n', 'Y', 'yy')                                                         -- yank full line
+utils.map("n", "<space>", "za")                                                   -- toggle folds
+utils.map("n", "gp", "`[v`]")                                                     -- last paste
+utils.map("n", "p", "p`[=`]")                                                     -- autoformat paste
+utils.map("n", "P", "P`[=`]")                                                     -- autoformat Paste
+utils.map("n", "/", "ms/")                                                        -- mark search start
+utils.map("n", "?", "ms?")                                                        -- mark search start
+utils.map("x", "&", ":&&<cr>")                                                    -- visual execute last substitution
+utils.map("x", ".", ":normal! .<cr>")                                             -- visual execute .
+utils.map("n", "ss", "s")                                                         -- substitute mode, same as default `gh`
+utils.map("x", "ss", ":s/\\%V")                                                   -- substitute within visual
+utils.map("x", "s/", "\"sy:%s/<c-r>s//g<left><left>")                             -- substitute selection in file
+utils.map('x', '<m-/>', '<esc>/\\%V')                                             -- search within selection, '/' itself is a good mapping to consider for this
+utils.map('x', '//', [[y/<c-r>=trim(escape(@",'\/]'))<cr><cr>]])                  -- search for selection
+utils.map("x", "@", "<esc><cmd>lua require('lib/misc').linewise_macro_cmd()<cr>") -- run line-wise macro n times if n lines are selected
 
 -- commandline modes
-utils.map("n", '@"', "@:", { noremap = false })       -- repeat last comand
-utils.map("n", '@:', "q:")                            -- command edit mode
+utils.map("n", '@"', "@:", { noremap = false }) -- repeat last comand
+utils.map("n", '@:', "q:")                      -- command edit mode
 -- utils.map({ "n", "x" }, "q:", "<nop>")
 -- utils.map({ "n", "x" }, "q/", "<nop>")
 -- utils.map({ "n", "x" }, "q?", "<nop>")
@@ -103,8 +103,8 @@ utils.map("n", "<leader>cq", quickfix.add_list)
 utils.map("n", "<leader>cQ", quickfix.open_list)
 utils.map("n", "[q", "<cmd>try | cprev | catch | silent! clast | catch | endtry<cr>zv")
 utils.map("n", "]q", "<cmd>try | cnext | catch | silent! cfirst | catch | endtry<cr>zv")
-utils.map("n", "[Q", "<cmd>silent! colder<cr>")
-utils.map("n", "]Q", "<cmd>silent! cnewer<cr>")
+utils.map("n", "[Q", "<cmd>try | colder | catch | endtry <cr>")
+utils.map("n", "]Q", "<cmd>try | cnewer | catch | endtry <cr>")
 
 -- buffer resizing
 utils.map("n", "<m-s-j>", "<cmd>resize +2<cr>")
@@ -144,12 +144,10 @@ utils.map("n", "<leader>cs", terminal.toggle_terminal)
 utils.map("n", "<leader>cS", terminal.add_terminal)
 utils.map("n", "<leader>cf", terminal.select_terminal)
 
--- commands
+-- misc
 utils.map('n', '<c-cr>', vim.cmd.Commands)
 utils.map('n', 'gF', '<c-w>vgf')
--- others
 
 -- NOTE(vir): tricks
 --  ins mode: <c-v> to get key code
 --  these work: <c-tab>, <s-tab>, <c-s-tab>, <c-cr>, <s-cr>, <c-s-cr>
-

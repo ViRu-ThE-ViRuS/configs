@@ -114,6 +114,14 @@ local function get_visible_qflists()
   )
 end
 
+local function linewise_macro_cmd()
+  local start_line = vim.fn.line("'<")
+  local end_line = vim.fn.line("'>")
+  local num_lines = math.abs(end_line - start_line) + 1
+  vim.api.nvim_win_set_cursor(0, { math.min(start_line, end_line), 0 })
+  vim.fn.feedkeys(":" .. string.format("normal! %s@", num_lines), "n")
+end
+
 -- get git repo root dir (or nil)
 local function get_git_root()
   local git_cmd = "git -C " .. vim.loop.cwd() .. " rev-parse --show-toplevel"
@@ -224,12 +232,12 @@ end
 -- inlay_hints: from lsp
 local function toggle_inlay_hints()
   if ui.inlay_hints == false and vim.tbl_count(
-    core.foreach(
-      vim.lsp.get_clients({ bufnr = 0 }),
-      function(_, client) return client.server_capabilities.inlayHintProvider end,
-      true
-    )
-  ) > 0 then
+        core.foreach(
+          vim.lsp.get_clients({ bufnr = 0 }),
+          function(_, client) return client.server_capabilities.inlayHintProvider end,
+          true
+        )
+      ) > 0 then
     vim.lsp.buf.inlay_hint(0, true)
     ui.inlay_hints = true
   else
@@ -406,6 +414,7 @@ return {
   rename_buffer              = rename_buffer,
   diff_current_buf           = diff_current_buf,
   get_visible_qflists        = get_visible_qflists,
+  linewise_macro_cmd         = linewise_macro_cmd,
 
   -- git related
   get_git_root               = get_git_root,

@@ -22,7 +22,7 @@ local function qf_populate(lines, opts)
 
   opts = vim.tbl_deep_extend('force', {
     simple_list = false,
-    mode = "r",
+    mode = " ", -- "r"
     title = nil,
     scroll_to_end = false,
   }, opts or {})
