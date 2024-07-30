@@ -1,4 +1,3 @@
-anydesk
 appcleaner
 docker
 google-drive
@@ -16,5 +15,6 @@ the-unarchiver
 tiles
 transmission
 utm
+visual-studio-code
 vlc
 zoom

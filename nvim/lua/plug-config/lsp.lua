@@ -3,10 +3,10 @@ return {
   dependencies = {
     'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
-    {'jayp0521/mason-null-ls.nvim', dependencies = "nvimtools/none-ls.nvim" },
+    { 'jayp0521/mason-null-ls.nvim',     dependencies = "nvimtools/none-ls.nvim" },
 
     'ray-x/lsp_signature.nvim',
-    {'creativenull/efmls-configs-nvim', dependencies = 'neovim/nvim-lspconfig' },
+    { 'creativenull/efmls-configs-nvim', dependencies = 'neovim/nvim-lspconfig' },
   },
   event = 'BufReadPre',
   config = function()
@@ -25,9 +25,29 @@ return {
     require("lsp-setup/handlers")
 
     -- reloading config often leaves hanging diagnostics
+    local symbols = session.config.symbols
     vim.diagnostic.reset()
     vim.diagnostic.config({
-      signs = true,
+      signs = {
+        text = {
+          [vim.diagnostic.severity.ERROR] = symbols.sign_error,
+          [vim.diagnostic.severity.WARN] = symbols.sign_warning,
+          [vim.diagnostic.severity.INFO] = symbols.sign_info,
+          [vim.diagnostic.severity.HINT] = symbols.sign_hint,
+        },
+        texthl = {
+          [vim.diagnostic.severity.ERROR] = "DiagnosticError",
+          [vim.diagnostic.severity.WARN] = "DiagnosticWarn",
+          [vim.diagnostic.severity.INFO] = "DiagnosticInfo",
+          [vim.diagnostic.severity.HINT] = "DiagnosticHint",
+        },
+        numhl = {
+          [vim.diagnostic.severity.ERROR] = "DiagnosticError",
+          [vim.diagnostic.severity.WARN] = "DiagnosticWarn",
+          [vim.diagnostic.severity.INFO] = "DiagnosticInfo",
+          [vim.diagnostic.severity.HINT] = "DiagnosticHint",
+        }
+      },
       virtual_text = { spacing = 4 },
       update_in_insert = true,
       underline = true,
@@ -40,15 +60,5 @@ return {
         focusable = false
       }
     })
-
-    local symbols = session.config.symbols
-    vim.fn.sign_define("DiagnosticSignError",
-      { text = symbols.sign_error, texthl = "DiagnosticError", numhl = "DiagnosticError" })
-    vim.fn.sign_define("DiagnosticSignWarn",
-      { text = symbols.sign_warning, texthl = "DiagnosticWarn", numhl = "DiagnosticWarn" })
-    vim.fn.sign_define("DiagnosticSignInfo",
-      { text = symbols.sign_info, texthl = "DiagnosticInfo", numhl = "DiagnosticInfo" })
-    vim.fn.sign_define("DiagnosticSignHint",
-      { text = symbols.sign_hint, texthl = "DiagnosticHint", numhl = "DiagnosticHint" })
   end,
 }
