@@ -45,7 +45,7 @@ utils.map("x", ".", ":normal! .<cr>")                            -- visual execu
 utils.map("x", "@", ":normal! @")                                -- visual execute macro
 utils.map("n", "ss", "s")                                        -- substitute mode, same as default `gh`
 utils.map("x", "ss", ":s/\\%V")                                  -- substitute in visual
-utils.map("x", "s/", ":s/\\<<C-r><C-w>\\>/")                     -- substitute cword in selection
+utils.map("x", "s/", "\"sy:%s/<c-r>s//g<left><left>")            -- substitute selection in file
 utils.map('x', '<m-/>', '<esc>/\\%V')                            -- search within selection, '/' itself is a good mapping to consider for this
 utils.map('x', '//', [[y/<c-r>=trim(escape(@",'\/]'))<cr><cr>]]) -- search for selection
 
