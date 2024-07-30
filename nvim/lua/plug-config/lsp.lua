@@ -3,7 +3,7 @@ return {
   dependencies = {
     'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
-    {'jayp0521/mason-null-ls.nvim', dependencies = 'jose-elias-alvarez/null-ls.nvim' },
+    {'jayp0521/mason-null-ls.nvim', dependencies = "nvimtools/none-ls.nvim" },
 
     'ray-x/lsp_signature.nvim',
     {'creativenull/efmls-configs-nvim', dependencies = 'neovim/nvim-lspconfig' },
