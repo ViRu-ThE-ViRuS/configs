@@ -5,23 +5,26 @@ local utils = require('utils')
 
 -- Project class
 local Project = class()
-Project.default_args = {
-  host_user = require('lib/core').get_username(),
-  host_path = vim.fn.getcwd(),
-}
+Project.default_args = { host_user = core.get_username(), host_path = vim.fn.getcwd(), ignore_paths = 'venv' }
 
 -- {{{ Project api
 function Project:init(args)
   args = vim.tbl_deep_extend('force', Project.default_args, args or {})
   assert(args.name, 'project name cannot be nil')
 
+  self.args         = args
   self.name         = args.name
   self.host_user    = args.host_user
   self.host_path    = args.host_path
-  self.args         = args
-
+  self.ignore_paths = args.ignore_paths
   self.command_keys = {}
   self.dap_config   = {}
+
+  if self.ignore_paths then
+    require('lib/local_session').override_session_config({
+      fuzzy_ignore_dirs = self.ignore_paths .. ',' .. session.config.fuzzy_ignore_dirs
+    })
+  end
 end
 
 -- send a project-scoped notification
@@ -79,10 +82,16 @@ end
 
 -- launch rsync host <-> remote target
 function RemoteProject:launch_sync(reverse)
+  local exclude_str = ""
+  for path in string.gmatch(session.config.fuzzy_ignore_dirs, "([^,]+)") do
+    exclude_str = exclude_str .. string.format('--exclude "%s" ', path)
+  end
+
   if reverse then
     terminal.launch_terminal(
       string.format(
-        'rsync -aP --exclude "venv" --exclude "build" --exclude "__pycache__" %s@%s:%s/ %s',
+        'rsync -aP %s %s@%s:%s/ %s',
+        exclude_str,
         self.target_user,
         self.target,
         self.target_path,
@@ -92,9 +101,9 @@ function RemoteProject:launch_sync(reverse)
   else
     terminal.launch_terminal(
       string.format(
-        'watch -n0.5 "rsync -aP --exclude "venv"  --exclude "build" --exclude "__pycache__" %s/ %s@%s:%s/"',
+        'watch -n0.5 "rsync -aP %s %s/ %s@%s:%s/"',
+        exclude_str,
         self.host_path,
-
         self.target_user,
         self.target,
         self.target_path
@@ -139,41 +148,15 @@ end
 -- }}}
 
 -- FileSyncProject class
-local FileSyncProject = class(Project)
-FileSyncProject.default_args = { host_path = vim.fn.getcwd() }
+FileSyncProject = class(RemoteProject)
+FileSyncProject.default_args = { target = 'localhost', target_user = core.get_username() }
 
 -- {{{ FileSyncProject api
 function FileSyncProject:init(args)
   args = vim.tbl_deep_extend('force', FileSyncProject.default_args, args or {})
   self.super:init(args) -- init superclass
-
-  assert(args.target_path, 'target cannot be nil')
-
-  self.host_path = args.host_path
-  self.target_path = args.target_path
 end
 
--- launch rsync host <-> remote target
-function FileSyncProject:launch_sync(reverse)
-  if reverse then
-    terminal.launch_terminal(
-      string.format(
-        'rsync --aP --exclude "venv" --exclude "build" --exclude "__pycache__" %s/ %s/',
-        self.target_path,
-        self.host_path
-      )
-    )
-  else
-    terminal.launch_terminal(
-      string.format(
-        'watch -n1 "rsync -aP --exclude "venv" --exclude "build" --exclude "__pycache__" %s/ %s/"',
-        self.host_path,
-        self.target_path
-      ),
-      { background = true }
-    )
-  end
-end
 -- }}}
 
 return {

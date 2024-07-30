@@ -5,7 +5,7 @@ local default_config = {
   local_rc_name       = '.nvimrc.lua', -- project local config file
 
   -- additional fuzzy search ignore dirs for this session
-  fuzzy_ignore_dirs   = 'tags,node_modules,Pods,sessions,external',
+  fuzzy_ignore_dirs   = 'venv,tags,node_modules,Pods,sessions,external',
 
   -- symbols and signs
   symbols             = {
