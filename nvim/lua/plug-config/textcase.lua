@@ -2,21 +2,41 @@ return {
   'johmsalas/text-case.nvim',
   init = function()
     local utils = require('utils')
-    utils.map('n', 'ses', function() require("textcase").current_word("to_snake_case") end)
-    utils.map('n', 'sec', function() require("textcase").current_word("to_camel_case") end)
-    utils.map('n', 'se-', function() require("textcase").current_word("to_dash_case") end)
-    utils.map('n', 'seu', function() require("textcase").current_word("to_constant_case") end)
-    utils.map('n', 'sep', function() require("textcase").current_word("to_pascal_case") end)
-    utils.map('n', 'set', function() require("textcase").current_word("to_title_case") end)
-    utils.map('n', 'sef', function() require("textcase").current_word("to_path_case") end)
 
-    utils.map('n', 'sos', function() require("textcase").operator("to_snake_case") end)
-    utils.map('n', 'soc', function() require("textcase").operator("to_camel_case") end)
-    utils.map('n', 'so-', function() require("textcase").operator("to_dash_case") end)
-    utils.map('n', 'sou', function() require("textcase").operator("to_constant_case") end)
-    utils.map('n', 'sop', function() require("textcase").operator("to_pascal_case") end)
-    utils.map('n', 'sot', function() require("textcase").operator("to_title_case") end)
-    utils.map('n', 'sof', function() require("textcase").operator("to_path_case") end)
+    require('utils').map({ 'n', 'x' }, 'sC', function()
+      local methods = {
+        ['Snake Case'] = 'to_snake_case',
+        ['Camel Case'] = 'to_camel_case',
+        ['Dash Case'] = 'to_dash_case',
+        ['Constant Case'] = 'to_constant_case',
+        ['Pascal Case'] = 'to_pascal_case',
+        ['Path Case'] = 'to_path_case',
+      }
+
+      vim.ui.select(
+        vim.tbl_keys(methods),
+        { prompt = 'switch text case to: ', kind = 'plain_text' },
+        function(choice) return choice and require('textcase').quick_replace(methods[choice]) end
+      )
+    end)
+
+    local switcher_index = 1
+    utils.map({ 'n', 'x' }, 'sc', function()
+      local methods = {
+        ['Snake Case'] = 'to_snake_case',
+        ['Camel Case'] = 'to_camel_case',
+        ['Constant Case'] = 'to_constant_case',
+        ['Pascal Case'] = 'to_pascal_case',
+      }
+
+      local choice = vim.tbl_keys(methods)[switcher_index]
+      utils.notify("Switch Case: " .. choice, 'info', { render = 'compact' })
+
+      require('textcase').quick_replace(methods[choice])
+      switcher_index = ((switcher_index + 1) % #vim.tbl_keys(methods))
+      switcher_index = (switcher_index == 0 and switcher_index + 1) or switcher_index
+    end)
   end,
-  config = true
+  cmd = { 'Subs', 'TextCaseStartReplacingCommand' },
+  config = { default_keymappings_enabled = false }
 }

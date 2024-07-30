@@ -3,7 +3,7 @@ if API_KEY ~= nil then
   return {
     url = "ssh://git@gitlab-master.nvidia.com:12051/viraatc/parrot.nvim",
     -- dir = "/home/viraatc/computelab/workspace/parrot.nvim",
-    event = "BufWinEnter",
+    event = "VimEnter",
     init = function()
       local utils = require('utils')
 
@@ -17,7 +17,6 @@ if API_KEY ~= nil then
       utils.map("n", "<leader>iS", "<cmd>PrtContext vsplit<cr>")
       utils.map("v", "<leader>iS", ":<c-u>'<,'>PrtContext vsplit<cr>")
     end,
-
     opts = {
       providers = {
         openai = {
