@@ -40,7 +40,7 @@ return {
     keys = { 'sl', 'sL', 'sl/' },
     init = function() vim.g.exchange_no_mappings = true end,
     config = function()
-      utils.map({'n', 'v'}, 'sl', '<plug>(Exchange)')
+      utils.map({ 'n', 'v' }, 'sl', '<plug>(Exchange)')
       utils.map('n', 'sL', '<plug>(ExchangeLine)')
       utils.map('n', 'sl/', '<plug>(ExchangeClear)')
     end
@@ -66,5 +66,5 @@ return {
     "OXY2DEV/markview.nvim",
     ft = 'markdown',
     config = {}
-}
+  },
 }

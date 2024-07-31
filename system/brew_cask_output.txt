@@ -17,4 +17,5 @@ transmission
 utm
 visual-studio-code
 vlc
+yubico-yubikey-manager
 zoom

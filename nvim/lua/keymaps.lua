@@ -145,7 +145,7 @@ utils.map("n", "<leader>cS", terminal.add_terminal)
 utils.map("n", "<leader>cf", terminal.select_terminal)
 
 -- misc
-utils.map('n', '<c-cr>', vim.cmd.Commands)
+utils.map({ 'n', 'x' }, '<c-cr>', vim.cmd.Commands)
 utils.map('n', 'gF', '<c-w>vgf')
 
 -- NOTE(vir): tricks
