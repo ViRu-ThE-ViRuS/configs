@@ -3,14 +3,16 @@ return {
   init = function()
     local utils = require('utils')
 
-    require('utils').map({ 'n', 'x' }, 'sC', function()
+    utils.map({ 'n', 'x' }, 'sC', function()
       local methods = {
-        ['Snake Case'] = 'to_snake_case',
         ['Camel Case'] = 'to_camel_case',
-        ['Dash Case'] = 'to_dash_case',
         ['Constant Case'] = 'to_constant_case',
+        ['Dash Case'] = 'to_dash_case',
+        ['Lower Case'] = 'to_lower_case',
         ['Pascal Case'] = 'to_pascal_case',
         ['Path Case'] = 'to_path_case',
+        ['Snake Case'] = 'to_snake_case',
+        ['Upper Case'] = 'to_upper_case'
       }
 
       vim.ui.select(
@@ -20,22 +22,34 @@ return {
       )
     end)
 
+    -- NOTE(vir): make dot repeat the last choice
+    -- source https://www.vikasraj.dev/blog/vim-dot-repeat
     local switcher_index = 1
-    utils.map({ 'n', 'x' }, 'sc', function()
+    _G._switch_case = function(motion)
+      local is_visual = string.match(motion or '', '[vV]')
+      if not is_visual and motion == nil then
+        vim.opt.operatorfunc = 'v:lua._switch_case'
+        return 'g@l'
+      end
+
       local methods = {
-        ['Snake Case'] = 'to_snake_case',
-        ['Camel Case'] = 'to_camel_case',
-        ['Constant Case'] = 'to_constant_case',
-        ['Pascal Case'] = 'to_pascal_case',
+        [1] = 'to_snake_case',
+        [2] = 'to_upper_case',
+        [3] = 'to_lower_case',
+        [4] = 'to_camel_case',
+        [5] = 'to_pascal_case',
       }
 
+      if is_visual then vim.api.nvim_input('gv') end
       local choice = vim.tbl_keys(methods)[switcher_index]
-      utils.notify("Switch Case: " .. choice, 'info', { render = 'compact' })
+      print("Switch Case: " .. choice)
 
       require('textcase').quick_replace(methods[choice])
-      switcher_index = ((switcher_index + 1) % #vim.tbl_keys(methods))
-      switcher_index = (switcher_index == 0 and switcher_index + 1) or switcher_index
-    end)
+      switcher_index = (switcher_index < vim.tbl_count(methods) and (switcher_index + 1)) or 1
+    end
+
+    utils.map('n', 'sc', _G._switch_case, { expr = true })
+    utils.map('x', 'sc', '<esc><cmd>lua _G._switch_case(vim.fn.visualmode())<cr>', { expr = true })
   end,
   cmd = { 'Subs', 'TextCaseStartReplacingCommand' },
   config = { default_keymappings_enabled = false }

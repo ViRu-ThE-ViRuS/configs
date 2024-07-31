@@ -47,6 +47,7 @@ vim.opt.laststatus = 3
 vim.opt.lazyredraw = true
 vim.opt.mouse = "a"
 vim.opt.number = true
+vim.opt.nrformats:append('alpha')
 vim.opt.path = vim.opt.path + vim.loop.cwd() + '**'
 vim.opt.pumblend = 10
 vim.opt.pumheight = 10
