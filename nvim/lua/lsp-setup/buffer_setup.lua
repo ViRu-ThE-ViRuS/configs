@@ -89,6 +89,11 @@ local function setup_options(_, bufnr)
   if session.config.context_winbar then
     vim.opt_local.winbar = "%!luaeval(\"require('lsp-setup/lsp_utils').get_context_winbar(" .. bufnr .. ")\")"
   end
+
+  -- enable inlay hints if configured
+  if session.config.inlay_hints then
+    vim.lsp.inlay_hint.enable(true, nil)
+  end
 end
 
 -- setup buffer autocommands

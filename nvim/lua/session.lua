@@ -1,6 +1,7 @@
 -- default config
 local default_config = {
   context_winbar      = false,         -- set context in winbar
+  inlay_hints         = false,          -- enable inlay hints
   fancy_notifications = true,          -- use fancy notifications (nvim-notify)
   local_rc_name       = '.nvimrc.lua', -- project local config file
 
@@ -44,7 +45,6 @@ local default_state = {
   -- ui toggles and config
   ui = {
     thick_separators     = false, -- use thick buffer separators
-    inlay_hints          = false, -- lsp inlay hints
     window_focus_state   = {},    -- window isolation
     buffer_diff_state    = {},    -- buffer changes diff
     enable_notifications = true,  -- like dnd mode when unset

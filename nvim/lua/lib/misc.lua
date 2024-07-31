@@ -214,6 +214,7 @@ local function toggle_context_winbar()
         function() vim.opt_local.winbar = nil end
       )
     end
+    utils.notify("winbar", "debug", { title = '[UI] deactivated', render = "compact" })
   else
     callback = function(_, bufnr)
       vim.api.nvim_buf_call(
@@ -223,6 +224,7 @@ local function toggle_context_winbar()
         end
       )
     end
+    utils.notify("winbar", "info", { title = '[UI] activated', render = "compact" })
   end
 
   core.foreach(vim.api.nvim_list_bufs(), callback)
@@ -231,18 +233,18 @@ end
 
 -- inlay_hints: from lsp
 local function toggle_inlay_hints()
-  if ui.inlay_hints == false and vim.tbl_count(
+  if (not vim.lsp.inlay_hint.is_enabled(nil)) and vim.tbl_count(
         core.foreach(
           vim.lsp.get_clients({ bufnr = 0 }),
           function(_, client) return client.server_capabilities.inlayHintProvider end,
           true
         )
       ) > 0 then
-    vim.lsp.buf.inlay_hint(0, true)
-    ui.inlay_hints = true
+    vim.lsp.inlay_hint.enable(true, nil)
+    utils.notify("inlay hints", "info", { title = '[UI] activated', render = "compact" })
   else
-    vim.lsp.buf.inlay_hint(0, false)
-    ui.inlay_hints = false
+    vim.lsp.inlay_hint.enable(false, nil)
+    utils.notify("inlay hints", "debug", { title = '[UI] deactivated', render = "compact" })
   end
 end
 
