@@ -213,7 +213,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-local colorscheme = "melange"
+local colorscheme = "tempus_tempest"
 ---@cast colorscheme +string +function
 
 -- load default colorscheme if chosen one is not available
@@ -230,6 +230,7 @@ return {
       "aquarium",
       "bamboo",
       "barstrata",
+      "blue-moon",
       "caret",
       "deviuspro",
       "everforest",
@@ -240,6 +241,7 @@ return {
       "habamax",
       "hybrid",
       "melange",
+      "mellifluous",
       "mellow",
       "modus",
       "monokai_pro", "monokai_ristretto",
@@ -284,6 +286,7 @@ return {
       "gruvbox",
       "gruvbox-material",
       "intellij",
+      "mellifluous",
       "modus",
       "oxocarbon",
       "sweetie",
