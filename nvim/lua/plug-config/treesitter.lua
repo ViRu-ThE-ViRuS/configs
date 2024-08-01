@@ -154,38 +154,6 @@ return {
       utils.map({'n', 'o', 'x'}, '[S', up_lsp_stack)
     end
   },
-  {
-    'andymass/vim-matchup',
-    config = function()
-      vim.g.matchup_matchparen_deferred = 1
-      vim.g.matchup_surround_enabled = 1
-      vim.g.matchup_matchparen_offscreen = { method = 'popup' }
-
-      -- NOTE(vir): add missing vim.b.match_words
-
-      local utils = require("utils")
-      utils.map({ 'n', 'o', 'x' }, 'Q', '<plug>(matchup-%)')
-      utils.map({ 'o', 'x' }, 'iQ', '<plug>(matchup-i%)')
-      utils.map({ 'o', 'x' }, 'aQ', '<plug>(matchup-a%)')
-    end
-  },
-  {
-    'machakann/vim-sandwich',
-    config = function()
-      vim.g['sandwich#recipes'] = require('lib/core').list_concat(
-        vim.g['sandwich#default_recipes'], {
-          -- add
-          { buns = { '( ', ' )' }         , nesting = 1, match_syntax = 1, input = { ')' } },
-          { buns = { '[ ', ' ]' }         , nesting = 1, match_syntax = 1, input = { ']' } },
-          { buns = { '{ ', ' }' }         , nesting = 1, match_syntax = 1, input = { '}' } },
-
-          -- remove or replace
-          { buns = {'{\\s*', '\\s*}'}     , nesting = 1, match_syntax = 1, regex = 1, kind= {'delete', 'replace', 'textobj'}, action = {'delete'}, input = {'{'}},
-          { buns = {'\\[\\s*', '\\s*\\]'} , nesting = 1, match_syntax = 1, regex = 1, kind= {'delete', 'replace', 'textobj'}, action = {'delete'}, input = {'['}},
-          { buns = {'(\\s*', '\\s*)'}     , nesting = 1, match_syntax = 1, regex = 1, kind= {'delete', 'replace', 'textobj'}, action = {'delete'}, input = {'('}},
-        })
-    end,
-  },
 
   { 'nvim-treesitter/playground', cmd = 'TSPlaygroundToggle' },
 }

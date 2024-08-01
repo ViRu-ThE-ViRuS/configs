@@ -119,8 +119,25 @@ lsp['tsserver'].setup {
 }
 -- }}}
 
+-- {{{ null-ls setup
+local null_ls = require('null-ls')
+null_ls.setup({
+  sources = {
+    null_ls.builtins.completion.spell.with({ filetypes = { 'text', 'markdown' } }),
+  },
+  capabilities = capabilities,
+  on_attach = function(client, bufnr)
+    if client.server_capabilities.hoverProvider then
+      utils.map('n', 'K', vim.lsp.buf.hover, { silent = true, buffer = bufnr })
+    end
+
+    setup_buffer.setup_diagnostics_keymaps(client, bufnr)
+    setup_buffer.setup_formatting_keymaps(client, bufnr)
+  end,
+})
+-- }}}
+
 -- {{{ efm-ls setup
--- NOTE(vir): plugin efmls configs
 local clike = {
   -- require('efmls-configs.linters.cpplint'),
 }
@@ -136,7 +153,7 @@ local languages = {
 lsp['efm'].setup({
   filetypes = vim.tbl_keys(languages),
   settings = {
-    rootMarkers = {'.git/'},
+    rootMarkers = { '.git/' },
     languages = languages
   },
   init_options = {
@@ -146,11 +163,13 @@ lsp['efm'].setup({
 
   capabilities = capabilities,
   on_attach = function(client, bufnr)
-    -- utils.map('n', 'K', vim.lsp.buf.hover, { silent = true, buffer = bufnr })
+    if client.server_capabilities.hoverProvider then
+      utils.map('n', 'K', vim.lsp.buf.hover, { silent = true, buffer = bufnr })
+    end
+
     setup_buffer.setup_diagnostics_keymaps(client, bufnr)
     setup_buffer.setup_formatting_keymaps(client, bufnr)
   end,
   flags = { debounce_text_changes = 150 }
 })
 -- }}}
-

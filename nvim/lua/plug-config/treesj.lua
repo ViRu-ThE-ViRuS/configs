@@ -1,7 +1,7 @@
 return {
   'Wansmer/treesj',
   cmd = { 'TSJSplit', 'TSJJoin' },
-  dependencies = { 'nvim-treesitter/nvim-treesitter' },
+  dependencies = { 'nvim-treesitter' },
   init = function()
     local utils = require('utils')
     -- utils.map('n', 'gS', '<cmd>TSJSplit<cr>')

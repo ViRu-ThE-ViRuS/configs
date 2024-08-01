@@ -185,9 +185,9 @@ return {
           ['ctrl-b']     = 'half-page-up',
           ['ctrl-u']     = 'beginning-of-line',
           ['ctrl-o']     = 'end-of-line',
-          ['ctrl-d']     = 'abort',
           ['alt-a']      = 'select-all+accept',
           ['alt-i']      = 'clear-query', -- [right-option + delete] works on macos
+          -- ['ctrl-d']     = 'abort',
 
           -- preview (bat)
           ['shift-down'] = 'preview-page-down',
@@ -220,8 +220,7 @@ return {
       buffers = {
         actions = {
           ['ctrl-d'] = { actions.buf_del, actions.resume },
-          ['ctrl-x'] = actions.buf_split, -- disable default
-          ['ctrl-q'] = false              -- disable default
+          ['ctrl-x'] = actions.buf_split, -- disable default delete action
         }
       },
       files = {
@@ -234,7 +233,10 @@ return {
       grep = {
         rg_glob = true,
         rg_opts = "--column --color=always" .. default_rg_options,
-        actions = { ['ctrl-g'] = actions.grep_lgrep }
+        actions = {
+          ['ctrl-g'] = actions.grep_lgrep,
+          ['ctrl-d'] = actions.toggle_ignore,
+        }
       },
       tags = {
         actions = { ['ctrl-g'] = actions.grep_lgrep }
