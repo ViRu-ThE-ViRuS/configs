@@ -34,7 +34,7 @@ if API_KEY ~= nil then
 
       chat_confirm_delete = false,
       -- chat_dir = '/home/viraatc/workspace/local/share/nvim/parrot/chats',
-      chat_dir = '/tmp/', -- dont save chats
+      chat_dir = '/tmp/nvim_prt_chats/', -- dont save chats
 
       chat_user_prefix = "[>]:",
       chat_agent_prefix = "[=>]:",
