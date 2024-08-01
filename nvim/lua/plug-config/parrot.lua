@@ -7,15 +7,21 @@ if API_KEY ~= nil then
     init = function()
       local utils = require('utils')
 
-      utils.map("n", "<leader>ia", "<cmd>PrtVnew<cr>")
-      utils.map("n", "<leader>if", "<cmd>PrtPopup<cr>")
-      utils.map("n", "<leader>iF", "<cmd>PrtChatFinder<cr>")
+      -- code agents
+      utils.map("n", "<leader>ga", "<cmd>PrtVnew<cr>")
+      utils.map("v", "<leader>ga", ":'<,'>PrtVnew<cr>")
+      utils.map("n", "<leader>gA", "ggVG:'<,'>PrtVnew<cr>")
 
-      utils.map("n", "<leader>is", "<cmd>PrtChatToggle vsplit<cr>")
-      utils.map("v", "<leader>is", ":<c-u>'<,'>PrtChatToggle vsplit<cr>")
+      -- chat agents
+      utils.map("n", "<leader>gs", "<cmd>PrtChatToggle vsplit<cr>")
+      utils.map("v", "<leader>gs", ":'<,'>PrtChatToggle vsplit<cr>")
+      utils.map("n", "<leader>gS", "ggVG:'<,'>PrtChatPaste vsplit<cr>")
 
-      utils.map("n", "<leader>iS", "<cmd>PrtContext vsplit<cr>")
-      utils.map("v", "<leader>iS", ":<c-u>'<,'>PrtContext vsplit<cr>")
+      -- context
+      utils.map("n", "<leader>gf", "<cmd>PrtContext vsplit<cr>")
+      utils.map("v", "<leader>gf", ":<c-u>'<,'>PrtContext vsplit<cr>")
+
+      utils.add_command("[MISC] PrtChatFinder", "PrtChatFinder", { add_custom = true })
     end,
     opts = {
       providers = {
@@ -27,7 +33,8 @@ if API_KEY ~= nil then
       },
 
       chat_confirm_delete = false,
-      chat_dir = os.getenv("HOME") .. '/.local/share/nvim/parrot/chats',
+      -- chat_dir = '/home/viraatc/workspace/local/share/nvim/parrot/chats',
+      chat_dir = '/tmp/', -- dont save chats
 
       chat_user_prefix = "[>]:",
       chat_agent_prefix = "[=>]:",
