@@ -3,7 +3,7 @@ if API_KEY ~= nil then
   return {
     url = "ssh://git@gitlab-master.nvidia.com:12051/viraatc/parrot.nvim",
     -- dir = "/home/viraatc/computelab/workspace/parrot.nvim",
-    event = "VimEnter",
+    event = "BufReadPre",
     init = function()
       local utils = require('utils')
 
