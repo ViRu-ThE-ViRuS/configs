@@ -24,8 +24,8 @@ RUN add-apt-repository -y ppa:neovim-ppa/unstable;   \
     apt install -y neovim fish git tmux ripgrep bat;
 
 # setup user
-# RUN useradd --create-home --shell $(which fish) -g root -G sudo viraat && passwd -d viraat
-# USER viraat
+RUN useradd --create-home --shell $(which fish) -g root -G sudo viraat && passwd -d viraat
+USER viraat
 WORKDIR $HOME/
 
 # install binaries
@@ -44,8 +44,7 @@ RUN git clone https://www.github.com/ViRu-ThE-ViRuS/configs.git $HOME/configs;  
 
 # initialize neovim
 RUN nvim --headless 'Lazy! sync' +qa;                                                               \
-    touch test.txt; nvim +TSUpdateSync '+MasonInstall clangd pyright' +qa test.txt; rm -rf test.txt \
-    chsh -s $(which fish)
+    touch test.txt; nvim +TSUpdateSync +qa test.txt; rm -rf test.txt
 
 WORKDIR $HOME/workspace
 

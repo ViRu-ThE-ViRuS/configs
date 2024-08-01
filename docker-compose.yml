@@ -11,28 +11,30 @@ services:
       ssh: ["default"]
 
     hostname: dev
-    network_mode: host
     ipc: host
+    # network_mode: host
 
-    # gpu usage and profiling
-    cap_add:
-      - SYS_PTRACE
-      - SYS_ADMIN
-    security_opt: ["seccomp:unconfined"]
+    # # gpu usage and profiling
+    # cap_add:
+    #   - SYS_PTRACE
+    #   - SYS_ADMIN
+    # security_opt: ["seccomp:unconfined"]
 
-    # gpu reservation
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [gpu]
+    # # gpu reservation
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
 
     environment:
       - SSH_AUTH_SOCK:${SSH_AUTH_SOCK}
 
+    ports:
+      - "5757:5757"
+
     volumes:
-      - ${SSH_AUTH_SOCK}:${SSH_AUTH_SOCK}
       - ./:/workspace/configs/:cached
 
