@@ -41,10 +41,10 @@ return {
       }
 
       if is_visual then vim.api.nvim_input('gv') end
-      local choice = vim.tbl_keys(methods)[switcher_index]
+      local choice = methods[switcher_index]
       print("Switch Case: " .. choice)
 
-      require('textcase').quick_replace(methods[choice])
+      require('textcase').quick_replace(choice)
       switcher_index = (switcher_index < vim.tbl_count(methods) and (switcher_index + 1)) or 1
     end
 

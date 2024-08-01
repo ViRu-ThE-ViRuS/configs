@@ -26,6 +26,11 @@ utils.map('i', '<cr>', '<c-g>u<cr>')
 -- utils.map('n', 'n', 'nzv', { noremap = false })
 -- utils.map('n', 'N', 'Nzv', { noremap = false })
 
+-- comments
+utils.map("n", "<leader>c<space>", "<cmd>normal gcc<cr>")
+utils.map("x", "<leader>c<space>", "<cmd>normal gc<cr>")
+utils.map('n', 'gc', "<cmd>normal mCgvgc'C<cr>") -- toggle comments on last visual selection
+
 -- misc
 utils.map("n", ";", ":")                                                          -- swaperoo
 utils.map("n", ":", ";")                                                          -- swaperoo
