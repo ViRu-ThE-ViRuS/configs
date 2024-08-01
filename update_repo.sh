@@ -1,45 +1,55 @@
 #!/usr/bin/env bash
-# vim: ft=fish :
+# vim: ft=bash :
 
 # neovim
-rm -rf nvim/*
-cp -r ~/.config/nvim/* nvim/ 2&> /dev/null
+if [ -e ~/.config/nvim/ ]; then
+  echo "Copying neovim config..."
+  rm -rf nvim/*
+  cp -r ~/.config/nvim/* nvim/
+fi
 
 # tmux
-rm -rf tmux/*
-cp -r ~/.config/tmux/* tmux/ 2&> /dev/null
-cp ~/.config/tmux/.tmux.conf tmux/.tmux.conf 2&> /dev/null
+if [ -e ~/.config/tmux/ ]; then
+  echo "Copying tmux config..."
+  rm -rf tmux/*
+  cp -r ~/.config/tmux/* tmux/
+  cp ~/.config/tmux/.tmux.conf tmux/.tmux.conf 2&> /dev/null
+fi
 
 # fish
-rm -rf fish/*
-cp -r ~/.config/fish/* fish/ 2&> /dev/null
+if [ -e ~/.config/fish/ ]; then
+  echo "Copying fish config..."
+  rm -rf fish/*
+  cp -r ~/.config/fish/* fish/
+fi
 
 # kitty
-rm -rf kitty/*
-cp -r ~/.config/kitty/* kitty/ 2&> /dev/null
+if [ -e ~/.config/kitty/ ]; then
+  echo "Copying kitty config..."
+  rm -rf kitty/*
+  cp -r ~/.config/kitty/* kitty/
+fi
 
 # system
-rm -rf system/*
-cp ~/.config/system/* system/ 2&> /dev/null
+if [ -e ~/.config/system/ ]; then
+  echo "Copying system config..."
+  rm -rf system/*
+  cp ~/.config/system/* system/
+fi
 
 # git config
-cp ~/.gitconfig .gitconfig 2&> /dev/null
+cp ~/.gitconfig .gitconfig
 
-# deprecated
-rm -rf alacritty/* emacs/* zsh/*
-cp ~/.config/alacritty/* alacritty/ 2&> /dev/null
-cp ~/.config/emacs/*.el emacs/ 2&> /dev/null
-cp ~/.config/zsh/.zshrc zsh/ 2&> /dev/null
-cp ~/.zshenv zsh/ 2&> /dev/null
-
-# brew
-switch (uname)
-  case Darwin
+uname=$(uname)
+case "$uname" in
+  Darwin)
     brew list --formula > system/brew_output.txt
     brew list --cask > system/brew_cask_output.txt
-
-  case Linux
+    ;;
+  Linux)
     dconf dump / > system/dconf-settings.ini
-
-  case '*'
-end
+    ;;
+  *)
+    echo "Unsupported OS: $uname"
+    ;;
+esac

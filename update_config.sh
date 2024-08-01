@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# vim: ft=fish :
+# vim: ft=bash :
 
 # nvim
 # sudo -A cp -r nvim/* ~/.config/nvim/
@@ -20,14 +20,8 @@ cp -r kitty/* ~/.config/kitty/
 cp -r system/* ~/.config/system/
 
 # git config
-# cp .gitconfig ~/.gitconfig
-sed -n '/github/!p' .gitconfig  > ~/.gitconfig
-
-# deprecated
-cp alacritty/* ~/.config/alacritty/
-cp emacs/init.el ~/.config/emacs/init.el
-cp zsh/.zshrc ~/.config/zsh/
-cp zsh/.zshenv ~/.zshenv
+cp .gitconfig ~/.gitconfig
+# sed -n '/github/!p' .gitconfig  > ~/.gitconfig
 
 # ---:notes:---
 # dconf load / < system/dconf-settings.ini

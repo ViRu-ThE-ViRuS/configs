@@ -4,7 +4,7 @@ local project = Project.new({ name = 'ViRu-ThE-ViRuS/configs' })
 
 project:add_command('Update Repository', function()
   vim.cmd [[
-      !source update_repo.sh
+      !./update_repo.sh
       G
       G! difftool
       cc! 1
@@ -17,7 +17,7 @@ project:add_command('Update Configs', function()
     { prompt = 'Update System Config> ' },
     function(choice)
       if choice == 'yes' then
-        vim.cmd [[ !source update_config.sh ]]
+        vim.cmd [[ !./update_config.sh ]]
       else
         project:notify('update aborted', 'debug', { render = 'minimal' })
       end
