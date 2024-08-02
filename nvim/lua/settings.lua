@@ -13,9 +13,9 @@ vim.g.python_host_skip_check = 1
 vim.defer_fn(function()
   vim.g.python3_host_prog = core.get_python()
 
-  if vim.fn.exists("fish") then
+  if vim.fn.exists("fish") ~= 0 then
     vim.opt.shell = "fish"
-  elseif vim.fn.exists("zsh") then
+  elseif vim.fn.exists("zsh") ~= 0 then
     vim.opt.shell = "zsh"
   else
     vim.opt.shell = "bash"
