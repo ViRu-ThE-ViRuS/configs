@@ -70,6 +70,7 @@ return {
     -- fuzzy pickers
     utils.map("n", "<c-p>m", function() require('fzf-lua').marks() end)
     utils.map("n", "<c-p>b", function() require('fzf-lua').buffers() end)
+    utils.map("n", "<c-p>q", function() require('fzf-lua').quickfix_stack() end)
     utils.map("n", "<c-p>l", function() require('fzf-lua').blines({ copen = 'horizontal copen' }) end)
     utils.map("n", "<c-p>o", function() require('fzf-lua').resume({ copen = 'horizontal copen' }) end)
 
