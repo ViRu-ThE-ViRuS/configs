@@ -57,7 +57,7 @@ end
 function Project:run_command(key)
   key = string.format('[%s] %s', self.name, key)
   assert(self.command_keys[key], 'project command was not registered: ' .. key)
-  utils.run_command(key)
+  return utils.run_command(key)
 end
 
 --- Add a project DAP (Debug Adapter Protocol) configuration.
@@ -176,15 +176,18 @@ end
 
 --- Launch an SSH session from host to remote target.
 -- @param opts (table) Options for the SSH session.
--- @field set_target (boolean) Whether to set the target.
--- @field path (string) The path to navigate to on the remote target.
+-- @field opts.path (string) The path to navigate to on the remote target.
+-- @field opts.callback (function) Callback function to call from within terminal buffer
 function RemoteProject:launch_ssh(opts)
-  opts = vim.tbl_deep_extend('force', { set_target = false, path = self.target_path }, opts or {})
+  opts = vim.tbl_deep_extend('force', { path = self.target_path, callback = nil }, opts or {})
   local to_path_cmd = 'cd ' .. opts.path .. ' ; bash --'
 
-  terminal.launch_terminal(
+  return terminal.launch_terminal(
     string.format('ssh -t %s@%s "%s"', self.target_user, self.target, to_path_cmd),
-    { callback = (opts.set_target and core.partial(terminal.add_terminal, { primary = true })) or nil }
+    {
+      add = true,
+      callback = opts.callback
+    }
   )
 end
 

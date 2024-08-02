@@ -208,8 +208,8 @@ local function toggle_terminal(opts)
   -- either 1 is set, or neither (between opts.index, opts.job_id)
   assert(
     (opts.index and (not opts.job_id) or
-    ((not opts.index) and opts.job_id) or
-    ((not opts.index) and (not opts.job_id))),
+      ((not opts.index) and opts.job_id) or
+      ((not opts.index) and (not opts.job_id))),
     'opts.index and opts.job_id are exclusive options'
   )
 
@@ -304,12 +304,13 @@ end
 -- will emulate <up><cr> in terminal if no payload specified
 local function send_to_terminal(payload, opts)
   opts = vim.tbl_deep_extend('force', {
-    toggle_open = true,  -- toggle open target terminal if not already visible
+    toggle_open = true,   -- toggle open target terminal if not already visible
     scroll_to_end = true, -- scroll to end after sending payload
-    index = vim.v.count1, -- which index terminal to send command to
+    index = vim.v.count1, -- select target terminal using index
+    job_id = nil,         -- select target using term_state job_id
   }, opts or {})
 
-  local job_id = palette.terminals.indices[opts.index]
+  local job_id = opts.job_id or opts.palette.terminals.indices[opts.index]
 
   if not job_id then
     utils.notify('index not registered', 'warn', {
@@ -409,7 +410,8 @@ local function launch_terminal(command, opts)
   opts = vim.tbl_deep_extend('force', {
     background = false,
     callback = nil,
-    name = nil
+    name = nil,
+    add = false,
   }, opts or {})
 
   -- create new terminal
@@ -422,6 +424,10 @@ local function launch_terminal(command, opts)
     bufnr = vim.api.nvim_get_current_buf(),
     job_id = vim.b.terminal_job_id
   }
+
+  if opts.add then
+    add_terminal()
+  end
 
   -- try setting name, fails if buffer with same name exists
   if opts.name then

@@ -112,8 +112,9 @@ local function run_command(key, opts)
   local current_setting = session.state.ui.enable_notifications
   if opts.silent then session.state.ui.enable_notifications = false end
 
-  session.state.commands[key](unpack(opts.args))
+  local ret_val = session.state.commands[key](unpack(opts.args))
   session.state.ui.enable_notifications = current_setting
+  return ret_val
 end
 
 return {

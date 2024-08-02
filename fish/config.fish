@@ -293,3 +293,7 @@ function stop_dev --description 'stop dev server' -a name
   echo "[@] $msg_head dev server has been stopped"
 end
 # }}}
+
+function computelab_nodes --description 'get nodes allocated to user viraatc on computelab'
+  ssh computelab 'squeue -u viraatc -h' | awk '{print $NF}'
+end
