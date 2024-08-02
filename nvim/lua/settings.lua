@@ -13,9 +13,14 @@ vim.g.python_host_skip_check = 1
 vim.defer_fn(function()
   vim.g.python3_host_prog = core.get_python()
 
-  if vim.fn.exists("fish") ~= 0 then
+  local function which(cmd)
+    local _, rc = core.lua_system(string.format("which %s", cmd))
+    return tonumber(rc)
+  end
+
+  if which("fish") == 0 then
     vim.opt.shell = "fish"
-  elseif vim.fn.exists("zsh") ~= 0 then
+  elseif which("zsh") == 0 then
     vim.opt.shell = "zsh"
   else
     vim.opt.shell = "bash"
@@ -96,4 +101,3 @@ vim.opt.undofile = true
 
 -- remove ft maps
 vim.g.no_plugin_maps = 1
-
