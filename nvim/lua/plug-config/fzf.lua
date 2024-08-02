@@ -17,8 +17,8 @@ local function set_lsp_keymaps(_, bufnr)
   }), map_opts)
 end
 
--- custom fzf previewer
-local function create_custom_previwer()
+-- custom fzf file previewer
+local function create_file_previewer()
   local CustomPreviwer = require('fzf-lua.previewer.builtin').buffer_or_file:extend()
 
   function CustomPreviwer:new(o, opts, fzf_win)
@@ -254,7 +254,7 @@ return {
 
     -- set fzf-lua as vim.ui.select handler
     fzf.register_ui_select({
-      previewer = create_custom_previwer(),
+      previewer = create_file_previewer(),
       winopts = {
         split  = false,
         height = 0.40,

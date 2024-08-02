@@ -104,8 +104,8 @@ utils.map("n", '<leader>4', misc.diff_current_buf, { desc = 'toggle unsaved chan
 -- qflist keymaps
 utils.map("n", "<leader>M", '<cmd>Messages<cr>')
 utils.map("n", "<leader>Q", misc.toggle_qflist)
-utils.map("n", "<leader>cq", quickfix.add_list)
-utils.map("n", "<leader>cQ", quickfix.open_list)
+utils.map("n", "<leader>lQ", quickfix.add_list)
+utils.map("n", "<leader>lq", quickfix.select_list)
 utils.map("n", "[q", "<cmd>try | cprev | catch | silent! clast | catch | endtry<cr>zv")
 utils.map("n", "]q", "<cmd>try | cnext | catch | silent! cfirst | catch | endtry<cr>zv")
 utils.map("n", "[Q", "<cmd>try | colder | catch | endtry <cr>")
