@@ -8,15 +8,24 @@ local Project = class()
 Project.default_args = { host_user = core.get_username(), host_path = vim.fn.getcwd(), ignore_paths = 'venv' }
 
 -- {{{ Project api
+
+--- Initialize a new Project instance.
+-- @param args Table containing project arguments.
+-- @field args.name (string) The name of the project.
+-- @field args.host_user (string) The user on the host machine.
+-- @field args.host_path (string) The path on the host machine.
+-- @field args.ignore_paths (string) Additional paths to nvim to ignore.
 function Project:init(args)
   args = vim.tbl_deep_extend('force', Project.default_args, args or {})
   assert(args.name, 'project name cannot be nil')
 
   self.args         = args
   self.name         = args.name
+
   self.host_user    = args.host_user
   self.host_path    = args.host_path
   self.ignore_paths = args.ignore_paths
+
   self.command_keys = {}
   self.dap_config   = {}
 
@@ -27,25 +36,35 @@ function Project:init(args)
   end
 end
 
--- send a project-scoped notification
+--- Send a project-scoped notification.
+-- @param content (string) The content of the notification.
+-- @param type (string) The type of the notification.
+-- @param opts (table) Additional options for the notification.
 function Project:notify(content, type, opts)
   utils.notify(string.format('[%s] %s', self.name, content), type, opts)
 end
 
--- add a project-scoped command
+--- Add a project-scoped command.
+-- @param name (string) The name of the command.
+-- @param callback (function) The callback function to execute.
 function Project:add_command(name, callback)
   local key = utils.add_command(string.format('[%s] %s', self.name, name), callback, { add_custom = true })
   self.command_keys[key] = 1
 end
 
--- run project-scoped command
+--- Run a project-scoped command.
+-- @param key (string) The key of the command to run.
 function Project:run_command(key)
   key = string.format('[%s] %s', self.name, key)
   assert(self.command_keys[key], 'project command was not registered: ' .. key)
   utils.run_command(key)
 end
 
--- add project-dap config
+--- Add a project DAP (Debug Adapter Protocol) configuration.
+-- @param name (string) The name of the DAP configuration.
+-- @param program (string) The program to debug.
+-- @param args (table) Arguments for the program.
+-- @param opts (table) Additional options for the DAP configuration.
 function Project:add_dap_config(name, program, args, opts)
   assert(program, 'invalid program specified: ' .. program)
   args = args or {}
@@ -67,6 +86,12 @@ local RemoteProject = class(Project)
 RemoteProject.default_args = {}
 
 -- {{{ RemoteProject api
+
+--- Initialize a new RemoteProject instance.
+-- @param args Table containing remote project arguments.
+-- @field target (string) The remote target.
+-- @field target_user (string) The user on the remote target.
+-- @field target_path (string) The path on the remote target.
 function RemoteProject:init(args)
   args = vim.tbl_deep_extend('force', RemoteProject.default_args, args or {})
   self.super:init(args) -- init superclass
@@ -80,81 +105,87 @@ function RemoteProject:init(args)
   self.target_path = args.target_path
 end
 
--- launch rsync host <-> remote target
-function RemoteProject:launch_sync(reverse)
-  local exclude_str = ""
-  for path in string.gmatch(session.config.fuzzy_ignore_dirs, "([^,]+)") do
-    exclude_str = exclude_str .. string.format('--exclude "%s" ', path)
+--- Launch rsync synchronization between host and remote target.
+-- @param opts (table) Options for synchronization.
+-- @field type (string) The type of synchronization ('rsync' or 'lsync').
+-- @field rsync_opts (table) Options for rsync.
+-- @field lsync_opts (table) Options for lsync.
+function RemoteProject:launch_sync(opts)
+  local default_sync_opts = {
+    type = 'lsync',
+    rsync_opts = { use_session_ignores = true, reverse = false },
+    lsync_opts = { config_str = nil },
+  }
+  opts = vim.tbl_deep_extend('force', default_sync_opts, opts or {})
+
+  local function _launch_rsync()
+    local exclude_str = ""
+
+    if opts.use_session_ignores then
+      for path in string.gmatch(session.config.fuzzy_ignore_dirs, "([^,]+)") do
+        exclude_str = exclude_str .. string.format('--exclude "%s" ', path)
+      end
+    end
+
+    if opts.rsync_opts.reverse then
+      terminal.launch_terminal(
+        string.format(
+          'rsync -aP %s %s@%s:%s/ %s',
+          exclude_str,
+          self.target_user,
+          self.target,
+          self.target_path,
+          self.host_path
+        )
+      )
+    else
+      terminal.launch_terminal(
+        string.format(
+          'watch -n0.5 "rsync -aP %s %s/ %s@%s:%s/"',
+          exclude_str,
+          self.host_path,
+          self.target_user,
+          self.target,
+          self.target_path
+        ),
+        { background = true }
+      )
+    end
   end
 
-  if reverse then
+  local function _launch_lsync()
+    assert(opts.lsync_opts.config_str and opts.lsync_opts.config_str ~= "", "lyncconfig string cant be nil")
+
+    local path = core.create_file('/tmp/.lsyncconfig', {
+      content = opts.lsync_opts.config_str,
+      add_uuid = true
+    })
+
     terminal.launch_terminal(
-      string.format(
-        'rsync -aP %s %s@%s:%s/ %s',
-        exclude_str,
-        self.target_user,
-        self.target,
-        self.target_path,
-        self.host_path
-      )
-    )
-  else
-    terminal.launch_terminal(
-      string.format(
-        'watch -n0.5 "rsync -aP %s %s/ %s@%s:%s/"',
-        exclude_str,
-        self.host_path,
-        self.target_user,
-        self.target,
-        self.target_path
-      ),
+      string.format('lsyncd %s --delay 0', path),
       { background = true }
     )
   end
+
+  if opts.type == 'rsync' then
+    _launch_rsync()
+  elseif opts.type == 'lsync' then
+    _launch_lsync()
+  end
 end
 
--- launch ssh session host -> remote target
-function RemoteProject:launch_ssh(set_target, path)
-  path = (path or self.target_path) .. '/'
-  local to_path_cmd = 'cd ' .. path .. ' ; bash --'
+--- Launch an SSH session from host to remote target.
+-- @param opts (table) Options for the SSH session.
+-- @field set_target (boolean) Whether to set the target.
+-- @field path (string) The path to navigate to on the remote target.
+function RemoteProject:launch_ssh(opts)
+  opts = vim.tbl_deep_extend('force', { set_target = false, path = self.target_path }, opts or {})
+  local to_path_cmd = 'cd ' .. opts.path .. ' ; bash --'
 
   terminal.launch_terminal(
     string.format('ssh -t %s@%s "%s"', self.target_user, self.target, to_path_cmd),
-    { callback = (set_target and core.partial(terminal.add_terminal, { primary = true })) or nil }
+    { callback = (opts.set_target and core.partial(terminal.add_terminal, { primary = true })) or nil }
   )
-end
-
--- launch a procject session: ssh and/or rsync host -> remote
-function RemoteProject:launch_project_session(sync)
-  -- make ip updatable
-  vim.ui.input({ prompt = "target gcp ip> ", default = self.target }, function(ip)
-    if ip == nil then
-      self:notify(string.format("invalid target ip: %s", self.target), "warn", { render = "minimal" })
-      return
-    end
-
-    -- MRU update to project target
-    self.target = ip
-
-    -- launch sync in background
-    if sync then self:launch_sync(false) end
-
-    -- launch ssh terminal
-    self:launch_ssh(true)
-    self:notify("project session launched", "info", { render = 'minimal' })
-  end)
-end
-
--- }}}
-
--- FileSyncProject class
-FileSyncProject = class(RemoteProject)
-FileSyncProject.default_args = { target = 'localhost', target_user = core.get_username() }
-
--- {{{ FileSyncProject api
-function FileSyncProject:init(args)
-  args = vim.tbl_deep_extend('force', FileSyncProject.default_args, args or {})
-  self.super:init(args) -- init superclass
 end
 
 -- }}}
@@ -162,7 +193,6 @@ end
 return {
   Project = Project,
   RemoteProject = RemoteProject,
-  FileSyncProject = FileSyncProject
 }
 
 --[[ example usage in .nvimrc.lua
@@ -176,16 +206,16 @@ project.executable = string.format('%s/build/%s', vim.loop.cwd(), project.name)
 
 -- add a command
 project:add_command('build', function()
-terminal.send_to_terminal('cd build ; make ; cd ..')
+  terminal.send_to_terminal('cd build ; make ; cd ..')
 end)
 
 -- add a debug config
 project:add_dap_config('basic', project.executable, { 'bzc/curve1.bzc' }, {
-base_type = 'cpp',
-preamble = function(_) project:run_command('build') end
+  base_type = 'cpp',
+  preamble = function(_) project:run_command('build') end
 })
 
 -- MUST RETURN THIS PROJECT OBJECT, so as to register it into the session
 return project
 
---]]
+--]]-]]

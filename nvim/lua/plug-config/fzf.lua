@@ -38,6 +38,8 @@ local function create_file_previewer()
     if kind == 'terminals' then
       local begin_index = string.find(entry_str, ':')
       local end_index = string.find(entry_str, ']')
+      if begin_index == nil or end_index == nil then return {} end
+
       local bufnr = tonumber(string.sub(entry_str, begin_index + 1, end_index - 1))
 
       return {

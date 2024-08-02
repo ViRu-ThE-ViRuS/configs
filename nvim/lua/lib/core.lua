@@ -9,8 +9,11 @@ local function foreach(tbl, f, only_values)
   if not tbl then return {} end
 
   local t = {}
-  if only_values then for key, value in pairs(tbl) do table.insert(t, f(key, value)) end
-  else for key, value in pairs(tbl) do t[key] = f(key, value) end end
+  if only_values then
+    for key, value in pairs(tbl) do table.insert(t, f(key, value)) end
+  else
+    for key, value in pairs(tbl) do t[key] = f(key, value) end
+  end
   return t
 end
 
@@ -98,14 +101,14 @@ end
 local function table_equal(left, right)
   for key, value in pairs(left) do
     if (type(key) == 'table' and ((not right[key]) or (not table_equal(value, right[key])))) or
-       (type(key) ~= 'table' and ((not right[key]) or (right[key] ~= value))) then
+        (type(key) ~= 'table' and ((not right[key]) or (right[key] ~= value))) then
       return false
     end
   end
 
   for key, value in pairs(right) do
     if (type(key) == 'table' and ((not left[key]) or (not table_equal(value, left[key])))) or
-       (type(key) ~= 'table' and ((not left[key]) or (left[key] ~= value))) then
+        (type(key) ~= 'table' and ((not left[key]) or (left[key] ~= value))) then
       return false
     end
   end
@@ -117,7 +120,7 @@ end
 local function table_subset(parent, child)
   for key, value in pairs(child) do
     if (type(key) == 'table' and ((not parent[key]) or (not table_equal(value, parent[key])))) or
-      (type(key) ~= 'table' and ((not parent[key]) or (parent[key] ~= value))) then
+        (type(key) ~= 'table' and ((not parent[key]) or (parent[key] ~= value))) then
       return false
     end
   end
@@ -173,6 +176,37 @@ local function get_os(table)
   end
 end
 
+-- Creates a file at the specified path and writes the given content to it.
+-- @param path (string): The path where the file will be created.
+-- @param opts (table): Optional table with options:
+--   - content (string): The content to write to the file. Default is an empty string.
+--   - add_uuid (boolean): If true, appends a UUID to the file name. Default is false.
+-- @return (string): The path to the created file, or nil if the file could not be created.
+local function create_file(path, opts)
+  opts = vim.tbl_deep_extend('force', {
+    content = '',
+    add_uuid = false,
+  }, opts or {})
+
+  if opts.add_uuid then
+    path = string.format('%s_%s', path, vim.fn.system("uuidgen"):gsub("\n", ""))
+  end
+
+  local file = io.open(path, "w")
+  if file then
+    if opts.content and opts.content ~= '' then
+      file:write(opts.content)
+      print("Content written to file: " .. path)
+    end
+
+    file:close()
+    return path
+  else
+    assert(false, "Failed to open file: " .. path)
+    return nil
+  end
+end
+
 return {
   round          = round,
   foreach        = foreach,
@@ -189,4 +223,5 @@ return {
   get_username   = get_username,
   get_homedir    = get_homedir,
   get_os         = get_os,
+  create_file    = create_file
 }

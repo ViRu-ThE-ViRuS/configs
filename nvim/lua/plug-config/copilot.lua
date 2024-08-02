@@ -21,8 +21,11 @@ return {
     end,
     config = function()
       require("CopilotChat").setup({
-        mappings = { complete = { insert = '' } },
         context = 'buffers',
+        mappings = {
+          complete = { insert = '' },
+          reset = { normal = '<c-r>', insert = '<c-r>' }
+        },
       })
 
       -- nvim-cmp integration
