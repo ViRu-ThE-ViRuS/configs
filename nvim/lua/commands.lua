@@ -224,6 +224,12 @@ utils.add_command('[MISC] Generate Tags', function()
   }):start()
 end, { add_custom = true })
 
+-- clear diagnostics
+utils.add_command('ClearDiagnostics', 'lua vim.diagnostic.reset(nil, 0)', {
+  cmd_opts = { bang = true, nargs = 0, desc = 'clear diagnostics for current buffer' },
+  add_custom = true
+})
+
 -- toggles
 utils.add_command('[UI] Toggle Context WinBar', misc.toggle_context_winbar, { add_custom = true })
 utils.add_command('[UI] Toggle Thick Seperators', misc.toggle_thick_separators, { add_custom = true })

@@ -129,27 +129,13 @@ function RemoteProject:launch_sync(opts)
 
     if opts.rsync_opts.reverse then
       terminal.launch_terminal(
-        string.format(
-          'rsync -aP %s %s@%s:%s/ %s',
-          exclude_str,
-          self.target_user,
-          self.target,
-          self.target_path,
-          self.host_path
-        )
-      )
+        string.format('rsync -aP %s %s@%s:%s/ %s',
+          exclude_str, self.target_user, self.target, self.target_path, self.host_path))
     else
       terminal.launch_terminal(
-        string.format(
-          'watch -n0.5 "rsync -aP %s %s/ %s@%s:%s/"',
-          exclude_str,
-          self.host_path,
-          self.target_user,
-          self.target,
-          self.target_path
-        ),
-        { background = true }
-      )
+        string.format('watch -n0.5 "rsync -aP %s %s/ %s@%s:%s/"', exclude_str, self.host_path, self.target_user,
+          self.target, self.target_path),
+        { background = true })
     end
   end
 

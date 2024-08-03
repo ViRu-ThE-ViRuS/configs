@@ -95,8 +95,8 @@ return {
             keymaps = {
               ['af'] = '@function.outer',
               ['if'] = '@function.inner',
-              ['ac'] = '@block.outer',
-              ['ic'] = '@block.inner',
+              ['an'] = '@block.outer',
+              ['in'] = '@block.inner',
               ['aP'] = '@parameter.outer',
               ['iP'] = '@parameter.inner'
             }

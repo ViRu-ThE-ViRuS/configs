@@ -16,46 +16,6 @@ local function setup_lspkind()
   })
 end
 
-local function setup_luasnip()
-  local luasnip = require('luasnip')
-  luasnip.config.set_config({ override_builtin = true })
-
-  local function luasnip_active(filter)
-    filter = filter or {}
-    filter.direction = filter.direction or 1
-
-    if filter.direction == 1 then
-      return luasnip.expand_or_jumpable()
-    else
-      return luasnip.jumpable(filter.direction)
-    end
-  end
-
-  local function luasnip_jump(direction)
-    if direction == 1 then
-      if luasnip.expandable() then
-        return luasnip.expand_or_jump()
-      else
-        return luasnip.jumpable(1) and luasnip.jump(1)
-      end
-    else
-      return luasnip.jumpable(-1) and luasnip.jump(-1)
-    end
-  end
-
-  -- NOTE(vir): override built in snippets api
-  vim.snippet.lsp_expand = luasnip.lsp_expand
-  vim.snippet.expand = luasnip.lsp_expand
-  vim.snippet.stop = luasnip.unlink_current
-  vim.snippet.active = luasnip_active
-  vim.snippet.jump = luasnip_jump
-
-  -- NOTE(vir): from https://github.com/chrisgrieser/nvim-scissors
-  require("luasnip.loaders.from_vscode").lazy_load {
-    paths = { vim.fn.stdpath('config') .. '/snippets' },
-  }
-end
-
 local function setup_scissors()
   local utils = require('utils')
   utils.add_command('[MISC] Add New Snippet', function()
@@ -68,23 +28,33 @@ end
 return {
   'hrsh7th/nvim-cmp',
   dependencies = {
-    { 'onsails/lspkind-nvim', config = setup_lspkind },
-    { 'L3MON4D3/LuaSnip',     config = setup_luasnip },
+    {
+      'onsails/lspkind-nvim',
+      config = setup_lspkind,
+    },
+
+    { 'rafamadriz/friendly-snippets' },
+    {
+      'garymjr/nvim-snippets',
+      opts = { friendly_snippets = true, search_paths = { vim.fn.stdpath('config') .. '/snippets' } },
+    },
     {
       "chrisgrieser/nvim-scissors",
       opts = { snippetDir = vim.fn.stdpath('config') .. '/snippets' },
-      config = setup_scissors
+      config = setup_scissors,
     },
 
     'hrsh7th/cmp-nvim-lsp',
-    'saadparwaiz1/cmp_luasnip',
     'hrsh7th/cmp-nvim-lua',
     'hrsh7th/cmp-path',
     'lukas-reineke/cmp-rg',
     'hrsh7th/cmp-buffer',
     'hrsh7th/cmp-cmdline',
 
-    { 'zbirenbaum/copilot-cmp', opts = {} }
+    {
+      'zbirenbaum/copilot-cmp',
+      opts = {},
+    }
   },
   event = 'InsertEnter',
   config = function()
@@ -106,10 +76,10 @@ return {
 
         ["<Tab>"] = cmp.mapping(
           function(fallback)
-            if cmp.visible() then
-              cmp.select_next_item()
-            elseif vim.snippet.active({ direction = 1 }) then
+            if vim.snippet.active({ direction = 1 }) then
               vim.snippet.jump(1)
+            elseif cmp.visible() then
+              cmp.select_next_item()
             elseif has_words_before() then
               cmp.complete()
             else
@@ -119,10 +89,10 @@ return {
 
         ["<s-tab>"] = cmp.mapping(
           function(fallback)
-            if cmp.visible() then
-              cmp.select_prev_item()
-            elseif vim.snippet.active({ direction = -1 }) then
+            if vim.snippet.active({ direction = -1 }) then
               vim.snippet.jump(-1)
+            elseif cmp.visible() then
+              cmp.select_prev_item()
             else
               fallback()
             end
@@ -130,7 +100,7 @@ return {
       },
       sources = cmp.config.sources({
         { name = "nvim_lsp" },
-        { name = "luasnip" },
+        { name = "snippets" },
         { name = 'nvim_lua' },
         { name = "path" },
         { name = "copilot" },
@@ -145,7 +115,7 @@ return {
           with_text = true,
           menu = {
             nvim_lsp         = "[lsp]",
-            luasnip          = "[snip]",
+            snippets         = "[snip]",
             nvim_lua         = '[nvim]',
             path             = "[path]",
             rg               = "[rg]",

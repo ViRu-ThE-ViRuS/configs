@@ -6,8 +6,9 @@ local palette = session.state.palette
 local truncation = session.config.truncation
 
 -- {{{ utils
--- get index of terminal given terminal_job_id
--- return nil if not registered
+-- Get the index of a terminal given its job ID.
+-- @param job_id (number) The job ID of the terminal.
+-- @return (number|nil) The index of the terminal if registered, otherwise nil.
 local function get_terminal_index(job_id)
   assert(job_id, 'terminal_job_id not specified')
   for index, id in pairs(palette.terminals.indices) do
@@ -15,9 +16,12 @@ local function get_terminal_index(job_id)
   end
 end
 
--- deregister a terminal given job_id or index
--- this removes it from palette.indices
--- returns true if an entry was deregistered, false if it wasn't needed
+-- Deregister a terminal given its job ID or index.
+-- This removes the terminal from palette.indices.
+-- @param opts (table) Options table containing either job_id or index.
+--   - job_id (number|nil): The job ID of the terminal.
+--   - index (number|nil): The index of the terminal.
+-- @return (boolean) True if an entry was deregistered, false if it wasn't needed.
 local function deregister_terminal(opts)
   opts = vim.tbl_deep_extend('force', { job_id = nil, index = nil }, opts or {})
   assert(opts.job_id or opts.index, 'either job_id or terminal must be specified')
@@ -29,9 +33,10 @@ local function deregister_terminal(opts)
   end
 end
 
--- register a terminal given job_id, to the specified index
--- if another valid entry is present at index, it is swapped to the end
--- swap policy: overwrite
+-- Register a terminal given its job ID to the specified index.
+-- If another valid entry is present at the index, it is swapped to the end.
+-- @param job_id (number) The job ID of the terminal.
+-- @param index (number) The index to register the terminal at.
 local function register_terminal(job_id, index)
   assert(index >= 0, 'index must be a positive number')
   assert(job_id, 'invalid job_id: ' .. job_id)
@@ -75,7 +80,9 @@ local function register_terminal(job_id, index)
   })
 end
 
--- returns true if terminal specified by job_id is a valid target
+-- Ensure the terminal specified by job ID is a valid target.
+-- @param job_id (number) The job ID of the terminal.
+-- @return (boolean) True if the terminal is valid, false otherwise.
 local function assure_target_valid(job_id)
   assert(job_id, 'terminal_job_id not specified')
   local term_state = palette.terminals.term_states[job_id]
@@ -95,7 +102,8 @@ local function assure_target_valid(job_id)
   return true
 end
 
--- get term_state of primary terminal if any
+-- Get the term_state of the primary terminal if any.
+-- @return (table|nil) The term_state of the primary terminal, or nil if not available.
 local function get_primary_terminal()
   local primary_id = palette.terminals.indices[1]
   if not primary_id or type(primary_id) == 'table' then return nil end
@@ -108,10 +116,12 @@ end
 -- }}}
 
 -- {{{ palette.terminals
--- add terminal to palette, registered as:
---  - if no valid primary terminal, register this as primary
---  - if opts.index or v:count is provided, use that index to register
--- otherwise dont register
+-- Add a terminal to the palette, registered as:
+--  - primary if no valid primary terminal exists
+--  - at the specified index if opts.index or v:count is provided
+-- @param opts (table) Options table containing:
+--   - primary (boolean): Whether to register as the primary terminal.
+--   - index (number|nil): The index to register the terminal at.
 local function add_terminal(opts)
   opts = vim.tbl_deep_extend('force', {
     primary = false,
@@ -191,13 +201,17 @@ local function add_terminal(opts)
   end
 end
 
--- toggle primary/target terminal
+-- Toggle the primary/target terminal.
 -- target is chosen as per:
 --  - if v:count is valid, then it is used as index (target)
 --  - if opts.index is valid, then it is used as index (target)
 --  - if opts.job_id is valid, then it is used as target directly
 --  - else (default) target is primary
 -- opts.force_open will open target if needed but will not toggle (close) it
+-- @param opts (table) Options table containing:
+--   - index (number|nil): The index of the terminal to toggle.
+--   - job_id (number|nil): The job ID of the terminal to toggle.
+--   - force_open (boolean): Whether to force open the terminal without toggling.
 local function toggle_terminal(opts)
   opts = vim.tbl_deep_extend('force', {
     index = nil,
@@ -297,11 +311,17 @@ local function select_terminal()
   end)
 end
 
--- send payload to terminal
--- if count is valid, then it is used as target index
--- otherwise target is primary
+-- Send a payload to the terminal.
+-- If count is valid, it is used as the target index.
+-- Otherwise, the target is the primary terminal.
 --
--- will emulate <up><cr> in terminal if no payload specified
+-- Will emulate <up><cr> in terminal if no payload specified
+-- @param payload (string) The payload to send to the terminal.
+-- @param opts (table) Options table containing:
+--   - toggle_open (boolean): Toggle open target terminal if not already visible.
+--   - scroll_to_end (boolean): Scroll to end after sending payload.
+--   - index (number): Select target terminal using index.
+--   - job_id (number|nil): Select target using term_state job_id.
 local function send_to_terminal(payload, opts)
   opts = vim.tbl_deep_extend('force', {
     toggle_open = true,   -- toggle open target terminal if not already visible
@@ -341,9 +361,10 @@ local function send_to_terminal(payload, opts)
   if opts.scroll_to_end then misc.scroll_to_end(palette.terminals.term_states[job_id].bufnr) end
 end
 
--- send buffer content (visual/line) to terminal
--- if count is valid, then it is used as target index
--- otherwise target is primary
+-- Send buffer content (visual/line) to the terminal.
+-- If count is valid, it is used as the target index.
+-- Otherwise, the target is the primary terminal.
+-- @param visual_mode (boolean) Whether to send visual selection or current line.
 local function send_content_to_terminal(visual_mode)
   local payload = nil
 
@@ -367,8 +388,9 @@ end
 -- }}}
 
 -- {{{ palette.commands
--- add to command palette
--- takes input if no command is passed
+-- Add a command to the command palette.
+-- Takes input if no command is passed.
+-- @param command (string|nil) The command to add. If nil, prompts for input.
 local function add_command(command)
   -- take input if command param is nil
   command = command or vim.fn.input('command: ', '', 'shellcmd')
@@ -381,7 +403,8 @@ local function add_command(command)
   table.insert(palette.commands, command)
 end
 
--- remove command from palette
+-- Remove a command from the command palette.
+-- @param command (string) The command to remove.
 local function remove_command(command)
   assert(command, 'invalid command: ' .. command)
   local index = core.table_contains(palette.commands, command)
@@ -391,8 +414,8 @@ local function remove_command(command)
   table.remove(palette.commands, index)
 end
 
--- run a command in primary terminal
--- triggers ui selection to pick target
+-- Run a command in the primary terminal.
+-- Triggers UI selection to pick the target.
 local function run_command()
   local count = vim.v.count1
   vim.ui.select(
@@ -403,7 +426,14 @@ local function run_command()
 end
 -- }}}
 
--- launch new terminal
+-- Launch a new terminal.
+-- @param command (string) The shell command to run in the terminal.
+-- @param opts (table) Options table containing:
+--   - background (boolean): Whether to run the terminal in the background.
+--   - callback (function|nil): A callback function to run after launching the terminal.
+--   - name (string|nil): The name to assign to the terminal buffer.
+--   - add (boolean): Whether to add the terminal to the palette.
+-- @return (table) The term_state of the launched terminal.
 local function launch_terminal(command, opts)
   assert(command and command ~= '', "invalid shell command: " .. command)
 
