@@ -15,13 +15,14 @@ return {
     event = "BufReadPre",
     init = function()
       local utils = require('utils')
-      utils.map({ 'n', 'x' }, '<leader>is', '<cmd>CopilotChatToggle<cr>')
-      utils.map('n', '<leader>iR', '<cmd>CopilotChatReset<cr>')
-      utils.map('n', '<leader>iS', 'ggvG<cmd>CopilotChatToggle<cr>')
+      utils.map({ 'n', 'x' }, 'ghs', '<cmd>CopilotChatToggle<cr>')
+      utils.map('n', 'ghR', '<cmd>CopilotChatReset<cr>')
+      utils.map('n', 'ghS', 'ggvG<cmd>CopilotChatToggle<cr>')
     end,
     config = function()
       require("CopilotChat").setup({
         context = 'buffers',
+        auto_insert_mode = false,
         mappings = {
           complete = { insert = '' },
           reset = { normal = '<c-r>', insert = '<c-r>' }

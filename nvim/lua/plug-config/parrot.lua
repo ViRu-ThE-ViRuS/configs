@@ -8,18 +8,18 @@ if API_KEY ~= nil then
       local utils = require('utils')
 
       -- code agents
-      utils.map("n", "<leader>ga", "<cmd>PrtVnew<cr>")
-      utils.map("v", "<leader>ga", ":'<,'>PrtVnew<cr>")
-      utils.map("n", "<leader>gA", "ggVG:'<,'>PrtVnew<cr>")
+      utils.map("n", "gaa", "<cmd>PrtVnew<cr>")
+      utils.map("v", "gaa", ":'<,'>PrtVnew<cr>")
+      utils.map("n", "gaA", "ggVG:'<,'>PrtVnew<cr>")
 
       -- chat agents
-      utils.map("n", "<leader>gs", "<cmd>PrtChatToggle vsplit<cr>")
-      utils.map("v", "<leader>gs", ":'<,'>PrtChatToggle vsplit<cr>")
-      utils.map("n", "<leader>gS", "ggVG:'<,'>PrtChatPaste vsplit<cr>")
+      utils.map("n", "gas", "<cmd>PrtChatToggle vsplit<cr>")
+      utils.map("v", "gas", ":'<,'>PrtChatToggle vsplit<cr>")
+      utils.map("n", "gaS", "ggVG:'<,'>PrtChatPaste vsplit<cr>")
 
       -- context
-      utils.map("n", "<leader>gf", "<cmd>PrtContext vsplit<cr>")
-      utils.map("v", "<leader>gf", ":<c-u>'<,'>PrtContext vsplit<cr>")
+      utils.map("n", "gac", "<cmd>PrtContext vsplit<cr>")
+      utils.map("v", "gac", ":<c-u>'<,'>PrtContext vsplit<cr>")
 
       utils.add_command("[MISC] PrtChatFinder", "PrtChatFinder", { add_custom = true })
     end,
