@@ -25,20 +25,26 @@ if API_KEY ~= nil then
     end,
     opts = {
       providers = {
-        openai = {
+        nvidia = {
           api_key = API_KEY,
           endpoint = "https://integrate.api.nvidia.com/v1/chat/completions",
-          topic_model = "meta/llama3-70b-instruct"
-        }
+          topic = {
+            model = "meta/llama3-70b-instruct",
+            params = { maxOutputTokens = 64 },
+          },
+          params = {
+            chat = { temperature = 1.1, top_p = 1 },
+            command = { temperature = 1.1, top_p = 1 },
+          },
+        },
       },
 
       chat_confirm_delete = false,
-      -- chat_dir = '/home/viraatc/workspace/local/share/nvim/parrot/chats',
       chat_dir = '/tmp/nvim_prt_chats/', -- dont save chats
 
       chat_user_prefix = "[>]:",
-      chat_agent_prefix = "[=>]:",
-      command_prompt_prefix_template = '[=>] {{agent}}: '
+      llm_prefix = "[=>]:",
+      command_prompt_prefix_template = '[>] {{llm}}: '
     }
 }
 
