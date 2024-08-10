@@ -28,14 +28,7 @@ if API_KEY ~= nil then
         nvidia = {
           api_key = API_KEY,
           endpoint = "https://integrate.api.nvidia.com/v1/chat/completions",
-          topic = {
-            model = "meta/llama3-70b-instruct",
-            params = { maxOutputTokens = 64 },
-          },
-          params = {
-            chat = { temperature = 1.1, top_p = 1 },
-            command = { temperature = 1.1, top_p = 1 },
-          },
+          topic = { model = "meta/llama3-70b-instruct" },
         },
       },
 
