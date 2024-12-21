@@ -6,6 +6,7 @@ microsoft-auto-update
 microsoft-edge
 microsoft-excel
 microsoft-outlook
+microsoft-powerpoint
 microsoft-teams
 microsoft-word
 nordvpn
@@ -14,8 +15,5 @@ spotify
 the-unarchiver
 tiles
 transmission
-utm
-visual-studio-code
 vlc
 yubico-yubikey-manager
-zoom

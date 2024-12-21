@@ -213,7 +213,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-local colorscheme = "tempus_tempest"
+local colorscheme = "darkblue"
 ---@cast colorscheme +string +function
 
 -- load default colorscheme if chosen one is not available
@@ -240,6 +240,7 @@ return {
       "gruvsquirrel",
       "habamax",
       "hybrid",
+      "lunaperche",
       "melange",
       "mellifluous",
       "mellow",
@@ -253,6 +254,7 @@ return {
       "palenightfall",
       "poimandres",
       "retrobox",
+      "serene",
       "sorbet",
       "sweetie",
       "tempus_tempest", "tempus_dusk",

@@ -58,20 +58,6 @@ local function setup_commands(client, _)
     )
   end
 
-  if client.name == 'tsserver' then
-    utils.add_command(
-      '[LSP] tsserver: Organize Imports',
-      function()
-        vim.lsp.buf.execute_command({
-          command = "_typescript.organizeImports",
-          arguments = { vim.api.nvim_buf_get_name(0) },
-          title = "",
-        })
-      end,
-      { add_custom = true }
-    )
-  end
-
   -- use as commands not keymaps
   utils.add_command('[LSP] Incoming Calls', vim.lsp.buf.incoming_calls, { add_custom = true })
   utils.add_command('[LSP] Outgoing Calls', vim.lsp.buf.outgoing_calls, { add_custom = true })

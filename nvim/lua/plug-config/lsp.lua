@@ -12,7 +12,7 @@ return {
   config = function()
     -- use mason to install dependencies
     require('mason').setup({ ui = { border = 'rounded' } })
-    require('mason-lspconfig').setup({ ensure_installed = { 'pyright', 'clangd', 'lua_ls', 'tsserver', 'efm' } })
+    require('mason-lspconfig').setup({ ensure_installed = { 'pyright', 'clangd', 'lua_ls', 'efm' } })
     require('mason-null-ls').setup({
       ensure_installed = { 'autopep8', 'prettier', 'cpplint' },
       automatic_installation = true

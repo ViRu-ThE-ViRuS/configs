@@ -105,20 +105,6 @@ lsp["lua_ls"].setup {
 }
 -- }}}
 
--- {{{ js/ts setup
-lsp['tsserver'].setup {
-  capabilities = capabilities,
-  on_attach = function(client, bufnr)
-    -- disable formatting
-    client.server_capabilities.documentFormattingProvider      = false
-    client.server_capabilities.documentRangeFormattingProvider = false
-
-    on_attach(client, bufnr)
-  end,
-  flags = { debounce_text_changes = 150 }
-}
--- }}}
-
 -- {{{ null-ls setup
 local null_ls = require('null-ls')
 null_ls.setup({

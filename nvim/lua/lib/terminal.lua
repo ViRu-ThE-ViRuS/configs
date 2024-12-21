@@ -330,7 +330,7 @@ local function send_to_terminal(payload, opts)
     job_id = nil,         -- select target using term_state job_id
   }, opts or {})
 
-  local job_id = opts.job_id or opts.palette.terminals.indices[opts.index]
+  local job_id = opts.job_id or palette.terminals.indices[opts.index]
 
   if not job_id then
     utils.notify('index not registered', 'warn', {

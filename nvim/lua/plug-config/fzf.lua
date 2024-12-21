@@ -78,7 +78,7 @@ return {
 
     -- greps
     utils.map("n", "<c-p>f", function() require('fzf-lua').live_grep({ exec_empty_query = true, copen = 'horizontal copen' }) end)
-    utils.map("n", "<c-p>F", function() require('fzf-lua').live_grep({ continue_last_search = true, copen = 'horizontal copen' }) end)
+    utils.map("n", "<c-p>F", function() require('fzf-lua').live_grep({ resume = true, copen = 'horizontal copen' }) end)
     utils.map("n", "<c-p>ss", function() require('fzf-lua').grep_cword({ copen = 'horizontal copen' }) end)
     utils.map("n", "<c-p>sz", function() require('fzf-lua').grep({ search = 'TODO|NOTE', no_esc = true, copen = 'horizontal copen' }) end)
     utils.map("v", "<c-p>ss", function() require('fzf-lua').grep_visual({ copen = 'horizontal copen' }) end)
@@ -245,7 +245,7 @@ return {
         actions = { ['ctrl-g'] = actions.grep_lgrep }
       },
       lsp = {
-        continue_last_search = false,
+        resume = false,
         icons = {
           ['Error'] = { icon = symbols.indicator_error, color = 'red' },
           ['Warning'] = { icon = symbols.indicator_warning, color = 'yellow' },

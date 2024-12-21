@@ -233,6 +233,14 @@ end
 
 -- inlay_hints: from lsp
 local function toggle_inlay_hints()
+  if not (vim.tbl_count(core.filter(
+          vim.lsp.get_clients({ bufnr = 0 }),
+          function(_, client) return client.server_capabilities.inlayHintProvider end))
+        > 0) then
+    utils.notify("inlay hints", "error", { title = '[UI] no provider found', render = "compact" })
+    return
+  end
+
   if (not vim.lsp.inlay_hint.is_enabled(nil)) and vim.tbl_count(
         core.foreach(
           vim.lsp.get_clients({ bufnr = 0 }),

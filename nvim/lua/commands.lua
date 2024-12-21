@@ -226,7 +226,7 @@ end, { add_custom = true })
 
 -- clear diagnostics
 utils.add_command('ClearDiagnostics', 'lua vim.diagnostic.reset(nil, 0)', {
-  cmd_opts = { bang = true, nargs = 0, desc = 'clear diagnostics for current buffer' },
+  cmd_opts = { bang = false, nargs = 0, desc = 'clear diagnostics for current buffer' },
   add_custom = true
 })
 
