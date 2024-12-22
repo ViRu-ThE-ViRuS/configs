@@ -77,15 +77,18 @@ return {
     utils.map("n", "<c-p>o", function() require('fzf-lua').resume({ copen = 'horizontal copen' }) end)
 
     -- greps
-    utils.map("n", "<c-p>f", function() require('fzf-lua').live_grep({ exec_empty_query = true, copen = 'horizontal copen' }) end)
+    utils.map("n", "<c-p>f",
+      function() require('fzf-lua').live_grep({ exec_empty_query = true, copen = 'horizontal copen' }) end)
     utils.map("n", "<c-p>F", function() require('fzf-lua').live_grep({ resume = true, copen = 'horizontal copen' }) end)
     utils.map("n", "<c-p>ss", function() require('fzf-lua').grep_cword({ copen = 'horizontal copen' }) end)
-    utils.map("n", "<c-p>sz", function() require('fzf-lua').grep({ search = 'TODO|NOTE', no_esc = true, copen = 'horizontal copen' }) end)
+    utils.map("n", "<c-p>sz",
+      function() require('fzf-lua').grep({ search = 'TODO|NOTE', no_esc = true, copen = 'horizontal copen' }) end)
     utils.map("v", "<c-p>ss", function() require('fzf-lua').grep_visual({ copen = 'horizontal copen' }) end)
 
     -- ctags, independent of lsp
     utils.map("n", "<c-p>sP", function() require('fzf-lua').tags_grep_cword({ copen = 'horizontal copen' }) end)
-    utils.map("n", "<c-p>sp", function() require('fzf-lua').tags_live_grep({ exec_empty_query = true, copen = 'horizontal copen' }) end)
+    utils.map("n", "<c-p>sp",
+      function() require('fzf-lua').tags_live_grep({ exec_empty_query = true, copen = 'horizontal copen' }) end)
     utils.map("v", "<c-p>sp", function() require('fzf-lua').tags_grep_visual({ copen = 'horizontal copen' }) end)
 
     -- colorscheme selector
@@ -228,7 +231,11 @@ return {
       },
       files = {
         rg_opts = '--files' .. default_rg_options,
-        git_icons = false
+        git_icons = false,
+        actions = {
+          ['ctrl-d'] = actions.toggle_ignore,
+          ['ctrl-g'] = function () end
+        }
       },
       blines = {
         actions = { ['ctrl-q'] = actions.buf_sel_to_qf }
