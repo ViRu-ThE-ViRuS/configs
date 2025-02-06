@@ -213,7 +213,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-local colorscheme = "darkblue"
+local colorscheme = load_nightfox('terafox')
 ---@cast colorscheme +string +function
 
 -- load default colorscheme if chosen one is not available
@@ -248,6 +248,7 @@ return {
       "monokai_pro", "monokai_ristretto",
       "moonfly",
       "mountain",
+      "nightwolf",
       "nightfly",
       "noctis", "noctis_bordo", "noctis_minimus", "noctis_uva",
       "oxocarbon",
@@ -290,6 +291,7 @@ return {
       "intellij",
       "mellifluous",
       "modus",
+      "nightwolf",
       "oxocarbon",
       "sweetie",
       "tempus_dawn", "tempus_totus",

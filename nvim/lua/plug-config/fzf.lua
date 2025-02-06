@@ -143,12 +143,10 @@ return {
           horizontal = 'right:50%',
           vertical = 'up:50%',
 
-          -- using winopts_fn to set truncation
-          -- flip_columns = truncation.truncation_limit_s_terminal
-
           -- builtin previewer
           scrollbar = false,
           delay = 50
+
         },
         on_create = function()
           vim.opt_local.buflisted = false
@@ -159,15 +157,6 @@ return {
           utils.map('t', '<esc>', '<cmd>quit<cr>', { buffer = 0 })
         end,
       },
-      winopts_fn = function()
-        return {
-          preview = {
-            -- works better than flip_columns when in vsplits
-            layout = (vim.api.nvim_win_get_width(0) < truncation.truncation_limit_s_terminal and 'vertical')
-                or 'horizontal'
-          }
-        }
-      end,
       fzf_opts = { ['--layout'] = 'default' },
       fzf_colors = {
         ["fg"]      = { "fg", "CursorLine" },
@@ -221,7 +210,8 @@ return {
           cmd = "bat",
           args = "--style=numbers,changes --color always",
           theme = 'Coldark-Dark'
-        }
+        },
+        builtin = { toggle_behavior = "extend" }
       },
       buffers = {
         actions = {
@@ -234,7 +224,7 @@ return {
         git_icons = false,
         actions = {
           ['ctrl-d'] = actions.toggle_ignore,
-          ['ctrl-g'] = function () end
+          ['ctrl-g'] = function() end
         }
       },
       blines = {

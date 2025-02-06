@@ -26,6 +26,7 @@ return {
   'tanvirtin/monokai.nvim',
   'bluz71/vim-moonfly-colors',
   'thepogsupreme/mountain.nvim',
+  'ricardoraposo/nightwolf.nvim',
   'bluz71/vim-nightfly-guicolors',
   'talha-akram/noctis.nvim',
   'nyoom-engineering/oxocarbon.nvim',
