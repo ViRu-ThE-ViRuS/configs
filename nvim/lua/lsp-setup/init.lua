@@ -110,6 +110,7 @@ local null_ls = require('null-ls')
 null_ls.setup({
   sources = {
     null_ls.builtins.completion.spell.with({ filetypes = { 'text', 'markdown' } }),
+    null_ls.builtins.formatting.shfmt.with({ filetypes = { 'sh', 'bash' } })
   },
   capabilities = capabilities,
   on_attach = function(client, bufnr)

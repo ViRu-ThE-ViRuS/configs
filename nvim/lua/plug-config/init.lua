@@ -43,4 +43,5 @@ return {
   'marko-cerovac/material.nvim',
   'EdenEast/nightfox.nvim',
   'rose-pine/neovim',
+  "vague2k/vague.nvim",
 }

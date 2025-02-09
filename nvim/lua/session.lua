@@ -1,8 +1,8 @@
 -- default config
 local default_config = {
   context_winbar      = false,         -- set context in winbar
-  inlay_hints         = false,          -- enable inlay hints
-  fancy_notifications = true,          -- use fancy notifications (nvim-notify)
+  inlay_hints         = false,         -- enable inlay hints
+  fancy_notifications = true,          -- use fancy notifications
   local_rc_name       = '.nvimrc.lua', -- project local config file
 
   -- additional fuzzy search ignore dirs for this session

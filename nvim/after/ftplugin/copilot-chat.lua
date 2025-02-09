@@ -27,20 +27,7 @@ vim.api.nvim_create_autocmd('BufEnter', {
   callback = function()
     vim.opt_local.number = false
     vim.opt_local.relativenumber = false
+    -- vim.api.nvim_command('set filetype=markdown')
   end
 })
 
-vim.api.nvim_create_autocmd('InsertEnter', {
-  group = 'Misc',
-  buffer = vim.api.nvim_get_current_buf(),
-  desc = 'Move to last line when typing',
-  callback = function()
-    vim.cmd 'normal! 0'
-
-    -- move to end if on prompt line
-    if vim.fn.search([[\m^##\s\+\S]], 'cnW') > 0 then
-      vim.cmd 'normal! G$'
-      vim.v.char = 'x'
-    end
-  end,
-})

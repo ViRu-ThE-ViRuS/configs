@@ -48,7 +48,7 @@ end
 local function setup_dap_adapters()
   local dap = require('dap')
 
-  dap.defaults.fallback.exception_breakpoints = {'default'}
+  dap.defaults.fallback.exception_breakpoints = { 'default' }
 
   -- adapters
   dap.adapters.python = {
@@ -249,9 +249,9 @@ local function setup_dap_events()
     -- we reactive global statusline on exit,
     -- if we had it set before session began
     session.session_reactivate_global_statusline = vim.api.nvim_get_option_value(
-          "laststatus",
-          { scope = "global" }
-        ) == 3
+      "laststatus",
+      { scope = "global" }
+    ) == 3
 
     require('lib/misc').toggle_global_statusline({ force = 'local' })
 

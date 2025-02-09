@@ -213,7 +213,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-local colorscheme = load_nightfox('terafox')
+local colorscheme = 'vague'
 ---@cast colorscheme +string +function
 
 -- load default colorscheme if chosen one is not available
@@ -262,6 +262,7 @@ return {
       "vscode",
       "xcodedarkhc",
       "default",
+      'vague',
       "vim",
 
       -- lua configured colorschemes

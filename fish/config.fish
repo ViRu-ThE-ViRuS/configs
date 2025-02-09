@@ -299,3 +299,8 @@ end
 function computelab_nodes --description 'get nodes allocated to user viraatc on computelab'
   ssh computelab 'squeue -u viraatc -h' | awk '{print $NF}'
 end
+
+function last_history_item
+  echo $history[1]
+end
+abbr -a !! --position anywhere --function last_history_item

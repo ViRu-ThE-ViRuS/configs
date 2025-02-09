@@ -49,6 +49,7 @@ return {
         }
       },
       virtual_text = { spacing = 4 },
+      virtual_lines = false,
       update_in_insert = true,
       underline = true,
       severity_sort = false,

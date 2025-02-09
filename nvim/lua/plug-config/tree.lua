@@ -26,6 +26,24 @@ local function on_attach(bufnr)
     local node = api.tree.get_node_under_cursor()
     open_in_finder(node)
   end, opts)
+
+  require("utils").map("n", "/", function()
+    local fzf = require("fzf-lua")
+    local ignore_dirs = session.config.fuzzy_ignore_dirs
+    fzf.fzf_exec(string.format('rg --files --hidden --glob "!%s"', ignore_dirs), {
+      prompt = "Tree> ",
+      fzf_opts = { ["--padding"] = "5%,5%,15%,5%" },
+      winopts = { height = 0.15, width = vim.fn.winwidth(0) - 2, row = 1, col = 1, title = " search tree " },
+      actions = {
+        ["default"] = {
+          fn = function(selected)
+            require("nvim-tree.api").tree.find_file(selected[1])
+          end,
+          desc = "fuzzy find in tree",
+        },
+      },
+    })
+  end)
 end
 
 return {

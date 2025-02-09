@@ -46,9 +46,11 @@ local function up_lsp_stack()
     if head.range.start.line < current_line[1] then break end
   end
 
-  -- add current location to jump list, then jump
-  vim.cmd [[ normal! m` ]]
-  vim.api.nvim_win_set_cursor(0, { head.range.start.line, head.range['end'].line })
+  if head then
+    -- add current location to jump list, then jump
+    vim.cmd [[ normal! m` ]]
+    vim.api.nvim_win_set_cursor(0, { head.range.start.line, head.range['end'].line })
+  end
 end
 
 return {
@@ -134,7 +136,7 @@ return {
         },
       })
 
-      require('ts_context_commentstring').setup{}
+      require('ts_context_commentstring').setup {}
 
       -- populate all functions and lambdas into qflist
       utils.map('n', '<leader>uf', function()
@@ -147,13 +149,14 @@ return {
       utils.map({ 'n', 'o', 'x' }, '[F', cmd_str .. 'goto_previous_start("@class.outer")<CR>zz')
       utils.map({ 'n', 'o', 'x' }, ']f', cmd_str .. 'goto_next_start("@function.outer")<CR>zz')
       utils.map({ 'n', 'o', 'x' }, '[f', cmd_str .. 'goto_previous_start("@function.outer")<CR>zz')
-      utils.map({ 'n', 'o', 'x' }, ']]', cmd_str .. 'goto_next_start("@block.outer")<CR>zz')
       utils.map({ 'n', 'o', 'x' }, '[[', cmd_str .. 'goto_previous_start("@block.outer")<CR>zz')
+      utils.map({ 'n', 'o', 'x' }, ']]', cmd_str .. 'goto_next_start("@block.outer")<CR>zz')
 
       -- jump to lsp-parent
-      utils.map({'n', 'o', 'x'}, '[S', up_lsp_stack)
+      utils.map({ 'n', 'o', 'x' }, '[S', up_lsp_stack)
     end
   },
 
+  { "wurli/contextindent.nvim",   event = "InsertEnter",     dependencies = { "nvim-treesitter/nvim-treesitter" } },
   { 'nvim-treesitter/playground', cmd = 'TSPlaygroundToggle' },
 }
