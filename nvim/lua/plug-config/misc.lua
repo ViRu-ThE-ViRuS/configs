@@ -63,8 +63,8 @@ return {
   },
 
   {
-    "OXY2DEV/markview.nvim",
-    ft = 'markdown',
-    config = {}
+    'MeanderingProgrammer/render-markdown.nvim',
+    opts = { file_types = { "markdown", "Avante" } },
+    ft = { "markdown", "Avante" },
   },
 }
