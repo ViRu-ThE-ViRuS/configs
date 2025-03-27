@@ -52,7 +52,7 @@ utils.map("x", "ss", ":s/\\%V")                                                 
 utils.map("x", "s/", "\"sy:%s/<c-r>s//g<left><left>")                             -- substitute selection in file
 utils.map('x', '<m-/>', '<esc>/\\%V')                                             -- search within selection, '/' itself is a good mapping to consider for this
 utils.map('x', '//', [[y/<c-r>=trim(escape(@",'\/]'))<cr><cr>]])                  -- search for selection
-utils.map("x", "@", "<esc><cmd>lua require('lib/misc').linewise_macro_cmd()<cr>") -- run line-wise macro n times if n lines are selected
+-- utils.map("x", "@", "<esc><cmd>lua require('lib/misc').linewise_macro_cmd()<cr>") -- run line-wise macro n times if n lines are selected
 
 -- commandline modes
 utils.map("n", '@"', "@:", { noremap = false }) -- repeat last comand

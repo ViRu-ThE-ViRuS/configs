@@ -1,6 +1,9 @@
 return {
   "yetone/avante.nvim",
-  dependencies = { "stevearc/dressing.nvim", "MunifTanjim/nui.nvim" },
+  dependencies = {
+    "stevearc/dressing.nvim",
+    "MunifTanjim/nui.nvim",
+  },
   build = "make",
   cmd = { 'AvanteToggle', 'AvanteEdit' },
   init = function()
@@ -21,13 +24,24 @@ return {
   end,
   opts = {
     provider = "copilot",
+    -- provider = "openai",
+    openai = {
+      endpoint = "https://integrate.api.nvidia.com/v1",
+      -- model = "nvdev/nvidia/llama-3.3-nemotron-super-49b-v1",
+      model = "deepseek-ai/deepseek-r1-distill-qwen-32b",
+      temperature=0.6,
+      top_p=0.7,
+      max_tokens=4096,
+      stream=true,
+      disable_tools = true,
+      reasoning_effort='high'
+    },
     auto_suggestions_provider = "copilot",
     dual_boost = {
       enabled = false,
       first_provider = "copilot",
-      second_provider = "copilot",
-      prompt =
-      "Based on the two reference outputs below, generate a response that incorporates elements from both but reflects your own judgment and unique perspective. Do not provide any explanation, just give the response directly. Reference Output 1: [{{provider1_output}}], Reference Output 2: [{{provider2_output}}]",
+      second_provider = "openai",
+      prompt = "Based on the two reference outputs below, generate a response that incorporates elements from both but reflects your own judgment and unique perspective. Do not provide any explanation, just give the response directly. Reference Output 1: [{{provider1_output}}], Reference Output 2: [{{provider2_output}}]",
       timeout = 60000,
     },
     behaviour = {
