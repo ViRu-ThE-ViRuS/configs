@@ -1,3 +1,26 @@
+# inspired by https://github.com/jellydn/lazy-nvim-ide/blob/main/lua/plugins/extras/copilot-chat-v2.lua
+local prompts = {
+  -- Text related prompts
+  Summarize = "Please summarize the following text.",
+  Spelling = "Please correct any grammar and spelling errors in the following text.",
+  Wording = "Please improve the grammar and wording of the following text.",
+  Concise = "Please rewrite the following text to make it more concise.",
+
+  -- Code related prompts
+  Explain = "Please explain how the following code works.",
+  Review = "Please review the following code and provide suggestions for improvement.",
+  Tests = "Please explain how the selected code works, then generate unit tests for it.",
+  Refactor = "Please refactor the following code to improve its clarity and readability.",
+  FixCode = "Please fix the following code to make it work as intended.",
+  FixError = "Please explain the error in the following text and provide a solution.",
+  BetterNamings = "Please provide better names for the following variables and functions.",
+  Documentation = "Please provide documentation for the following code.",
+
+  -- misc
+  Pythonize =
+  "Please update the selected code to use latest pythonic patterns. Write minimal and easy-to-understand code. Prefer built-in libraries, use third-party libs if they significantly improve performance or readability.",
+}
+
 return {
   {
     "zbirenbaum/copilot.lua",
@@ -39,12 +62,7 @@ return {
       },
       insert_at_end = true,
       auto_insert_mode = false,
-      prompts = {
-        Pythonize = {
-          prompt =
-          "/COPILOT_GENERATE\n\nYou are an expert Python developer. Your task is to convert the given code to Python using the latest practices. Optimize for minimal and easy-to-understand code. Prefer built-in libraries, but use third-party libraries if they significantly improve readability or performance."
-        }
-      }
+      prompts = prompts,
     },
     config = function(_, opts)
       require("CopilotChat").setup(opts)
