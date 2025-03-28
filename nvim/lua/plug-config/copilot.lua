@@ -77,7 +77,13 @@ return {
       })
 
       opts.contexts = vim.tbl_extend("force", opts.contexts or {}, { vectorcode = vectorcode_ctx })
-      opts.prompts = vim.tbl_extend("force", opts.prompts or {}, { Explain = { prompt = prompts.explain, context = { "selection", "vectorcode" } } })
+      opts.prompts = vim.tbl_extend("force", opts.prompts or {},
+        {
+          DeepExplain = {
+            prompt = "Please explain how the following code works.",
+            context = { "selection", "vectorcode" },
+          },
+        })
       require("CopilotChat").setup(opts)
 
       -- fzf-lua integration
