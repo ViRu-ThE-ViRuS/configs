@@ -70,6 +70,7 @@ switch (hostname)
   case Viraat-TT4.local
     set fish_user_paths           $fish_user_paths "/opt/homebrew/bin/"
     set fish_user_paths           $fish_user_paths "$HOME/Library/Python/3.9/bin"
+    set fish_user_paths           $fish_user_paths "$HOME/.local/bin"
 
     nvm use v18.20.3 1&> /dev/null
 

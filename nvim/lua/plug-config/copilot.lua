@@ -23,6 +23,11 @@ local prompts = {
 
 return {
   {
+    "Davidyz/VectorCode",
+    cmd = "VectorCode",
+  },
+
+  {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
     event = "BufReadPre",
@@ -65,6 +70,14 @@ return {
       prompts = prompts,
     },
     config = function(_, opts)
+      local vectorcode_ctx = require('vectorcode.integrations.copilotchat').make_context_provider({
+        prompt_header = "Here are relevant files from the repository:",
+        prompt_footer = "\nConsider this context when answering:",
+        skip_empty = true,
+      })
+
+      opts.contexts = vim.tbl_extend("force", opts.contexts or {}, { vectorcode = vectorcode_ctx })
+      opts.prompts = vim.tbl_extend("force", opts.prompts or {}, { Explain = { prompt = prompts.explain, context = { "selection", "vectorcode" } } })
       require("CopilotChat").setup(opts)
 
       -- fzf-lua integration

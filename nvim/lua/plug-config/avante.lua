@@ -29,20 +29,33 @@ return {
       endpoint = "https://integrate.api.nvidia.com/v1",
       -- model = "nvdev/nvidia/llama-3.3-nemotron-super-49b-v1",
       model = "deepseek-ai/deepseek-r1-distill-qwen-32b",
-      temperature=0.6,
-      top_p=0.7,
-      max_tokens=4096,
-      stream=true,
+      temperature = 0.6,
+      top_p = 0.7,
+      max_tokens = 4096 * 2,
+      stream = true,
       disable_tools = true,
-      reasoning_effort='high'
+      reasoning_effort = 'high'
+    },
+    copilot = {
+      model = 'claude-3.7-sonnet',
+      disable_tools = false,
     },
     auto_suggestions_provider = "copilot",
     dual_boost = {
       enabled = false,
       first_provider = "copilot",
       second_provider = "openai",
-      prompt = "Based on the two reference outputs below, generate a response that incorporates elements from both but reflects your own judgment and unique perspective. Do not provide any explanation, just give the response directly. Reference Output 1: [{{provider1_output}}], Reference Output 2: [{{provider2_output}}]",
+      prompt =
+      "Based on the two reference outputs below, generate a response that incorporates elements from both but reflects your own judgment and unique perspective. Do not provide any explanation, just give the response directly. Reference Output 1: [{{provider1_output}}], Reference Output 2: [{{provider2_output}}]",
       timeout = 60000,
+    },
+    rag_service = {
+      enabled = true,
+      host_mount = os.getenv("HOME") .. '/.cache/nvim/rag/',
+      provider = "openai",
+      llm_model = "nvidia/llama-3.3-nemotron-super-49b-v1",
+      embed_model = "nvdev/nvidia/llama-3.2-nv-embedqa-1b-v2",
+      endpoint = "https://integrate.api.nvidia.com/v1", -- The API endpoint for RAG service
     },
     behaviour = {
       auto_suggestions = false,
@@ -90,7 +103,7 @@ return {
     windows = {
       position = "right",
       wrap = false,
-      width = 35,
+      width = 55,
       sidebar_header = {
         enabled = true,
         align = "center",

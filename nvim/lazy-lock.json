@@ -1,5 +1,6 @@
 {
   "CopilotChat.nvim": { "branch": "main", "commit": "df550ff3f9f2d028160946d674db08dad432fdd3" },
+  "VectorCode": { "branch": "main", "commit": "054d1f21076e60c8fc65dea9562c1f608450b7e5" },
   "alabaster.nvim": { "branch": "main", "commit": "8de3afd6b203e5469594108041721b8618a10889" },
   "aquarium-vim": { "branch": "develop", "commit": "6da0091836f36f82af558f0395ea50fd5a297d6d" },
   "avante.nvim": { "branch": "main", "commit": "b6000d5bbcb85e3b11177846220bfd438fc013dd" },

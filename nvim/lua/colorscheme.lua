@@ -201,6 +201,8 @@ local function ui_overrides()
     highlight! link VertSplit Normal
     highlight! link FloatBorder Normal
     highlight! link NormalFloat Normal
+
+    highlight! link AvanteSidebarWinSeparator Normal
   ]])
 
   -- set statusline highlights
@@ -213,7 +215,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-local colorscheme = 'vague'
+local colorscheme = 'vscode'
 ---@cast colorscheme +string +function
 
 -- load default colorscheme if chosen one is not available
