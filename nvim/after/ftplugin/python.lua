@@ -7,7 +7,7 @@ vim.opt_local.tabstop = 4
 vim.opt_local.softtabstop = 4
 
 -- NOTE(vir): to avoid errors when called multiple times
-pcall(terminal.add_command,'ipython3 -i --no-autoindent')
+pcall(terminal.add_command, 'ipython3 -i --no-autoindent')
 
 -- repl state
 local repl_session = {
@@ -125,5 +125,7 @@ utils.map("n", "<leader>cc", function()
 end, { buffer = 0 })
 
 -- cell navigation
-utils.map('n', '[i', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@cellmarker")<cr>zz', { buffer = 0 })
-utils.map('n', ']i', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@cellmarker")<cr>zz', { buffer = 0 })
+utils.map('n', '[i', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_previous_start("@cellmarker")<cr>zz',
+    { buffer = 0 })
+utils.map('n', ']i', '<cmd>lua require"nvim-treesitter.textobjects.move".goto_next_start("@cellmarker")<cr>zz',
+    { buffer = 0 })

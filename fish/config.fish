@@ -72,7 +72,7 @@ switch (hostname)
     set fish_user_paths           $fish_user_paths "$HOME/Library/Python/3.9/bin"
     set fish_user_paths           $fish_user_paths "$HOME/.local/bin"
 
-    nvm use v18.20.3 1&> /dev/null
+    nvm use v20 1&> /dev/null
 
   # work desk workstation
   case nova

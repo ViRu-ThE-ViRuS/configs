@@ -87,7 +87,6 @@ local function create_fzflua_qflist_previewer()
     local tmpbuf = self:get_tmp_buffer()
     vim.api.nvim_buf_set_lines(tmpbuf, 0, -1, false, lines)
     self:set_preview_buf(tmpbuf)
-    self.win:update_scrollbar()
   end
 
   return QFListPreviewer

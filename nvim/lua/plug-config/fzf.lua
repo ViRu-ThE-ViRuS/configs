@@ -125,7 +125,7 @@ return {
     local fzf = require('fzf-lua')
 
     local ignore_dirs = os.getenv('FZF_IGNORE_DIRS') .. ',' .. session.config.fuzzy_ignore_dirs
-    local default_rg_options = string.format(' --hidden --follow --no-heading --smart-case --no-ignore -g "!{%s}"',
+    local default_rg_options = string.format(' --hidden --line-number --follow --no-heading --smart-case --no-ignore -g "!{%s}"',
       ignore_dirs)
 
     local symbols = session.config.symbols

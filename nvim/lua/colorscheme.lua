@@ -215,7 +215,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-local colorscheme = 'vscode'
+local colorscheme = 'retrobox'
 ---@cast colorscheme +string +function
 
 -- load default colorscheme if chosen one is not available
@@ -236,6 +236,7 @@ return {
       "caret",
       "deviuspro",
       "everforest",
+      "flexoki-dark",
       "gruvbox",
       "gruvbox-baby",
       "gruvbox-material",
@@ -289,6 +290,7 @@ return {
       "bamboo",
       "caret",
       "everforest",
+      "flexoki-light",
       "gruvbox",
       "gruvbox-material",
       "intellij",

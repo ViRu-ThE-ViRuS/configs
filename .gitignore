@@ -11,3 +11,4 @@ nvim/plugin/packer_compiled.lua
 nvim/tags
 nvim/sessions
 .parrot.md
+chroma.log

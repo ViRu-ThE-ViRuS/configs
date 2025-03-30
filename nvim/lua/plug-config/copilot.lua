@@ -65,7 +65,7 @@ return {
         show_help = { normal = 'g?' },
         select = { insert = '<tab>' }
       },
-      insert_at_end = true,
+      insert_at_end = false,
       auto_insert_mode = false,
       prompts = prompts,
     },

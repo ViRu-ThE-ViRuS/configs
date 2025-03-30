@@ -23,18 +23,23 @@ return {
     end)
   end,
   opts = {
+    -- debug = true,
     provider = "copilot",
     -- provider = "openai",
     openai = {
       endpoint = "https://integrate.api.nvidia.com/v1",
-      -- model = "nvdev/nvidia/llama-3.3-nemotron-super-49b-v1",
+      -- model = "nvidia/llama-3.1-nemotron-nano-8b-v1",
+      -- model = "nvidia/llama-3.3-nemotron-super-49b-v1",
       model = "deepseek-ai/deepseek-r1-distill-qwen-32b",
+      -- model = "nvidia/nemotron-mini-4b-instruct",
+      -- model = 'qwen/qwq-32b',
       temperature = 0.6,
+      -- messages = {{ role = 'system', content = 'detailed thinking on' }},
       top_p = 0.7,
       max_tokens = 4096 * 2,
       stream = true,
       disable_tools = true,
-      reasoning_effort = 'high'
+      reasoning_effort = 'high',
     },
     copilot = {
       model = 'claude-3.7-sonnet',
@@ -50,11 +55,11 @@ return {
       timeout = 60000,
     },
     rag_service = {
-      enabled = true,
+      enabled = false,
       host_mount = os.getenv("HOME") .. '/.cache/nvim/rag/',
       provider = "openai",
       llm_model = "nvidia/llama-3.3-nemotron-super-49b-v1",
-      embed_model = "nvdev/nvidia/llama-3.2-nv-embedqa-1b-v2",
+      embed_model = "nvidia/llama-3.2-nv-embedqa-1b-v2",
       endpoint = "https://integrate.api.nvidia.com/v1", -- The API endpoint for RAG service
     },
     behaviour = {

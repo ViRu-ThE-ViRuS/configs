@@ -43,7 +43,7 @@ local function on_attach(bufnr)
         },
       },
     })
-  end)
+  end, opts)
 end
 
 return {
