@@ -77,7 +77,7 @@ switch (hostname)
   # work desk workstation
   case nova
     set fish_user_paths           $fish_user_paths "$HOME/.local/bin/"
-    set fish_user_paths 		      $fish_user_paths "/usr/local/cuda-12.1/bin/"
+    set fish_user_paths           $fish_user_paths "/usr/local/cuda-12.1/bin/"
     setup_ssh
 
     alias rvim='nvim --remote-ui --server ip6-localhost:5757'
@@ -92,10 +92,19 @@ switch (hostname)
 
     setup_ssh
 
-  # work mobile workstation
+  # mobile workstation
+  case viraatc-mlt
+    set fish_user_paths           $fish_user_paths "/opt/homebrew/bin/"
+    set fish_user_paths           $fish_user_paths "$HOME/.local/bin/"
+    set fish_user_paths           $fish_user_paths "/Library/Frameworks/Python.framework/Versions/3.10/bin/"
+
+    # setup_ssh
+    nvm use v20 1&> /dev/null
+
+  # old mobile workstation
   case storm
     set fish_user_paths           $fish_user_paths "$HOME/.local/bin/"
-    set fish_user_paths 		      $fish_user_paths "/usr/local/cuda-12.1/bin/"
+    set fish_user_paths           $fish_user_paths "/usr/local/cuda-12.1/bin/"
 
     setup_ssh
 
