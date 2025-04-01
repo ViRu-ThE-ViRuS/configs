@@ -30,7 +30,9 @@ function setup_ssh
       ssh-add $id 1&> /dev/null
     end
 
-    docker login -u viraatc -p $TRT_GITLAB_API_TOKEN gitlab-master.nvidia.com &> /dev/null
+    if type -q docker
+      docker login -u viraatc -p $TRT_GITLAB_API_TOKEN gitlab-master.nvidia.com &> /dev/null
+    end
   # end
 end
 # }}}
@@ -74,6 +76,15 @@ switch (hostname)
 
     nvm use v20 1&> /dev/null
 
+  # mobile workstation
+  case storm
+    set fish_user_paths           $fish_user_paths "/opt/homebrew/bin/"
+    set fish_user_paths           $fish_user_paths "$HOME/.local/bin/"
+    set fish_user_paths           $fish_user_paths "/Library/Frameworks/Python.framework/Versions/3.10/bin/"
+
+    nvm use v20 1&> /dev/null
+    setup_ssh
+
   # work desk workstation
   case nova
     set fish_user_paths           $fish_user_paths "$HOME/.local/bin/"
@@ -89,24 +100,6 @@ switch (hostname)
 
     # mlperf
     set -xg MLPERF_SCRATCH_PATH   "/home/viraatc/workspace/mlperf/mlperf_scratch_space/"
-
-    setup_ssh
-
-  # mobile workstation
-  case viraatc-mlt
-    set fish_user_paths           $fish_user_paths "/opt/homebrew/bin/"
-    set fish_user_paths           $fish_user_paths "$HOME/.local/bin/"
-    set fish_user_paths           $fish_user_paths "/Library/Frameworks/Python.framework/Versions/3.10/bin/"
-
-    # setup_ssh
-    nvm use v20 1&> /dev/null
-
-  # old mobile workstation
-  case storm
-    set fish_user_paths           $fish_user_paths "$HOME/.local/bin/"
-    set fish_user_paths           $fish_user_paths "/usr/local/cuda-12.1/bin/"
-
-    setup_ssh
 
   # dev-container
   case dev
