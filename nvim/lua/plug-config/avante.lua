@@ -5,11 +5,12 @@ return {
     "MunifTanjim/nui.nvim",
   },
   build = "make",
-  cmd = { 'AvanteToggle', 'AvanteEdit' },
+  cmd = { 'AvanteToggle', 'AvanteEdit', 'AvanteAsk' },
   init = function()
     local utils = require("utils")
     utils.map({ "n", "v" }, "gas", '<cmd>AvanteToggle<cr>')
     utils.map("v", "gae", '<cmd>AvanteEdit<cr>')
+    utils.map("v", "gaa", '<cmd>AvanteAsk<cr>')
     utils.map("n", "gaR", '<cmd>AvanteClear<cr>')
 
     utils.map("n", "gaq", function()
@@ -89,13 +90,15 @@ return {
       endpoint = "https://integrate.api.nvidia.com/v1", -- The API endpoint for RAG service
     },
     behaviour = {
-      auto_suggestions = false,
+      auto_suggestions = false, -- Experimental stage
       auto_set_highlight_group = true,
       auto_set_keymaps = false,
       auto_apply_diff_after_generation = false,
       support_paste_from_clipboard = false,
       minimize_diff = true,
       enable_token_counting = true,
+      enable_cursor_planning_mode = true,
+      enable_claude_text_editor_tool_mode = true,
     },
     file_selector = {
       provider = 'native',
@@ -131,12 +134,16 @@ return {
         reverse_switch_windows = "<s-tab>",
         close = { "q" },
       },
-      files = { add_current = "gaC" }
+      files = { add_current = "gaC" },
+      cancel = {
+        normal = { "<c-c>" },
+        insert = { "<c-c>" },
+      }
     },
     hints = { enabled = false },
     windows = {
       position = "right",
-      wrap = false,
+      wrap = true,
       width = 55,
       sidebar_header = {
         enabled = true,
