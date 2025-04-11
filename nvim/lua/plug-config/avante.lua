@@ -32,28 +32,34 @@ return {
     web_search_engine = { provider = "tavily" },
     disabled_tools = { "python" },
 
-    openai = {
-      endpoint = "https://integrate.api.nvidia.com/v1",
-
-      -- model = "nvidia/llama-3.3-nemotron-super-49b-v1",
-      model = "deepseek-ai/deepseek-r1-distill-qwen-32b",
-      -- model = "nvidia/nemotron-mini-4b-instruct",
-      -- model = 'qwen/qwq-32b',
-
-      -- messages = {{ role = 'system', content = 'detailed thinking on' }},
-      reasoning_effort = 'high',
-
-      temperature = 0.6,
-      top_p = 0.7,
-      max_tokens = 4096 * 2,
-      stream = true,
-      disable_tools = true,
-    },
     copilot = {
       model = 'claude-3.7-sonnet-thought',
       disable_tools = false,
       reasoning_effort = 'high',
     },
+
+    openai = {
+      endpoint = "https://integrate.api.nvidia.com/v1",
+
+      -- model = "nvidia/llama-3.3-nemotron-super-49b-v1",
+      model = "nvdev/nvidia/llama-3.1-nemotron-ultra-253b-v1",
+      -- model = "deepseek-ai/deepseek-r1-distill-qwen-32b",
+      -- model = "nvidia/nemotron-mini-4b-instruct",
+      -- model = 'qwen/qwq-32b',
+
+      -- messages = {{ role = 'system', content = 'detailed thinking off' }},
+      reasoning_effort = 'high',
+
+      max_tokens = 4096 * 4,
+      temperature = 0.6,
+      top_p = 0.7,
+      stream = true,
+      frequency_penalty = 0,
+      presence_penalty = 0,
+
+      disable_tools = true,
+    },
+
     vendors = {
       ["copilot1"] = {
         __inherited_from = "copilot",
@@ -75,11 +81,11 @@ return {
       timeout = 60000,
     },
     rag_service = {
+      provider = "openai",
       enabled = false,
       host_mount = os.getenv("HOME") .. '/.cache/nvim/rag/',
-      provider = "openai",
-      llm_model = "nvidia/llama-3.3-nemotron-super-49b-v1",
-      embed_model = "nvidia/llama-3.2-nv-embedqa-1b-v2",
+      llm_model = "nvdev/nvidia/llama-3.1-nemotron-ultra-253b-v1",
+      embed_model = "nvdev/nvidia/nv-embedqa-e5-v5",
       endpoint = "https://integrate.api.nvidia.com/v1", -- The API endpoint for RAG service
     },
     behaviour = {
