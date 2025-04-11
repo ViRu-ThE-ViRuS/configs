@@ -1,4 +1,4 @@
-# inspired by https://github.com/jellydn/lazy-nvim-ide/blob/main/lua/plugins/extras/copilot-chat-v2.lua
+-- inspired by https://github.com/jellydn/lazy-nvim-ide/blob/main/lua/plugins/extras/copilot-chat-v2.lua
 local prompts = {
   -- Text related prompts
   Summarize = "Please summarize the following text.",
@@ -57,13 +57,15 @@ return {
     end,
     build = 'make tiktoken',
     opts = {
+      model = 'claude-3.7-sonnet-thought',
       mappings = {
         show_diff = { full_diff = true },
         submit_prompt = { insert = nil },
         reset = { normal = '<c-r>', insert = '<c-r>' },
         close = { normal = 'ghs' },
         show_help = { normal = 'g?' },
-        select = { insert = '<tab>' }
+        select = { insert = '<tab>' },
+        complete = { insert = '<c-p>' }
       },
       insert_at_end = false,
       auto_insert_mode = false,
@@ -84,6 +86,7 @@ return {
             context = { "selection", "vectorcode" },
           },
         })
+
       require("CopilotChat").setup(opts)
 
       -- fzf-lua integration

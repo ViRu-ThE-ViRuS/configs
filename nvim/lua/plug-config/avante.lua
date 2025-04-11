@@ -24,28 +24,48 @@ return {
   end,
   opts = {
     -- debug = true,
-    provider = "copilot",
+
+    provider = "copilot1",
     -- provider = "openai",
+
+    auto_suggestions_provider = "copilot",
+    web_search_engine = { provider = "tavily" },
+    disabled_tools = { "python" },
+
     openai = {
       endpoint = "https://integrate.api.nvidia.com/v1",
-      -- model = "nvidia/llama-3.1-nemotron-nano-8b-v1",
+
       -- model = "nvidia/llama-3.3-nemotron-super-49b-v1",
       model = "deepseek-ai/deepseek-r1-distill-qwen-32b",
       -- model = "nvidia/nemotron-mini-4b-instruct",
       -- model = 'qwen/qwq-32b',
-      temperature = 0.6,
+
       -- messages = {{ role = 'system', content = 'detailed thinking on' }},
+      reasoning_effort = 'high',
+
+      temperature = 0.6,
       top_p = 0.7,
       max_tokens = 4096 * 2,
       stream = true,
       disable_tools = true,
-      reasoning_effort = 'high',
     },
     copilot = {
-      model = 'claude-3.7-sonnet',
+      model = 'claude-3.7-sonnet-thought',
       disable_tools = false,
+      reasoning_effort = 'high',
     },
-    auto_suggestions_provider = "copilot",
+    vendors = {
+      ["copilot1"] = {
+        __inherited_from = "copilot",
+        model = "claude-3.7-sonnet",
+        display_name = "claude-3.7-sonnet"
+      },
+      ["copilot2"] = {
+        __inherited_from = "copilot",
+        model = "claude-3.7-sonnet-thought",
+        display_name = "claude-3.7-sonnet-thought",
+      },
+    },
     dual_boost = {
       enabled = false,
       first_provider = "copilot",
@@ -70,6 +90,9 @@ return {
       support_paste_from_clipboard = false,
       minimize_diff = true,
       enable_token_counting = true,
+    },
+    file_selector = {
+      provider = 'native',
     },
     mappings = {
       diff = {
