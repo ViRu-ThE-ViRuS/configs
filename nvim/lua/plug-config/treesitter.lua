@@ -75,7 +75,7 @@ return {
           'lua', 'python', 'c', 'cpp', 'java', 'go', 'bash', 'fish',
           'cmake', 'make', 'cuda', 'rust', 'vim', 'vimdoc', 'markdown',
           'javascript', 'typescript', 'tsx', 'query', 'glsl', 'jsonc',
-          'dockerfile', 'markdown_inline'
+          'dockerfile', 'markdown_inline', 'diff'
         },
         indent = { enable = true, disable = { 'python', 'c', 'cpp', 'lua' } },
         yati = { enable = true, disable = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' } },
