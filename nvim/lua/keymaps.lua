@@ -3,9 +3,15 @@ local terminal = require('lib/terminal')
 local quickfix = require('lib/quickfix')
 local utils = require("utils")
 
--- line navigation and movements
+
+-- move in screen lines
 utils.map("x", "<", "<gv")
 utils.map("x", ">", ">gv")
+utils.map({ "n", "x" }, "j", "gj")
+utils.map({ "n", "x" }, "k", "gk")
+utils.map({ "n", "x" }, "0", "g0")
+utils.map({ "n", "x" }, "$", "g$")
+utils.map({ "n", "x" }, "^", "g^")
 utils.map({ "n", "x", "o" }, "H", "^")
 utils.map({ "n", "x", "o" }, "L", "$")
 
@@ -32,26 +38,26 @@ utils.map("x", "<leader>c<space>", "<cmd>normal gc<cr>")
 utils.map('n', 'gc', "<cmd>normal mCgvgc'C<cr>") -- toggle comments on last visual selection
 
 -- misc
-utils.map("n", ";", ":")                                                          -- swaperoo
-utils.map("n", ":", ";")                                                          -- swaperoo
-utils.map("n", '`', "'")                                                          -- jump to mark (row, 0), swap
-utils.map("n", "'", "`")                                                          -- jump to mark (row,col), swap
-utils.map("i", "jj", "<esc>")                                                     -- home-row escape
-utils.map("n", "U", "<c-r>")                                                      -- undo
-utils.map('n', 'Y', 'yy')                                                         -- yank full line
-utils.map("n", "<space>", "za")                                                   -- toggle folds
-utils.map("n", "gp", "`[v`]")                                                     -- last paste
-utils.map("n", "p", "p`[=`]")                                                     -- autoformat paste
-utils.map("n", "P", "P`[=`]")                                                     -- autoformat Paste
-utils.map("n", "/", "ms/")                                                        -- mark search start
-utils.map("n", "?", "ms?")                                                        -- mark search start
-utils.map("x", "&", ":&&<cr>")                                                    -- visual execute last substitution
-utils.map("x", ".", ":normal! .<cr>")                                             -- visual execute .
-utils.map("n", "ss", "s")                                                         -- substitute mode, same as default `gh`
-utils.map("x", "ss", ":s/\\%V")                                                   -- substitute within visual
-utils.map("x", "s/", "\"sy:%s/<c-r>s//g<left><left>")                             -- substitute selection in file
-utils.map('x', '<m-/>', '<esc>/\\%V')                                             -- search within selection, '/' itself is a good mapping to consider for this
-utils.map('x', '//', [[y/<c-r>=trim(escape(@",'\/]'))<cr><cr>]])                  -- search for selection
+utils.map("n", ";", ":")                                         -- swaperoo
+utils.map("n", ":", ";")                                         -- swaperoo
+utils.map("n", '`', "'")                                         -- jump to mark (row, 0), swap
+utils.map("n", "'", "`")                                         -- jump to mark (row,col), swap
+utils.map("i", "jj", "<esc>")                                    -- home-row escape
+utils.map("n", "U", "<c-r>")                                     -- undo
+utils.map('n', 'Y', 'yy')                                        -- yank full line
+utils.map("n", "<space>", "za")                                  -- toggle folds
+utils.map("n", "gp", "`[v`]")                                    -- last paste
+utils.map("n", "p", "p`[=`]")                                    -- autoformat paste
+utils.map("n", "P", "P`[=`]")                                    -- autoformat Paste
+utils.map("n", "/", "ms/")                                       -- mark search start
+utils.map("n", "?", "ms?")                                       -- mark search start
+utils.map("x", "&", ":&&<cr>")                                   -- visual execute last substitution
+utils.map("x", ".", ":normal! .<cr>")                            -- visual execute .
+utils.map("n", "ss", "s")                                        -- substitute mode, same as default `gh`
+utils.map("x", "ss", ":s/\\%V")                                  -- substitute within visual
+utils.map("x", "s/", "\"sy:%s/<c-r>s//g<left><left>")            -- substitute selection in file
+utils.map('x', '<m-/>', '<esc>/\\%V')                            -- search within selection, '/' itself is a good mapping to consider for this
+utils.map('x', '//', [[y/<c-r>=trim(escape(@",'\/]'))<cr><cr>]]) -- search for selection
 -- utils.map("x", "@", "<esc><cmd>lua require('lib/misc').linewise_macro_cmd()<cr>") -- run line-wise macro n times if n lines are selected
 
 -- commandline modes

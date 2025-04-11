@@ -1,7 +1,7 @@
 return {
   "folke/flash.nvim",
   event = "BufReadPre",
-  opts = { modes = { search = { enabled = true } } },
+  opts = { modes = { search = { enabled = false } } },
   init = function()
     local utils = require("utils")
     utils.map({"n", "x", "o"}, "sf", function() require('flash').jump() end)

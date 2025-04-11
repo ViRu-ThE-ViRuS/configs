@@ -5,11 +5,12 @@ return {
     "MunifTanjim/nui.nvim",
   },
   build = "make",
-  cmd = { 'AvanteToggle', 'AvanteEdit' },
+  cmd = { 'AvanteToggle', 'AvanteEdit', 'AvanteAsk' },
   init = function()
     local utils = require("utils")
     utils.map({ "n", "v" }, "gas", '<cmd>AvanteToggle<cr>')
     utils.map("v", "gae", '<cmd>AvanteEdit<cr>')
+    utils.map("v", "gaa", '<cmd>AvanteAsk<cr>')
     utils.map("n", "gaR", '<cmd>AvanteClear<cr>')
 
     utils.map("n", "gaq", function()
@@ -24,28 +25,54 @@ return {
   end,
   opts = {
     -- debug = true,
-    provider = "copilot",
+
+    provider = "copilot1",
     -- provider = "openai",
-    openai = {
-      endpoint = "https://integrate.api.nvidia.com/v1",
-      -- model = "nvidia/llama-3.1-nemotron-nano-8b-v1",
-      -- model = "nvidia/llama-3.3-nemotron-super-49b-v1",
-      model = "deepseek-ai/deepseek-r1-distill-qwen-32b",
-      -- model = "nvidia/nemotron-mini-4b-instruct",
-      -- model = 'qwen/qwq-32b',
-      temperature = 0.6,
-      -- messages = {{ role = 'system', content = 'detailed thinking on' }},
-      top_p = 0.7,
-      max_tokens = 4096 * 2,
-      stream = true,
-      disable_tools = true,
+
+    auto_suggestions_provider = "copilot",
+    web_search_engine = { provider = "tavily" },
+    disabled_tools = { "python" },
+
+    copilot = {
+      model = 'claude-3.7-sonnet-thought',
+      disable_tools = false,
       reasoning_effort = 'high',
     },
-    copilot = {
-      model = 'claude-3.7-sonnet',
-      disable_tools = false,
+
+    openai = {
+      endpoint = "https://integrate.api.nvidia.com/v1",
+
+      -- model = "nvidia/llama-3.3-nemotron-super-49b-v1",
+      model = "nvdev/nvidia/llama-3.1-nemotron-ultra-253b-v1",
+      -- model = "deepseek-ai/deepseek-r1-distill-qwen-32b",
+      -- model = "nvidia/nemotron-mini-4b-instruct",
+      -- model = 'qwen/qwq-32b',
+
+      -- messages = {{ role = 'system', content = 'detailed thinking off' }},
+      reasoning_effort = 'high',
+
+      max_tokens = 4096 * 4,
+      temperature = 0.6,
+      top_p = 0.7,
+      stream = true,
+      frequency_penalty = 0,
+      presence_penalty = 0,
+
+      disable_tools = true,
     },
-    auto_suggestions_provider = "copilot",
+
+    vendors = {
+      ["copilot1"] = {
+        __inherited_from = "copilot",
+        model = "claude-3.7-sonnet",
+        display_name = "claude-3.7-sonnet"
+      },
+      ["copilot2"] = {
+        __inherited_from = "copilot",
+        model = "claude-3.7-sonnet-thought",
+        display_name = "claude-3.7-sonnet-thought",
+      },
+    },
     dual_boost = {
       enabled = false,
       first_provider = "copilot",
@@ -55,21 +82,26 @@ return {
       timeout = 60000,
     },
     rag_service = {
+      provider = "openai",
       enabled = false,
       host_mount = os.getenv("HOME") .. '/.cache/nvim/rag/',
-      provider = "openai",
-      llm_model = "nvidia/llama-3.3-nemotron-super-49b-v1",
-      embed_model = "nvidia/llama-3.2-nv-embedqa-1b-v2",
+      llm_model = "nvdev/nvidia/llama-3.1-nemotron-ultra-253b-v1",
+      embed_model = "nvdev/nvidia/nv-embedqa-e5-v5",
       endpoint = "https://integrate.api.nvidia.com/v1", -- The API endpoint for RAG service
     },
     behaviour = {
-      auto_suggestions = false,
+      auto_suggestions = false, -- Experimental stage
       auto_set_highlight_group = true,
       auto_set_keymaps = false,
       auto_apply_diff_after_generation = false,
       support_paste_from_clipboard = false,
       minimize_diff = true,
       enable_token_counting = true,
+      enable_cursor_planning_mode = true,
+      enable_claude_text_editor_tool_mode = true,
+    },
+    file_selector = {
+      provider = 'native',
     },
     mappings = {
       diff = {
@@ -102,12 +134,16 @@ return {
         reverse_switch_windows = "<s-tab>",
         close = { "q" },
       },
-      files = { add_current = "gaC" }
+      files = { add_current = "gaC" },
+      cancel = {
+        normal = { "<c-c>" },
+        insert = { "<c-c>" },
+      }
     },
     hints = { enabled = false },
     windows = {
       position = "right",
-      wrap = false,
+      wrap = true,
       width = 55,
       sidebar_header = {
         enabled = true,

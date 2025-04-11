@@ -7,6 +7,7 @@ function setup_base
   alias cat='bat'
   alias icat='kitty +kitten icat'
   alias pip='pip3'
+  alias python='python3'
   # alias ssh='kitty +kitten ssh'
 end
 
@@ -77,10 +78,12 @@ switch (hostname)
     nvm use v20 1&> /dev/null
 
   # mobile workstation
-  case storm
+  case viraatc-mlt # storm
     set fish_user_paths           $fish_user_paths "/opt/homebrew/bin/"
     set fish_user_paths           $fish_user_paths "$HOME/.local/bin/"
     set fish_user_paths           $fish_user_paths "/Library/Frameworks/Python.framework/Versions/3.10/bin/"
+
+    set fish_user_paths           $fish_user_paths "$HOME/.rustup/toolchains/stable-aarch64-apple-darwin/bin/"
 
     nvm use v20 1&> /dev/null
     setup_ssh
