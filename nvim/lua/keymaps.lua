@@ -7,13 +7,13 @@ local utils = require("utils")
 -- move in screen lines
 utils.map("x", "<", "<gv")
 utils.map("x", ">", ">gv")
-utils.map({ "n", "x", "o" }, "H", "g^")
-utils.map({ "n", "x", "o" }, "L", "g$")
 utils.map({ "n", "x" }, "j", "gj")
 utils.map({ "n", "x" }, "k", "gk")
 utils.map({ "n", "x" }, "0", "g0")
 utils.map({ "n", "x" }, "$", "g$")
 utils.map({ "n", "x" }, "^", "g^")
+-- utils.map({ "n", "x", "o" }, "H", "g^")
+-- utils.map({ "n", "x", "o" }, "L", "g$")
 
 -- delete without yank
 utils.map({ "n", "x" }, "x", '"_d', { noremap = false })
