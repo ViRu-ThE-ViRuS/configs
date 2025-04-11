@@ -350,7 +350,7 @@ return {
         -- add project command for specified configs
         project:add_command('launch project DAP config', function()
           vim.ui.select(
-            vim.tbl_keys(project.dap_config),
+            (function() return vim.tbl_keys(project.dap_config) end)(),
             { prompt = 'run config> ', kind = 'plain_text' },
             function(config_name) launch_dap(project.dap_config[config_name]) end
           )
