@@ -19,6 +19,12 @@ local prompts = {
   -- misc
   Pythonize =
   "Please update the selected code to use latest pythonic patterns. Write minimal and easy-to-understand code. Prefer built-in libraries, use third-party libs if they significantly improve performance or readability.",
+  Visualize =
+  {
+    context = { "selection" },
+    prompt =
+    "Visualize the selected code using ascii diagrams to depict the control flow. Include as much detail as possible, the goal is to depict all paths and what choices lead to them.",
+  }
 }
 
 return {
