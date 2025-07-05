@@ -69,6 +69,7 @@ vim.opt.title = true
 vim.opt.undodir = core.get_homedir() .. "/.config/undodir/"
 vim.opt.updatetime = 1000
 vim.opt.visualbell = false
+vim.opt.virtualedit = 'block'
 vim.opt.wildmode = "full"
 vim.opt.wrap = false
 vim.opt.writebackup = false
