@@ -9,6 +9,7 @@ htop
 jansson
 libevent
 libgit2
+libidn2
 libssh2
 libunistring
 libuv
@@ -37,6 +38,7 @@ unibilium
 universal-ctags
 utf8proc
 watch
+wget
 xxhash
 xz
 zstd

@@ -1,4 +1,5 @@
 appcleaner
+brave-browser
 cursor
 kitty
 slack

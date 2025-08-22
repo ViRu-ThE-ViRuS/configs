@@ -8,10 +8,6 @@ return {
   cmd = { 'AvanteToggle', 'AvanteEdit', 'AvanteAsk' },
   init = function()
     local utils = require("utils")
-    utils.map({ "n", "v" }, "gas", '<cmd>AvanteToggle<cr>')
-    utils.map("v", "gae", '<cmd>AvanteEdit<cr>')
-    utils.map("v", "gaa", '<cmd>AvanteAsk<cr>')
-    utils.map("n", "gaR", '<cmd>AvanteClear<cr>')
 
     utils.map("n", "gaq", function()
       require('avante.diff').conflicts_to_qf_items(function(items)
@@ -22,6 +18,11 @@ return {
         end
       end)
     end)
+
+    utils.map({ "n", "v" }, "gas", '<cmd>AvanteToggle<cr>')
+    utils.map("n", "gaR", '<cmd>AvanteClear<cr>')
+    utils.map("v", "gae", '<cmd>AvanteEdit<cr>')
+    utils.map("v", "gaa", '<cmd>AvanteAsk<cr>')
   end,
   opts = {
     -- debug = true,
