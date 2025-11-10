@@ -9,10 +9,10 @@ local function set_lsp_keymaps(_, bufnr)
   utils.map("n", "<leader>ud", fzf.lsp_document_symbols, map_opts)
   utils.map("n", "<leader>uD", fzf.lsp_live_workspace_symbols, map_opts)
 
-  utils.map("n", "<leader>d", core.partial(fzf.lsp_definitions, { sync = true, jump_to_single_result = true }), map_opts)
+  utils.map("n", "<leader>d", core.partial(fzf.lsp_definitions, { sync = true, jump1 = true }), map_opts)
   utils.map("n", "<leader>D", core.partial(fzf.lsp_definitions, {
     sync = true,
-    jump_to_single_result = true,
+    jump1 = true,
     jump_to_single_result_action = fzf.actions.file_vsplit,
   }), map_opts)
 end
@@ -125,7 +125,8 @@ return {
     local fzf = require('fzf-lua')
 
     local ignore_dirs = os.getenv('FZF_IGNORE_DIRS') .. ',' .. session.config.fuzzy_ignore_dirs
-    local default_rg_options = string.format(' --hidden --line-number --follow --no-heading --smart-case --no-ignore -g "!{%s}"',
+    local default_rg_options = string.format(
+      ' --hidden --line-number --follow --no-heading --smart-case --no-ignore -g "!{%s}"',
       ignore_dirs)
 
     local symbols = session.config.symbols
@@ -254,7 +255,7 @@ return {
 
     -- set fzf-lua as vim.ui.select handler
     fzf.register_ui_select({
-      previewer = create_file_previewer(),
+      -- previewer = create_file_previewer(),
       winopts = {
         split  = false,
         height = 0.40,

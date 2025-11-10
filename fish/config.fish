@@ -46,6 +46,7 @@ set -xg LC_ALL   en_US.UTF-8
 # set -xg LANG     en_US
 # set -xg LC_CTYPE en_US
 # set -xg LC_ALL   en_US
+set fish_greeting ""
 
 setup_base
 setup_fzf
@@ -75,7 +76,7 @@ switch (hostname)
     set fish_user_paths           $fish_user_paths "$HOME/Library/Python/3.9/bin"
     set fish_user_paths           $fish_user_paths "$HOME/.local/bin"
 
-    nvm use v20 1&> /dev/null
+    nvm use v22 1&> /dev/null
 
   # mobile workstation
   case viraatc-mlt # storm
@@ -85,7 +86,9 @@ switch (hostname)
 
     set fish_user_paths           $fish_user_paths "$HOME/.rustup/toolchains/stable-aarch64-apple-darwin/bin/"
 
-    nvm use v20 1&> /dev/null
+    set -xg NVCF_API_KEY              "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"
+
+    nvm use v22 1&> /dev/null
     setup_ssh
 
   # work desk workstation
@@ -174,21 +177,6 @@ function tree --description 'tree'
     command tree -C -I 'node_modules|venv|.git|__pycache__' $argv
 end
 # }}}
-
-function python --description 'launch python'
-  # disable outside virtualenvs
-  # if test -z "$VIRTUAL_ENV"
-  #    command python $argv
-  #    return
-  # end
-
-  if command -sq 'ipython'
-    command ipython $argv
-    return
-  end
-
-  command python $argv
-end
 
 function download_configs
   mkdir -p $HOME/workspace/

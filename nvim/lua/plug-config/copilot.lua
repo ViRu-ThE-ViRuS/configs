@@ -110,7 +110,7 @@ return {
 
           get_models = function(headers)
             local endpoint = "https://integrate.api.nvidia.com/v1"
-            local response, err = require('CopilotChat.utils').curl_get(endpoint .. '/models', {
+            local response, err = require('CopilotChat.utils.curl').get(endpoint .. '/models', {
               headers = headers,
               json_response = true,
             })
@@ -159,10 +159,8 @@ return {
 
       -- fzf-lua integration
       local utils = require('utils')
-      local actions = require('CopilotChat.actions')
-      local integration = require('CopilotChat.integrations.fzflua')
       local win_opts = { winopts = { split = false, height = 0.40, width = 0.50, row = 0.50, col = 0.50 } }
-      utils.map({ 'n', 'v' }, 'ghf', function() integration.pick(actions.prompt_actions(), win_opts) end)
+      utils.map({ 'n', 'v' }, 'ghf', function() require('CopilotChat.integrations.fzflua').pick(require('CopilotChat.actions').prompt_actions(), win_opts) end)
     end,
   },
 }

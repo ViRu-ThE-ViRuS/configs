@@ -1,3 +1,5 @@
+
+
 return {
   "yetone/avante.nvim",
   dependencies = {
@@ -34,41 +36,45 @@ return {
     web_search_engine = { provider = "tavily" },
     disabled_tools = { "python" },
 
-    copilot = {
-      model = 'claude-3.7-sonnet-thought',
-      disable_tools = false,
-      reasoning_effort = 'high',
-    },
+    providers = {
+      copilot = {
+        model = 'claude-3.7-sonnet-thought',
+        disable_tools = false,
+        reasoning_effort = 'high',
+      },
 
-    openai = {
-      endpoint = "https://integrate.api.nvidia.com/v1",
+      openai = {
+        endpoint = "https://integrate.api.nvidia.com/v1",
 
-      -- model = "nvidia/llama-3.3-nemotron-super-49b-v1",
-      model = "nvdev/nvidia/llama-3.1-nemotron-ultra-253b-v1",
-      -- model = "deepseek-ai/deepseek-r1-distill-qwen-32b",
-      -- model = "nvidia/nemotron-mini-4b-instruct",
-      -- model = 'qwen/qwq-32b',
+        -- model = "nvidia/llama-3.3-nemotron-super-49b-v1",
+        model = "nvdev/nvidia/llama-3.1-nemotron-ultra-253b-v1",
+        -- model = "deepseek-ai/deepseek-r1-distill-qwen-32b",
+        -- model = "nvidia/nemotron-mini-4b-instruct",
+        -- model = 'qwen/qwq-32b',
 
-      -- messages = {{ role = 'system', content = 'detailed thinking off' }},
-      reasoning_effort = 'high',
+        -- messages = {{ role = 'system', content = 'detailed thinking off' }},
 
-      max_tokens = 4096 * 4,
-      temperature = 0.6,
-      top_p = 0.7,
-      stream = true,
-      frequency_penalty = 0,
-      presence_penalty = 0,
+        max_tokens = 4096 * 4,
+        top_p = 0.7,
+        stream = true,
+        frequency_penalty = 0,
+        presence_penalty = 0,
 
-      disable_tools = true,
-    },
+        disable_tools = true,
 
-    vendors = {
-      ["copilot1"] = {
+        extra_request_body = {
+          reasoning_effort = 'high',
+          temperature = 0.6,
+        },
+      },
+
+      copilot1 = {
         __inherited_from = "copilot",
         model = "claude-3.7-sonnet",
         display_name = "claude-3.7-sonnet"
       },
-      ["copilot2"] = {
+
+      copilot2 = {
         __inherited_from = "copilot",
         model = "claude-3.7-sonnet-thought",
         display_name = "claude-3.7-sonnet-thought",
