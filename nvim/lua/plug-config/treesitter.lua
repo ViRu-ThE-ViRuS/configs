@@ -60,7 +60,6 @@ return {
     build = ':TSUpdate',
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
-      'RRethy/nvim-treesitter-textsubjects',
       'JoosepAlviste/nvim-ts-context-commentstring',
       'yioneko/nvim-yati',
       'andymass/vim-matchup',
@@ -79,7 +78,7 @@ return {
         },
         indent = { enable = true, disable = { 'python', 'c', 'cpp', 'lua' } },
         yati = { enable = true, disable = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' } },
-        highlight = { enable = true, additional_vim_regex_highlighting = { 'markdown' } },
+        highlight = { enable = true, additional_vim_regex_highlighting = { 'markdown' }, disable = { 'gitcommit' } },
         matchup = { enable = true, disable_virtual_text = true },
         incremental_selection = {
           enable = true,
@@ -120,13 +119,6 @@ return {
               ['gK'] = '@function.outer'
             }
           }
-        },
-        textsubjects = {
-          enable = true,
-          keymaps = {
-            [';'] = 'textsubjects-smart',
-            -- [';'] = 'textsubjects-container-outer',
-          },
         },
         playground = { enable = true },
         query_linter = {

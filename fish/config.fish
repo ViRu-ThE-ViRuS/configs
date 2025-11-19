@@ -8,6 +8,7 @@ function setup_base
   alias icat='kitty +kitten icat'
   alias pip='pip3'
   alias python='python3'
+  alias lua='lua5.1'
   # alias ssh='kitty +kitten ssh'
 end
 
@@ -86,17 +87,14 @@ switch (hostname)
 
     set fish_user_paths           $fish_user_paths "$HOME/.rustup/toolchains/stable-aarch64-apple-darwin/bin/"
 
-    set -xg NVCF_API_KEY              "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"
-
     nvm use v22 1&> /dev/null
     setup_ssh
 
   # work desk workstation
   case nova
     set fish_user_paths           $fish_user_paths "$HOME/.local/bin/"
-    set fish_user_paths           $fish_user_paths "/usr/local/cuda-12.1/bin/"
-    setup_ssh
-
+    set fish_user_paths 		      $fish_user_paths "/usr/local/cuda-12.1/bin/"
+    set fish_user_paths           $fish_user_paths "/home/viraatc/.local/bin/nvim/squashfs-root/usr/bin/"
     alias rvim='nvim --remote-ui --server ip6-localhost:5757'
 
     # tensorrt
@@ -106,6 +104,14 @@ switch (hostname)
 
     # mlperf
     set -xg MLPERF_SCRATCH_PATH   "/home/viraatc/workspace/mlperf/mlperf_scratch_space/"
+
+    # cursor
+    function cursor
+      /home/viraatc/.local/bin/cursor/Cursor-0.47.9-x86_64.AppImage --no-sandbox &
+      disown
+    end
+
+    setup_ssh
 
   # dev-container
   case dev
@@ -294,10 +300,11 @@ function computelab_nodes --description 'get nodes allocated to user viraatc on 
   ssh computelab 'squeue -u viraatc -h' | awk '{print $NF}'
 end
 
+function computelab_next_nodes --description 'get nodes allocated to user viraatc on computelab-next'
+  ssh viraatc@computelab-next 'squeue -u viraatc -h' | awk '{print $NF}'
+end
+
 function last_history_item
   echo $history[1]
 end
 abbr -a !! --position anywhere --function last_history_item
-
-# Added by Windsurf
-fish_add_path /Users/viraatc/.codeium/windsurf/bin

@@ -36,7 +36,7 @@ return {
     'ray-x/lsp_signature.nvim',
     lazy = false,
   },
-  
+
   -- EFM configs for formatters/linters
   {
     'creativenull/efmls-configs-nvim',
@@ -59,7 +59,7 @@ return {
         ensure_installed = { 'autopep8', 'prettier', 'cpplint' },
         automatic_installation = true
       })
-      
+
       -- setup lsps using built-in vim.lsp.config() and vim.lsp.enable()
       require("lsp-setup/init")
 
