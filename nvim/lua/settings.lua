@@ -29,6 +29,7 @@ end, 0)
 
 -- global options
 vim.opt.autoread = true
+
 vim.opt.autowrite = false
 vim.opt.backup = false
 vim.opt.clipboard = "unnamed,unnamedplus"

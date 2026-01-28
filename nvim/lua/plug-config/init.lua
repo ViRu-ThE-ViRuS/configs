@@ -33,6 +33,7 @@ return {
   'JoosepAlviste/palenightfall.nvim',
   'olivercederborg/poimandres.nvim',
   'samharju/serene.nvim',
+  'samir-roy/shinjuku.nvim',
   'NTBBloodBath/sweetie.nvim',
   'protesilaos/tempus-themes-vim',
   'Mofiqul/vscode.nvim',

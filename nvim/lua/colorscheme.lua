@@ -215,7 +215,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-local colorscheme = 'retrobox'
+local colorscheme = 'shinjuku'
 ---@cast colorscheme +string +function
 
 -- load default colorscheme if chosen one is not available
@@ -260,6 +260,7 @@ return {
       "retrobox",
       "serene",
       "sorbet",
+      'shinjuku',
       "sweetie",
       "tempus_tempest", "tempus_dusk",
       "vscode",

@@ -52,5 +52,5 @@ return {
     utils.map('x', 'sc', '<esc><cmd>lua _G._switch_case(vim.fn.visualmode())<cr>', { expr = true })
   end,
   cmd = { 'Subs', 'TextCaseStartReplacingCommand' },
-  config = { default_keymappings_enabled = false }
+  opts = { default_keymappings_enabled = false }
 }

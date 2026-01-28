@@ -199,112 +199,33 @@ function download_configs
   cd $HOME
 end
 
-# {{{ dev-env api
-function dvim --description 'launch dev neovim'
-  if command -sq 'docker'
-    command nvim --remote-ui --server localhost:5757 $argv
-    return
-  end
-
-  command nvim $argv
-end
-
-function dev --description 'launch dev shell' -a name
-  set -l target dev-(basename (pwd))
-
-  if test -n "$name"
-    set target $name
-  end
-
-  if not command -sq 'docker'
-    echo '[!] need to install docker to support dev envs'
-    return
-  end
-
-  docker exec -it $target fish
-  if test $status -ne 0
-    echo "[!] [$target] env not running"
-  end
-end
-
-function configure_dev --description 'configure dev server and environment'
-  if not command -sq 'docker'
-    echo '[!] check docker installation'
-    return -1
-  end
-
-  if not [ -d "$HOME/workspace/configs" ]
-    echo '[!] check configs repository'
-    return -1
-  end
-
-  set -l pwd (pwd)
-  echo '[@] building dev image'
-
-  cd $HOME/workspace/configs/
-  docker build --network=host --ssh=default -t dev -f Dockerfile .
-  cd $pwd
-
-  echo '[@] dev image built and environment configured'
-  return 0
-end
-
-function start_dev --description 'start dev server' -a name
-  set -l target dev-(basename (pwd))
-
-  if test -n "$name"
-    set target $name
-  end
-
-  set -l current (docker ps -q -f name=$target)
-  if test -n "$current"
-    echo "[@] [$target] dev server is already running"
-    return
-  end
-
-  if not configure_dev
-    echo "[!] could not configure dev env"
-    return
-  end
-
-  # run container of needed and mount (pwd) as working dir
-  docker run --network=host --hostname=dev --name=$target                  \
-         --mount type=bind,source=$SSH_AUTH_SOCK,target=/ssh-agent         \
-         --mount type=bind,source=(pwd),target=/workspace/(basename (pwd)) \
-         -d --rm -it $target
-
-  echo "[@] [$target] dev server has been started"
-end
-
-function stop_dev --description 'stop dev server' -a name
-  set -l target dev-(basename (pwd))
-  set -l msg_head "[$target]"
-
-  if test -n "$name"
-    set target $name
-    set msg_head "[$target]"
-  end
-
-  set -l current (docker ps -a -q -f name=$target)
-  if test -z "$current"
-    echo "[@] [$target] dev server is already stopped"
-    return
-  end
-
-  docker stop $target
-  echo "[@] $msg_head dev server has been stopped"
-end
-# }}}
-
 function computelab_nodes --description 'get nodes allocated to user viraatc on computelab'
   ssh computelab 'squeue -u viraatc -h' | awk '{print $NF}'
 end
 
-function computelab_next_nodes --description 'get nodes allocated to user viraatc on computelab-next'
-  ssh viraatc@computelab-next 'squeue -u viraatc -h' | awk '{print $NF}'
+function computelab_sc_nodes --description 'get nodes allocated to user viraatc on computelab-sc-01'
+  ssh viraatc@computelab-sc-01 'squeue -u viraatc -h' | awk '{print $NF}'
 end
 
 function last_history_item
   echo $history[1]
 end
 abbr -a !! --position anywhere --function last_history_item
+
+function fkill
+    # 1. Run ps aux
+    # 2. Pipe to fzf
+    #    -m: Allow multi-select (use TAB to select multiple)
+    #    --query: Pre-fill the search with your argument
+    #    --header-lines=1: Keep the USER/PID header fixed at the top
+    # 3. Extract PID with awk
+    set -l pids (ps aux | fzf -m --query "$argv" --header-lines=1 --layout=reverse --prompt="Kill Process> " | awk '{print $2}')
+
+    # 4. Kill if pids were found
+    if test -n "$pids"
+        echo "Killing PID(s): $pids"
+        kill -9 $pids
+    else
+        echo "No process selected."
+    end
+end

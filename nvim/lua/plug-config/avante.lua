@@ -1,6 +1,11 @@
+-- DISABLED: replaced by claudecode.nvim
+-- vim.env.TAVILY_API_KEY = "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"
+-- vim.env.OPENAI_API_KEY = "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"
 
+return {}
 
-return {
+--[[ Original config:
+{
   "yetone/avante.nvim",
   dependencies = {
     "stevearc/dressing.nvim",
@@ -127,8 +132,8 @@ return {
         dismiss = "q",
       },
       jump = {
-        next = "]]",
-        prev = "[[",
+        next = "\]\]",
+        prev = "\[\[",
       },
       submit = {
         normal = "<cr>",
@@ -174,3 +179,4 @@ return {
     },
   }
 }
+--]]

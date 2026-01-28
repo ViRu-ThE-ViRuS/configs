@@ -64,7 +64,8 @@ return {
     end,
     build = 'make tiktoken',
     opts = {
-      model = 'claude-3.7-sonnet-thought',
+      model = 'claude-opus-4.5',
+      -- model = 'claude-3.7-sonnet-thought',
       -- model = 'nvidia/llama-3.1-nemotron-ultra-253b-v1',
       mappings = {
         show_diff = { full_diff = true },
