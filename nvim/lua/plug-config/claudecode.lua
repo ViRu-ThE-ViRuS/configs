@@ -142,9 +142,68 @@ return {
       end
     end
 
+    local function spawn_claude_session()
+      local claudecode = require("claudecode")
+
+      -- Start server if not running
+      if not claudecode.state.port then
+        claudecode.start()
+        vim.wait(100, function()
+          return claudecode.state.port ~= nil
+        end, 10)
+      end
+
+      -- Use same split logic as terminal library
+      local split_cmd = (misc.is_htruncated(truncation.truncation_limit_s_terminal) and "sp") or "vsp"
+      vim.cmd(split_cmd)
+
+      local bufnr = vim.api.nvim_create_buf(false, true)
+      vim.api.nvim_set_option_value('bufhidden', 'hide', { buf = bufnr })
+      vim.api.nvim_set_option_value('buflisted', false, { buf = bufnr })
+      local session_num = vim.tbl_count(palette.terminals.term_states) + 1
+      pcall(vim.api.nvim_buf_set_name, bufnr, '[Claude ' .. session_num .. ']')
+      vim.api.nvim_win_set_buf(0, bufnr)
+
+      -- Build environment for IDE mode
+      local env = {}
+      if claudecode.state.port then
+        env.CLAUDE_CODE_SSE_PORT = tostring(claudecode.state.port)
+        env.ENABLE_IDE_INTEGRATION = "true"
+      end
+
+      local job_id = vim.fn.termopen('claude', {
+        env = env,
+        cwd = get_git_root(),
+        on_exit = function()
+          -- Deregister from palette on exit
+          for index, id in pairs(palette.terminals.indices) do
+            if id == job_id then
+              palette.terminals.indices[index] = {}
+              break
+            end
+          end
+          palette.terminals.term_states[job_id] = nil
+        end,
+      })
+
+      -- Register with terminal palette
+      palette.terminals.term_states[job_id] = {
+        job_id = job_id,
+        bufnr = bufnr,
+      }
+
+      -- Set as primary if no primary exists
+      local primary_id = palette.terminals.indices[1]
+      if not primary_id or type(primary_id) == 'table' then
+        palette.terminals.indices[1] = job_id
+      end
+
+      vim.cmd('startinsert')
+    end
+
     -- Commands
     vim.api.nvim_create_user_command('ClaudeCode', toggle_claude, {})
-    utils.add_command('[MISC] Claude Session', toggle_claude, { add_custom = true })
+    utils.add_command('[CLAUDE] New Session', spawn_claude_session, { add_custom = true })
 
     -- Keymaps (no terminal mode map - you can type freely)
     utils.map('n', "gas", toggle_claude, { desc = 'Claude Code' })

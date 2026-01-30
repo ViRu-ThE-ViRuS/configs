@@ -215,7 +215,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-local colorscheme = 'shinjuku'
+local colorscheme = 'mapledark'
 ---@cast colorscheme +string +function
 
 -- load default colorscheme if chosen one is not available
@@ -243,7 +243,9 @@ return {
       "gruvsquirrel",
       "habamax",
       "hybrid",
+      "jellybeans",
       "lunaperche",
+      "mapledark",
       "melange",
       "mellifluous",
       "mellow",
@@ -251,6 +253,7 @@ return {
       "monokai_pro", "monokai_ristretto",
       "moonfly",
       "mountain",
+      "nightgem",
       "nightwolf",
       "nightfly",
       "noctis", "noctis_bordo", "noctis_minimus", "noctis_uva",
@@ -290,11 +293,13 @@ return {
       "alabaster",
       "bamboo",
       "caret",
+      "dookie",
       "everforest",
       "flexoki-light",
       "gruvbox",
       "gruvbox-material",
       "intellij",
+      'jellybeans-light',
       "mellifluous",
       "modus",
       "nightwolf",
