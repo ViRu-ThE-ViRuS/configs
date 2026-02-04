@@ -105,6 +105,8 @@ switch (hostname)
     # mlperf
     set -xg MLPERF_SCRATCH_PATH   "/home/viraatc/workspace/mlperf/mlperf_scratch_space/"
 
+    nvm use 22 1&>  /dev/null
+
     # cursor
     function cursor
       /home/viraatc/.local/bin/cursor/Cursor-0.47.9-x86_64.AppImage --no-sandbox &
@@ -204,7 +206,7 @@ function computelab_nodes --description 'get nodes allocated to user viraatc on 
 end
 
 function computelab_sc_nodes --description 'get nodes allocated to user viraatc on computelab-sc-01'
-  ssh viraatc@computelab-sc-01 'squeue -u viraatc -h' | awk '{print $NF}'
+  ssh -o LogLevel=ERROR viraatc@computelab-sc-01 'squeue -u viraatc -h' | awk '{print $NF}'
 end
 
 function last_history_item
