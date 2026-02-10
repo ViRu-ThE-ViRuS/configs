@@ -215,7 +215,7 @@ end
 vim.opt.termguicolors = true
 vim.opt.background = "dark"
 
-local colorscheme = 'mapledark'
+local colorscheme = 'shinjuku'
 ---@cast colorscheme +string +function
 
 -- load default colorscheme if chosen one is not available

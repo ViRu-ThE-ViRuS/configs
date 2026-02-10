@@ -19,7 +19,7 @@ local function activate_output_window(session)
 
   -- make last output buffer active, if visible
   if target_handle then
-    vim.api.nvim_buf_set_option(target_handle, 'bufhidden', 'delete')
+    vim.api.nvim_set_option_value('bufhidden', 'delete', { buf = target_handle })
 
     utils.map('n', '<c-o>', function()
       vim.cmd [[ q! ]]
@@ -71,7 +71,7 @@ local function setup_dap_configurations()
   local core = require('lib/core')
 
   -- get input on runtime
-  local get_program = function() return vim.fn.input('program: ', vim.loop.cwd() .. '/' .. vim.fn.expand('%f'), 'file') end
+  local get_program = function() return vim.fn.input('program: ', vim.fn.getcwd() .. '/' .. vim.fn.expand('%f'), 'file') end
   local get_args = function() return vim.split(vim.fn.input('args: ', '', 'file'), ' ') end
 
   dap.configurations.python = {
@@ -117,10 +117,10 @@ local function setup_dapui_statuslines()
   local wins = vim.api.nvim_tabpage_list_wins(0)
   for _, win in pairs(wins) do
     local buf = vim.api.nvim_win_get_buf(win)
-    local ft = vim.api.nvim_buf_get_option(buf, 'filetype')
+    local ft = vim.api.nvim_get_option_value('filetype', { buf = buf })
 
     if statuslines[ft] then
-      vim.api.nvim_win_set_option(win, 'statusline', statusline.set_statusline_option(statuslines[ft]))
+      vim.api.nvim_set_option_value('statusline', statusline.set_statusline_option(statuslines[ft]), { win = win })
     end
   end
 end

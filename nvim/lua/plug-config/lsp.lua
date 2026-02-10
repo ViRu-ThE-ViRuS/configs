@@ -56,7 +56,7 @@ return {
     event = 'BufReadPre',
     config = function()
       require('mason-null-ls').setup({
-        ensure_installed = { 'autopep8', 'prettier', 'cpplint' },
+        ensure_installed = { 'autopep8', 'prettier', 'cpplint', 'mypy' },
         automatic_installation = true
       })
 

@@ -72,7 +72,7 @@ end
 local function diff_current_buf()
   -- focus current buffer
   local bufnr = vim.api.nvim_get_current_buf()
-  local ft = vim.api.nvim_buf_get_option(bufnr, 'filetype')
+  local ft = vim.api.nvim_get_option_value('filetype', { buf = bufnr })
   local curstate = ui.buffer_diff_state[bufnr]
 
   if not core.table_contains(vim.api.nvim_list_tabpages(), curstate) then
@@ -124,7 +124,7 @@ end
 
 -- get git repo root dir (or nil)
 local function get_git_root()
-  local git_cmd = "git -C " .. vim.loop.cwd() .. " rev-parse --show-toplevel"
+  local git_cmd = "git -C " .. vim.fn.getcwd() .. " rev-parse --show-toplevel"
   local root, rc = core.lua_systemlist(git_cmd)
 
   if rc == 0 then
@@ -371,7 +371,7 @@ local function show_command(out)
     vim.cmd.vsplit()
 
     local bufnr = vim.api.nvim_create_buf(false, true)
-    vim.api.nvim_buf_set_option(bufnr, 'bufhidden', 'delete')
+    vim.api.nvim_set_option_value('bufhidden', 'delete', { buf = bufnr })
     vim.api.nvim_win_set_buf(0, bufnr)
     vim.api.nvim_buf_set_lines(bufnr, -1, -1, false, vim.split(output, "\n", true))
   else

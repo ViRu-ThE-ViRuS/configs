@@ -3,7 +3,7 @@ ffi.cdef [[ int getuid(void); ]]
 
 -- is file owned by current user
 local function file_owned_by_me(file)
-  local fs_stat = vim.loop.fs_stat(file)
+  local fs_stat = vim.uv.fs_stat(file)
   return fs_stat and ffi.C.getuid() == fs_stat.uid
 end
 

@@ -62,7 +62,7 @@ local function qf_rename()
 
           num_updates = num_updates + vim.tbl_count(document.edits)
 
-          local short_uri = string.sub(vim.uri_to_fname(uri), #vim.loop.cwd() + 2)
+          local short_uri = string.sub(vim.uri_to_fname(uri), #vim.fn.getcwd() + 2)
           table.insert(
             notification,
             string.format('\t- %d in %s', vim.tbl_count(document.edits), short_uri)
@@ -90,7 +90,7 @@ local function qf_rename()
 
           num_updates = num_updates + vim.tbl_count(edits)
 
-          local short_uri = string.sub(vim.uri_to_fname(uri), #vim.loop.cwd() + 2)
+          local short_uri = string.sub(vim.uri_to_fname(uri), #vim.fn.getcwd() + 2)
           table.insert(
             notification,
             string.format('\t- %d in %s', vim.tbl_count(edits), short_uri)

@@ -209,6 +209,18 @@ function computelab_sc_nodes --description 'get nodes allocated to user viraatc 
   ssh -o LogLevel=ERROR viraatc@computelab-sc-01 'squeue -u viraatc -h' | awk '{print $NF}'
 end
 
+function ptyche_nodes --description 'get nodes allocated to user on ptyche cluster'
+  ssh -o LogLevel=ERROR ptyche 'squeue -u viraatc-mfa -h' | awk '{print $NF}'
+end
+
+function prenyx_nodes --description 'get nodes allocated to user on prenyx cluster'
+  ssh -o LogLevel=ERROR pnyx 'squeue -u viraatc-mfa -h' | awk '{print $NF}'
+end
+
+function lyris_nodes --description 'get nodes allocated to user on lyris cluster'
+  ssh -o LogLevel=ERROR lyris 'squeue -u viraatc-mfa -h' | awk '{print $NF}'
+end
+
 function last_history_item
   echo $history[1]
 end

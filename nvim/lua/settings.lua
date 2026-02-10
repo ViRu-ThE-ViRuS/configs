@@ -54,7 +54,7 @@ vim.opt.lazyredraw = true
 vim.opt.mouse = "a"
 vim.opt.number = true
 vim.opt.nrformats:append('alpha')
-vim.opt.path = vim.opt.path + vim.loop.cwd() + '**'
+vim.opt.path = vim.opt.path + vim.fn.getcwd() + '**'
 vim.opt.pumblend = 10
 vim.opt.pumheight = 10
 vim.opt.scrolloff = 8
@@ -67,7 +67,7 @@ vim.opt.smarttab = true
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.title = true
-vim.opt.undodir = core.get_homedir() .. "/.config/undodir/"
+vim.opt.undodir = vim.fn.stdpath('state') .. '/undo'
 vim.opt.updatetime = 1000
 vim.opt.visualbell = false
 vim.opt.wildmode = "full"

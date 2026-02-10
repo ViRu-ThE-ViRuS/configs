@@ -179,32 +179,195 @@ end
 
 -- }}}
 
+-- {{{ Project.remote() factory
+
+--- Detect if a sync target is a ClusterTarget (has clusters field).
+-- @param sync_target The sync target to check.
+-- @return (boolean) True if it's a ClusterTarget.
+local function is_cluster_target(sync_target)
+  return sync_target.clusters ~= nil
+end
+
+--- Create a remote project with auto-generated sync commands.
+-- Supports both SyncTarget and ClusterTarget.
+-- @param opts Table containing remote project options.
+-- @field opts.name (string) The name of the project.
+-- @field opts.sync_target (SyncTarget|ClusterTarget) The sync target configuration.
+-- @field opts.commands (table) Optional custom commands to add.
+-- @field opts.host_path (string) Optional host path (defaults to cwd).
+-- @field opts.ignore_paths (string) Optional ignore paths.
+-- @return (RemoteProject) Configured remote project instance.
+local function create_remote_project(opts)
+  assert(opts.name, 'name cannot be nil')
+  assert(opts.sync_target, 'sync_target cannot be nil')
+
+  local sync_target = opts.sync_target
+  local is_cluster = is_cluster_target(sync_target)
+
+  -- Create project with placeholder target (resolved lazily)
+  -- For ClusterTarget, user/path are resolved dynamically
+  local project = RemoteProject.new({
+    name = opts.name,
+    target = '', -- Will be resolved lazily
+    target_user = is_cluster and '' or sync_target.user,
+    target_path = is_cluster and '' or sync_target.path,
+    host_path = opts.host_path,
+    ignore_paths = opts.ignore_paths,
+  })
+
+  -- Store sync_target reference on project
+  project.sync_target = sync_target
+
+  -- Helper to update project fields after host resolution (for ClusterTarget)
+  local function update_project_from_cluster()
+    if is_cluster then
+      project.target_user = sync_target:get_user()
+      project.target_path = sync_target:get_path()
+    end
+  end
+
+  -- Auto-generate Launch Sync command
+  project:add_command('Launch Sync', function()
+    sync_target:resolve_host(false, function(host)
+      if not host then
+        project:notify('No hosts available', 'error')
+        return
+      end
+
+      -- Update project target for compatibility with existing code
+      project.target = host
+      update_project_from_cluster()
+
+      local config = sync_target:lsyncd_config(project.host_path)
+      if not config then
+        project:notify('Failed to generate lsyncd config', 'error')
+        return
+      end
+
+      local path = core.create_file('/tmp/.lsyncconfig', {
+        content = config,
+        add_uuid = true
+      })
+
+      terminal.launch_terminal(
+        string.format('lsyncd %s --delay 0', path),
+        { background = true }
+      )
+
+      -- Notify with cluster info for ClusterTarget
+      if is_cluster then
+        local cluster_name = sync_target:get_cluster_name()
+        project:notify(string.format('Syncing to %s (%s)', host, cluster_name), 'info')
+      end
+    end)
+  end)
+
+  -- Auto-generate Launch SSH command
+  project:add_command('Launch SSH', function()
+    sync_target:resolve_host(false, function(host)
+      if not host then
+        project:notify('No hosts available', 'error')
+        return
+      end
+
+      project.target = host
+      update_project_from_cluster()
+      project:launch_ssh()
+    end)
+  end)
+
+  -- Auto-generate Select Host command
+  project:add_command('Select Host', function()
+    sync_target:resolve_host(true, function(host)
+      if host then
+        project.target = host
+        update_project_from_cluster()
+
+        if is_cluster then
+          local cluster_name = sync_target:get_cluster_name()
+          project:notify(string.format('Selected host: %s (%s)', host, cluster_name), 'info')
+        else
+          project:notify(string.format('Selected host: %s', host), 'info')
+        end
+      end
+    end)
+  end)
+
+  -- Add custom commands if provided
+  if opts.commands then
+    for name, callback in pairs(opts.commands) do
+      project:add_command(name, function()
+        callback(project)
+      end)
+    end
+  end
+
+  return project
+end
+
+-- }}}
+
+-- {{{ Presets
+
+local nvidia_presets = require('lib/presets/nvidia')
+
+-- }}}
+
 return {
   Project = Project,
   RemoteProject = RemoteProject,
+  remote = create_remote_project,
+  presets = nvidia_presets,
 }
 
 --[[ example usage in .nvimrc.lua
 
+-- === CLUSTER TARGET API (recommended for multi-cluster projects) ===
+local sync = require('lib/sync')
+local Project = require('lib/project')
+
+return Project.remote({
+  name = 'inference-endpoint',
+  sync_target = sync.cluster_target({
+    clusters = Project.presets.nvidia_clusters,
+    project_subdir = 'mlperf/inference-endpoint',  -- just the subdir!
+    excludes = { 'build/', '.cache', 'venv', '__pycache__' },
+  }),
+})
+
+-- === SYNC TARGET API (single host/user/path) ===
+return Project.remote({
+  name = 'my-project',
+  sync_target = sync.target({
+    host = Project.presets.nvidia_internal_hosts, -- Lazy! Fetches nodes when sync starts
+    user = 'username',
+    path = '/remote/path/to/project/',
+    excludes = { 'build/', '.cache', 'venv', '__pycache__' },
+  }),
+  -- Optional custom commands
+  commands = {
+    ['Custom Command'] = function(project)
+      -- your code here
+    end,
+  },
+})
+
+-- === LEGACY API (still supported) ===
 local terminal = require('lib/terminal')
-local Project = require('lib/project').Project
+local LegacyProject = require('lib/project').Project
 
--- create a project
-local project = Project.new({ name = "meshedit" })
-project.executable = string.format('%s/build/%s', vim.loop.cwd(), project.name)
+local project = LegacyProject.new({ name = "meshedit" })
+project.executable = string.format('%s/build/%s', vim.fn.getcwd(), project.name)
 
--- add a command
 project:add_command('build', function()
   terminal.send_to_terminal('cd build ; make ; cd ..')
 end)
 
--- add a debug config
 project:add_dap_config('basic', project.executable, { 'bzc/curve1.bzc' }, {
   base_type = 'cpp',
   preamble = function(_) project:run_command('build') end
 })
 
--- MUST RETURN THIS PROJECT OBJECT, so as to register it into the session
 return project
 
 --]]

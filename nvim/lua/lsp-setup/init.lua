@@ -120,7 +120,10 @@ local clike = {
   -- require('efmls-configs.linters.cpplint'),
 }
 local languages = {
-  python = { require('efmls-configs.formatters.autopep8'), },
+  python = {
+    require('efmls-configs.formatters.autopep8'),
+    require('efmls-configs.linters.mypy'),
+  },
   markdown = { require('efmls-configs.formatters.prettier'), },
 
   c = vim.tbl_deep_extend('force', clike, {}),
@@ -141,7 +144,8 @@ vim.lsp.config('efm', {
 })
 -- }}}
 
--- {{{ null-ls setup
+-- {{{ none-ls setup (formerly null-ls)
+-- NOTE: none-ls.nvim keeps the 'null-ls' module name for backwards compatibility
 local null_ls = require('null-ls')
 null_ls.setup({
   sources = {

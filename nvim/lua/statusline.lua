@@ -70,18 +70,16 @@ local function setup_highlights()
   -- so we don't get any weird looks on colorschemes
 
   local lsp_icons = require('lsp-setup/lsp_utils').lsp_icons
-  local target_id = vim.api.nvim_get_hl_id_by_name(string.sub(colors.context, 3, -2))
-  local target_hl = vim.api.nvim_get_hl_by_id(target_id, true)
+  local target_hl = vim.api.nvim_get_hl(0, { name = string.sub(colors.context, 3, -2) })
 
   for _, value in pairs(lsp_icons) do
     local name = string.sub(value.hl, 3, -2)
     local ts_name = string.sub(name, 5, -1)
-    local ts_id = vim.api.nvim_get_hl_id_by_name(ts_name)
-    local hl = vim.api.nvim_get_hl_by_id(ts_id, true)
+    local hl = vim.api.nvim_get_hl(0, { name = ts_name })
 
     vim.api.nvim_set_hl(0, name, {
-      foreground = hl.foreground,
-      background = target_hl.background
+      fg = hl.fg,
+      bg = target_hl.bg
     })
   end
 end

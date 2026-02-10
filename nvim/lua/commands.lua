@@ -65,8 +65,8 @@ vim.api.nvim_create_autocmd('BufWritePost', {
 vim.api.nvim_create_autocmd('BufWritePost', {
   group = 'Configs',
   pattern = {
-    core.get_homedir() .. '/.config/nvim/init.lua',
-    core.get_homedir() .. '/.config/nvim/*/*.lua',
+    vim.fn.stdpath('config') .. '/init.lua',
+    vim.fn.stdpath('config') .. '/*/*.lua',
   },
   callback = function()
     local src_file = vim.fn.expand('<afile>')
@@ -218,7 +218,7 @@ utils.add_command('[MISC] Generate Tags', function()
     -- args = { '-R' },
     args = { '-R', '--excmd=combine', '--exclude=build', '--exclude=venv' },
     -- args = { '-R', '--excmd=combine', '--fields=+K' },
-    cwd = vim.loop.cwd(),
+    cwd = vim.fn.getcwd(),
     on_start = core.partial(utils.notify, 'generating tags file', 'debug', { title = '[MISC] tags'}),
     on_exit = core.partial(utils.notify, 'generated tags file', 'info', { title = '[MISC] tags'})
   }):start()

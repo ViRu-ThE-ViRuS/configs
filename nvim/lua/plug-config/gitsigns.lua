@@ -7,7 +7,7 @@ local function gitsigns_post_refresh_fugitive()
   for _, winid in pairs(vim.api.nvim_tabpage_list_wins(0)) do
     local buf = vim.api.nvim_win_get_buf(winid)
 
-    fugitive_buf = fugitive_buf or (vim.api.nvim_buf_get_option(buf, 'filetype') == "fugitive" and buf)
+    fugitive_buf = fugitive_buf or (vim.api.nvim_get_option_value('filetype', { buf = buf }) == "fugitive" and buf)
     diffview_buf = diffview_buf or (string.find(vim.api.nvim_buf_get_name(buf), '^diffview://') ~= nil)
 
     -- early exit if both found already

@@ -151,6 +151,65 @@ local function lua_system(cmd)
   return table.concat(stdout, '\n'), rc
 end
 
+-- run shell command async and get output lines via callback (using plenary.job)
+-- @param cmd (string|table) Command string or table {command, args...}
+-- @param callback (function) Called with (lines, exit_code) when done
+local function lua_systemlist_async(cmd, callback)
+  local Job = require('plenary.job')
+  local command, args
+
+  if type(cmd) == 'table' then
+    command = cmd[1]
+    args = { unpack(cmd, 2) }
+  else
+    -- Parse "cmd arg1 arg2" into command and args
+    local parts = {}
+    for part in cmd:gmatch('%S+') do
+      table.insert(parts, part)
+    end
+    command = table.remove(parts, 1)
+    args = parts
+  end
+
+  Job:new({
+    command = command,
+    args = args,
+    on_exit = function(j, return_val)
+      vim.schedule(function()
+        callback(j:result(), return_val)
+      end)
+    end,
+  }):start()
+end
+
+-- run multiple shell commands async in parallel and collect all results
+-- @param cmds (table) List of commands to run
+-- @param callback (function) Called with combined results table when all complete
+local function lua_systemlist_async_all(cmds, callback)
+  local results = {}
+  local pending = #cmds
+
+  if pending == 0 then
+    callback({})
+    return
+  end
+
+  for i, cmd in ipairs(cmds) do
+    lua_systemlist_async(cmd, function(lines, _)
+      results[i] = lines
+      pending = pending - 1
+      if pending == 0 then
+        -- Flatten all results into single list
+        local all_lines = {}
+        for _, res in ipairs(results) do
+          vim.list_extend(all_lines, res)
+        end
+        callback(all_lines)
+      end
+    end)
+  end
+end
+
 -- get which python3 in current env
 -- NOTE(vir): assuming python3 exists on all systems
 local function get_python()
@@ -219,6 +278,8 @@ return {
   table_subset   = table_subset,
   lua_systemlist = lua_systemlist,
   lua_system     = lua_system,
+  lua_systemlist_async     = lua_systemlist_async,
+  lua_systemlist_async_all = lua_systemlist_async_all,
   get_python     = get_python,
   get_username   = get_username,
   get_homedir    = get_homedir,

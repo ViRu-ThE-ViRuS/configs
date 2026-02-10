@@ -171,31 +171,34 @@ return {
         env.ENABLE_IDE_INTEGRATION = "true"
       end
 
-      local job_id = vim.fn.termopen('claude', {
+      local session_job_id = nil
+      session_job_id = vim.fn.termopen('claude', {
         env = env,
         cwd = get_git_root(),
         on_exit = function()
           -- Deregister from palette on exit
-          for index, id in pairs(palette.terminals.indices) do
-            if id == job_id then
-              palette.terminals.indices[index] = {}
-              break
+          if session_job_id then
+            for index, id in pairs(palette.terminals.indices) do
+              if id == session_job_id then
+                palette.terminals.indices[index] = {}
+                break
+              end
             end
+            palette.terminals.term_states[session_job_id] = nil
           end
-          palette.terminals.term_states[job_id] = nil
         end,
       })
 
       -- Register with terminal palette
-      palette.terminals.term_states[job_id] = {
-        job_id = job_id,
+      palette.terminals.term_states[session_job_id] = {
+        job_id = session_job_id,
         bufnr = bufnr,
       }
 
       -- Set as primary if no primary exists
       local primary_id = palette.terminals.indices[1]
       if not primary_id or type(primary_id) == 'table' then
-        palette.terminals.indices[1] = job_id
+        palette.terminals.indices[1] = session_job_id
       end
 
       vim.cmd('startinsert')
