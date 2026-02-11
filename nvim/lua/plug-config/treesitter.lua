@@ -61,7 +61,7 @@ return {
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
       'JoosepAlviste/nvim-ts-context-commentstring',
-      'yioneko/nvim-yati',
+      'MeanderingProgrammer/treesitter-modules.nvim',
       'andymass/vim-matchup',
       'machakann/vim-sandwich'
     },
@@ -69,17 +69,19 @@ return {
       local utils = require("utils")
 
       vim.g.skip_ts_context_commentstring_module = true
-      require('nvim-treesitter.configs').setup({
+      require('nvim-treesitter').setup({
         ensure_installed = {
           'lua', 'python', 'c', 'cpp', 'java', 'go', 'bash', 'fish',
           'cmake', 'make', 'cuda', 'rust', 'vim', 'vimdoc', 'markdown',
           'javascript', 'typescript', 'tsx', 'query', 'glsl', 'jsonc',
           'dockerfile', 'markdown_inline', 'diff'
         },
-        indent = { enable = true, disable = { 'python', 'c', 'cpp', 'lua' } },
-        yati = { enable = true, disable = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' } },
-        highlight = { enable = true, additional_vim_regex_highlighting = { 'markdown' }, disable = { 'gitcommit' } },
         matchup = { enable = true, disable_virtual_text = true },
+      })
+
+      require('treesitter-modules').setup({
+        indent = { enable = true, disable = { 'c', 'cpp', 'lua' } },
+        highlight = { enable = true, additional_vim_regex_highlighting = { 'markdown' }, disable = { 'gitcommit' } },
         incremental_selection = {
           enable = true,
           keymaps = {
@@ -89,44 +91,48 @@ return {
             scope_incremental = '+'
           }
         },
-        textobjects = {
-          select = {
-            lookahead = true,
-            enable = true,
-            keymaps = {
-              ['af'] = '@function.outer',
-              ['if'] = '@function.inner',
-              ['an'] = '@block.outer',
-              ['in'] = '@block.inner',
-              ['aP'] = '@parameter.outer',
-              ['iP'] = '@parameter.inner'
-            }
-          },
-          move = {
-            enable = true,
-            set_jumps = true,
-            -- NOTE(vir): remaps done manually below
-          },
-          swap = {
-            enable = true,
-            swap_next = { [']p'] = "@parameter.inner" },
-            swap_previous = { ['[p'] = "@parameter.inner" }
-          },
-          lsp_interop = {
-            enable = true,
-            border = 'rounded',
-            peek_definition_code = {
-              ['gK'] = '@function.outer'
-            }
-          }
-        },
-        playground = { enable = true },
-        query_linter = {
-          enable = true,
-          use_virtual_text = true,
-          lint_events = { "BufWrite", "CursorHold" },
-        },
       })
+
+      -- textobjects setup
+      require('nvim-treesitter-textobjects').setup({
+        select = { lookahead = true },
+        move = { set_jumps = true },
+      })
+
+      -- textobjects: select
+      local ts_select = require('nvim-treesitter-textobjects.select')
+      vim.keymap.set({ 'x', 'o' }, 'af', function() ts_select.select_textobject('@function.outer', 'textobjects') end)
+      vim.keymap.set({ 'x', 'o' }, 'if', function() ts_select.select_textobject('@function.inner', 'textobjects') end)
+      vim.keymap.set({ 'x', 'o' }, 'an', function() ts_select.select_textobject('@block.outer', 'textobjects') end)
+      vim.keymap.set({ 'x', 'o' }, 'in', function() ts_select.select_textobject('@block.inner', 'textobjects') end)
+      vim.keymap.set({ 'x', 'o' }, 'aP', function() ts_select.select_textobject('@parameter.outer', 'textobjects') end)
+      vim.keymap.set({ 'x', 'o' }, 'iP', function() ts_select.select_textobject('@parameter.inner', 'textobjects') end)
+
+      -- textobjects: swap
+      local ts_swap = require('nvim-treesitter-textobjects.swap')
+      vim.keymap.set('n', ']p', function() ts_swap.swap_next('@parameter.inner', 'textobjects') end)
+      vim.keymap.set('n', '[p', function() ts_swap.swap_previous('@parameter.inner', 'textobjects') end)
+
+      -- textobjects: move + center
+      local ts_move = require('nvim-treesitter-textobjects.move')
+      utils.map({ 'n', 'o', 'x' }, ']F', function() ts_move.goto_next_start('@class.outer', 'textobjects') vim.cmd('normal! zz') end)
+      utils.map({ 'n', 'o', 'x' }, '[F', function() ts_move.goto_previous_start('@class.outer', 'textobjects') vim.cmd('normal! zz') end)
+      utils.map({ 'n', 'o', 'x' }, ']f', function() ts_move.goto_next_start('@function.outer', 'textobjects') vim.cmd('normal! zz') end)
+      utils.map({ 'n', 'o', 'x' }, '[f', function() ts_move.goto_previous_start('@function.outer', 'textobjects') vim.cmd('normal! zz') end)
+      utils.map({ 'n', 'o', 'x' }, '[[', function() ts_move.goto_previous_start('@block.outer', 'textobjects') vim.cmd('normal! zz') end)
+      utils.map({ 'n', 'o', 'x' }, ']]', function() ts_move.goto_next_start('@block.outer', 'textobjects') vim.cmd('normal! zz') end)
+
+      -- lsp_interop: peek definition (replaces removed textobjects feature)
+      vim.keymap.set('n', 'gK', function()
+        local client = vim.lsp.get_clients({ bufnr = 0 })[1]
+        if not client then return end
+        local params = vim.lsp.util.make_position_params(0, client.offset_encoding)
+        vim.lsp.buf_request(0, 'textDocument/definition', params, function(err, result)
+          if err or not result or vim.tbl_isempty(result) then return end
+          local def = vim.islist(result) and result[1] or result
+          vim.lsp.util.preview_location(def, { border = 'rounded' })
+        end)
+      end)
 
       require('ts_context_commentstring').setup {}
 
@@ -135,20 +141,10 @@ return {
         utils.qf_populate(buffer_functions(), { title = 'Functions & Lambdas' })
       end)
 
-      -- text-subjects : move + center
-      local cmd_str = '<cmd>lua require("nvim-treesitter.textobjects.move").'
-      utils.map({ 'n', 'o', 'x' }, ']F', cmd_str .. 'goto_next_start("@class.outer")<CR>zz')
-      utils.map({ 'n', 'o', 'x' }, '[F', cmd_str .. 'goto_previous_start("@class.outer")<CR>zz')
-      utils.map({ 'n', 'o', 'x' }, ']f', cmd_str .. 'goto_next_start("@function.outer")<CR>zz')
-      utils.map({ 'n', 'o', 'x' }, '[f', cmd_str .. 'goto_previous_start("@function.outer")<CR>zz')
-      utils.map({ 'n', 'o', 'x' }, '[[', cmd_str .. 'goto_previous_start("@block.outer")<CR>zz')
-      utils.map({ 'n', 'o', 'x' }, ']]', cmd_str .. 'goto_next_start("@block.outer")<CR>zz')
-
       -- jump to lsp-parent
       utils.map({ 'n', 'o', 'x' }, '[S', up_lsp_stack)
     end
   },
 
   { "wurli/contextindent.nvim",   event = "InsertEnter",     dependencies = { "nvim-treesitter/nvim-treesitter" } },
-  { 'nvim-treesitter/playground', cmd = 'TSPlaygroundToggle' },
 }
