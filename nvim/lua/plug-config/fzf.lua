@@ -133,7 +133,11 @@ return {
     local truncation = session.config.truncation
     local actions = fzf.actions
 
-    fzf.setup({
+    local sk_opts = vim.fn.executable('sk') == 1
+      and { fzf_bin = 'sk', fzf_opts = { ['--algo'] = 'frizbee' } }
+      or {}
+
+    fzf.setup(vim.tbl_deep_extend('force', sk_opts, {
       winopts = {
         split = 'horizontal new',
         fullscreen = false,
@@ -251,7 +255,7 @@ return {
           ['Hint'] = { icon = symbols.indicator_hint, color = 'magenta' }
         }
       }
-    })
+    }))
 
     -- set fzf-lua as vim.ui.select handler
     fzf.register_ui_select({

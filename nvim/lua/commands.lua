@@ -95,7 +95,9 @@ vim.api.nvim_create_autocmd('BufWritePost', {
     )
 
     -- stop all servers before doing reloading
-    vim.lsp.stop_client(vim.lsp.get_clients(), false)
+    for _, client in ipairs(vim.lsp.get_clients()) do
+      client:stop()
+    end
 
     -- TODO(vir): get this working
     --  1. reload session

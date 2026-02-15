@@ -53,7 +53,7 @@ return {
           ['<m-0>'] = actions.conflict_choose('base'),
           ['<m-a>'] = actions.conflict_choose('all'),
           ['<m-x>'] = actions.conflict_choose('none'),
-          ['<m-l>'] = actions.cycle_layout,
+          ['<m-l>'] = function() pcall(actions.cycle_layout) end,
           ["[x"] = actions.prev_conflict,
           ["]x"] = actions.next_conflict,
 
@@ -78,6 +78,7 @@ return {
 
           ["e"] = actions.goto_file,
           ["<leader>gh"] = actions.toggle_files,
+          ['<m-l>'] = function() pcall(actions.cycle_layout) end,
 
           -- NOTE(vir): fugitive integration
           ['cc'] = function()
@@ -105,6 +106,7 @@ return {
 
           ["e"] = actions.goto_file,
           ["<leader>gh"] = actions.toggle_files,
+          ['<m-l>'] = function() pcall(actions.cycle_layout) end,
 
           ['<tab>'] = toggle_line_matching
         },

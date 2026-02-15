@@ -4,6 +4,7 @@ return {
   'rcarriga/nvim-notify',
   opts = {
     stages = 'fade',
+    background_colour = '#000000',
     level = 'DEBUG',
     timeout = 150,
     fps = 20,

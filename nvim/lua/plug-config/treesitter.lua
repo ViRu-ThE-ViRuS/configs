@@ -70,16 +70,20 @@ return {
 
       vim.g.skip_ts_context_commentstring_module = true
       require('nvim-treesitter').setup({
-        ensure_installed = {
-          'lua', 'python', 'c', 'cpp', 'java', 'go', 'bash', 'fish',
-          'cmake', 'make', 'cuda', 'rust', 'vim', 'vimdoc', 'markdown',
-          'javascript', 'typescript', 'tsx', 'query', 'glsl', 'jsonc',
-          'dockerfile', 'markdown_inline', 'diff'
-        },
         matchup = { enable = true, disable_virtual_text = true },
       })
 
       require('treesitter-modules').setup({
+        sync_install = false,
+        auto_install = true,
+        ensure_installed = {
+          'lua', 'python', 'c', 'cpp', 'java', 'go', 'bash', 'fish',
+          'cmake', 'make', 'cuda', 'rust', 'vim', 'vimdoc', 'markdown',
+          'javascript', 'typescript', 'tsx', 'query', 'glsl',
+          'dockerfile', 'markdown_inline', 'diff'
+        },
+
+
         indent = { enable = true, disable = { 'c', 'cpp', 'lua' } },
         highlight = { enable = true, additional_vim_regex_highlighting = { 'markdown' }, disable = { 'gitcommit' } },
         incremental_selection = {
